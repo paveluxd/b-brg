@@ -7,20 +7,88 @@
 </head>
 
 <body>
-    <div class="combat-area flex">a</div>
-    <div class="action-area flex">b</div>
-    <div class="quiz-area flex">c</div>
+    
+    <div class="column grow gapSm">
+        <h1 id="title">Dungeon stage 1</h1>
+
+        <div class="row">
+            <div class="stat-block">
+                <p>
+                    <h1>Player</h1>
+                    8 life<br> 
+                    6 roll<br>
+                    1 def<br>
+                    1 power
+                </p>
+            </div>
+            <img src="./img/char-knight.svg">
+
+            <img src="./img/char-rogue.svg" class="flip">
+            <div class="stat-block">
+                <p>
+                    <h1>Enemy 1</h1>
+                    Will attack for 6<br>
+                    8 life<br>
+                    6 roll
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row grow">
+        <div class="row gapSm button-container">
+            <button>Attack</button>
+            <button>Block</button>
+            <button>Focus</button>
+            <button>Stun</button>
+            <button>Repair</button>
+        </div>
+    </div>
+
+    <div class="column grow quiz-container">
+        <p>Question placeholder?</p>
+        <p>___ ___ ___</p>
+        <div class="row gapSm button-container">
+            <button>Keyword</button>
+            <button>Keyword</button>
+            <button>Keyword</button>
+            <button>Keyword</button>
+            <button>Keyword</button>
+            <button>Keyword</button>
+            <button>Keyword</button>
+            <button>Keyword</button>
+        </div>
+    </div>
+
 </body>
 
 <script>
     //Misc fucntions
-    //dice
     function rng(maxDiceValue, minDiceValue){
         if(minDiceValue === undefined){minDiceValue = 1}
         return Math.floor(Math.random() * (maxDiceValue - minDiceValue + 1) + minDiceValue)
     }
-    //shuffle array
-    
+    function rarr(arr){//random arr item
+        return arr[Math.floor(Math.random() * arr.length)]
+    }
+    function shuffle(array) {//suffle arr
+        let currentIndex = array.length,  randomIndex;
+
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
+
 
     console.log(1);
     //Player base stats
@@ -37,6 +105,91 @@
     playerStats = {}
 
     //Enemy generator
+       //Enemy calculator
+    function genEnemyActions(level){
+        if(level === undefined){level = parseInt(document.getElementById('eneLvl').value)} //Picks val from input
+
+        let enemyAc = ''                               //enemy action string
+
+        let enemyNameStart = ['Gar', 'Tar', 'Wal', 'Far', 'Duh', 'Ro' ,'Nar', 'Tal', 'Ikr']
+        let enemyNameEnd =   ['talin', 'war', 'barun', 'antoles', 'farhair', 'dox', 'marin', 'volen', 'darion']
+        let enemyName = rarr(enemyNameStart) + rarr(enemyNameEnd)
+        
+        let enemyLife = Math.floor(rng(6 * (level * 0.5), 3 + level))     //life
+        let enemyPower = Math.ceil(rng(level * 0.5, 0))   //power
+        let enemyDef = Math.ceil(rng(level * 0.5, 0))    //def
+
+        let enemyDice = 2 + level                      //dice enemy rolls + lvl
+        let enemyDiceRoll = rng(enemyDice)             //roll value
+
+        let dmgVal = Math.ceil(enemyDiceRoll + enemyPower)
+        
+        let actionRoll = rng(100)                      //roll to pick action
+
+        let enemyActions = {
+            "attack":   {rate:1,   desc: `Will attack for ${dmgVal}`},
+            "str att":  {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 1.5)}`},
+            "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
+            "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
+            "mutli att":{rate:1,   desc: `Will attack ${rng(3,2)} times, each hit deals ${Math.ceil(dmgVal * 0.3)}`},
+            "crit":     {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 2)} after this turn`},
+            
+            
+            "recover":  {rate:1,   desc: `Will recover lost stats`},
+            "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
+            "buff":     {rate:1,   desc: `Will use random buff spell`},
+            "debuff":   {rate:1,   desc: `Will use random debuff spell`},
+            
+            "grapple":  {rate:1,   desc: `Grapple: Roll d20 (GM rolls for enemy), who rolls less looses ${enemyDiceRoll} life. you can only counter this with stun`},
+            "recruits": {rate:1,   desc: `Will call reinforcements`},
+            
+            "spell":    {rate:1,   desc: `Will cast a <random spell>`},
+            "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
+            "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
+            "theft":    {rate:1,   desc: `Will steal random item`},   
+            "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
+            "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inveentory`},
+            // "escape":   {rate:1,   desc: `Will escape`},
+            // "sepuku":   {rate:1,   desc: `Will deal ${Math.ceil(dmgVal * 2.5)} to character that would kill them`}
+        }
+
+        let aAction = []                           //Array of descriptions for 1%
+        let actionKeys = Object.keys(enemyActions) //Get keys
+
+        //Pick action
+        if(actionRoll < 100){//1%
+            for(i=0; i<actionKeys.length; i++){
+                if(enemyActions[actionKeys[i]].rate === 1){
+                    aAction.push(enemyActions[actionKeys[i]].desc)
+                }
+            }
+            enemyAc = rarr(aAction)
+        } 
+        else if (actionRoll < 40){//10%
+            for(i=0; i<actionKeys.length; i++){
+                if(enemyActions[actionKeys[i]].rate === 2){
+                    aAction.push(enemyActions[actionKeys[i]].desc)
+                }
+            }
+            enemyAc = rarr(aAction)
+        } 
+        else if (actionRoll < 60){//30%
+            for(i=0; i<actionKeys.length; i++){
+                if(enemyActions[actionKeys[i]].rate === 3){
+                    aAction.push(enemyActions[actionKeys[i]].desc)
+                }
+            }
+            enemyAc = rarr(aAction)
+        } 
+        else {
+            enemyAc = enemyActions.attack.desc
+        }
+
+        document.getElementById('enemy').innerHTML = 
+        `**${enemyName} (Level ${level})** :heart: ${enemyLife} / :zap: ${enemyPower} / :shield: ${enemyDef}<br>
+         Rolled d${enemyDice} for ${enemyDiceRoll} action points &rarr; ${enemyAc}`
+    }
+
     enemyStats = {}
 
 
@@ -66,28 +219,80 @@
     //Roll dice for enemy
     //Resolve player action
     //Resolve enemy action
+
+    //Loot
+    //Loot creator
+    
 </script>
 
 <style>
     * {
-        border: 1px solid red;
+        /* border: 1px solid red; */
+        font-size: 16px;
+        font-family: sans-serif;
     }
 
-    .flex{
-        display: flex;
+    .stat-block{
+        width: 120px;
+    }
+
+    .flip{
+        transform: scaleX(-1);
+    }
+
+    button{
+        height: 60px;
+        border-radius: 8px;
+        border: 2px  solid gray;
+        background-color: white;
+        padding: 0 16px;
+    }
+
+    .container{
         flex-grow: 1;
         min-height: 100%;
+    }
+
+    .button-container{
+        max-width: 400px;
+        flex-wrap: wrap;
+    }
+
+    .quiz-container{
+        background-color: white;
+    }
+
+    .row, button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gapSm{
+        gap: 4px;
+    }
+
+    .grow{
+        flex-grow: 1;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
 
     body{
         display: flex;
-        flex-direction: column;
         gap: 0px;
         margin: 0px;
         padding: 0px;
         min-height: 100vh;
+        background-color: rgba(220, 220, 220, 1);
+        align-items: stretch;
+        flex-direction: column;
+
     }
 </style>
 

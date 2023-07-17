@@ -1,0 +1,49 @@
+<svg width="122" height="125" viewBox="0 0 122 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="44" y="38" width="32" height="8" transform="rotate(90 44 38)" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="44" y="62" width="19" height="8" transform="rotate(90 44 62)" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="51" y="72" width="4" height="52" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="47" y="97" width="8" height="27" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="47" y="68" width="28" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="55" y="72" width="20" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="67" y="72" width="8" height="52" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="67" y="97" width="8" height="27" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="47" y="93" width="4" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="43" y="120" width="8" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="47" y="116" width="4" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="66" y="116" width="4" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="64" y="120" width="4" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="71" y="120" width="6" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="66" y="93" width="4" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="57" y="60" width="8" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="57" y="52" width="8" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="57" y="44" width="8" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="57" y="36" width="8" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="57" y="28" width="8" height="8" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="41" y="46" width="16" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="47" y="54" width="28" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="59" y="46" width="21" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="65" y="38" width="21" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="37" y="38" width="30" height="4" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M69 14H48V30H50V36H62V30H69V14Z" fill="#FFFEDC"/>
+<path d="M48 14V13H47V14H48ZM69 14H70V13H69V14ZM48 30H47V31H48V30ZM50 30H51V29H50V30ZM50 36H49V37H50V36ZM62 36V37H63V36H62ZM62 30V29H61V30H62ZM69 30V31H70V30H69ZM48 15H69V13H48V15ZM49 30V14H47V30H49ZM50 29H48V31H50V29ZM51 36V30H49V36H51ZM62 35H50V37H62V35ZM61 30V36H63V30H61ZM69 29H62V31H69V29ZM68 14V30H70V14H68Z" fill="black"/>
+<rect x="56" y="19" width="4" height="4" fill="black" fill-opacity="0.54" stroke="black" stroke-width="2"/>
+<rect x="48" y="19" width="4" height="4" fill="black" fill-opacity="0.54" stroke="black" stroke-width="2"/>
+<rect x="51" y="33" width="2" height="2" fill="#5A5A5A"/>
+<rect x="55" y="33" width="2" height="2" fill="#5A5A5A"/>
+<rect x="53" y="25" width="2" height="4" fill="black"/>
+<rect x="59" y="33" width="2" height="2" fill="#5A5A5A"/>
+<rect x="86" y="38" width="27" height="6" transform="rotate(90 86 38)" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="43" y="33" width="2" height="4" fill="black"/>
+<rect x="79" y="33" width="2" height="4" fill="black"/>
+<rect x="54" y="54" width="2" height="4" fill="black"/>
+<rect x="54" y="38" width="2" height="4" fill="black"/>
+<rect x="88" y="61" width="20" height="8" transform="rotate(90 88 61)" fill="#FFFEDC" stroke="black" stroke-width="2"/>
+<rect x="83" y="80" width="2" height="4" fill="black"/>
+<rect x="39" y="80" width="2" height="4" fill="black"/>
+<rect x="39" y="61" width="2" height="4" fill="black"/>
+<rect x="83" y="58" width="2" height="4" fill="black"/>
+<rect x="87" y="80" width="2" height="4" fill="black"/>
+<rect x="43" y="80" width="2" height="4" fill="black"/>
+<rect x="79" y="80" width="2" height="4" fill="black"/>
+<rect x="35" y="80" width="2" height="4" fill="black"/>
+</svg>
