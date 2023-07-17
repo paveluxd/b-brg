@@ -7,28 +7,87 @@
 </head>
 
 <body>
-    <div class="combat-area flex"></div>
-    <div class="action-area flex"></div>
-    <div class="quiz-area flex"></div>
+    <div class="combat-area flex">a</div>
+    <div class="action-area flex">b</div>
+    <div class="quiz-area flex">c</div>
 </body>
 
 <script>
+    //Misc fucntions
+    //dice
+    function rng(maxDiceValue, minDiceValue){
+        if(minDiceValue === undefined){minDiceValue = 1}
+        return Math.floor(Math.random() * (maxDiceValue - minDiceValue + 1) + minDiceValue)
+    }
+    //shuffle array
+    
+
     console.log(1);
+    //Player base stats
+    playerStatsReference = {
+        life: 10,
+        dice: 6,
+        roll: 0,
+        def: 0,
+        power: 0,
+        gold: 0,
+        items: [],
+    }
+
+    playerStats = {}
+
+    //Enemy generator
+    enemyStats = {}
+
+
+    quiz = {
+        q1: {
+            question: "Abc", 
+            answer: "123",
+        },
+        q1: {
+            question: "Abc", 
+            answer: "123",
+        },
+        q1: {
+            question: "Abc", 
+            answer: "123",
+        },
+        q1: {
+            question: "Abc", 
+            answer: "123",
+        },
+    }
+
+    //Check if quiz was correctly answered.
+
+    //Turn calculation
+    //Roll dice for player
+    //Roll dice for enemy
+    //Resolve player action
+    //Resolve enemy action
 </script>
 
 <style>
-    *, **, ***{
-        border: solid 1 px red;
+    * {
+        border: 1px solid red;
     }
 
     .flex{
         display: flex;
+        flex-grow: 1;
+        min-height: 100%;
+        align-items: center;
+        justify-content: center;
     }
 
     body{
         display: flex;
         flex-direction: column;
-        gap: 24;
+        gap: 0px;
+        margin: 0px;
+        padding: 0px;
+        min-height: 100vh;
     }
 </style>
 
