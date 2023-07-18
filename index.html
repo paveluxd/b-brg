@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
@@ -13,9 +14,7 @@
     <div class="column gapSm" style="align-items: stretch;">
 
         <div style="gap: 8px; display:flex; flex-direction: column; padding: 24px; height: 300px;">
-            <h2 id="title">Dungeon stage 1</h2>
-            <div id="turnIndicator">Turn counter</div>
-            <div id="gameStateIndicator">Game state</div>
+            <div id="logIndicator">Turn counter</div>
             <!-- <button onclick="toggleModal('shop')">Shop</button> -->
         </div>
         
@@ -31,7 +30,7 @@
             <!-- Enemy -->
             <img src="./img/char-rogue.svg" class="flip">
             <div class="stat-block">
-                <h2>Enemy 1</h2>
+                <h2 id="enemyName">Enemy 1</h2>
                 <div id="enemyIndicator">-</div>
             </div>
         </div>
@@ -68,7 +67,7 @@
 
 
     <!-- Shop -->
-    <div class="column grow modal hide" id="shop">
+    <div class="modal hide" id="shop">
         <div class="modal-container">
             <div class="modal-header">
                 <h2>Shop</h2>
@@ -81,508 +80,24 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Combat end screen -->
+    <div class="modal hide" id="combatEnd">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="combatEndIndicator">Shop</h2>
+            </div>
+            <div class="column button-container modal-body">
+                <button onclick="toggleModal('combatEnd'), initiateCombat()">Continue</button>
+            </div>
+        </div>
+    </div>
 </body>
 
-<script>
-   
 
-    //Misc fucntions
-    function toggleModal(id){//modal
-        document.getElementById(id).classList.toggle('hide')
-    }
-    function rng(maxValue, minValue){//random number
-        if(minValue === undefined){minValue = 1}
-        return Math.floor(Math.random() * (maxValue - minValue + 1) + minValue)
-    }
-    function rarr(arr){//random arr item
-        return arr[Math.floor(Math.random() * arr.length)]
-    }
-    function shuffle(array) {//suffle arr
-        let currentIndex = array.length,  randomIndex;
 
-        // While there remain elements to shuffle.
-        while (currentIndex != 0) {
 
-            // Pick a remaining element.
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
 
-            // And swap it with the current element.
-            [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-        }
-
-        return array;
-    }
-
-
-    //Data
-    let itemsReference = {
-        sword: {
-            name: "Sword",
-            desc: "Deals 1 damage to enemy.",
-            cost: 1,
-            durability: 5,
-        },
-        shield: {
-            name: "Shield",
-            desc: "Deals 1 damage to enemy.",
-            cost: 1,
-            durability: 5,
-        },
-        healingPotion: {
-            name: "Healing potion",
-            desc: "Restore 5 life to player",
-            cost: 1,
-            durability: 5,
-        },
-    }
-    let playerStatsReference = {
-        life: 25,
-        dice: 6,
-        roll: 0,
-        def: 0,
-        power: 0,
-        gold: 0,
-        items: [],
-    }
-    let deckReference = {
-        starterDeck: {//Add deck per subject
-            card1: {
-                question: "Q1",
-                answer: "???",
-                order: 1,
-            },
-            card2: {
-                question: "Q2",
-                answer: "???",
-                order: 1,
-            },
-            card3: {
-                question: "Q3",
-                answer: "???",
-                order: 2,
-            },
-            card4: {
-                question: "Q3",
-                answer: "???",
-                order: 3,
-            },
-        }
-    }
-    
-
-    //Variables
-    let playerObj
-    function genPlayer(){
-        playerObj = playerStatsReference
-    }
-    genPlayer()
-
-    let enemyObj = {}
-    let level = 1
-    let turn
-
-
-    //Enemy generator
-    function genEnemyAc(level){
-
-        let enemyAc = ''                                                  //enemy action string
-
-        let enemyNameStart = ['Gar', 'Tar', 'Wal', 'Far', 'Duh', 'Ro' ,'Nar', 'Tal', 'Ikr']
-        let enemyNameEnd =   ['talin', 'war', 'barun', 'antoles', 'farhair', 'dox', 'marin', 'volen', 'darion']
-        let enemyName = rarr(enemyNameStart) + rarr(enemyNameEnd)
-        
-        let enemyLife = Math.floor(rng(6 * (level * 0.5), 3 + level))     //life
-        let enemyPower = Math.ceil(rng(level * 0.5, 0))                   //power
-        let enemyDef = Math.ceil(rng(level * 0.5, 0))                     //def
-
-        let enemyDice = 2 + level                                         //dice enemy rolls + lvl
-        let enemyDiceRoll = rng(enemyDice)                                //roll value
-
-        let dmgVal = Math.ceil(enemyDiceRoll + enemyPower)
-        
-        let actionRoll = rng(100)                      //roll to pick action
-
-        let enemyActions = {
-            "attack":   {rate:1,   desc: `Will attack for ${dmgVal}`},
-            "str att":  {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 1.5)}`},
-            "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
-            "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
-            "mutli att":{rate:1,   desc: `Will attack ${rng(3,2)} times, each hit deals ${Math.ceil(dmgVal * 0.3)}`},
-            "crit":     {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 2)} after this turn`},
-            
-            
-            "recover":  {rate:1,   desc: `Will recover lost stats`},
-            "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
-            "buff":     {rate:1,   desc: `Will use random buff spell`},
-            "debuff":   {rate:1,   desc: `Will use random debuff spell`},
-            
-            "grapple":  {rate:1,   desc: `Grapple: Roll d20 (GM rolls for enemy), who rolls less looses ${enemyDiceRoll} life. you can only counter this with stun`},
-            "recruits": {rate:1,   desc: `Will call reinforcements`},
-            
-            "spell":    {rate:1,   desc: `Will cast a <random spell>`},
-            "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
-            "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
-            "theft":    {rate:1,   desc: `Will steal random item`},   
-            "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
-            "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
-            // "escape":   {rate:1,   desc: `Will escape`},
-            // "sepuku":   {rate:1,   desc: `Will deal ${Math.ceil(dmgVal * 2.5)} to character that would kill them`}
-        }
-
-        let aAction = []                           //Array of descriptions for 1%
-        let actionKeys = Object.keys(enemyActions) //Get keys
-
-        //Pick action
-        if(actionRoll < 100){//1%
-            for(i=0; i<actionKeys.length; i++){
-                if(enemyActions[actionKeys[i]].rate === 1){
-                    aAction.push(enemyActions[actionKeys[i]].desc)
-                }
-            }
-            enemyAc = rarr(aAction)
-        } 
-        else if (actionRoll < 40){//10%
-            for(i=0; i<actionKeys.length; i++){
-                if(enemyActions[actionKeys[i]].rate === 2){
-                    aAction.push(enemyActions[actionKeys[i]].desc)
-                }
-            }
-            enemyAc = rarr(aAction)
-        } 
-        else if (actionRoll < 60){//30%
-            for(i=0; i<actionKeys.length; i++){
-                if(enemyActions[actionKeys[i]].rate === 3){
-                    aAction.push(enemyActions[actionKeys[i]].desc)
-                }
-            }
-            enemyAc = rarr(aAction)
-        } 
-        else {
-            enemyAc = enemyActions.attack.desc
-        }
-
-        // document.getElementById('enemy').innerHTML = 
-        // `**${enemyName} (level: ${level})** life: ${enemyLife} / power: ${enemyPower} / def: ${enemyDef}<br>
-        //  Rolled d${enemyDice} for ${enemyDiceRoll} action points &rarr; ${enemyAc}`
-    }
-
-    function genEnemyActions(){
-        //Roll enemy dice
-        enemyObj.roll = rng(enemyObj.dice)
-
-        //Pick random action
-        let actionRoll = rng(100)                      //roll to pick action
-
-        dmgVal = level
-        let enemyActions = {
-            "attack":   {rate:1,   action: 'attack',  desc: `Will attack for ${dmgVal}`},
-            "block":    {rate:1,   action: 'block',   desc: `Will crit for ${Math.ceil(dmgVal * 1.5)}`},
-            // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
-            // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
-            // "mutli att":{rate:1,   desc: `Will attack ${rng(3,2)} times, each hit deals ${Math.ceil(dmgVal * 0.3)}`},
-            // "crit":     {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 2)} after this turn`},
-            
-            
-            // "recover":  {rate:1,   desc: `Will recover lost stats`},
-            // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
-            // "buff":     {rate:1,   desc: `Will use random buff spell`},
-            // "debuff":   {rate:1,   desc: `Will use random debuff spell`},
-            
-            // "recruits": {rate:1,   desc: `Will call reinforcements`},
-            
-            // "spell":    {rate:1,   desc: `Will cast a <random spell>`},
-            // "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
-            // "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
-            // "theft":    {rate:1,   desc: `Will steal random item`},   
-            // "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
-            // "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
-            // "escape":   {rate:1,   desc: `Will escape`},
-            // "sepuku":   {rate:1,   desc: `Will deal ${Math.ceil(dmgVal * 2.5)} to character that would kill them`}
-        }
-
-        let enemyAc                                //Final action
-        let aAction = []  
-        let actionKeys = Object.keys(enemyActions) //Get keys
-
-        //Pick action
-        if(actionRoll < 100){//1%
-            for(i=0; i<actionKeys.length; i++){
-                if(enemyActions[actionKeys[i]].rate === 1){
-                    aAction.push(enemyActions[actionKeys[i]].action)
-                }
-            }
-            enemyAc = rarr(aAction)
-        } 
-        else if (actionRoll < 40){//10%
-            for(i=0; i<actionKeys.length; i++){
-                if(enemyActions[actionKeys[i]].rate === 2){
-                    aAction.push(enemyActions[actionKeys[i]].action)
-                }
-            }
-            enemyAc = rarr(aAction)
-        } 
-        else if (actionRoll < 60){//30%
-            for(i=0; i<actionKeys.length; i++){
-                if(enemyActions[actionKeys[i]].rate === 3){
-                    aAction.push(enemyActions[actionKeys[i]].action)
-                }
-            }
-            enemyAc = rarr(aAction)
-        } 
-        else {
-            enemyAc = enemyActions.attack.action
-        }
-
-        enemyObj.action = enemyAc
-    }
-
-    function initiateCombat(){//Gen enemy
-        //Gen enemy
-        enemyObj = {
-            life: 25,
-            action: "attack",
-            dice: 6,
-            roll: 0,
-            level: 1,
-        }
-
-        //Enemy next turn
-        genEnemyActions()
-        
-        turn = 1
-
-        console.log('Combat initiated!');
-    }
-
-    initiateCombat()
-
-    
-
-    function turnCalc(action, state){
-
-        if (enemyObj.life > 0 && playerObj.life > 0) {//Damage calculation
-
-
-
-            //Vars for total damge value
-            let playerDmgDone = 0
-            let enemyDmgDone = 0
-            let playerAttacked = 'n'
-            let enemyAttacked = 'n'
-
-
-
-            //Player action
-            if (action === 'attack'){//attack
-                playerDmgDone = playerObj.roll
-                playerAttacked = 'y'
-            }
-            else if (action === 'block'){//block
-                enemyDmgDone -= playerObj.roll
-                console.log(enemyDmgDone);
-                console.log('blocked');
-            }
-
-            //Enemy action
-            if (enemyObj.action === 'attack'){//attack
-                enemyDmgDone = enemyObj.roll
-                enemyAttacked = 'y'
-            }
-            else if (enemyObj.action === 'block'){//block
-                playerDmgDone -= enemyObj.roll
-            }
-
-
-
-            //Deal damage if chars attacked
-            if (playerAttacked === 'y'){
-                if (playerDmgDone < 0){playerDmgDone = 0}
-                enemyObj.life -= playerDmgDone
-                playerAttacked = 'n'
-            }
-
-            if (enemyAttacked === 'y'){
-                if (enemyDmgDone < 0){enemyDmgDone = 0}
-                
-                playerObj.life -= enemyDmgDone
-                console.log(enemyDmgDone);
-                enemyAttacked = 'n'
-            }
-
-            
-
-            //Next turn actions
-            playerObj.roll = rng(playerObj.dice)
-            genEnemyActions()
-
-            //Misc
-            turn++
-            updateUi()
-        }
-
-
-
-        //Check if game state changed
-        if(playerObj.life < 1){//Defeat
-            updateUi('Defeat!')
-            level = 1
-            turn = 1
-        }
-        else if (enemyObj.life < 1){//Victory
-            updateUi('Victory!')
-            level++
-            turn = 1
-        }
-    
-    }
-
-    function updateUi(gameState){
-        //Game stats
-        document.getElementById('turnIndicator').innerHTML = `Turn: ${turn}`
-        document.getElementById('gameStateIndicator').innerHTML = `Game state: ${gameState}`
-
-        //Player stats
-        document.getElementById('playerIndicator').innerHTML = `
-        Life: ${playerObj.life}<br>
-        Dice: ${playerObj.dice}<br>
-        Roll: ${playerObj.roll}<br>`
-
-        //Enemy stats
-        document.getElementById('enemyIndicator').innerHTML = `
-        Life: ${enemyObj.life}<br> 
-        Dice: ${enemyObj.dice}<br>
-        Roll: ${enemyObj.roll}<br>
-        Next: ${enemyObj.action}`
-    }
-
-
-</script>
-
-<style>
-/* Generic */
-    * {
-        /* border: 1px solid red; */
-        margin: 0;
-        padding: 0;
-    }
-
-    body{
-        display: flex;
-        align-items: stretch;
-        flex-direction: column;
-        gap: 0px;
-
-        margin: 0px;
-        padding: 0px;
-
-        min-height: 100vh;
-        background-color: rgba(220, 220, 220, 1);
-
-        font-size: 16px;
-        font-family: sans-serif;
-    }
-    
-
-
-/* Modal */
-    .modal{
-        position: absolute;
-        background-color: rgba(0, 0, 0, 0.54);
-        width: 100vw;
-        height: 100vh;
-    }
-
-    .modal-container{
-        min-height: 400px;
-        min-width: 400px;
-        background-color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        border-radius: 8px;
-    }
-
-    .modal-header{
-        display: flex;
-        justify-content: space-between;
-        padding: 8px;
-    }
-
-    .modal-body{
-        padding: 0 8px 24px 8px;
-    }
-
-
-
-/* Buttons */
-    button{
-        height: 60px;
-        border-radius: 8px;
-        border: 2px  solid gray;
-        background-color: white;
-        padding: 0 16px;
-        cursor: pointer;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    button:hover{
-        background-color: rgba(250, 250, 250, 1);
-        transition: all 200ms;
-    }
-
-    button:active{
-        background-color: rgba(240, 240, 240, 1);
-        border: 2px solid rgba(80, 80, 80, 1);
-    }
-
-
-
-/* Containers */
-    .container{
-        flex-grow: 1;
-        min-height: 100%;
-    }
-
-    .button-container{
-        max-width: 400px;
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-
-    .quiz-container{
-        background-color: white;
-        gap: 12px;
-    }
-
-    .row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .column {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .stat-block{
-        width: 220px;
-    }
-
-
-
-/* Utility */
-    .hide{display: none !important;}
-    .flip{transform: scaleX(-1);}
-    .grow{flex-grow: 1;}
-    
-</style>
-
+<script src="main.js"></script>
 </html>

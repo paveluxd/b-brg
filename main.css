@@ -1,0 +1,124 @@
+/* Generic */
+* {
+    /* border: 1px solid red; */
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0px;
+
+    margin: 0px;
+    padding: 0px;
+
+    min-height: 100vh;
+    background-color: rgba(220, 220, 220, 1);
+
+    font-size: 16px;
+    font-family: sans-serif;
+}
+
+
+
+/* Modal */
+.modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.54);
+    width: 100vw;
+    height: 100vh;
+}
+
+.modal-container{
+    min-height: 400px;
+    min-width: 400px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 8px;
+}
+
+.modal-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+}
+
+.modal-body{
+    padding: 0 8px 24px 8px;
+}
+
+
+
+/* Buttons */
+button{
+    height: 60px;
+    border-radius: 8px;
+    border: 2px  solid gray;
+    background-color: white;
+    padding: 0 16px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:hover{
+    background-color: rgba(250, 250, 250, 1);
+    transition: all 200ms;
+}
+
+button:active{
+    background-color: rgba(240, 240, 240, 1);
+    border: 2px solid rgba(80, 80, 80, 1);
+}
+
+
+
+/* Containers */
+.container{
+    flex-grow: 1;
+    min-height: 100%;
+}
+
+.button-container{
+    max-width: 400px;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.quiz-container{
+    background-color: white;
+    gap: 12px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-block{
+    width: 220px;
+}
+
+
+
+/* Utility */
+.hide{display: none !important;}
+.flip{transform: scaleX(-1);}
+.grow{flex-grow: 1;}
