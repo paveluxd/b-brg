@@ -5,6 +5,10 @@
     padding: 0;
 }
 
+:root {
+    --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
+  }
+
 body{
     display: flex;
     align-items: stretch;
@@ -15,7 +19,8 @@ body{
     padding: 0px;
 
     min-height: 100vh;
-    background-color: rgba(220, 220, 220, 1);
+    /* background-color: rgba(220, 220, 220, 1); */
+    background: var(--grass-base);
 
     font-size: 16px;
     font-family: sans-serif;
@@ -71,13 +76,20 @@ button{
 }
 
 button:hover{
-    background-color: rgba(250, 250, 250, 1);
+    background-color: rgb(232, 232, 232);
     transition: all 200ms;
 }
 
 button:active{
     background-color: rgba(240, 240, 240, 1);
     border: 2px solid rgba(80, 80, 80, 1);
+}
+
+button:disabled{
+    cursor: auto;
+    border: none;
+    color: rgba(120, 120, 120, 1);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 
@@ -114,9 +126,15 @@ button:active{
 
 .stat-block{
     width: 220px;
+    color: wheat;
 }
 
 
+/* Overrides */
+#enemyImg {
+    width: 120px;
+    height: 120px;
+}
 
 /* Utility */
 .hide{display: none !important;}

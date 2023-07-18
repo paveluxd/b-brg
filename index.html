@@ -10,27 +10,24 @@
 <body>
     
     <!-- Combat ui -->
-    <div class="column gapSm" style="align-items: stretch;">
+    <div class="column" style="align-items: stretch;">
 
-        <div style="gap: 8px; display:flex; flex-direction: column; padding: 24px; height: 300px;">
+        <div style="gap: 8px; display:flex; flex-direction: column; padding: 24px;">
             <div id="logIndicator">Turn counter</div>
             <!-- <button onclick="toggleModal('shop')">Shop</button> -->
         </div>
         
-
         <div class="row" style="align-items: stretch;">
             <!-- Player -->
-            <div class="stat-block">
-                <h2>Player</h2>
-                <div id="playerIndicator">-</div>
+            <div class="column" style="align-items: flex-start;">
+                <div id="playerIndicator" class="stat-block" style="flex-grow: 1;">-</div>
+                <img src="./img/char-knight.svg">
             </div>
-            <img src="./img/char-knight.svg">
-
+    
             <!-- Enemy -->
-            <img src="./img/char-rogue.svg" class="flip">
-            <div class="stat-block">
-                <h2 id="enemyName">Enemy 1</h2>
-                <div id="enemyIndicator">-</div>
+            <div class="column" style="align-items: flex-start;">
+                <div id="enemyIndicator" class="stat-block">-</div>
+                <img id="enemyImg" src="./img/enemy/1.png" class="flip">
             </div>
         </div>
     </div>
@@ -38,13 +35,7 @@
 
     <!-- Actions -->
     <div class="row grow">
-        <div class="row button-container">
-            <button onclick="turnCalc('attack')">Attack</button>
-            <button onclick="turnCalc('block')">Block</button>
-            <button>Focus</button>
-            <button>Stun</button>
-            <button>Repair</button>
-        </div>
+        <div id="playerActionContainer" class="row button-container"></div>
     </div>
 
 
