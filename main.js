@@ -49,14 +49,27 @@ let itemsReference = {
         durability: 5,
     },
 }
-let playerStatsReference = {
-    life: 25,
-    dice: 6,
-    roll: 0,
-    def: 0,
-    power: 0,
-    gold: 0,
-    items: [],
+class PlayerObjReference {
+    constructor(){
+        this.life  = 25,
+        this.power = 0,
+        this.def   = 0,
+        this.dice  = 6,
+
+        this.gold  = 0,
+        this.items = []
+    }
+}
+class EnemyObjReference {
+    constructor(){
+        this.life  = Math.floor(rng(6 * (level * 0.5), 3 + level)),
+        this.power = Math.ceil(rng(level * 0.5, 0)),
+        this.def   = Math.ceil(rng(level * 0.5, 0)),
+        this.dice  = 2 + level,
+        
+        this.name  = rarr(enemyNameStart) + rarr(enemyNameEnd),
+        this.level = level
+    }
 }
 let deckReference = {
     starterDeck: {//Add deck per subject
@@ -87,14 +100,21 @@ let enemyNameEnd =   ['talin', 'war', 'barun', 'antoles', 'farhair', 'dox', 'mar
 
 
 //Variables
-let playerObj
-function genPlayer(){playerObj = playerStatsReference}genPlayer()
+let playerObj = {}
 let enemyObj = {}
 let level = 1 //Scales enemy stats
 let turn
 
+//Generate stats
+function genPlayer(){
+    playerObj = new PlayerObjReference
+    playerObj.roll = rng(playerObj.dice)
+}
+function genEnemy(){
+    enemyObj = new EnemyObjReference
+}
 
-//Enemy generator
+//Generate enemy actions
 function genEnemyActions(){
     //Roll enemy dice
     enemyObj.roll = rng(enemyObj.dice)
@@ -167,28 +187,14 @@ function genEnemyActions(){
 
 
 //Start combat
-function initiateCombat(){//Gen enemy
-
-    //Gen enemy
-    enemyObj = {
-        name: rarr(enemyNameStart) + rarr(enemyNameEnd),
-
-        life: Math.floor(rng(6 * (level * 0.5), 3 + level)),
-        power: Math.ceil(rng(level * 0.5, 0)),
-        def: Math.ceil(rng(level * 0.5, 0)),
-        dice: 2 + level,
-
-        roll: 0,
-        level: level,
-        action: "attack",
+function initiateCombat(){
+    if(playerObj.life < 1 || playerObj.life === undefined){
+        genPlayer()
     }
-
-    //Enemy next turn
-    genEnemyActions()
+    genEnemy()
+    genEnemyActions()    
     updateUi()
-
     turn = 1
-    console.log('Combat initiated!');
 }
 initiateCombat()
 
