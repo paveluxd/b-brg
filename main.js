@@ -50,11 +50,11 @@ class Item {
 
         let extraProps = [
             {key:'name', val: `${key} scroll`},
-            {key:'cost', val: 12}, 
+            {key:'itemid', val: "id" + Math.random().toString(8).slice(2)},//gens unique id
             {key:'durability', val: 5},
             {key:'effectMod', val: 0},
             {key:'itemType', val: 'active'},
-            {key:'itemId', val: "id" + Math.random().toString(8).slice(2)}//gens unique id
+            {key:'cost', val: 12}, 
         ]
 
         extraProps.forEach(property => {
@@ -69,6 +69,7 @@ class Item {
 
 class PlayerObjReference {
     constructor(){
+        this.maxLife = 25,
         this.life  = 25,
         this.power = 0,
         this.def   = 0,
@@ -92,6 +93,14 @@ class EnemyObjReference {
     }
 }
 
+class CombatState {
+    constructor(){
+        this.turn = 1
+        this.enemyDamageTaken = 0
+        this.playerDamageTaken = 0
+    }
+}
+
 
 
 //Data & vars
@@ -100,23 +109,23 @@ let itemsReference = {
     //Basic
     Attack:  {desc: "Deal damage to enemy equal to the dice roll value.", },
     Block:   {desc: 'Reduce incomming attack damage by dice roll value.',},
-    Dodge:   {desc: 'Skip turn to keep half of your roll value for the next turn'},
+    // Dodge:   {desc: 'Skip turn to keep half of your roll value for the next turn'},
     
     //Player states
     Heal:    {desc: "Restore 5 life to player.", durability: 2, effectMod: 5},
-    Repair:  {desc: 'Restore 1 durability to all items'},
-    Rage:    {desc: 'Increase power by 1'},
-    Fortify: {desc: 'Increase defence by 1'},
-    Focus:   {desc: 'Increase dice by 1'},
+    // Repair:  {desc: 'Restore 1 durability to all items'},
+    // Rage:    {desc: 'Increase power by 1'},
+    // Fortify: {desc: 'Increase defence by 1'},
+    // Focus:   {desc: 'Increase dice by 1'},
 
-    //Enemy states
-    Weaken:  {desc: 'Reduce enemy power by 1'},
-    Break:   {desc: 'Reduce enemy defence by 1'},
-    Root:    {desc: 'Reduce enemy dice by 1'},
-    Stun:    {desc: 'Prevent enemy for acting during this turn'},
+    // //Enemy states
+    // Weaken:  {desc: 'Reduce enemy power by 1'},
+    // Break:   {desc: 'Reduce enemy defence by 1'},
+    // Root:    {desc: 'Reduce enemy dice by 1'},
+    // Stun:    {desc: 'Prevent enemy for acting during this turn'},
 
-    //Passive items
-    Name:    {desc: 'Provides +2 def', itemType: 'passive'}
+    // //Passive items
+    // Name:    {desc: 'Provides +2 def', itemType: 'passive'}
 }
 let deckReference = {
     starterDeck: {//Add deck per subject
@@ -148,8 +157,8 @@ let enemyNameEnd =   ['talin', 'war', 'barun', 'antoles', 'farhair', 'dox', 'mar
 let playerObj = {}
 let enemyObj = {}
 let level = 1 //Scales everything
-let turn
 let playerActionContainer = document.getElementById('playerActionContainer')
+let combatState
 
 
 
@@ -158,8 +167,10 @@ let playerActionContainer = document.getElementById('playerActionContainer')
 function genPlayer(){
     playerObj = new PlayerObjReference
     playerObj.roll = rng(playerObj.dice)
-    addTargetItem(Object.keys(itemsReference)[3])
-    addRandomItem(2)
+    addTargetItem('Heal')
+    addTargetItem('Attack')
+    addTargetItem('Block')
+    // addRandomItem(2)
 }
 
 //Manage player charsheet
@@ -260,27 +271,26 @@ function initiateCombat(){
     genEnemyActions()    
     updateUi()
     genPlayerActionButtons()
-    turn = 1
+
+    combatState = new CombatState
 }
 initiateCombat()
 
 
 
 //Turn
-function turnCalc(playerAction, itemId){
+function turnCalc(buttonElem, itemId){
 
     //Damage calculation
     if (enemyObj.life > 0 && playerObj.life > 0) {
-
-
-
-        //Vars for total damge value
         let playerDmgDone = 0
         let enemyDmgDone = 0
-        playerObj.lastAction = `Turn ${turn}: `
-        let sourceItem = findObj(playerObj.inventory, 'itemId', itemId)
-        console.log(itemId);
-        console.log(sourceItem);
+        playerObj.lastAction = `Turn ${combatState.turn}: `
+
+        let itemid = buttonElem.getAttribute('itemid')
+        let sourceItem = findObj(playerObj.inventory, 'itemid', itemid)
+        let playerAction = sourceItem.action
+
 
 
         //Stat modification actions
@@ -301,6 +311,7 @@ function turnCalc(playerAction, itemId){
             enemyDmgDone -= playerObj.roll //- playerObj.power
         }
 
+
         //Enemy action
         if      (enemyObj.action === 'Attack'){//attack
             enemyDmgDone += enemyObj.roll + enemyObj.power 
@@ -313,13 +324,16 @@ function turnCalc(playerAction, itemId){
 
         //Final calculation
         //Deal damage if chars attacked
-        if (playerAction === 'attack'){
+        if (playerAction === 'Attack'){
             if (playerDmgDone < 0){playerDmgDone = 0} //Set positive damage to 0
             enemyObj.life -= playerDmgDone
             playerObj.lastAction += `${playerDmgDone} damage.`
+
+            //Trigger damage indicator
+
         }
 
-        if (enemyObj.action === 'attack'){
+        if (enemyObj.action === 'Attack'){
             if (enemyDmgDone < 0){enemyDmgDone = 0} //Set positive damage to 0
             playerObj.life -= enemyDmgDone
         }
@@ -331,6 +345,7 @@ function turnCalc(playerAction, itemId){
             removeFromArr(playerObj.inventory, sourceItem)
             genPlayerActionButtons()
         }
+        updateBtnLabel(buttonElem, sourceItem)
         
 
         //Next turn actions
@@ -339,23 +354,20 @@ function turnCalc(playerAction, itemId){
 
         //Misc
         console.log(playerObj.lastAction);
-        turn++
+        combatState.turn++
         updateUi()
     }
 
 
-
     //Check if game state changed
-    if(playerObj.life < 1){//Defeat
+    if(playerObj.life < 1 || playerObj.inventory.length < 1){//Defeat
         updateUi('Defeat!')
         level = 1
-        turn = 1
         toggleModal('combatEnd')
     }
     else if (enemyObj.life < 1){//Victory
         updateUi('Victory!')
         level++
-        turn = 1
 
         document.getElementById('enemyImg').setAttribute('src', `./img/enemy/${level}.png`)
         toggleModal('combatEnd')
@@ -368,9 +380,12 @@ function turnCalc(playerAction, itemId){
 //MANAGE UI
 //Player and enemy stats UI
 function updateUi(gameState){
+    //Update damage indicator
+    document.getElementById('enemyDamageIndicator').innerHTML = ''
+
     //Game stats
     document.getElementById('logIndicator').innerHTML = `
-    Turn: ${turn}<br>`
+    Turn:<br>`
 
     //Game state
     document.getElementById('combatEndIndicator').innerHTML = `${gameState}`
@@ -406,10 +421,9 @@ function genPlayerActionButtons(){
         
         let button = document.createElement('button')
     
-        button.setAttribute('onclick', `turnCalc('${item.action}', '${item.itemId}')`)
-        button.setAttribute('itemId', item.itemId)
-        button.innerHTML = item.action
-    
+        button.setAttribute('onclick', `turnCalc(this)`)
+        button.setAttribute('itemid', item.itemid)
+        updateBtnLabel(button, item)
         playerActionContainer.append(button)
     
     })
@@ -424,4 +438,8 @@ function genPlayerActionButtons(){
         playerActionContainer.append(button) 
     }
 
+}
+
+function updateBtnLabel(buttonElem, itemObj){
+    buttonElem.innerHTML = `${itemObj.action} (${itemObj.durability})`
 }

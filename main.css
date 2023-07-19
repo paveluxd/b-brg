@@ -7,6 +7,7 @@
 
 :root {
     --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
+    --red: rgb(177, 46, 46);
   }
 
 body{
@@ -134,6 +135,10 @@ button:disabled{
 #enemyImg {
     width: 120px;
     height: 120px;
+}
+
+#enemyDamageIndicator {
+    color: var(--red);
 }
 
 /* Utility */
