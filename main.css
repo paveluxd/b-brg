@@ -1,13 +1,11 @@
 /* Generic */
 * {
-    /* border: 1px solid red; */
-    margin: 0;
-    padding: 0;
+    /* border: 1px solid rgb(255, 0, 166) !important; */
 }
 
 :root {
     --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
-    --red: rgb(177, 46, 46);
+    --red: rgb(219, 39, 39);
   }
 
 body{
@@ -25,6 +23,7 @@ body{
 
     font-size: 16px;
     font-family: sans-serif;
+    line-height: 125%;
 }
 
 
@@ -38,22 +37,26 @@ body{
     background-color: rgba(0, 0, 0, 0.54);
     width: 100vw;
     height: 100vh;
+
 }
 
 .modal-container{
-    min-height: 400px;
-    min-width: 400px;
+    max-height: 400px;
+    max-width: 400px;
+    width: calc(100vw - 32px);
+    height: 100%;
+
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    border-radius: 8px;
+    border-radius: 0px;
 }
 
 .modal-header{
     display: flex;
     justify-content: space-between;
-    padding: 8px;
+    padding: 16px 8px;
 }
 
 .modal-body{
@@ -64,11 +67,11 @@ body{
 
 /* Buttons */
 button{
-    height: 60px;
+    min-height: 60px;
     border-radius: 8px;
     border: 2px  solid gray;
     background-color: white;
-    padding: 0 16px;
+    padding: 16px 16px;
     cursor: pointer;
 
     display: flex;
@@ -91,8 +94,24 @@ button:disabled{
     border: none;
     color: rgba(120, 120, 120, 1);
     background-color: rgba(0, 0, 0, 0.2);
+
+    justify-content: center;
+    align-items: center;
 }
 
+.action{
+    padding: 8px 8px;
+    height: 80px;
+    width: calc(50% - 2px);
+
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+
+    gap: 8px;
+    border: none;
+}
 
 
 /* Containers */
@@ -104,12 +123,16 @@ button:disabled{
 .button-container{
     max-width: 400px;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 2px;
 }
 
 .quiz-container{
     background-color: white;
     gap: 12px;
+}
+
+.actions-container{
+    padding: 8px;
 }
 
 .row {
@@ -126,7 +149,7 @@ button:disabled{
 }
 
 .stat-block{
-    width: 220px;
+    min-width: 140px;
     color: wheat;
 }
 
@@ -137,11 +160,67 @@ button:disabled{
     height: 120px;
 }
 
-#enemyDamageIndicator {
+#intent{
+    background-color: black;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+}
+
+#rewards{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    height: 100%;
+}
+
+#logIndicator{
+    color: wheat;
+}
+
+.stat{
+    color: wheat;
+    gap: 4px;
+}
+
+.imgcont{
+    position: relative;
+    height: 124px;
+}
+
+.dmgnum {
     color: var(--red);
+    position: absolute;
+    opacity: 0;
+    font-size: 20px;
+}
+
+.float-num{
+    animation-name: dmgnum;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
 }
 
 /* Utility */
 .hide{display: none !important;}
 .flip{transform: scaleX(-1);}
 .grow{flex-grow: 1;}
+
+/* Keyframes */
+/* Animate damage numbers */
+@keyframes dmgnum {
+    0% {
+        opacity:0;
+        top: 16px;
+    }
+
+    50%{
+        opacity: 1;
+    }
+  
+    100% {
+        opacity:0;
+        top: 0px;
+    }
+  }

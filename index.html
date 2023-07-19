@@ -3,45 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Document</title>
+    <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="main.css">
+
 </head>
 
 <body>
     
     <!-- Combat ui -->
-    <div class="column" style="align-items: stretch;">
+    <div class="column grow" style="align-items: stretch; padding: 0 16px;">
 
-        <div style="gap: 8px; display:flex; flex-direction: column; padding: 24px;">
+        <div style="gap: 8px; display:flex; flex-direction: column; padding: 16px 0 0 0;">
             <div id="logIndicator">Turn counter</div>
             <!-- <button onclick="toggleModal('shop')">Shop</button> -->
         </div>
         
-        <div class="row" style="align-items: stretch;">
+        <div class="row" style="align-items: stretch; flex-grow: 1;">
             <!-- Player -->
-            <div class="column" style="align-items: flex-start;">
-                <div id="playerIndicator" class="stat-block" style="flex-grow: 1;">-</div>
-                <img src="./img/char-knight.svg">
+            <div class="column" style="">
+                <div class="imgcont">
+                    <p id="playerDmgInd" class="dmgnum">0</p>
+                    <img src="./img/char-knight.svg">
+                </div>
+
+                <div class="column" style="align-items: flex-start; gap: 4px;">
+                    
+                    <div class="row stat">
+                        <img src="./img/ico/hp.svg" alt="">
+                        <div id="p-life"></div>
+                    </div>
+                    
+                    <div class="row stat">
+                        <img src="./img/ico/lightning.svg" alt="">
+                        <div id="p-power"></div>
+                    </div>
+                    
+                    <div class="row stat">
+                        <img src="./img/ico/dice.svg" alt="">
+                        <div id="p-dice"></div>
+                    </div>
+                </div>
             </div>
     
             <!-- Enemy -->
-            <div class="column" style="align-items: flex-start;">
-                <div id="enemyIndicator" class="stat-block">-</div>
-                <p id="enemyDamageIndicator">12</p>
-                <img id="enemyImg" src="./img/enemy/1.png" class="flip">
+            <div class="column" style="">
+
+                <div class="column">
+                    <div id="intent">Will attack for 3 damage.</div>
+                    <svg height="12" width="12" style="fill: black;">
+                        <polygon points="0,0 6,12 12,0"/>
+                    </svg>
+                </div>
+
+                <div class="imgcont">
+                    <p id="enemyDmgInd" class="dmgnum">0</p>
+                    <img id="enemyImg" src="./img/enemy/1.png" class="flip">
+                </div>
+
+                <div class="column" style="align-items: flex-start; gap: 4px;">
+                    
+               
+
+                    <div class="row stat">
+                        <img src="./img/ico/hp.svg" alt="">
+                        <div id="life"></div>
+                    </div>
+
+    
+
+                    <div class="row stat">
+                        <img src="./img/ico/lightning.svg" alt="">
+                        <div id="power"></div>
+                    </div>
+                    
+                    <div class="row stat">
+                        <img src="./img/ico/dice.svg" alt="">
+                        <div id="dice"></div>
+                    </div>
+                    
+                </div>
+
+                
             </div>
         </div>
     </div>
 
 
     <!-- Actions -->
-    <div class="row grow">
+    <div class="row actions-container">
         <div id="playerActionContainer" class="row button-container"></div>
     </div>
 
 
     <!-- Quiz -->
-    <div class="column grow quiz-container">
+    <div class="column grow quiz-container hide">
         <p>Question placeholder?</p>
         <p>___ ___ ___</p>
         <div class="row gapSm button-container">
@@ -74,13 +131,25 @@
 
 
     <!-- Combat end screen -->
-    <div class="modal hide" id="combatEnd">
+    <div class="modal hide" id="rewardScreen">
         <div class="modal-container">
+
             <div class="modal-header">
-                <h2 id="combatEndIndicator">Shop</h2>
+                <h2 id="combatEndIndicator">Victory! Choose your reward.</h2>
             </div>
+
+            <div id="rewards" class="modal-body"></div>
+       </div>
+        </div>
+    </div>
+
+    <!-- Game over -->
+    <div class="modal hide" id="gameOverScreen">
+        <div class="modal-container">
             <div class="column button-container modal-body">
-                <button onclick="toggleModal('combatEnd'), initiateCombat()">Continue</button>
+                <h1>Game over!</h1>
+                <p id="gameOverScreenLog"></p>
+                <button onclick="toggleModal('gameOverScreen'), initiateCombat()">Start over</button>
             </div>
         </div>
     </div>

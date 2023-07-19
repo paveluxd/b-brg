@@ -37,16 +37,25 @@ function removeFromArr(data, elem){
                 data.splice(index, 1); // 2nd parameter means remove one item only
             }
 }
+function el(id){//Returns gtml elem by id
+    return document.getElementById(id)
+}
+function cloneArr(arr){
+    return JSON.parse(JSON.stringify(arr));
+}
 
 
 
 //Classes
 class Item {
     constructor(key, iLvl){
-        if(iLvl === undefined){iLvl = 1}
+        if(iLvl === undefined && gameState !== undefined){
+            iLvl = gameState.stage
+        }
+        else{iLvl = 1}
 
         this.action = key
-        this.desc = itemsReference[key].desc
+        this.desc = itemsRef[key].desc
 
         let extraProps = [
             {key:'name', val: `${key} scroll`},
@@ -58,19 +67,19 @@ class Item {
         ]
 
         extraProps.forEach(property => {
-            if(itemsReference[key][property.key] === undefined){
+            if(itemsRef[key][property.key] === undefined){
                 this[property.key] = property.val  
             } else {
-                this[property.key] = itemsReference[key][property.key] * iLvl
+                this[property.key] = itemsRef[key][property.key] + Math.floor(iLvl * 0.5)
             }
         })
     }
 }
 
-class PlayerObjReference {
+class PlayerObj {
     constructor(){
-        this.maxLife = 25,
         this.life  = 25,
+        this.maxLife = this.life,
         this.power = 0,
         this.def   = 0,
         this.dice  = 6,
@@ -81,39 +90,47 @@ class PlayerObjReference {
     }
 }
 
-class EnemyObjReference {
+class EnemyObj {
     constructor(){
-        this.life  = Math.floor(rng(6 * (level * 0.5), 3 + level)),
-        this.power = Math.ceil(rng(level * 0.5, 0)),
-        this.def   = Math.ceil(rng(level * 0.5, 0)),
-        this.dice  = 2 + level,
+        this.life  = Math.floor(rng(12 * (gameState.stage * 0.5), 3 + gameState.stage)),
+        this.maxLife = this.life
+        this.power = Math.ceil(rng(gameState.stage * 0.5, 0)),
+        this.def   = Math.ceil(rng(gameState.stage * 0.5, 0)),
+        this.dice  = 2 + gameState.stage,
         
         this.name  = rarr(enemyNameStart) + rarr(enemyNameEnd),
-        this.level = level
+        this.level = gameState.stage
+        this.image = `./img/enemy/${gameState.stage}.png`
     }
 }
 
 class CombatState {
     constructor(){
         this.turn = 1
-        this.enemyDamageTaken = 0
-        this.playerDamageTaken = 0
+        this.enemyDmgTaken = 0
+        this.playerDmgTaken = 0
+    }
+}
+
+class GameState{
+    constructor(){
+        this.stage = 1
     }
 }
 
 
 
 //Data & vars
-let itemsReference = {
+let itemsRef = {
     //Item key is used as 'action' string
     //Basic
-    Attack:  {desc: "Deal damage to enemy equal to the dice roll value.", },
-    Block:   {desc: 'Reduce incomming attack damage by dice roll value.',},
+    Attack:  {desc: "Deal damage equal to dice roll value", durability:19 },
+    Block:   {desc: 'Block damage equal to dice roll value',},
     // Dodge:   {desc: 'Skip turn to keep half of your roll value for the next turn'},
     
     //Player states
-    Heal:    {desc: "Restore 5 life to player.", durability: 2, effectMod: 5},
-    // Repair:  {desc: 'Restore 1 durability to all items'},
+    Heal:    {desc: "Restore 8 life", durability: 2, effectMod: 12},
+    Repair:  {desc: 'Restore durability to all different type items.', effectMod: 1},
     // Rage:    {desc: 'Increase power by 1'},
     // Fortify: {desc: 'Increase defence by 1'},
     // Focus:   {desc: 'Increase dice by 1'},
@@ -127,7 +144,7 @@ let itemsReference = {
     // //Passive items
     // Name:    {desc: 'Provides +2 def', itemType: 'passive'}
 }
-let deckReference = {
+let deckRef = {
     starterDeck: {//Add deck per subject
         card1: {
             question: "Q1",
@@ -151,25 +168,33 @@ let deckReference = {
         },
     }
 }
+let rewardRef = [
+    {type:'Item', freq: 10, desc: 'Get random item (requires empty slot)'}, 
+    {type:'Train', freq: 5, desc: 'Increase maximum life'},
+    {type:'Enhance', freq: 1, desc: 'Increase defence'},
+    {type:'Power', freq: 1, desc: 'Increase power by 1.'},
+    {type:'Heal', freq: 3, desc: 'Restore life'},
+    {type:'Repair', freq: 3, desc:'Repair random item'},
+    {type:'Bag', freq: 1, desc: 'Gain an additional inventory slot'}
+]
+
 let enemyNameStart = ['Gar', 'Tar', 'Wal', 'Far', 'Duh', 'Ro' ,'Nar', 'Tal', 'Ikr']
 let enemyNameEnd =   ['talin', 'war', 'barun', 'antoles', 'farhair', 'dox', 'marin', 'volen', 'darion']
-
-let playerObj = {}
-let enemyObj = {}
-let level = 1 //Scales everything
+let playerObj, enemyObj, combatState
+let rewardPool = []
 let playerActionContainer = document.getElementById('playerActionContainer')
-let combatState
+let gameState = new GameState
 
 
 
 //GAME
 //Generate
 function genPlayer(){
-    playerObj = new PlayerObjReference
+    playerObj = new PlayerObj
     playerObj.roll = rng(playerObj.dice)
-    addTargetItem('Heal')
     addTargetItem('Attack')
     addTargetItem('Block')
+    addTargetItem('Heal')
     // addRandomItem(2)
 }
 
@@ -180,12 +205,14 @@ function addTargetItem(key, iLvl){
 
 function addRandomItem(quant, iLvl){
     for(i=0; i< quant; i++){
-        playerObj.inventory.push(new Item(rarr(Object.keys(itemsReference)), iLvl))
+        playerObj.inventory.push(new Item(rarr(Object.keys(itemsRef)), iLvl))
     }
 }
 
 function genEnemy(){
-    enemyObj = new EnemyObjReference
+    enemyObj = new EnemyObj
+    el('enemyImg').setAttribute('src', enemyObj.image)
+
 }
 
 //Generate enemy action for the next turn
@@ -253,7 +280,7 @@ function genEnemyActions(){
         enemyAc = rarr(aAction)
     } 
     else {
-        enemyAc = enemyActions.attack.action
+        enemyAc = enemyActions.Attack.action
     }
 
     enemyObj.action = enemyAc
@@ -264,19 +291,18 @@ function genEnemyActions(){
 //COMBAT
 //Start
 function initiateCombat(){
-    if(playerObj.life < 1 || playerObj.life === undefined){
+    combatState = new CombatState
+
+    if(playerObj === undefined || playerObj.life < 1 ){
         genPlayer()
     }
+
     genEnemy()
-    genEnemyActions()    
+    genEnemyActions() 
     updateUi()
     genPlayerActionButtons()
-
-    combatState = new CombatState
 }
 initiateCombat()
-
-
 
 //Turn
 function turnCalc(buttonElem, itemId){
@@ -284,7 +310,9 @@ function turnCalc(buttonElem, itemId){
     //Damage calculation
     if (enemyObj.life > 0 && playerObj.life > 0) {
         let playerDmgDone = 0
+        combatState.playerDmgTaken = 0
         let enemyDmgDone = 0
+        combatState.enemyDmgTaken = 0
         playerObj.lastAction = `Turn ${combatState.turn}: `
 
         let itemid = buttonElem.getAttribute('itemid')
@@ -295,21 +323,26 @@ function turnCalc(buttonElem, itemId){
 
         //Stat modification actions
         //Has to be done before generic actions
-        if      (playerAction === 'Heal'){
-            playerObj.life += sourceItem.effectMod
-            playerObj.lastAction += `Player healed for ${sourceItem.effectMod}, life`
-        }
+        
 
 
         //Generic actions
         //Player action
-        else if      (playerAction === 'Attack'){//attack
+        if      (playerAction === 'Attack'){//attack
             playerDmgDone += playerObj.roll + playerObj.power
             playerObj.lastAction += `Player attacked for ${playerDmgDone}, dealing `
         }
         else if (playerAction === 'Block'){//block
             enemyDmgDone -= playerObj.roll //- playerObj.power
         }
+        else if (playerAction === "Repair"){//repair
+            playerObj.inventory.forEach(elem => {
+                if(elem.action !== 'Repair'){
+                    elem.durability += sourceItem.effectMod
+                }
+            })
+        }
+        
 
 
         //Enemy action
@@ -321,21 +354,31 @@ function turnCalc(buttonElem, itemId){
         }
 
 
-
         //Final calculation
         //Deal damage if chars attacked
         if (playerAction === 'Attack'){
+            if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//reduce def on low hit
             if (playerDmgDone < 0){playerDmgDone = 0} //Set positive damage to 0
-            enemyObj.life -= playerDmgDone
-            playerObj.lastAction += `${playerDmgDone} damage.`
-
-            //Trigger damage indicator
-
+            playerDmgDone -= enemyObj.def //Check def
+            enemyObj.life -= playerDmgDone //Reduce life
+            combatState.enemyDmgTaken = playerDmgDone //Trigger damage indicator
         }
 
         if (enemyObj.action === 'Attack'){
+            if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit
             if (enemyDmgDone < 0){enemyDmgDone = 0} //Set positive damage to 0
+            enemyDmgDone -= playerObj.def
             playerObj.life -= enemyDmgDone
+
+            //Trigger damage indicator
+            combatState.playerDmgTaken = enemyDmgDone
+        }
+
+
+        //Heal after damage taken to make heal effective if you heal near hp cap.
+        if (playerAction === 'Heal'){
+            playerObj.life += sourceItem.effectMod
+            if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
         }
 
 
@@ -343,8 +386,8 @@ function turnCalc(buttonElem, itemId){
         sourceItem.durability--
         if(sourceItem.durability<1){
             removeFromArr(playerObj.inventory, sourceItem)
-            genPlayerActionButtons()
         }
+        genPlayerActionButtons()
         updateBtnLabel(buttonElem, sourceItem)
         
 
@@ -360,56 +403,126 @@ function turnCalc(buttonElem, itemId){
 
 
     //Check if game state changed
-    if(playerObj.life < 1 || playerObj.inventory.length < 1){//Defeat
-        updateUi('Defeat!')
-        level = 1
-        toggleModal('combatEnd')
+    //Defeat
+    if(playerObj.life < 1 || playerObj.inventory.length < 1){
+        updateUi()
+        toggleModal('gameOverScreen')
     }
-    else if (enemyObj.life < 1){//Victory
-        updateUi('Victory!')
-        level++
+    //Victory
+    else if (enemyObj.life < 1){
+        updateUi()
+        gameState.stage++
 
-        document.getElementById('enemyImg').setAttribute('src', `./img/enemy/${level}.png`)
-        toggleModal('combatEnd')
+        genReward('gen', 3)
+        initiateCombat()
     }
 
 }
 
+//Rewards
+function genReward(val, quant){
+    //Pick from reward pool    
+    if(val === 'gen'){
+        let rewardRefPool = cloneArr(rewardRef)
+        el('rewards').innerHTML = ``
+
+        for(i=0; i < quant; i++){
+            let reward = rarr(rewardRefPool)
+            if(reward.type !== 'Item'){
+                removeFromArr(rewardRefPool, reward)
+            }
+
+            if(reward.type === 'item'){
+                //Gen random item
+                let item = new Item(rarr(Object.keys(itemsRef, gameState.stage)))
+                rewardPool.push(item)
+            }
+            else{
+                rewardPool.push(reward)
+            }
+
+            let button = document.createElement('button')
+            button.setAttribute('onclick', `genReward('${reward.type}')`)
+            button.innerHTML = `${reward.desc}`
+            el('rewards').append(button)
+
+        }
+
+        toggleModal('rewardScreen')
+    }
+    //Resolve reward
+    else {
+        //Add selected reward to player
+        if(val === 'Heal'){
+            playerObj.life += 3 + gameState.stage
+            if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
+        }
+        else if(val === 'Repair'){
+            playerObj.inventory[rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
+        }
+        else if(val === 'Bag'){
+            playerObj.maxInventorySlots++
+        }
+        else if(val === 'Enhance'){
+            playerObj.def++
+        }
+        else if (val === 'Train'){
+            playerObj.maxLife += Math.floor(4 + (gameState.stage * 0.5))
+        }
+        else if(val==='Power'){
+            playerObj.power++
+        }
+        else {
+            if(playerObj.inventory.length < playerObj.maxInventorySlots){
+                addRandomItem(1)
+            }
+        }
+
+        genPlayerActionButtons()
+        updateUi()
+        toggleModal('rewardScreen')
+    }
+}
+
+// genReward('gen', 4)
 
 
 //MANAGE UI
 //Player and enemy stats UI
-function updateUi(gameState){
+function runAnim(elem, animClass){
+    elem.classList.remove(animClass)
+    void enemyDmgInd.offsetWidth; // trigger reflow
+    elem.classList.add(animClass)
+}
+
+function updateUi(){
     //Update damage indicator
-    document.getElementById('enemyDamageIndicator').innerHTML = ''
+    if(combatState.enemyDmgTaken > 0){
+        el('enemyDmgInd').innerHTML = `-`+ combatState.enemyDmgTaken
+        runAnim(el('enemyDmgInd'), 'float-num')
+    }
+
+    if(combatState.playerDmgTaken > 0){
+        el('playerDmgInd').innerHTML = `-`+combatState.playerDmgTaken
+        runAnim(el('playerDmgInd'), 'float-num')
+    }
 
     //Game stats
-    document.getElementById('logIndicator').innerHTML = `
-    Turn:<br>`
-
-    //Game state
-    document.getElementById('combatEndIndicator').innerHTML = `${gameState}`
+    el('logIndicator').innerHTML = `
+    Stage: ${gameState.stage} / Turn: ${combatState.turn}`
 
     //Player stats
-    document.getElementById('playerIndicator').innerHTML = `
-    Life: ${playerObj.life}<br>
-    Def: ${playerObj.def}<br>
-    Power: ${playerObj.power}<br>
-    Dice: ${playerObj.dice}<br>
-    <br>
-    Dice roll: ${playerObj.roll}<br>
-    <br>`
-
+    el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
+    el('p-life').innerHTML = `${playerObj.life} / ${playerObj.maxLife} (<img src="./img/ico/shield.svg"> ${playerObj.def})`
+    el('p-power').innerHTML = `${playerObj.power}`        
+    // el('p-def').innerHTML = `${playerObj.def}`
+    
     //Enemy stats
-    // document.getElementById('enemyName').innerHTML = enemyObj.name
-    document.getElementById('enemyIndicator').innerHTML = `
-    Life: ${enemyObj.life}<br> 
-    Def: ${enemyObj.def}<br>
-    Power: ${enemyObj.power}<br>
-    Dice: ${enemyObj.dice}<br>
-    <br>
-    Dice roll: ${enemyObj.roll}<br>
-    Next: ${enemyObj.action}`
+    el('intent').innerHTML = `Will ${enemyObj.action} for ${enemyObj.roll}!`
+    el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
+    el('life').innerHTML = `${enemyObj.life} / ${enemyObj.maxLife} (<img src="./img/ico/shield.svg"> ${enemyObj.def})`
+    el('power').innerHTML = `${enemyObj.power}`        
+    // el('def').innerHTML = `${enemyObj.def}`
 }
 
 //Action buttons
@@ -418,28 +531,28 @@ function genPlayerActionButtons(){
     
     //Add buyyons per player item
     playerObj.inventory.forEach(item => {
-        
         let button = document.createElement('button')
-    
         button.setAttribute('onclick', `turnCalc(this)`)
         button.setAttribute('itemid', item.itemid)
+        button.classList.add('action')
         updateBtnLabel(button, item)
         playerActionContainer.append(button)
-    
     })
 
     //Add empty item slots
     let emptySlots = playerObj.maxInventorySlots - playerObj.inventory.length
-    console.log(emptySlots);
     for (i=0; i < emptySlots; i++){
         let button = document.createElement('button')
+        button.innerHTML = `Item slot`
         button.disabled = true
-        button.setAttribute('style', 'width:80px')
+        button.classList.add('action')
         playerActionContainer.append(button) 
     }
 
 }
 
 function updateBtnLabel(buttonElem, itemObj){
-    buttonElem.innerHTML = `${itemObj.action} (${itemObj.durability})`
+    buttonElem.innerHTML = `
+    <span style="font-weight: 600;">${itemObj.durability} x ${itemObj.action}</span>
+    ${itemObj.desc}`
 }
