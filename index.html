@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Document</title>
+    <title>SR Game</title>
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="main.css">
 
@@ -13,11 +13,11 @@
 <body>
     
     <!-- Combat ui -->
-    <div class="column grow" style="align-items: stretch; padding: 0 16px;">
+    <div class="column grow" style="align-items: stretch; padding: 0 4px;">
 
-        <div style="gap: 8px; display:flex; flex-direction: column; padding: 16px 0 0 0;">
+        <div style="gap: 8px; display:flex; padding: 4px 0 0 12px; justify-content: space-between; align-items: center;">
             <div id="logIndicator">Turn counter</div>
-            <!-- <button onclick="toggleModal('shop')">Shop</button> -->
+            <button onclick="toggleModal('shop')" style="background-color: rgba(0, 0, 0, 0.251); border: none"><img src="./img/ico/settings.svg"></button>
         </div>
         
         <div class="row" style="align-items: stretch; flex-grow: 1;">
@@ -92,9 +92,8 @@
 
 
     <!-- Actions -->
-    <div class="row actions-container">
-        <div id="playerActionContainer" class="row button-container"></div>
-    </div>
+    <div id="playerActionContainer" class="row actions-container"></div>
+    
 
 
     <!-- Quiz -->

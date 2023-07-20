@@ -12,13 +12,8 @@ body{
     display: flex;
     align-items: stretch;
     flex-direction: column;
-    gap: 0px;
-
-    margin: 0px;
-    padding: 0px;
 
     min-height: 100vh;
-    /* background-color: rgba(220, 220, 220, 1); */
     background: var(--grass-base);
 
     font-size: 16px;
@@ -101,8 +96,9 @@ button:disabled{
 
 .action{
     padding: 8px 8px;
-    height: 80px;
-    width: calc(50% - 2px);
+    height: 200px;
+    min-width: 124px;
+    border-radius: 4px;
 
     flex-direction: column;
     align-items: flex-start;
@@ -120,19 +116,26 @@ button:disabled{
     min-height: 100%;
 }
 
-.button-container{
-    max-width: 400px;
-    flex-wrap: wrap;
-    gap: 2px;
-}
-
 .quiz-container{
     background-color: white;
     gap: 12px;
 }
 
+/* Hides scroll bar */
+.actions-container::-webkit-scrollbar {
+    display: none;
+  }
+
 .actions-container{
-    padding: 8px;
+    overflow-x: scroll;
+    justify-content: flex-start !important;
+    max-width: 100vw;
+    padding: 4px;
+    gap: 1px;
+
+    /* //Hide bar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .row {
@@ -162,8 +165,8 @@ button:disabled{
 
 #intent{
     background-color: black;
-    color: white;
-    padding: 8px 16px;
+    color: wheat;
+    padding: 8px 12px;
     text-align: center;
 }
 

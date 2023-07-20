@@ -1,6 +1,6 @@
 //To-do
 //To make it playable
-- Reward system after winning a combat.
++ Reward system after winning a combat.
 - Set of player actions.
     - Add items that imrove dice and other stats.
 - Set of enemy actions.

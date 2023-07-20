@@ -56,21 +56,25 @@ class Item {
 
         this.action = key
         this.desc = itemsRef[key].desc
+        this.type = itemsRef[key].type
 
         let extraProps = [
             {key:'name', val: `${key} scroll`},
             {key:'itemid', val: "id" + Math.random().toString(8).slice(2)},//gens unique id
             {key:'durability', val: 5},
             {key:'effectMod', val: 0},
-            {key:'itemType', val: 'active'},
             {key:'cost', val: 12}, 
         ]
 
         extraProps.forEach(property => {
-            if(itemsRef[key][property.key] === undefined){
-                this[property.key] = property.val  
-            } else {
-                this[property.key] = itemsRef[key][property.key] + Math.floor(iLvl * 0.5)
+            if(itemsRef[key].type === 'passive' && property.key === 'durability'){
+                this.durability = 1 //set dur of all passive items to 1.
+            } 
+            else if(itemsRef[key][property.key] === undefined){
+                this[property.key] = property.val 
+            }
+            else {
+                this[property.key] = itemsRef[key][property.key]
             }
         })
     }
@@ -78,15 +82,25 @@ class Item {
 
 class PlayerObj {
     constructor(){
-        this.life  = 25,
-        this.maxLife = this.life,
-        this.power = 0,
-        this.def   = 0,
-        this.dice  = 6,
+        this.maxLife = 25,
+        this.life  = this.maxLife
 
-        this.gold  = 0,
-        this.maxInventorySlots = 4,
-        this.inventory = []
+        this.flatPower = 0,
+        this.power = 0,
+
+        this.flatDef = 0,
+        this.def   = 0,
+
+        this.defaultDice = 6
+        this.flatDice = this.defaultDice
+        this.dice  = this.defaultDice,
+        this.roll = rng(this.defaultDice)
+        this.rollBonus = 0
+
+        this.maxInventory = 6,
+        this.inventory = [],
+
+        this.gold = 0
     }
 }
 
@@ -124,25 +138,30 @@ class GameState{
 let itemsRef = {
     //Item key is used as 'action' string
     //Basic
-    Attack:  {desc: "Deal damage equal to dice roll value", durability:19 },
+    Attack:  {desc: "Deal damage equal to dice roll value", durability:99 },
     Block:   {desc: 'Block damage equal to dice roll value',},
-    // Dodge:   {desc: 'Skip turn to keep half of your roll value for the next turn'},
+    Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn'},
+    Repair:  {desc: 'Restore durability to all different type items', effectMod: 1,},
+    Fireball:{desc: 'Deal damage equal to (roll x empty item slots)', durability: 1,},
     
-    //Player states
+    //Player stats
     Heal:    {desc: "Restore 8 life", durability: 2, effectMod: 12},
-    Repair:  {desc: 'Restore durability to all different type items.', effectMod: 1},
-    // Rage:    {desc: 'Increase power by 1'},
-    // Fortify: {desc: 'Increase defence by 1'},
-    // Focus:   {desc: 'Increase dice by 1'},
+    Fortify: {desc: 'Increase def until the end of this fight', durability:1, effectMod: 1,},
+    // Rage:    {desc: 'Increase power until the end of this fight'},
+    // Focus:   {desc: 'Increase next turn roll'},
 
     // //Enemy states
     // Weaken:  {desc: 'Reduce enemy power by 1'},
     // Break:   {desc: 'Reduce enemy defence by 1'},
     // Root:    {desc: 'Reduce enemy dice by 1'},
+    Counter: {desc: 'Prevent enemy action', durability: 2},
     // Stun:    {desc: 'Prevent enemy for acting during this turn'},
 
     // //Passive items
-    // Name:    {desc: 'Provides +2 def', itemType: 'passive'}
+    Shield:    {desc: 'Passive: +3 def while in inventory', type: 'passive', effectMod: 3,},
+    Amulet:    {desc: 'Passive: +2 power while in inventory', type: 'passive', effectMod: 2,},
+    Belt:      {desc: 'Passive: +20 max life while in inventory', type: 'passive', effectMod: 20,},
+    d8:        {desc: 'Passive: Use d8 for rolls while this is in inventory', type: 'passive', effectMod: 8,}
 }
 let deckRef = {
     starterDeck: {//Add deck per subject
@@ -191,21 +210,116 @@ let gameState = new GameState
 //Generate
 function genPlayer(){
     playerObj = new PlayerObj
-    playerObj.roll = rng(playerObj.dice)
-    addTargetItem('Attack')
-    addTargetItem('Block')
-    addTargetItem('Heal')
-    // addRandomItem(2)
+
+    let startingItems = ['Attack', 'Fireball', 'Fortify', 'd8']
+    startingItems.forEach(key => {addTargetItem(key)})
+
+    // addRandomItem(4)
+    console.log(playerObj);
 }
 
 //Manage player charsheet
+//ADD ITEMS
 function addTargetItem(key, iLvl){
-    playerObj.inventory.push(new Item(key, iLvl))
+    if(playerObj.inventory.length < playerObj.maxInventory){
+
+        let newItem = new Item(key, iLvl)
+        if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
+        playerObj.inventory.push(newItem)
+
+    }else{
+        console.log('Inventory is full.');
+    }
 }
 
 function addRandomItem(quant, iLvl){
     for(i=0; i< quant; i++){
-        playerObj.inventory.push(new Item(rarr(Object.keys(itemsRef)), iLvl))
+        if(playerObj.inventory.length < playerObj.maxInventory){
+
+            let newItem = new Item(rarr(Object.keys(itemsRef)), iLvl)
+            if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
+            playerObj.inventory.push(newItem)
+
+        }else{
+            console.log('Inventory is full.');
+        }
+    }
+}
+
+function resolvePassiveItem(item, event){
+    if(event === 'add'){
+        if(item.action==='Shield'){
+            playerObj.flatDef += item.effectMod
+        }
+        else if(item.action==='Amulet'){
+            playerObj.flatPower += item.effectMod
+        }
+        else if(item.action==='Belt'){
+            playerObj.maxLife += item.effectMod
+        }
+        else if(item.action==='d8'){
+            playerObj.flatDice = item.effectMod
+            playerObj.dice = item.effectMod
+        }
+        
+    }
+    else{
+
+        if(item.action==='Shield'){
+
+            if(0 < playerObj.flatDef < item.effectMod){
+                playerObj.flatDef = 0 //Sync stats to avoid negative
+            } 
+            else{
+                playerObj.flatDef -= item.effectMod //Update flat to restore at the start of the round
+            }
+            
+            if(0 < playerObj.def < item.effectMod){
+                playerObj.def = 0
+            }
+            else{
+                let reductionVal = item.effectMod - (playerObj.flatDef - playerObj.def) //Takes into consideration flat vs actual stat diff
+                playerObj.def -= reductionVal //Update here if you loose item during combat
+            }
+        }
+
+        else if(item.action==='Amulet'){
+            
+            if(0 < playerObj.flatPower < item.effectMod){
+                playerObj.flatPower = 0 //Sync stats to avoid negative
+            } 
+            else{
+                playerObj.flatPower -= item.effectMod //Update flat to restore at the start of the round
+            }
+            
+            if(0 < playerObj.power < item.effectMod){
+                playerObj.power = 0
+            }
+            else{
+                let reductionVal = item.effectMod - (playerObj.flatDef - playerObj.def) //Takes into consideration flat vs actual stat diff
+                playerObj.def -= reductionVal //Update here if you loose item during combat
+            }
+        }  
+
+        else if(item.action==='Belt'){
+            
+            if(0 < playerObj.maxLife < item.effectMod){
+                playerObj.flatPower = 1 //Sync stats to avoid negative
+            } 
+            else{
+                playerObj.maxLife -= item.effectMod //Update flat to restore at the start of the round
+            }
+
+            if(playerObj.life > playerObj.maxLife){
+                playerObj.life = playerObj.maxLife
+            }
+        } 
+
+        else if(item.action==='d8'){
+            playerObj.flatDice = playerObj.defaultDice
+            playerObj.dice = playerObj.defaultDice
+        }
+
     }
 }
 
@@ -231,7 +345,6 @@ function genEnemyActions(){
         // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
         // "mutli att":{rate:1,   desc: `Will attack ${rng(3,2)} times, each hit deals ${Math.ceil(dmgVal * 0.3)}`},
         // "crit":     {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 2)} after this turn`},
-        
         
         // "recover":  {rate:1,   desc: `Will recover lost stats`},
         // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
@@ -289,20 +402,26 @@ function genEnemyActions(){
 
 
 //COMBAT
-//Start
 function initiateCombat(){
     combatState = new CombatState
+    if(playerObj === undefined || playerObj.life < 1 ){genPlayer()}
 
-    if(playerObj === undefined || playerObj.life < 1 ){
-        genPlayer()
+    //Restore flat def
+    if(playerObj.def !== playerObj.flatDef){
+        playerObj.def = playerObj.flatDef
+        console.log('synced def');
     }
+
+    //Restore flat power
+    if(playerObj.power < playerObj.flatPower){playerObj.power = playerObj.flatPower}
 
     genEnemy()
     genEnemyActions() 
     updateUi()
-    genPlayerActionButtons()
+    genCards()
 }
 initiateCombat()
+
 
 //Turn
 function turnCalc(buttonElem, itemId){
@@ -320,51 +439,61 @@ function turnCalc(buttonElem, itemId){
         let playerAction = sourceItem.action
 
 
+        //PRE TURN
+        //Stat modification actions has to be done before generic actions
+        if(playerAction==='Counter'){
+            enemyObj.state='Skip turn'
+        }
 
-        //Stat modification actions
-        //Has to be done before generic actions
-        
 
-
-        //Generic actions
+        //TURN
         //Player action
         if      (playerAction === 'Attack'){//attack
             playerDmgDone += playerObj.roll + playerObj.power
-            playerObj.lastAction += `Player attacked for ${playerDmgDone}, dealing `
+        }
+        else if (playerAction === 'Fireball'){
+            let mult = playerObj.maxInventory - playerObj.inventory.length 
+            if(mult < 1){mult = 0}
+            playerDmgDone += playerObj.roll * mult
         }
         else if (playerAction === 'Block'){//block
             enemyDmgDone -= playerObj.roll //- playerObj.power
         }
         else if (playerAction === "Repair"){//repair
             playerObj.inventory.forEach(elem => {
-                if(elem.action !== 'Repair'){
+                if(elem.action !== 'Repair' && elem.type !== 'passive'){
                     elem.durability += sourceItem.effectMod
                 }
             })
         }
+        else if (playerAction === 'Fortify'){
+            playerObj.def += playerObj.roll
+        }
+        else if (playerAction === 'Dodge'){
+            playerAction.rollBonus += Math.flooe(playerObj.roll * 0.5)
+        }
         
-
-
         //Enemy action
-        if      (enemyObj.action === 'Attack'){//attack
+        if      (enemyObj.action === 'Attack' && enemyObj.state !== 'Skip turn'){//attack
             enemyDmgDone += enemyObj.roll + enemyObj.power 
         }
-        else if (enemyObj.action === 'Block'){//block
+        else if (enemyObj.action === 'Block' && enemyObj.state !== 'Skip turn'){//block
             playerDmgDone -= enemyObj.roll
         }
 
 
-        //Final calculation
+        //CALC
         //Deal damage if chars attacked
-        if (playerAction === 'Attack'){
+        if (['Attack', 'Fireball'] .indexOf(playerAction) > -1
+        ){
             if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//reduce def on low hit
-            if (playerDmgDone < 0){playerDmgDone = 0} //Set positive damage to 0
+            if(playerDmgDone < 0){playerDmgDone = 0} //Set positive damage to 0
             playerDmgDone -= enemyObj.def //Check def
             enemyObj.life -= playerDmgDone //Reduce life
             combatState.enemyDmgTaken = playerDmgDone //Trigger damage indicator
         }
 
-        if (enemyObj.action === 'Attack'){
+        if (enemyObj.action === 'Attack' && enemyObj.state !== 'Skip turn'){
             if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit
             if (enemyDmgDone < 0){enemyDmgDone = 0} //Set positive damage to 0
             enemyDmgDone -= playerObj.def
@@ -374,7 +503,7 @@ function turnCalc(buttonElem, itemId){
             combatState.playerDmgTaken = enemyDmgDone
         }
 
-
+        //POST CALC
         //Heal after damage taken to make heal effective if you heal near hp cap.
         if (playerAction === 'Heal'){
             playerObj.life += sourceItem.effectMod
@@ -386,17 +515,20 @@ function turnCalc(buttonElem, itemId){
         sourceItem.durability--
         if(sourceItem.durability<1){
             removeFromArr(playerObj.inventory, sourceItem)
+            if(sourceItem.type === 'passive'){
+                resolvePassiveItem(sourceItem)
+                //Loose passive stat
+            }
         }
-        genPlayerActionButtons()
-        updateBtnLabel(buttonElem, sourceItem)
+        genCards() 
+        updateBtnLabel(buttonElem, sourceItem) //Update durability labels
+
         
-
-        //Next turn actions
-        playerObj.roll = rng(playerObj.dice)
+        //End turn updates
+        playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
+        playerObj.rollBonus = 0
         genEnemyActions()
-
-        //Misc
-        console.log(playerObj.lastAction);
+        enemyObj.state = ''
         combatState.turn++
         updateUi()
     }
@@ -414,7 +546,7 @@ function turnCalc(buttonElem, itemId){
         gameState.stage++
 
         genReward('gen', 3)
-        initiateCombat()
+        
     }
 
 }
@@ -454,41 +586,37 @@ function genReward(val, quant){
     else {
         //Add selected reward to player
         if(val === 'Heal'){
-            playerObj.life += 3 + gameState.stage
+            playerObj.life += Math.floor(playerObj.maxLife / 2)
             if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
         }
         else if(val === 'Repair'){
             playerObj.inventory[rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
         }
         else if(val === 'Bag'){
-            playerObj.maxInventorySlots++
+            playerObj.maxInventory++
         }
         else if(val === 'Enhance'){
-            playerObj.def++
+            playerObj.flatDef++
         }
         else if (val === 'Train'){
             playerObj.maxLife += Math.floor(4 + (gameState.stage * 0.5))
         }
         else if(val==='Power'){
-            playerObj.power++
+            playerObj.flatPower++
         }
         else {
-            if(playerObj.inventory.length < playerObj.maxInventorySlots){
-                addRandomItem(1)
-            }
+            addRandomItem(1)
         }
 
-        genPlayerActionButtons()
+        initiateCombat()
+        genCards()
         updateUi()
         toggleModal('rewardScreen')
     }
-}
-
-// genReward('gen', 4)
+}// genReward('gen', 4)
 
 
 //MANAGE UI
-//Player and enemy stats UI
 function runAnim(elem, animClass){
     elem.classList.remove(animClass)
     void enemyDmgInd.offsetWidth; // trigger reflow
@@ -518,7 +646,7 @@ function updateUi(){
     // el('p-def').innerHTML = `${playerObj.def}`
     
     //Enemy stats
-    el('intent').innerHTML = `Will ${enemyObj.action} for ${enemyObj.roll}!`
+    el('intent').innerHTML = `I will ${enemyObj.action}!`
     el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
     el('life').innerHTML = `${enemyObj.life} / ${enemyObj.maxLife} (<img src="./img/ico/shield.svg"> ${enemyObj.def})`
     el('power').innerHTML = `${enemyObj.power}`        
@@ -526,7 +654,7 @@ function updateUi(){
 }
 
 //Action buttons
-function genPlayerActionButtons(){
+function genCards(){
     playerActionContainer.innerHTML = ''
     
     //Add buyyons per player item
@@ -540,7 +668,7 @@ function genPlayerActionButtons(){
     })
 
     //Add empty item slots
-    let emptySlots = playerObj.maxInventorySlots - playerObj.inventory.length
+    let emptySlots = playerObj.maxInventory - playerObj.inventory.length
     for (i=0; i < emptySlots; i++){
         let button = document.createElement('button')
         button.innerHTML = `Item slot`
@@ -553,6 +681,6 @@ function genPlayerActionButtons(){
 
 function updateBtnLabel(buttonElem, itemObj){
     buttonElem.innerHTML = `
-    <span style="font-weight: 600;">${itemObj.durability} x ${itemObj.action}</span>
+    <span style="font-weight: 600;">${itemObj.action} x${itemObj.durability}</span>
     ${itemObj.desc}`
 }
