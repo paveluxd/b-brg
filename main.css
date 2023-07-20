@@ -5,11 +5,11 @@
 
 :root {
     --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
-    --red: rgb(219, 39, 39);
   }
 
 body{
     display: flex;
+    overflow: hidden;
     align-items: stretch;
     flex-direction: column;
 
@@ -32,7 +32,6 @@ body{
     background-color: rgba(0, 0, 0, 0.54);
     width: 100vw;
     height: 100vh;
-
 }
 
 .modal-container{
@@ -46,6 +45,14 @@ body{
     flex-direction: column;
     align-items: stretch;
     border-radius: 0px;
+
+    position: relative;
+}
+
+.modal-slide{
+    animation-name: modal-slide;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
 }
 
 .modal-header{
@@ -72,6 +79,7 @@ button{
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 button:hover{
@@ -97,7 +105,10 @@ button:disabled{
 .action{
     padding: 8px 8px;
     height: 200px;
-    min-width: 124px;
+    width: 172px;
+    max-width: 40vw;
+    flex-shrink: 0;
+
     border-radius: 4px;
 
     flex-direction: column;
@@ -124,14 +135,13 @@ button:disabled{
 /* Hides scroll bar */
 .actions-container::-webkit-scrollbar {
     display: none;
-  }
+}
 
 .actions-container{
+    display: flex;
     overflow-x: scroll;
-    justify-content: flex-start !important;
-    max-width: 100vw;
     padding: 4px;
-    gap: 1px;
+    gap: 2px;
 
     /* //Hide bar */
     -ms-overflow-style: none;  /* IE and Edge */
@@ -158,6 +168,10 @@ button:disabled{
 
 
 /* Overrides */
+h3{
+    font-weight: 600;
+}
+
 #enemyImg {
     width: 120px;
     height: 120px;
@@ -192,8 +206,7 @@ button:disabled{
     height: 124px;
 }
 
-.dmgnum {
-    color: var(--red);
+.floating-ind {
     position: absolute;
     opacity: 0;
     font-size: 20px;
@@ -227,3 +240,13 @@ button:disabled{
         top: 0px;
     }
   }
+
+@keyframes modal-slide {
+    0% {
+        bottom: -600px;
+    }
+  
+    100% {
+        bottom: 0px;
+    }
+}

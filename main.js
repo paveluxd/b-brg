@@ -1,6 +1,7 @@
 //Misc fucntions
 function toggleModal(id){//modal
     document.getElementById(id).classList.toggle('hide')
+    runAnim(el(id).firstElementChild, 'modal-slide')
 }
 function rng(maxValue, minValue){//random number
     if(minValue === undefined){minValue = 1}
@@ -49,15 +50,13 @@ function cloneArr(arr){
 //Classes
 class Item {
     constructor(key, iLvl){
-        if(iLvl === undefined && gameState !== undefined){
-            iLvl = gameState.stage
-        }
-        else{iLvl = 1}
-
+        if(iLvl === undefined && gameState !== undefined){iLvl = gameState.stage}else{iLvl = 1}
         this.action = key
         this.desc = itemsRef[key].desc
         this.type = itemsRef[key].type
 
+
+        //Variable properties
         let extraProps = [
             {key:'name', val: `${key} scroll`},
             {key:'itemid', val: "id" + Math.random().toString(8).slice(2)},//gens unique id
@@ -66,6 +65,8 @@ class Item {
             {key:'cost', val: 12}, 
         ]
 
+
+        //Resolves extra properties that either have default from above or gain value from ref object
         extraProps.forEach(property => {
             if(itemsRef[key].type === 'passive' && property.key === 'durability'){
                 this.durability = 1 //set dur of all passive items to 1.
@@ -112,7 +113,6 @@ class EnemyObj {
         this.def   = Math.ceil(rng(gameState.stage * 0.5, 0)),
         this.dice  = 2 + gameState.stage,
         
-        this.name  = rarr(enemyNameStart) + rarr(enemyNameEnd),
         this.level = gameState.stage
         this.image = `./img/enemy/${gameState.stage}.png`
     }
@@ -123,6 +123,8 @@ class CombatState {
         this.turn = 1
         this.enemyDmgTaken = 0
         this.playerDmgTaken = 0
+        this.enemyAction = []
+        this.playerAction = []
     }
 }
 
@@ -137,31 +139,30 @@ class GameState{
 //Data & vars
 let itemsRef = {
     //Item key is used as 'action' string
-    //Basic
-    Attack:  {desc: "Deal damage equal to dice roll value", durability:99 },
-    Block:   {desc: 'Block damage equal to dice roll value',},
-    Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn'},
+    Attack:  {desc: "Deal damage equal to dice roll value", durability:12 },
+    Block:   {desc: 'Block damage equal to dice roll value', },
+    Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn', },
     Repair:  {desc: 'Restore durability to all different type items', effectMod: 1,},
-    Fireball:{desc: 'Deal damage equal to (roll x empty item slots)', durability: 1,},
+    Fireball:{desc: 'Deal damage equal to (roll x empty item slots)', durability: 6,},
     
     //Player stats
-    Heal:    {desc: "Restore 8 life", durability: 2, effectMod: 12},
+    Heal:    {desc: "Restore 12 life", durability: 2, effectMod: 12},
     Fortify: {desc: 'Increase def until the end of this fight', durability:1, effectMod: 1,},
     // Rage:    {desc: 'Increase power until the end of this fight'},
     // Focus:   {desc: 'Increase next turn roll'},
 
-    // //Enemy states
-    // Weaken:  {desc: 'Reduce enemy power by 1'},
-    // Break:   {desc: 'Reduce enemy defence by 1'},
-    // Root:    {desc: 'Reduce enemy dice by 1'},
-    Counter: {desc: 'Prevent enemy action', durability: 2},
+    //Enemy states
+    Weaken:  {desc: 'Reduce enemy power', durability: 3,},
+    Break:   {desc: 'Break enemy defence', durability: 3,},
+    Counter: {desc: 'Prevent enemy action', durability: 3},
+    Root:    {desc: 'Reduce enemy dice by 2', durability: 3, effectMod: 2,},
     // Stun:    {desc: 'Prevent enemy for acting during this turn'},
 
-    // //Passive items
-    Shield:    {desc: 'Passive: +3 def while in inventory', type: 'passive', effectMod: 3,},
-    Amulet:    {desc: 'Passive: +2 power while in inventory', type: 'passive', effectMod: 2,},
-    Belt:      {desc: 'Passive: +20 max life while in inventory', type: 'passive', effectMod: 20,},
-    d8:        {desc: 'Passive: Use d8 for rolls while this is in inventory', type: 'passive', effectMod: 8,}
+    //Passive items
+    Shield:  {desc: '+3 def while in inventory (passive)', type: 'passive', effectMod: 3,},
+    Amulet:  {desc: '+2 power while in inventory (passive)', type: 'passive', effectMod: 2,},
+    Belt:    {desc: '+20 max life while in inventory (passive)', type: 'passive', effectMod: 20,},
+    d8:      {desc: 'Use d8 for rolls while this is in inventory (passive)', type: 'passive', effectMod: 8,}
 }
 let deckRef = {
     starterDeck: {//Add deck per subject
@@ -196,9 +197,38 @@ let rewardRef = [
     {type:'Repair', freq: 3, desc:'Repair random item'},
     {type:'Bag', freq: 1, desc: 'Gain an additional inventory slot'}
 ]
+let enemyActions = {
+    // Attack:      {rate:1, action: 'Attack',  desc: `Attack!`},
+    // Block:       {rate:1, action: 'Block',   desc: `Block`},
+    // Multistrike :{rate:1, action: 'Multistrike', desc: `Multistrike`},
+    // Fortify:     {rate:1, action: 'Fortify', desc: `Armor up!`},
+    Empower:     {rate:1, action: 'Empower', desc: `More POWER!`},
+    // Rush:        {rate:1, action: 'Rush', desc: `Larger dice!`},
+    // Sleep:       {rate:1, action: 'Sleep', desc: `Zzzz...`,}
 
-let enemyNameStart = ['Gar', 'Tar', 'Wal', 'Far', 'Duh', 'Ro' ,'Nar', 'Tal', 'Ikr']
-let enemyNameEnd =   ['talin', 'war', 'barun', 'antoles', 'farhair', 'dox', 'marin', 'volen', 'darion']
+    // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
+    // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
+    // "crit":     {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 2)} after this turn`},
+    
+    // "recover":  {rate:1,   desc: `Will recover lost stats`},
+    // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
+    // "buff":     {rate:1,   desc: `Will use random buff spell`},
+    // "debuff":   {rate:1,   desc: `Will use random debuff spell`},
+    
+
+    // "recruits": {rate:1,   desc: `Will call reinforcements`},
+    
+    // "spell":    {rate:1,   desc: `Will cast a <random spell>`},
+    // "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
+    // "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
+    // "theft":    {rate:1,   desc: `Will steal random item`},   
+    // "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
+    // "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
+    // "escape":   {rate:1,   desc: `Will escape`},
+    // "sepuku":   {rate:1,   desc: `Will deal ${Math.ceil(dmgVal * 2.5)} to character that would kill them`}
+}
+
+
 let playerObj, enemyObj, combatState
 let rewardPool = []
 let playerActionContainer = document.getElementById('playerActionContainer')
@@ -211,7 +241,7 @@ let gameState = new GameState
 function genPlayer(){
     playerObj = new PlayerObj
 
-    let startingItems = ['Attack', 'Fireball', 'Fortify', 'd8']
+    let startingItems = ['Attack', 'Fireball', 'Shield', 'd8']
     startingItems.forEach(key => {addTargetItem(key)})
 
     // addRandomItem(4)
@@ -336,33 +366,7 @@ function genEnemyActions(){
 
     //Pick random action
     let actionRoll = rng(100)                      //roll to pick action
-
-    let dmgVal = Math.ceil(enemyObj.roll + enemyObj.power) //reference dmg value
-    let enemyActions = {
-        Attack:   {rate:1,   action: 'Attack',  desc: `Will attack for ${dmgVal}`},
-        Block:    {rate:1,   action: 'Block',   desc: `Will crit for ${Math.ceil(dmgVal * 1.5)}`},
-        // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
-        // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
-        // "mutli att":{rate:1,   desc: `Will attack ${rng(3,2)} times, each hit deals ${Math.ceil(dmgVal * 0.3)}`},
-        // "crit":     {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 2)} after this turn`},
-        
-        // "recover":  {rate:1,   desc: `Will recover lost stats`},
-        // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
-        // "buff":     {rate:1,   desc: `Will use random buff spell`},
-        // "debuff":   {rate:1,   desc: `Will use random debuff spell`},
-        
-        // "recruits": {rate:1,   desc: `Will call reinforcements`},
-        
-        // "spell":    {rate:1,   desc: `Will cast a <random spell>`},
-        // "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
-        // "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
-        // "theft":    {rate:1,   desc: `Will steal random item`},   
-        // "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
-        // "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
-        // "escape":   {rate:1,   desc: `Will escape`},
-        // "sepuku":   {rate:1,   desc: `Will deal ${Math.ceil(dmgVal * 2.5)} to character that would kill them`}
-    }
-
+    
     let enemyAc                                //Final action
     let aAction = []  
     let actionKeys = Object.keys(enemyActions) //Get keys
@@ -400,7 +404,7 @@ function genEnemyActions(){
 }
 
 
-
+//***
 //COMBAT
 function initiateCombat(){
     combatState = new CombatState
@@ -409,7 +413,6 @@ function initiateCombat(){
     //Restore flat def
     if(playerObj.def !== playerObj.flatDef){
         playerObj.def = playerObj.flatDef
-        console.log('synced def');
     }
 
     //Restore flat power
@@ -448,7 +451,7 @@ function turnCalc(buttonElem, itemId){
 
         //TURN
         //Player action
-        if      (playerAction === 'Attack'){//attack
+        if      (playerAction === 'Attack'){
             playerDmgDone += playerObj.roll + playerObj.power
         }
         else if (playerAction === 'Fireball'){
@@ -456,10 +459,10 @@ function turnCalc(buttonElem, itemId){
             if(mult < 1){mult = 0}
             playerDmgDone += playerObj.roll * mult
         }
-        else if (playerAction === 'Block'){//block
+        else if (playerAction === 'Block'){
             enemyDmgDone -= playerObj.roll //- playerObj.power
         }
-        else if (playerAction === "Repair"){//repair
+        else if (playerAction === "Repair"){
             playerObj.inventory.forEach(elem => {
                 if(elem.action !== 'Repair' && elem.type !== 'passive'){
                     elem.durability += sourceItem.effectMod
@@ -470,37 +473,92 @@ function turnCalc(buttonElem, itemId){
             playerObj.def += playerObj.roll
         }
         else if (playerAction === 'Dodge'){
-            playerAction.rollBonus += Math.flooe(playerObj.roll * 0.5)
+            playerAction.rollBonus += Math.floor(playerObj.roll * 0.5)
+        }
+        else if (playerAction === 'Break'){
+            enemyObj.def -= playerObj.roll
+        }
+        else if (playerAction === 'Weaken'){
+            enemyObj.power -= playerObj.roll
+        }
+        else if (playerAction === 'Root'){
+            enemyObj.dice -= sourceItem.effectMod
         }
         
         //Enemy action
-        if      (enemyObj.action === 'Attack' && enemyObj.state !== 'Skip turn'){//attack
-            enemyDmgDone += enemyObj.roll + enemyObj.power 
-        }
-        else if (enemyObj.action === 'Block' && enemyObj.state !== 'Skip turn'){//block
-            playerDmgDone -= enemyObj.roll
+        if(enemyObj.state !== 'Skip turn'){
+
+            if      (enemyObj.action === 'Attack'){
+                enemyDmgDone += enemyObj.roll + enemyObj.power 
+            }
+            else if (enemyObj.action === 'Block'){//block
+                playerDmgDone -= enemyObj.roll
+                combatState.enemyAction = ['Block', enemyObj.roll]
+            }
+            else if (enemyObj.action === 'Multistrike'){
+                enemyDmgDone += (1 + enemyObj.power)
+            }
+            else if (enemyObj.action === 'Fortify'){
+                let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                enemyObj.def += x
+                combatState.enemyAction = ['Fortify', x]
+            }
+            else if (enemyObj.action === 'Empower'){
+                let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                enemyObj.power += x
+                combatState.enemyAction = ['Empower', x]
+            }
+            else if (enemyObj.action === 'Rush'){
+                let x = Math.round(1 + (gameState.stage) *0.2)
+                enemyObj.dice += x
+                combatState.enemyAction = ['Rusn', x]
+            }
+            else if (enemyObj.action === 'Sleep'){
+                combatState.enemyAction = ['Sleep']
+            }
+            
         }
 
 
         //CALC
         //Deal damage if chars attacked
-        if (['Attack', 'Fireball'] .indexOf(playerAction) > -1
-        ){
+        if (['Attack', 'Fireball'].indexOf(playerAction) > -1){
             if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//reduce def on low hit
-            if(playerDmgDone < 0){playerDmgDone = 0} //Set positive damage to 0
+
             playerDmgDone -= enemyObj.def //Check def
+            if(playerDmgDone < 0){playerDmgDone = 0} //Set positive damage to 0
             enemyObj.life -= playerDmgDone //Reduce life
+
             combatState.enemyDmgTaken = playerDmgDone //Trigger damage indicator
         }
 
-        if (enemyObj.action === 'Attack' && enemyObj.state !== 'Skip turn'){
-            if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit
-            if (enemyDmgDone < 0){enemyDmgDone = 0} //Set positive damage to 0
-            enemyDmgDone -= playerObj.def
-            playerObj.life -= enemyDmgDone
+        if(['Attack'].indexOf(enemyObj.action) > -1 && enemyObj.state !== 'Skip turn'){
+ 
+            if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit4
 
+            enemyDmgDone -= playerObj.def
+            if (enemyDmgDone < 0){enemyDmgDone = 0} //Set positive damage to 0
+            playerObj.life -= enemyDmgDone
+            
             //Trigger damage indicator
             combatState.playerDmgTaken = enemyDmgDone
+        }
+        else if (['Multistrike'].indexOf(enemyObj.action) > -1 && enemyObj.state !== 'Skip turn'){
+            for (i = 0; i < 3; i ++){
+
+                let playerDamageTaken = enemyDmgDone//move to a diff var due to def reducing dmg done 3 times
+            
+                if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit
+
+                playerDamageTaken -= playerObj.def
+                if (playerDamageTaken < 0){playerDamageTaken = 0} //Set positive damage to 0
+                playerObj.life -= playerDamageTaken
+                
+                //Trigger damage indicator
+                combatState.playerDmgTaken = enemyDmgDone
+
+            }
+
         }
 
         //POST CALC
@@ -545,37 +603,55 @@ function turnCalc(buttonElem, itemId){
         updateUi()
         gameState.stage++
 
-        genReward('gen', 3)
+        genReward('gen', 6)
         
     }
 
 }
 
-//Rewards
+//***
+//REWARDS
 function genReward(val, quant){
     //Pick from reward pool    
     if(val === 'gen'){
-        let rewardRefPool = cloneArr(rewardRef)
+        let rewardRefPool = cloneArr(rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
+        let generatedItem
         el('rewards').innerHTML = ``
 
-        for(i=0; i < quant; i++){
-            let reward = rarr(rewardRefPool)
-            if(reward.type !== 'Item'){
+        for(i=0; i < quant; i++){ //gen item per quant value in function
+            let reward = rarr(rewardRefPool) //pick random reward
+
+            if(reward.type !== 'Item'){ //if reward is not item, remove it from array so it can't be picked again.
                 removeFromArr(rewardRefPool, reward)
             }
 
-            if(reward.type === 'item'){
+            if(reward.type === 'Item'){//item
                 //Gen random item
-                let item = new Item(rarr(Object.keys(itemsRef, gameState.stage)))
-                rewardPool.push(item)
+                generatedItem = new Item(rarr(Object.keys(itemsRef, gameState.stage)))
+                rewardPool.push(generatedItem)
             }
-            else{
+            else{//not item
                 rewardPool.push(reward)
             }
 
+            //Create buttons
             let button = document.createElement('button')
-            button.setAttribute('onclick', `genReward('${reward.type}')`)
-            button.innerHTML = `${reward.desc}`
+            
+            //if item add item desck
+            if(reward.type === 'Item'){
+                button.innerHTML = `
+                <h3>${generatedItem.action} (Durability: ${generatedItem.durability})</h3><br> 
+                ${generatedItem.desc} (requires empty item slot).`
+                
+                button.setAttribute('onclick', `genReward('${reward.type}', '${generatedItem.itemid}')`) //quant will be id for items
+            }
+            
+            else{
+                button.innerHTML = `${reward.desc}`
+                button.setAttribute('onclick', `genReward('${reward.type}')`)
+            }
+
+
             el('rewards').append(button)
 
         }
@@ -605,7 +681,16 @@ function genReward(val, quant){
             playerObj.flatPower++
         }
         else {
-            addRandomItem(1)
+            //Get item from reward gen
+            rewardPool.forEach(elem => {
+                if(elem.itemid !== undefined && elem.itemid === quant){
+                    if(playerObj.inventory.length < playerObj.maxInventory){
+                        if(elem.type === 'passive'){resolvePassiveItem(elem, 'add')}
+                        playerObj.inventory.push(elem)
+                    }
+                }
+            })
+            rewardPool = []
         }
 
         initiateCombat()
@@ -613,26 +698,69 @@ function genReward(val, quant){
         updateUi()
         toggleModal('rewardScreen')
     }
-}// genReward('gen', 4)
+}
+// genReward('gen', 4)
 
 
-//MANAGE UI
+//***
+//UI
 function runAnim(elem, animClass){
     elem.classList.remove(animClass)
-    void enemyDmgInd.offsetWidth; // trigger reflow
+    void elem.offsetWidth; // trigger reflow
     elem.classList.add(animClass)
+}
+
+function floatText(target, string){
+    if(target === 'en'){
+        el('enStateInd').innerHTML = string
+        runAnim(el('enStateInd'), 'float-num')
+    }
+    else{
+        el('enDmgInd').innerHTML = string
+        runAnim(el('enDmgInd'), 'float-num')
+    }
+
+
+    //if positive -> text green etc
+    if(string[0] === '-'){
+        el('enStateInd').setAttribute('style', 'color:red;')
+        el('enDmgInd').setAttribute('style', 'color:red;')
+
+    }
+    else{
+        el('enStateInd').setAttribute('style', 'color:white')
+        el('enDmgInd').setAttribute('style', 'color:white;')
+    }
 }
 
 function updateUi(){
     //Update damage indicator
-    if(combatState.enemyDmgTaken > 0){
-        el('enemyDmgInd').innerHTML = `-`+ combatState.enemyDmgTaken
-        runAnim(el('enemyDmgInd'), 'float-num')
+
+    //For enemy floating number
+    if(combatState.enemyDmgTaken > 0){//Attack
+        floatText('e',`-${combatState.enemyDmgTaken} life`)
+    }
+    else if(combatState.enemyAction[0] === 'Fortify'){
+        floatText('en',`+${combatState.enemyAction[1]} def`)
+    }
+    else if(combatState.enemyAction[0] === 'Empower'){
+        floatText('en',`+${combatState.enemyAction[1]} power`)
+    }
+    else if(combatState.enemyAction[0] === 'Rush'){
+        floatText('en',`+${combatState.enemyAction[1]} dice`)
+    }
+    else if(combatState.enemyAction[0] === 'Sleep'){
+        floatText('en',`Zzzzz`)
+    }
+    else if(combatState.enemyAction[0] === 'Block'){
+        floatText('en',`Blocked ${combatState.enemyAction[1]}`)
     }
 
+    combatState.enemyAction = []
+    
+    //Player dmg taken
     if(combatState.playerDmgTaken > 0){
-        el('playerDmgInd').innerHTML = `-`+combatState.playerDmgTaken
-        runAnim(el('playerDmgInd'), 'float-num')
+        floatText('pl',`-${combatState.playerDmgTaken} def`)
     }
 
     //Game stats
@@ -646,11 +774,12 @@ function updateUi(){
     // el('p-def').innerHTML = `${playerObj.def}`
     
     //Enemy stats
-    el('intent').innerHTML = `I will ${enemyObj.action}!`
     el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
     el('life').innerHTML = `${enemyObj.life} / ${enemyObj.maxLife} (<img src="./img/ico/shield.svg"> ${enemyObj.def})`
     el('power').innerHTML = `${enemyObj.power}`        
     // el('def').innerHTML = `${enemyObj.def}`
+
+    el('intent').innerHTML = `${enemyActions[enemyObj.action].desc}`
 }
 
 //Action buttons

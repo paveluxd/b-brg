@@ -17,14 +17,16 @@
 
         <div style="gap: 8px; display:flex; padding: 4px 0 0 12px; justify-content: space-between; align-items: center;">
             <div id="logIndicator">Turn counter</div>
-            <button onclick="toggleModal('shop')" style="background-color: rgba(0, 0, 0, 0.251); border: none"><img src="./img/ico/settings.svg"></button>
+            <button onclick="toggleModal('menu')" style="background-color: rgba(0, 0, 0, 0.251); border: none"><img src="./img/ico/settings.svg"></button>
         </div>
         
         <div class="row" style="align-items: stretch; flex-grow: 1;">
             <!-- Player -->
             <div class="column" style="">
                 <div class="imgcont">
-                    <p id="playerDmgInd" class="dmgnum">0</p>
+
+                    <p id="playerDmgInd" class="floating-ind">0</p>
+                    
                     <img src="./img/char-knight.svg">
                 </div>
 
@@ -58,7 +60,9 @@
                 </div>
 
                 <div class="imgcont">
-                    <p id="enemyDmgInd" class="dmgnum">0</p>
+                    <p id="enDmgInd" class="floating-ind">0</p>
+                    <p id="enStateInd" class="floating-ind">0</p>
+
                     <img id="enemyImg" src="./img/enemy/1.png" class="flip">
                 </div>
 
@@ -92,7 +96,7 @@
 
 
     <!-- Actions -->
-    <div id="playerActionContainer" class="row actions-container"></div>
+    <div id="playerActionContainer" class="actions-container"></div>
     
 
 
@@ -113,18 +117,19 @@
     </div>
 
 
-    <!-- Shop -->
-    <div class="modal hide" id="shop">
+    <!-- Menu -->
+    <div class="modal hide" id="menu">
         <div class="modal-container">
+
             <div class="modal-header">
-                <h2>Shop</h2>
-                <button onclick="toggleModal('shop')">Close</button>
+                <h2>Menu</h2>
+                <button onclick="toggleModal('menu')">Close</button>
             </div>
+
             <div class="column button-container modal-body">
-                <button>Mace: Attack<br> Cost 8 gold</button>
-                <button>Shield: Block</button>
-                <button>Focus</button>
+                <p>TBA</p>
             </div>
+
         </div>
     </div>
 
@@ -146,7 +151,7 @@
     <div class="modal hide" id="gameOverScreen">
         <div class="modal-container">
             <div class="column button-container modal-body">
-                <h1>Game over!</h1>
+                <h1>You have beed defeated. Game over!</h1>
                 <p id="gameOverScreenLog"></p>
                 <button onclick="toggleModal('gameOverScreen'), initiateCombat()">Start over</button>
             </div>
