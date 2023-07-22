@@ -129,8 +129,11 @@ button:disabled{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    max-height: 260px;
+    height: 240px;
     justify-content: center;
+    align-content: flex-start;
+    position: relative;
+    bottom: 0px;
 
     overflow-y: scroll;
     padding: 4px;
