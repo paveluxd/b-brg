@@ -249,7 +249,7 @@ function genPlayer(){
     let startingItems = ['Attack', 'Block','Reroll']
     startingItems.forEach(key => {addTargetItem(key)})
 
-    playerObj.inventory[0].durability = 50
+    playerObj.inventory[0].durability = 99
     playerObj.inventory[2].durability = 10 
 
     addRandomItem(1)
