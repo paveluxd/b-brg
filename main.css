@@ -3,6 +3,10 @@
     /* border: 1px solid rgb(255, 0, 166) !important; */
 }
 
+html{
+    height: 100%;
+}
+
 :root {
     --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
   }
@@ -13,7 +17,7 @@ body{
     align-items: stretch;
     flex-direction: column;
 
-    min-height: 100vh;
+    min-height: 100%;
     background: var(--grass-base);
 
     font-size: 16px;
@@ -129,7 +133,7 @@ button:disabled{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    height: 240px;
+    height: 220px;
     justify-content: center;
     align-content: flex-start;
     position: relative;
