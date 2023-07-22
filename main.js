@@ -98,7 +98,7 @@ class PlayerObj {
         this.roll = rng(this.defaultDice)
         this.rollBonus = 0
 
-        this.maxInventory = 20,
+        this.maxInventory = 6,
         this.inventory = [],
 
         this.gold = 0
@@ -250,9 +250,9 @@ function genPlayer(){
     startingItems.forEach(key => {addTargetItem(key)})
 
     playerObj.inventory[0].durability = 20
-    playerObj.inventory[2].durability = 15 
+    playerObj.inventory[2].durability = 10 
 
-    addRandomItem(8)
+    addRandomItem(1)
     console.log(playerObj);
 }
 
@@ -822,21 +822,21 @@ function updateUi(){
     Stage: ${gameState.stage} / Turn: ${combatState.turn}`
 
     //Player stats
+    el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
+    el('p-def').innerHTML = `${playerObj.def}`
     el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
-    el('p-life').innerHTML = `${playerObj.life} / ${playerObj.maxLife} (<img src="./img/ico/shield.svg"> ${playerObj.def})`
     el('p-power').innerHTML = `${playerObj.power}`        
-    // el('p-def').innerHTML = `${playerObj.def}`
-    
+
     //Enemy stats
+    el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
+    el('def').innerHTML = `${enemyObj.def}`
     el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
-    el('life').innerHTML = `${enemyObj.life} / ${enemyObj.maxLife} (<img src="./img/ico/shield.svg"> ${enemyObj.def})`
     el('power').innerHTML = `${enemyObj.power}`        
-    // el('def').innerHTML = `${enemyObj.def}`
 
     if(enemyObj.action === 'Attack'){
         el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
     }
-    else if([enemyObj.action === 'Block']){
+    else if(enemyObj.action === 'Block'){
         el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
 
     }
@@ -888,7 +888,6 @@ function updateBtnLabel(buttonElem, itemObj){
         ${itemObj.desc}`
     }
     else{
-
         buttonElem.innerHTML = `
         <span style="font-weight: 600;">${itemObj.action} (${itemObj.durability})</span>
         ${itemObj.desc}`
