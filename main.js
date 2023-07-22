@@ -98,7 +98,7 @@ class PlayerObj {
         this.roll = rng(this.defaultDice)
         this.rollBonus = 0
 
-        this.maxInventory = 6,
+        this.maxInventory = 8,
         this.inventory = [],
 
         this.gold = 0
@@ -192,12 +192,18 @@ let deckRef = {
     }
 }
 let rewardRef = [
-    {type:'Item', freq: 10, desc: 'Get random item (requires empty slot)'}, 
-    {type:'Train', freq: 5, desc: 'Increase maximum life'},
+    {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
+
+    {type:'Train', freq: 1, desc: 'Increase maximum life'},
     {type:'Enhance', freq: 1, desc: 'Increase defence'},
     {type:'Power', freq: 1, desc: 'Increase power by 1.'},
-    {type:'Heal', freq: 3, desc: 'Restore life'},
-    {type:'Repair', freq: 3, desc:'Repair random item'},
+    {type:'Heal', freq: 1, desc: 'Restore life'},
+    {type:'Repair', freq: 1, desc:'Repair random item'},
     {type:'Bag', freq: 1, desc: 'Gain an additional inventory slot'}
 ]
 let enemyActions = {
@@ -252,8 +258,7 @@ function genPlayer(){
     playerObj.inventory[0].durability = 99
     playerObj.inventory[2].durability = 10 
 
-    addRandomItem(1)
-    console.log(playerObj);
+    addRandomItem(2)
 }
 
 //Manage player charsheet
@@ -664,7 +669,7 @@ function genReward(val, quant){
     if(val === 'gen'){
         let rewardRefPool = cloneArr(rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
         let generatedItem
-        el('rewards').innerHTML = ``
+        el('rewards').innerHTML = `` // clear modal body
 
         for(i=0; i < quant; i++){ //gen item per quant value in function
             let reward = rarr(rewardRefPool) //pick random reward
