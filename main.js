@@ -651,7 +651,7 @@ function turnCalc(buttonElem, itemId){
         updateUi()
         gameState.stage++
 
-        genReward('gen', 6)
+        genReward('gen', 4)
         
     }
 
