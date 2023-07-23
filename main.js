@@ -60,7 +60,7 @@ class Item {
         let extraProps = [
             {key:'name', val: `${key} scroll`},
             {key:'itemid', val: "id" + Math.random().toString(8).slice(2)},//gens unique id
-            {key:'durability', val: 5},
+            {key:'durability', val: 10},
             {key:'effectMod', val: 0},
             {key:'cost', val: 12}, 
         ]
@@ -144,21 +144,21 @@ let itemsRef = {
     Attack:  {desc: "Deal damage equal to dice roll value", durability:12 },
     Block:   {desc: 'Block damage equal to dice roll value', },
     Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn', },
-    Repair:  {desc: 'Restore durability to all different type items', effectMod: 1,},
+    Repair:  {desc: 'Restore durability to all different type items', effectMod: 3,},
     Fireball:{desc: 'Deal damage equal to (roll x empty item slots)', durability: 6,},
     
     //Player stats
-    Heal:    {desc: "Restore 12 life", durability: 2, effectMod: 12},
-    Fortify: {desc: 'Increase def until the end of this fight', durability:1, effectMod: 1,},
+    Heal:    {desc: "Restore 12 life", durability: 3, effectMod: 12},
+    Fortify: {desc: 'Increase def until the end of this fight', durability:1, effectMod: 3,},
     // Rage:    {desc: 'Increase power until the end of this fight'},
     // Focus:   {desc: 'Increase next turn roll'},
-    Reroll: {desc: "Instant action: Reroll your dice.", durability: 3},
+    Reroll: {desc: "Instant action: Reroll your dice.", durability: 10},
 
     //Enemy states
     Weaken:  {desc: 'Reduce enemy power', durability: 3,},
     Break:   {desc: 'Break enemy defence', durability: 3,},
     Counter: {desc: 'Prevent enemy action', durability: 3},
-    Root:    {desc: 'Reduce enemy dice by 2', durability: 3, effectMod: 2,},
+    Root:    {desc: 'Reduce enemy dice by 2', durability: 3, effectMod: 3,},
     // Stun:    {desc: 'Prevent enemy for acting during this turn'},
 
     //Passive items
@@ -209,11 +209,11 @@ let rewardRef = [
 let enemyActions = {
     Attack:      {        action: 'Attack',  desc: `Attack`},
     Block:       {rate:1, action: 'Block',   desc: `Block`},
-    Multistrike :{rate:2, action: 'Multistrike', desc: `Multistrike`},
-    Fortify:     {rate:1, action: 'Fortify', desc: `Armor up!`},
+    Multistrike: {rate:2, action: 'Multistrike', desc: `Multistrike`},
+    Fortify:     {rate:2, action: 'Fortify', desc: `Armor up!`},
     Empower:     {rate:2, action: 'Empower', desc: `More POWER!`},
-    Rush:        {rate:3, action: 'Rush', desc: `Larger dice!`},
-    Sleep:       {rate:2, action: 'Sleep', desc: `Zzzz...`,},
+    Rush:        {rate:1, action: 'Rush', desc: `Larger dice!`},
+    Sleep:       {rate:3, action: 'Sleep', desc: `Zzzz...`,}, //Make sure all rates are there, else error
 
     Recover:     {rate:4, action: 'Recover', desc:`Recover`}
 
@@ -256,7 +256,7 @@ function genPlayer(){
     startingItems.forEach(key => {addTargetItem(key)})
 
     playerObj.inventory[0].durability = 99
-    playerObj.inventory[2].durability = 10 
+    playerObj.inventory[1].durability = 99 
 
     // addRandomItem(2)
 }
@@ -655,9 +655,7 @@ function turnCalc(buttonElem, itemId){
     else if (enemyObj.life < 1){
         updateUi()
         gameState.stage++
-
-        genReward('gen', 4)
-        
+        genReward('gen', 5) //Number of rewards to give
     }
 
 }
@@ -693,7 +691,7 @@ function genReward(val, quant){
             //if item add item desck
             if(reward.type === 'Item'){
                 button.innerHTML = `
-                <h3>${generatedItem.action} (Durability: ${generatedItem.durability})</h3><br> 
+                <h3>${generatedItem.action} (Durability: ${generatedItem.durability})</h3> 
                 ${generatedItem.desc} (requires empty item slot).`
                 
                 button.setAttribute('onclick', `genReward('${reward.type}', '${generatedItem.itemid}')`) //quant will be id for items
@@ -842,7 +840,11 @@ function updateUi(){
         el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
 
     }
+    else if(enemyActions[enemyObj.action] === undefined){
+        console.log(enemyObj);
+    }
     else{
+        // console.log(enemyActions[enemyObj.action]);
         el('intent').innerHTML = `${enemyActions[enemyObj.action].desc}`
     }
 }
