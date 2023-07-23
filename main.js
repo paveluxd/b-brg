@@ -144,7 +144,7 @@ let itemsRef = {
     Attack:  {desc: "Deal damage equal to dice roll value", durability:12 },
     Block:   {desc: 'Block damage equal to dice roll value', },
     Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn', },
-    Repair:  {desc: 'Restore durability to all different type items', effectMod: 3,},
+    Repair:  {desc: 'Restore durability to all different type items', effectMod: 2,},
     Fireball:{desc: 'Deal damage equal to (roll x empty item slots)', durability: 6,},
     
     //Player stats
@@ -210,10 +210,10 @@ let enemyActions = {
     Attack:      {        action: 'Attack',  desc: `Attack`},
     Block:       {rate:1, action: 'Block',   desc: `Block`},
     Multistrike: {rate:2, action: 'Multistrike', desc: `Multistrike`},
-    Fortify:     {rate:2, action: 'Fortify', desc: `Armor up!`},
+    Fortify:     {rate:3, action: 'Fortify', desc: `Armor up!`},
     Empower:     {rate:2, action: 'Empower', desc: `More POWER!`},
-    Rush:        {rate:1, action: 'Rush', desc: `Larger dice!`},
-    Sleep:       {rate:3, action: 'Sleep', desc: `Zzzz...`,}, //Make sure all rates are there, else error
+    Rush:        {rate:2, action: 'Rush', desc: `Larger dice!`},
+    Sleep:       {rate:1, action: 'Sleep', desc: `Zzzz...`,}, //Make sure all rates are there, else error
 
     Recover:     {rate:4, action: 'Recover', desc:`Recover`}
 
@@ -839,9 +839,6 @@ function updateUi(){
     else if(enemyObj.action === 'Block'){
         el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
 
-    }
-    else if(enemyActions[enemyObj.action] === undefined){
-        console.log(enemyObj);
     }
     else{
         // console.log(enemyActions[enemyObj.action]);
