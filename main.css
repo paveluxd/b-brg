@@ -121,9 +121,9 @@ button:disabled{
 
 .action{
     min-width: 151px;
+    max-width: 49%;
     height: auto;
     min-height: 64px;
-    max-width: 49%;
     padding: 0px;
 
     flex-direction: column;
