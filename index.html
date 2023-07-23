@@ -8,18 +8,17 @@
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="main.css">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 </head>
 
 <body>
     
+    <p id="log">stage: 1<br> turn:1</p>
+
     <!-- Combat ui -->
     <div class="column grow" style="align-items: stretch; padding: 0 4px;">
-
-        <div style="gap: 8px; display:flex; padding: 4px 0 0 12px; justify-content: space-between; align-items: center;">
-            <div id="logIndicator">Turn counter</div>
-            <button onclick="toggleModal('menu')" style="background-color: rgba(0, 0, 0, 0.251); border: none"><img src="./img/ico/settings.svg"></button>
-        </div>
-        
         <div class="row" style="align-items: stretch; flex-grow: 1;">
             <!-- Player -->
             <div class="column" style="">
@@ -29,31 +28,7 @@
                     <img src="./img/char-knight.svg">
                 </div>
 
-                <div class="column" style="align-items: flex-start; gap: 4px;">
-                    
-                    <div class="row">
-                        <div class="row stat">
-                            <img src="./img/ico/hp.svg" alt="">
-                            <div id="p-life"></div>
-                        </div>
-                        <div class="row stat">
-                            <img src="./img/ico/shield.svg" alt="">
-                            <div id="p-def"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="row stat">
-                            <img src="./img/ico/dice.svg" alt="">
-                            <div id="p-dice"></div>
-                        </div>
-                        <div class="row stat">
-                            <img src="./img/ico/lightning.svg" alt="">
-                            <div id="p-power"></div>
-                        </div>
-                        
-                    </div>
-                </div>
+                
             </div>
     
             <!-- Enemy -->
@@ -72,33 +47,7 @@
                     <img id="enemyImg" src="./img/enemy/1.png" class="flip">
                 </div>
 
-                <div class="column" style="align-items: flex-start; gap: 4px;">
-                    <div class="row">
-                        <div class="row stat">
-                            <img src="./img/ico/hp.svg" alt="">
-                            <div id="life"></div>
-                        </div>
-
-                        <div class="row stat">
-                            <img src="./img/ico/shield.svg" alt="">
-                            <div id="def"></div>
-                        </div>
-                    </div>
-
-    
-                    <div class="row">
-                        <div class="row stat">
-                            <img src="./img/ico/dice.svg" alt="">
-                            <div id="dice"></div>
-                        </div>
-
-                        <div class="row stat">
-                            <img src="./img/ico/lightning.svg" alt="">
-                            <div id="power"></div>
-                        </div>
-                    </div>
-                    
-                </div>
+                
 
                 
             </div>
@@ -106,8 +55,66 @@
     </div>
 
 
-    <!-- Actions -->
-    <div id="playerActionContainer" class="actions-container"></div>
+    <div style="max-width: 480px;">
+        <!-- Actions -->
+        <div id="stats" class="row">
+            <!-- Player --> 
+            <div class="column">
+                    <div class="row stat">
+                        <img src="./img/ico/hp-bb.svg" alt="">
+                        <div id="p-life"></div>
+                    </div>
+                    <div class="row stat">
+                        <img src="./img/ico/dice-bb.svg" alt="">
+                        <div id="p-dice"></div>
+                    </div>
+            </div>
+                
+            <div class="column">
+                    <div class="row stat">
+                        <img src="./img/ico/shield-bb.svg" alt="">
+                        <p id="p-def"></p>
+                    </div>
+                    <div class="row stat">
+                        <img src="./img/ico/power-bb.svg" alt="">
+                        <p id="p-power"></p>
+                    </div>
+                    
+            </div>
+    
+            <!-- Menu -->
+            <button onclick="toggleModal('menu')" style="border: none; background-color: var(--black);"><img src="./img/ico/settings-pale.svg"></button>
+    
+    
+            <!-- Enemy -->
+            <div class="column">
+                    <div class="row stat">
+                        <img src="./img/ico/hp-bb.svg" alt="">
+                        <div id="life"></div>
+                    </div>
+    
+                    <div class="row stat">
+                        <img src="./img/ico/dice-bb.svg" alt="">
+                        <div id="dice"></div>
+                    </div>
+            </div>
+                
+            <div class="column">
+                    <div class="row stat">
+                        <img src="./img/ico/shield-bb.svg" alt="">
+                        <p id="def"></p>
+                    </div>
+    
+                    <div class="row stat">
+                        <img src="./img/ico/power-bb.svg" alt="">
+                        <p id="power"></p>
+                    </div>
+                
+            </div>
+        </div>
+    
+        <div id="playerActionContainer" class="actions-container"></div>
+    </div>
     
 
 
@@ -159,12 +166,12 @@
     </div>
 
     <!-- Game over -->
-    <div class="modal hide" id="gameOverScreen">
+    <div class="modal " id="gameOverScreen">
         <div class="modal-container">
-            <div class="column button-container modal-body">
-                <h1>You have beed defeated. Game over!</h1>
-                <p id="gameOverScreenLog"></p>
-                <button onclick="toggleModal('gameOverScreen'), initiateCombat()">Start over</button>
+            <div class="column button-container modal-body" style="margin: auto;">
+                <h1 style="font-weight: 600;">Game over!</h1>
+                <p id="gameOverScreenLog">Refresh the page to try again.</p>
+                <!-- <button onclick="toggleModal('gameOverScreen'), initiateCombat()">Start over</button> -->
             </div>
         </div>
     </div>

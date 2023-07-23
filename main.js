@@ -83,7 +83,7 @@ class Item {
 
 class PlayerObj {
     constructor(){
-        this.maxLife = 20,
+        this.maxLife = 32,
         this.life  = this.maxLife
 
         this.flatPower = 0,
@@ -258,7 +258,7 @@ function genPlayer(){
     playerObj.inventory[0].durability = 99
     playerObj.inventory[2].durability = 10 
 
-    addRandomItem(2)
+    // addRandomItem(2)
 }
 
 //Manage player charsheet
@@ -789,6 +789,8 @@ function floatText(target, string){
 }
 
 function updateUi(){
+    //log
+    el('log').innerHTML = `Stage: ${gameState.stage} <br> Turn: ${combatState.turn}` 
 
     //Enemy floating number
     if(combatState.enemyDmgTaken > 0){//Attack
@@ -821,11 +823,6 @@ function updateUi(){
         floatText('pl',`-${combatState.playerDmgTaken} life`)
     }
 
-
-    //Game stats
-    el('logIndicator').innerHTML = `
-    Stage: ${gameState.stage} / Turn: ${combatState.turn}`
-
     //Player stats
     el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
     el('p-def').innerHTML = `${playerObj.def}`
@@ -857,10 +854,27 @@ function genCards(){
     //Add buyyons per player item
     playerObj.inventory.forEach(item => {
         let button = document.createElement('button')
+
+        //add top decorative bar
+        let bar = document.createElement('div')
+        bar.innerHTML = `
+                    <svg height="4" width="4" style="fill: black;">
+                        <polygon points="0,0 0,4 4,0"/>
+                    </svg>
+                    <svg height="4" width="4" style="fill: black;">
+                        <polygon points="4,0 0,0 4,4"/>
+                    </svg>
+                    `
+
+        let content = document.createElement('section')
+        
         button.setAttribute('onclick', `turnCalc(this)`)
-        button.setAttribute('itemid', item.itemid)
+        button.setAttribute('itemid', item.itemid) // add item id
         button.classList.add('action')
+
+        button.append(bar, content)
         updateBtnLabel(button, item)
+        
         playerActionContainer.append(button)
     })
 
@@ -868,9 +882,9 @@ function genCards(){
     let emptySlots = playerObj.maxInventory - playerObj.inventory.length
     for (i=0; i < emptySlots; i++){
         let button = document.createElement('button')
-        button.innerHTML = `Item slot`
+        button.innerHTML = `[ ]`
         button.disabled = true
-        button.classList.add('action')
+        button.classList.add('action', 'empty-slot')
         playerActionContainer.append(button) 
     }
 
@@ -878,23 +892,39 @@ function genCards(){
 
 function updateBtnLabel(buttonElem, itemObj){
     if(itemObj.action === 'Attack'){
-        buttonElem.innerHTML = `
-        <span style="font-weight: 600;">${itemObj.action} for ${playerObj.roll + playerObj.power} (${itemObj.durability})</span>
-        ${itemObj.desc}` 
+        buttonElem.querySelector('section').innerHTML = `
+        <span>
+            <h3>${itemObj.action} for ${playerObj.roll + playerObj.power}</h3> 
+            <p>x${itemObj.durability}</p>
+        </span>
+        <p class='desc'>${itemObj.desc}</p>
+    `   
     }
-    else if(itemObj.action === 'Fireball'){
-        buttonElem.innerHTML = `
-        <span style="font-weight: 600;">${itemObj.action} for ${playerObj.roll * (playerObj.maxInventory - playerObj.inventory.length)} (${itemObj.durability})</span>
-        ${itemObj.desc}`   
+    else if(itemObj.action === 'Fireball'){        
+        buttonElem.querySelector('section').innerHTML = `
+            <span>
+                <h3>${itemObj.action} for ${playerObj.roll * (playerObj.maxInventory - playerObj.inventory.length)}</h3> 
+                <p>x${itemObj.durability}</p>
+            </span>
+            <p class='desc'>${itemObj.desc}</p>
+        `
     }
     else if (['Block', 'Break'].indexOf(itemObj.action) > -1){
-        buttonElem.innerHTML = `
-        <span style="font-weight: 600;">${itemObj.action} ${playerObj.roll} (${itemObj.durability})</span>
-        ${itemObj.desc}`
+        buttonElem.querySelector('section').innerHTML = `
+            <span>
+                <h3>${itemObj.action} ${playerObj.roll}</h3> 
+                <p>x${itemObj.durability}</p>
+            </span>
+            <p class='desc'>${itemObj.desc}</p>
+        `      
     }
     else{
-        buttonElem.innerHTML = `
-        <span style="font-weight: 600;">${itemObj.action} (${itemObj.durability})</span>
-        ${itemObj.desc}`
+        buttonElem.querySelector('section').innerHTML = `
+            <span>
+                <h3>${itemObj.action}</h3> 
+                <p>x${itemObj.durability}</p>
+            </span>
+            <p class='desc'>${itemObj.desc}</p>
+        `        
     }
 }
