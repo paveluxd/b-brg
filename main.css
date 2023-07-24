@@ -120,8 +120,8 @@ button:disabled{
 }
 
 .action{
-    min-width: 151px;
-    max-width: 49%;
+    /* min-width: 132px; */
+    width: calc(50% - 1px);
     height: auto;
     min-height: 64px;
     padding: 0px;
