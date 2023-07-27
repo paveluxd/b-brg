@@ -17,6 +17,7 @@ export class Item {
             {key:'durability', val: 10},
             {key:'effectMod', val: 0},
             {key:'cost', val: 12}, 
+            {key:'cooldown', val: undefined},
         ]
 
 
@@ -37,7 +38,7 @@ export class Item {
 
 export class PlayerObj {
     constructor(){
-        this.maxLife = 32,
+        this.maxLife = 392,
         this.life  = this.maxLife
 
         this.flatPower = 0,
@@ -61,7 +62,7 @@ export class PlayerObj {
 
 export class EnemyObj {
     constructor(){
-        this.life  = Math.floor(6 + gameState.stage * 2),
+        this.life  = gameState.enemyLifeBase
         this.maxLife = this.life
 
         this.power = Math.ceil(utility.rng(gameState.stage * 0.5, 0)),
@@ -71,6 +72,25 @@ export class EnemyObj {
         
         this.level = gameState.stage
         this.image = `./img/enemy/${gameState.stage}.png`
+        utility.el('enemyImg').classList.remove('boss')
+
+
+        //Create boss every 10 levels
+        if(gameState.stage % 10 === 0){
+            gameState.enemyLifeBase+= 4 //Enemies +4 life after boss is killed
+
+            this.life  = Math.round(gameState.enemyLifeBase * 1.25)
+            this.maxLife = this.life
+
+            this.power = Math.ceil(utility.rng(gameState.stage * 0.3, 0)),
+            this.def   = Math.ceil(utility.rng(gameState.stage * 0.3, 0)),
+
+            this.dice  = 12
+            
+            this.level = gameState.stage
+            this.image = `./img/boss/${gameState.stage/10}.png`
+            utility.el('enemyImg').classList.add('boss')
+        }
     }
 }
 
@@ -87,6 +107,7 @@ export class CombatState {
 export class GameState{
     constructor(){
         this.stage = 1
+        this.enemyLifeBase = 6
     }
 }
 export let gameState = new GameState
@@ -96,10 +117,12 @@ export let gameState = new GameState
 export let itemsRef = {
     //Item key is used as 'action' string
     Attack:  {desc: "Deal damage equal to dice roll value", durability:12 },
-    Block:   {desc: 'Block damage equal to dice roll value', },
-    Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn', },
     Repair:  {desc: 'Restore durability to all different type items', effectMod: 2,},
     Fireball:{desc: 'Deal damage equal to (roll x empty item slots)', durability: 6,},
+    Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn', },
+
+    Block:   {desc: 'Block damage equal to dice roll value', },
+    Barrier:  {desc: `Reduce incomming damage by 75%, cd:3`, cooldown: 3, },
     
     //Player stats
     Heal:    {desc: "Restore 12 life", durability: 3, effectMod: 12},

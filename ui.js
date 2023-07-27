@@ -128,6 +128,11 @@ export function genCards(){
         button.append(bar, content)
         updateBtnLabel(button, item)
         
+        if(item.cooldown !== undefined && item.cooldown < itemsRef[item.action].cooldown){
+            item.cooldown++
+            button.disabled = true
+        }
+
         playerActionContainer.append(button)
     })
 

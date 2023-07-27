@@ -16,7 +16,7 @@ export let rewardPool = []
 function genPlayer(){
     playerObj = new PlayerObj
 
-    let startingItems = ['Attack', 'Block','Reroll']
+    let startingItems = ['Attack', 'Block','Barrier']
     startingItems.forEach(key => {addTargetItem(key)})
 
     playerObj.inventory[0].durability = 99
@@ -25,7 +25,6 @@ function genPlayer(){
     // addRandomItem(2)
 }
 
-//Manage player charsheet
 //ADD ITEMS
 function addTargetItem(key, iLvl){
     if(playerObj.inventory.length < playerObj.maxInventory){
@@ -130,30 +129,21 @@ function resolvePassiveItem(item, event){
     }
 }
 
-function genEnemy(){
-    enemyObj = new EnemyObj
-    utility.el('enemyImg').setAttribute('src', enemyObj.image)
-
-}
-
 //Generate enemy action for the next turn
 function genEnemyActions(){
-    //Roll enemy dice
-    enemyObj.roll = utility.rng(enemyObj.dice)
-
-    //Pick random action
-    let actionRoll = utility.rng(100)                  //roll to pick action
+    enemyObj.roll = utility.rng(enemyObj.dice) //Roll enemy dice
+    let actionRoll = utility.rng(100)          //roll to pick action
     let enemyAc                                //Final action
     let aAction = []  
     let actionKeys = Object.keys(enemyActions) //Get keys
 
+    //if weakened enemy starts recovering
     if(enemyObj.def < 0 || enemyObj.def < 0 || enemyObj.def < 0){
         enemyActions.Recover.rate = 1
         console.log('updater');
     }
     else{
         enemyActions.Recover.rate = 4
-
     }
 
     //Pick action
@@ -187,29 +177,31 @@ function genEnemyActions(){
 }
 
 
-//***
-//COMBAT
-function initiateCombat(){
-    combatState = new CombatState
-    if(playerObj === undefined || playerObj.life < 1 ){genPlayer()}
-
-    //Restore flat def
-    if(playerObj.def !== playerObj.flatDef){
-        playerObj.def = playerObj.flatDef
-    }
-
-    //Restore flat power
-    if(playerObj.power < playerObj.flatPower){playerObj.power = playerObj.flatPower}
-
-    genEnemy()
-    genEnemyActions() 
-    updateUi()
-    genCards()
-}
-initiateCombat()
-
 
 class Game {
+    //Combat start
+    initiateCombat(){
+        combatState = new CombatState
+        if(playerObj === undefined || playerObj.life < 1 ){genPlayer()}
+    
+        //Restore flat def
+        if(playerObj.def !== playerObj.flatDef){
+            playerObj.def = playerObj.flatDef
+        }
+    
+        //Restore flat power
+        if(playerObj.power < playerObj.flatPower){
+            playerObj.power = playerObj.flatPower
+        }
+    
+        //Generates enemy
+        enemyObj = new EnemyObj
+        utility.el('enemyImg').setAttribute('src', enemyObj.image)
+
+        genEnemyActions() 
+        updateUi()
+        genCards()
+    }
 
     //Turn
     turnCalc(buttonElem, itemId){
@@ -287,6 +279,11 @@ class Game {
             else if (playerAction === 'Root'){
                 enemyObj.dice -= sourceItem.effectMod
             }
+            else if(playerAction === 'Barrier'){
+                playerObj.protection = 'Barrier'
+                sourceItem.cooldown = 0
+
+            }
             
             //Enemy action
             if(enemyObj.state !== 'Skip turn'){
@@ -341,6 +338,7 @@ class Game {
     
             //CALC
             //Deal damage if chars attacked
+            //Player calc
             if (['Attack', 'Fireball'].indexOf(playerAction) > -1){
                 if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//reduce def on low hit
     
@@ -351,7 +349,14 @@ class Game {
                 combatState.enemyDmgTaken = playerDmgDone //Trigger damage indicator
             }
     
+            //Enemy calc
             if(['Attack'].indexOf(enemyObj.action) > -1 && enemyObj.state !== 'Skip turn'){
+
+                if(playerObj.protection === 'Barrier'){
+                    playerObj.protection = ''
+                    enemyDmgDone = Math.round(enemyDmgDone * 0.25)
+                    console.log(12);
+                }
      
                 if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit4
     
@@ -426,8 +431,7 @@ class Game {
     
     }
      
-    //***
-    //REWARDS
+    //Rewards
     genReward(val, quant){
         //Pick from reward pool    
         if(val === 'gen'){
@@ -510,7 +514,7 @@ class Game {
                 rewardPool = []
             }
     
-            initiateCombat()
+            this.initiateCombat()
             genCards()
             updateUi()
             utility.toggleModal('rewardScreen')
@@ -518,6 +522,9 @@ class Game {
     }
 }
 
+//Makes game methods global
 let game = new Game
 window.game = game
+game.initiateCombat()
 
+window.playerObj = playerObj

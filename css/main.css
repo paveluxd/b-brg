@@ -275,6 +275,11 @@ h3{
     height: 124px;
 }
 
+.boss{
+    width: 180px !important;
+    height: 180px !important;
+}
+
 .floating-ind {
     position: absolute;
     opacity: 0;
