@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Baryon Brigade</title>
-    <link rel="stylesheet" href="reset.css">
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/main.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,7 +83,7 @@
             </div>
     
             <!-- Menu -->
-            <button onclick="toggleModal('menu')" style="border: none; background-color: var(--black);"><img src="./img/ico/settings-pale.svg"></button>
+            <button onclick="utility.toggleModal('menu')" style="border: none; background-color: var(--black);"><img src="./img/ico/settings-pale.svg"></button>
     
     
             <!-- Enemy -->
@@ -141,7 +141,7 @@
 
             <div class="modal-header">
                 <h2>Menu</h2>
-                <button onclick="toggleModal('menu')">Close</button>
+                <button onclick="utility.toggleModal('menu')">Close</button>
             </div>
 
             <div class="column button-container modal-body">
@@ -177,5 +177,6 @@
     </div>
 
 </body>
-<script src="main.js"></script>
+<script type="module" src="main.js">
+</script>
 </html>
