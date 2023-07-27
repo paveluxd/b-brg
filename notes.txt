@@ -1,16 +1,16 @@
 //To-do
 //To make it playable
 + Reward system after winning a combat.
-- Set of player actions.
++ Set of player actions.
     + Add items that imrove dice and other stats.
-- Set of enemy actions.
-- Enemy scaling.
++ Set of enemy actions.
++ Enemy scaling.
++ Improve UI
 
 //Backlog
 - Restart game on end game modal.
 - Combat log.
 - Art
-- Improve UI
 - Hardcoded quiz feature.
     - Rng quiz quantity and rewards.
 - Shop to spend gold.
