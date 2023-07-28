@@ -83,7 +83,7 @@
             </div>
     
             <!-- Menu -->
-            <button onclick="utility.toggleModal('menu')" style="border: none; background-color: var(--black);"><img src="./img/ico/settings-pale.svg"></button>
+            <button onclick="utility.toggleModal('character')" style="border: none; background-color: var(--black);"><img src="./img/ico/settings-pale.svg"></button>
     
     
             <!-- Enemy -->
@@ -136,20 +136,68 @@
 
 
     <!-- Menu -->
-    <div class="modal hide" id="menu">
+    <div class="modal " id="character">
         <div class="modal-container">
 
             <div class="modal-header">
                 <h2>Menu</h2>
-                <button onclick="utility.toggleModal('menu')">Close</button>
             </div>
 
             <div class="column button-container modal-body">
                 <p>TBA</p>
+
+                
             </div>
 
         </div>
     </div>
+
+    <div id="tabs" class="row" style="position: fixed; bottom: 0px;">
+        <button>Character</button>
+        <button onclick="utility.toggleModal('map')">Map</button>
+        <button onclick="utility.toggleModal('inventory')">Inventory</button>
+        <button onclick="utility.toggleModal('tree')">Tree</button>
+        <button onclick="utility.toggleModal('character')">X</button>
+    </div>
+
+    <!-- Tree -->
+    <div id="tree" class="modal hide">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Tree</h2>
+            </div>
+
+            <div class="column button-container modal-body">
+                <p>TBA</p>  
+            </div>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div id="map" class="modal hide">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>map</h2>
+            </div>
+
+            <div class="column button-container modal-body">
+                <p>TBA</p>  
+            </div>
+        </div>
+    </div>
+
+    <div id="inventory" class="modal hide">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Inventory</h2>
+            </div>
+
+            <div class="column button-container modal-body">
+                <p>TBA</p>  
+            </div>
+        </div>
+    </div>
+
 
 
     <!-- Combat end screen -->

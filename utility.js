@@ -6,6 +6,7 @@ export class Utility {
     }
 
     toggleModal(id){//modal
+        document.querySelector('.modal').classList.add
         document.getElementById(id).classList.toggle('hide')
         this.runAnim(this.el(id).firstElementChild, 'modal-slide')
     }

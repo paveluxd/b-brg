@@ -42,7 +42,11 @@ export function floatText(target, string){
 
 export function updateUi(){
     //log
-    utility.el('log').innerHTML = `Stage: ${gameState.stage} <br> Turn: ${combatState.turn}` 
+    utility.el('log').innerHTML = `
+        Stage: ${gameState.stage} <br> 
+        Turn: ${combatState.turn} <br>
+        Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
+    ` 
 
     //Enemy floating number
     if(combatState.enemyDmgTaken > 0){//Attack
@@ -97,7 +101,6 @@ export function updateUi(){
         utility.el('intent').innerHTML = `Will ${enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
     }
     else{
-        console.log(enemyActions[enemyObj.action]);
         utility.el('intent').innerHTML = `${enemyActions[enemyObj.action].desc}`
     }
 }
@@ -106,7 +109,7 @@ export function updateUi(){
 export function genCards(){
     playerActionContainer.innerHTML = ''
     
-    //Add buyyons per player item
+    //Add buttons per player item
     playerObj.inventory.forEach(item => {
         let button = document.createElement('button')
 

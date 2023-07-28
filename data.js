@@ -38,25 +38,30 @@ export class Item {
 
 export class PlayerObj {
     constructor(){
-        this.maxLife = 392,
-        this.life  = this.maxLife
+        //Core
+        this.maxLife      = 999 
+        this.life         = this.maxLife
+        this.flatPower    = 0
+        this.power        = 0
+        this.flatDef      = 0   
+        this.def          = 0
 
-        this.flatPower = 0,
-        this.power = 0,
+        this.defaultDice  = 6 //needed as ref in case flat dice is modified by item
+        this.flatDice     = this.defaultDice
+        this.dice         = this.defaultDice
 
-        this.flatDef = 0,
-        this.def   = 0,
+        this.roll         = utility.rng(this.defaultDice) //initial roll
+        this.rollBonus    = 0
 
-        this.defaultDice = 6
-        this.flatDice = this.defaultDice
-        this.dice  = this.defaultDice,
-        this.roll = utility.rng(this.defaultDice)
-        this.rollBonus = 0
+        this.maxInventory = 8
+        this.inventory    = []
 
-        this.maxInventory = 8,
-        this.inventory = [],
+        //Sub-stats
 
-        this.gold = 0
+        //Misc-stats
+        this.gold         = 0
+        this.exp          = 0
+        this.lvl          = 1
     }
 }
 
@@ -113,10 +118,11 @@ export class GameState{
 export let gameState = new GameState
 
 
-//Data & vars
+//item = action
 export let itemsRef = {
     //Item key is used as 'action' string
     Attack:  {desc: "Deal damage equal to dice roll value", durability:12 },
+    ExtraAttack:  {desc: "Deal 1 damage as extra action", type:'extra'}, //add varioation with cd and cost
     Repair:  {desc: 'Restore durability to all different type items', effectMod: 2,},
     Fireball:{desc: 'Deal damage equal to (roll x empty item slots)', durability: 6,},
     Dodge:   {desc: 'Skip turn to keep half of your roll for the next turn', },
@@ -129,7 +135,7 @@ export let itemsRef = {
     Fortify: {desc: 'Increase def until the end of this fight', durability:1, effectMod: 3,},
     // Rage:    {desc: 'Increase power until the end of this fight'},
     // Focus:   {desc: 'Increase next turn roll'},
-    Reroll: {desc: "Instant action: Reroll your dice.", durability: 10},
+    Reroll: {desc: "Instant action: Reroll your dice.", durability: 10, type:'extra'},
 
     //Enemy states
     Weaken:  {desc: 'Reduce enemy power', durability: 3,},
@@ -196,3 +202,50 @@ export let enemyActions = {
     // "escape":   {rate:1,   desc: `Will escape`},
     //"crit":
 }
+
+//Tree -> Nodes
+export let passiveTreeRef = [
+    //Core stats
+    {id:'add-life'},
+    {id:'add-def'},
+    {id:'add-power'},
+    {id:'add-dice'},
+    {id:'add-inventory'},
+
+
+    //Recovery
+    {id:'add-regen-per-turn'}, //Regen N life per turn or combat.
+    {id:'add-regen-per-combat'},
+    
+    {id:'add-leech'}, //Recover % of damage dealt
+    
+    
+    //On hit effects
+    {id:'ext-dmg'}, //Deal +1 damage
+    {id:"ext-def-break-dmg"}, //Break 1 def on hit.
+
+
+    //Extra defences
+    {id:'add-def-per-power'}, //+1 def per point of power.
+
+
+    //Action specific
+    {id:'improve-barrier'}, //improve barrier by 25%
+
+
+    //Cooldown actions
+    {id:'less-cd'}, //Cooldowns recover 1 turn faster
+
+
+    //Extra actions
+
+
+    //Gold
+
+
+    //Exp
+
+
+    //Durability
+    {id:'chance-save-dur'}, //20% chance to not loose durability on use <item type>
+]

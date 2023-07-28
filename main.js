@@ -16,7 +16,7 @@ export let rewardPool = []
 function genPlayer(){
     playerObj = new PlayerObj
 
-    let startingItems = ['Attack', 'Block','Barrier']
+    let startingItems = ['Attack', 'Block','ExtraAttack']
     startingItems.forEach(key => {addTargetItem(key)})
 
     playerObj.inventory[0].durability = 99
@@ -239,22 +239,31 @@ class Game {
             if(playerAction==='Counter'){
                 enemyObj.state='Skip turn'
             }
-            //Instant actions
-            else if (playerAction === 'Reroll'){
-                playerObj.roll = utility.rng(playerObj.dice)
-                
-                
-                //Deal with durability
-                sourceItem.durability--
-                if(sourceItem.durability<1){
-                    utility.removeFromArr(playerObj.inventory, sourceItem)
-                    if(sourceItem.type === 'passive'){
-                        resolvePassiveItem(sourceItem)
-                        //Loose passive stat
-                    }
+
+            //Extra actions
+            else if(sourceItem.type === 'extra'){
+                if (playerAction === 'Reroll'){
+                    playerObj.roll = utility.rng(playerObj.dice) 
                 }
+                else if (playerAction === 'ExtraAttack'){
+                    playerDmgDone = 1 + playerObj.power //Set damage
+
+                    if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
+    
+                    playerDmgDone -= enemyObj.def             //Reduce dmg by def
+                    if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
+                    enemyObj.life -= playerDmgDone            //Reduce life
+
+                    //Trigger enemy damage indicator
+                    combatState.enemyDmgTaken = playerDmgDone 
+                }
+
+                //Deal with durability
+                this.resolveDurability(sourceItem)
+
                 updateUi()
                 genCards()
+                this.combatEndCheck()
                 return
             }
     
@@ -294,7 +303,7 @@ class Game {
             else if (playerAction === 'Root'){
                 enemyObj.dice -= sourceItem.effectMod
             }
-            else if(playerAction === 'Barrier'){
+            else if (playerAction === 'Barrier'){
                 playerObj.protection = 'Barrier'
                 sourceItem.cooldown = 0
 
@@ -354,9 +363,7 @@ class Game {
             }
     
     
-            //CALCULATION
-            //Deal damage if chars attacked
-
+            //DAMAGE CALCULATION
             //Damage inflicted by player
             if (['Attack', 'Fireball'].indexOf(playerAction) > -1){
                 if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
@@ -421,7 +428,7 @@ class Game {
                 }
             }
     
-            //POST CALC
+            //POST CALCULATION
             //Heal after damage taken to make heal effective if you heal near hp cap.
             if (playerAction === 'Heal'){
                 playerObj.life += sourceItem.effectMod
@@ -429,14 +436,7 @@ class Game {
             }
     
             //Deal with durability
-            sourceItem.durability--
-            if(sourceItem.durability<1){
-                utility.removeFromArr(playerObj.inventory, sourceItem)
-                if(sourceItem.type === 'passive'){
-                    resolvePassiveItem(sourceItem)
-                    //Loose passive stat
-                }
-            }
+            this.resolveDurability(sourceItem)
 
             //End turn updates
             playerObj.roll = utility.rng(playerObj.dice) + playerObj.rollBonus
@@ -445,11 +445,13 @@ class Game {
             enemyObj.state = ''
             combatState.turn++
             genCards() 
-            // updateBtnLabel(buttonElem, sourceItem) //Update durability labels
             updateUi()
         }
-    
-    
+
+    this.combatEndCheck()
+    }
+
+    combatEndCheck(){
         //Check if game state changed
         //Defeat
         if(playerObj.life < 1 || playerObj.inventory.length < 1){
@@ -459,10 +461,24 @@ class Game {
         //Victory
         else if (enemyObj.life < 1){
             updateUi()
+
             gameState.stage++
+
+            playerObj.exp++ //Add 1 exp
+            playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl
+
             game.genReward('gen', 5) //Number of rewards to give
         }
-    
+    }
+
+    resolveDurability(item){
+        item.durability--
+            if(item.durability<1){
+                utility.removeFromArr(playerObj.inventory, item)
+                if(item.type === 'passive'){
+                    resolvePassiveItem(item)//Loose passive stat
+                }
+            }
     }
      
     //Rewards
