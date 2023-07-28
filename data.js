@@ -170,9 +170,10 @@ export let enemyActions = {
     Fortify:     {rate:3, action: 'Fortify', desc: `Armor up!`},
     Empower:     {rate:2, action: 'Empower', desc: `More POWER!`},
     Rush:        {rate:2, action: 'Rush', desc: `Larger dice!`},
-    Sleep:       {rate:1, action: 'Sleep', desc: `Zzzz...`,}, //Make sure all rates are there, else error
 
-    Recover:     {rate:4, action: 'Recover', desc:`Recover`}
+    Sleep:       {rate:1, action: 'Sleep', desc: `Zzzz...`,}, //Make sure all rates are there, else error
+    Detonate:     {rate:1,  action: 'Detonate', desc: `Detonate on death`},
+    Recover:      {action: 'Recover', desc:`Recover`},
 
     // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
     // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
@@ -193,5 +194,5 @@ export let enemyActions = {
     // "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
     // "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
     // "escape":   {rate:1,   desc: `Will escape`},
-    // "sepuku":   {rate:1,   desc: `Will deal ${Math.ceil(dmgVal * 2.5)} to character that would kill them`}
+    //"crit":
 }

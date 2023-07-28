@@ -137,25 +137,40 @@ function genEnemyActions(){
     let aAction = []  
     let actionKeys = Object.keys(enemyActions) //Get keys
 
-    //if weakened enemy starts recovering
+    //If weakened enemy starts recovering
     if(enemyObj.def < 0 || enemyObj.def < 0 || enemyObj.def < 0){
         enemyActions.Recover.rate = 1
-        console.log('updater');
     }
     else{
-        enemyActions.Recover.rate = 4
+        enemyActions.Recover.rate = undefined
     }
 
+    // If low life enamble detonate
+    if(enemyObj.maxLife / enemyObj.life > 3){
+        enemyActions.Detonate.rate = 1
+    }else{
+        enemyActions.Detonate.rate = undefined
+    }
+
+
     //Pick action
-    if(actionRoll < 6){//5%
-        for(let i =0; i<actionKeys.length; i++){
+    if(actionRoll < 2 && utility.objContainsByPropValue(enemyActions, 'rate', 4)){//1%
+        for(let i = 0; i < actionKeys.length; i++){
+            if(enemyActions[actionKeys[i]].rate === 4){
+                aAction.push(enemyActions[actionKeys[i]].action)
+            }
+        }
+        enemyAc = utility.rarr(aAction)
+    }
+    if(actionRoll < 7 && utility.objContainsByPropValue(enemyActions, 'rate', 3)){//5%
+        for(let i = 0; i < actionKeys.length; i++){
             if(enemyActions[actionKeys[i]].rate === 3){
                 aAction.push(enemyActions[actionKeys[i]].action)
             }
         }
         enemyAc = utility.rarr(aAction)
     } 
-    else if (actionRoll < 16){//10%
+    else if (actionRoll < 17 && utility.objContainsByPropValue(enemyActions, 'rate', 2)){//10%
         for(let i =0; i<actionKeys.length; i++){
             if(enemyActions[actionKeys[i]].rate === 2){
                 aAction.push(enemyActions[actionKeys[i]].action)
@@ -163,7 +178,7 @@ function genEnemyActions(){
         }
         enemyAc = utility.rarr(aAction)
     } 
-    else if (actionRoll < 46){//30%
+    else if (actionRoll < 47 && utility.objContainsByPropValue(enemyActions, 'rate', 1)){//30%
         for(let i =0; i<actionKeys.length; i++){
             if(enemyActions[actionKeys[i]].rate === 1){
                 aAction.push(enemyActions[actionKeys[i]].action)
@@ -332,57 +347,78 @@ class Game {
     
                     }
                 }
+                else if (enemyObj.action === 'Detonate'){
+                    enemyDmgDone += enemyObj.maxLife                    
+                }
                 
             }
     
     
-            //CALC
+            //CALCULATION
             //Deal damage if chars attacked
-            //Player calc
+
+            //Damage inflicted by player
             if (['Attack', 'Fireball'].indexOf(playerAction) > -1){
-                if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//reduce def on low hit
+                if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
     
-                playerDmgDone -= enemyObj.def //Check def
-                if(playerDmgDone < 0){playerDmgDone = 0} //Set positive damage to 0
-                enemyObj.life -= playerDmgDone //Reduce life
-    
-                combatState.enemyDmgTaken = playerDmgDone //Trigger damage indicator
+                playerDmgDone -= enemyObj.def             //Check def
+                if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
+                enemyObj.life -= playerDmgDone            //Reduce life
+
+                //Trigger enemy damage indicator
+                combatState.enemyDmgTaken = playerDmgDone 
             }
     
-            //Enemy calc
-            if(['Attack'].indexOf(enemyObj.action) > -1 && enemyObj.state !== 'Skip turn'){
+            //Damage inflicted by enemy
+            if(enemyObj.state !== 'Skip turn'){
 
+                //Reduce damage if barrier
                 if(playerObj.protection === 'Barrier'){
                     playerObj.protection = ''
                     enemyDmgDone = Math.round(enemyDmgDone * 0.25)
-                    console.log(12);
                 }
-     
-                if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit4
+
+                if(['Attack'].indexOf(enemyObj.action) > -1){
     
-                enemyDmgDone -= playerObj.def
-                if (enemyDmgDone < 0){enemyDmgDone = 0} //Set positive damage to 0
-                playerObj.life -= enemyDmgDone
-                
-                //Trigger damage indicator
-                combatState.playerDmgTaken = enemyDmgDone
-            }
-            else if (['Multistrike'].indexOf(enemyObj.action) > -1 && enemyObj.state !== 'Skip turn'){
-                for (let i = 0; i < 3; i ++){
+                    //Reduce def on low hit
+                    if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}
+        
+                    enemyDmgDone -= playerObj.def
     
-                    let playerDamageTaken = enemyDmgDone//move to a diff var due to def reducing dmg done 3 times
-                
-                    if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}//reduce def on low hit
-    
-                    playerDamageTaken -= playerObj.def
-                    if (playerDamageTaken < 0){playerDamageTaken = 0} //Set positive damage to 0
-                    playerObj.life -= playerDamageTaken
-                    
-                    //Trigger damage indicator
+                    //Set positive damage to 0
+                    if (enemyDmgDone < 0){enemyDmgDone = 0} 
+                    playerObj.life -= enemyDmgDone
+
+                    //Trigger player damage indicator
                     combatState.playerDmgTaken = enemyDmgDone
-    
                 }
+                else if (['Multistrike'].indexOf(enemyObj.action) > -1){
+                    for (let i = 0; i < 3; i ++){
     
+                        //Move to a diff var due to def reducing dmg done 3 times
+                        let playerDamageTaken = enemyDmgDone
+    
+                        //Reduce def on low hit
+                        if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}
+        
+                        //Reduce damage by def
+                        playerDamageTaken -= playerObj.def
+    
+                        //Set positive damage to 0
+                        if (playerDamageTaken < 0){playerDamageTaken = 0} 
+                        playerObj.life -= playerDamageTaken
+
+                        //Trigger player damage indicator
+                        combatState.playerDmgTaken = enemyDmgDone
+                    }
+                }
+                else if(['Detonate'].indexOf(enemyObj.action) > -1 && enemyObj.life < 0){
+
+                        playerObj.life -= enemyDmgDone
+
+                        //Trigger player damage indicator
+                        combatState.playerDmgTaken = enemyDmgDone
+                }
             }
     
             //POST CALC
@@ -391,7 +427,6 @@ class Game {
                 playerObj.life += sourceItem.effectMod
                 if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
             }
-    
     
             //Deal with durability
             sourceItem.durability--
@@ -402,8 +437,7 @@ class Game {
                     //Loose passive stat
                 }
             }
-            
-            
+
             //End turn updates
             playerObj.roll = utility.rng(playerObj.dice) + playerObj.rollBonus
             playerObj.rollBonus = 0

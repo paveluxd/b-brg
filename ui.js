@@ -92,10 +92,12 @@ export function updateUi(){
     }
     else if(enemyObj.action === 'Block'){
         utility.el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
-
+    }
+    else if (enemyObj.action === 'Detonate'){
+        utility.el('intent').innerHTML = `Will ${enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
     }
     else{
-        // console.log(enemyActions[enemyObj.action]);
+        console.log(enemyActions[enemyObj.action]);
         utility.el('intent').innerHTML = `${enemyActions[enemyObj.action].desc}`
     }
 }

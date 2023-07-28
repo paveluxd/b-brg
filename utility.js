@@ -57,6 +57,10 @@ export class Utility {
     cloneArr(arr){
         return JSON.parse(JSON.stringify(arr));
     }
+
+    objContainsByPropValue(object, propery, value){
+        return Object.values(object).some(obj => obj[propery] === value)
+    }
 }
 
 let utility = new Utility()
