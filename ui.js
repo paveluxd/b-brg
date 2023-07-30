@@ -1,49 +1,87 @@
-import {Utility} from "./utility.js"
-let utility = new Utility()
+import  xxut from "./utility.js"
+import xxDa from './data.js'
 
-import { 
-    combatState, playerObj, enemyObj 
-} from "/main.js"
-import {
-    Item, PlayerObj, EnemyObj, CombatState, GameState, itemsRef, rewardRef, enemyActions, gameState
-} from "./data.js"
-
-
-let playerActionContainer = utility.el('playerActionContainer')
 
 //UI
+//Manage tabs
 
+//Generate tabs
+function genTabs(){
+    //Clear tabs
+     xxut.el('tabs').innerHTML = ''
+    let screens = ['map', 'character', 'inventory', 'tree']
+    //Gen map tabs
+    screens.forEach(elem => {
+        let tab = document.createElement('button')
+        tab.addEventListener('click', function(){screen(elem)})
+        tab.innerHTML =  xxut.upp(elem)
+         xxut.el('tabs').append(tab)
+    })
+    
+    //Add hidden close button
+    let tab = document.createElement('button')
+    tab.setAttribute('onclick', `screen('combat', this, "overlay")`)
+    tab.classList.add('hide')
+    tab.innerHTML = 'Close'
+     xxut.el('tabs').append(tab)
+}
 
+genTabs()
 
-export function floatText(target, string){
+//Change screens
+window.screen = function(id){
 
-    if(target === 'en'){
-        utility.el('enDmgInd').innerHTML = string
-        utility.runAnim(utility.el('enDmgInd'), 'float-num')
+    //Hide everything
+    document.querySelectorAll('.screen').forEach(t => t.classList.add('hide')); //screens
+        xxut.el('tab-container').classList.add('hide')  //tabs
+    
+    //Show tabs                     
+    if(xxut.el(id).classList.contains('tab')){//if it's a tab, show tabs
+        xxut.el('tab-container').classList.remove('hide')
+    }
+
+    if(id === 'combat-menu'){
+        xxut.el('character').classList.remove('hide');//display screen with id
+        xxut.el('tab-container').lastChild.classList.remove('hide')
+        xxut.el('tab-container').firstChild.classList.add('hide')
+
     }
     else{
-        utility.el('plDmgInd').innerHTML = string
-        utility.runAnim(utility.el('plDmgInd'), 'float-num')
+        xxut.el(id).classList.remove('hide');//display screen with id
+    }
+}
+
+
+function floatText(target, string){
+
+    if(target === 'en'){
+         xxut.el('enDmgInd').innerHTML = string
+         xxut.runAnim( xxut.el('enDmgInd'), 'float-num')
+    }
+    else{
+         xxut.el('plDmgInd').innerHTML = string
+         xxut.runAnim( xxut.el('plDmgInd'), 'float-num')
     }
 
 
     //if positive -> text green etc
     if(string[0] === '-'){
-        utility.el('enDmgInd').setAttribute('style', 'color:red;')
-        utility.el('plDmgInd').setAttribute('style', 'color:red;')
+         xxut.el('enDmgInd').setAttribute('style', 'color:red;')
+         xxut.el('plDmgInd').setAttribute('style', 'color:red;')
 
     }
     else{
-        utility.el('enDmgInd').setAttribute('style', 'color:white;')
-        utility.el('plDmgInd').setAttribute('style', 'color:white;')
+         xxut.el('enDmgInd').setAttribute('style', 'color:white;')
+         xxut.el('plDmgInd').setAttribute('style', 'color:white;')
 
     }
 }
 
-export function updateUi(){
+function updateUi(){
     //log
-    utility.el('log').innerHTML = `
-        Stage: ${gameState.stage} <br> 
+     xxut.el('log').innerHTML = `
+        Encounter: ${xxDa.gameState.encounter} / ${xxDa.gameState.bossFrequency} <br> 
+        Stage: ${xxDa.gameState.stage}
         Turn: ${combatState.turn} <br>
         Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
     ` 
@@ -80,34 +118,34 @@ export function updateUi(){
     }
 
     //Player stats
-    utility.el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
-    utility.el('p-def').innerHTML = `${playerObj.def}`
-    utility.el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
-    utility.el('p-power').innerHTML = `${playerObj.power}`        
+     xxut.el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
+     xxut.el('p-def').innerHTML = `${playerObj.def}`
+     xxut.el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
+     xxut.el('p-power').innerHTML = `${playerObj.power}`        
 
     //Enemy stats
-    utility.el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
-    utility.el('def').innerHTML = `${enemyObj.def}`
-    utility.el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
-    utility.el('power').innerHTML = `${enemyObj.power}`        
+     xxut.el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
+     xxut.el('def').innerHTML = `${enemyObj.def}`
+     xxut.el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
+     xxut.el('power').innerHTML = `${enemyObj.power}`        
 
     if(enemyObj.action === 'Attack'){
-        utility.el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
+         xxut.el('intent').innerHTML = `${xxDa.enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
     }
     else if(enemyObj.action === 'Block'){
-        utility.el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
+         xxut.el('intent').innerHTML = `${xxDa.enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
     }
     else if (enemyObj.action === 'Detonate'){
-        utility.el('intent').innerHTML = `Will ${enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
+         xxut.el('intent').innerHTML = `Will ${xxDa.enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
     }
     else{
-        utility.el('intent').innerHTML = `${enemyActions[enemyObj.action].desc}`
+         xxut.el('intent').innerHTML = `${xxDa.enemyActions[enemyObj.action].desc}`
     }
 }
 
 //Action buttons
-export function genCards(){
-    playerActionContainer.innerHTML = ''
+function genCards(){
+     xxut.el('playerActionContainer').innerHTML = ''
     
     //Add buttons per player item
     playerObj.inventory.forEach(item => {
@@ -133,12 +171,12 @@ export function genCards(){
         button.append(bar, content)
         updateBtnLabel(button, item)
         
-        if(item.cooldown !== undefined && item.cooldown < itemsRef[item.action].cooldown){
+        if(item.cooldown !== undefined && item.cooldown < xxDa.itemsRef[item.action].cooldown){
             item.cooldown++
             button.disabled = true
         }
 
-        playerActionContainer.append(button)
+         xxut.el('playerActionContainer').append(button)
     })
 
     //Add empty item slots
@@ -148,12 +186,12 @@ export function genCards(){
         button.innerHTML = `[ ]`
         button.disabled = true
         button.classList.add('action', 'empty-slot')
-        playerActionContainer.append(button) 
+         xxut.el('playerActionContainer').append(button) 
     }
 
 }
 
-export function updateBtnLabel(buttonElem, itemObj){
+function updateBtnLabel(buttonElem, itemObj){
     if(itemObj.action === 'Attack'){
         buttonElem.querySelector('section').innerHTML = `
         <span>
@@ -190,4 +228,12 @@ export function updateBtnLabel(buttonElem, itemObj){
             <p class='desc'>${itemObj.desc}</p>
         `        
     }
+}
+
+export default{
+    screen,
+    floatText,
+    updateUi,
+    genCards,
+    updateBtnLabel
 }

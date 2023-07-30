@@ -1,27 +1,27 @@
-import {Utility} from "./utility.js"
-let utility = new Utility()
+import xxDa from './data.js'
+import xxUi from './ui.js'
+import xxUt from './utility.js'
 
-import {
-    Item, PlayerObj, EnemyObj, CombatState, GameState, itemsRef, rewardRef, enemyActions, gameState
-} from "./data.js"
+window.xxUt = xxUt
 
-import {
-    floatText, updateUi, genCards, updateBtnLabel
-} from "./ui.js"
-export let playerObj, enemyObj, combatState
-export let rewardPool = []
+let playerObj, enemyObj, combatState
+let rewardPool = []
 
+export default{
+    rewardPool
+}
 
 //Generate
 function genPlayer(){
-    playerObj = new PlayerObj
+    playerObj = new xxDa.PlayerObj
+    window.playerObj = playerObj
+
 
     let startingItems = ['Attack', 'Block','ExtraAttack']
     startingItems.forEach(key => {addTargetItem(key)})
 
     playerObj.inventory[0].durability = 99
     playerObj.inventory[1].durability = 99 
-
     // addRandomItem(2)
 }
 
@@ -29,7 +29,7 @@ function genPlayer(){
 function addTargetItem(key, iLvl){
     if(playerObj.inventory.length < playerObj.maxInventory){
 
-        let newItem = new Item(key, iLvl)
+        let newItem = new xxDa.Item(key, iLvl)
         if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
         playerObj.inventory.push(newItem)
 
@@ -42,7 +42,7 @@ function addRandomItem(quant, iLvl){
     for(let i =0; i< quant; i++){
         if(playerObj.inventory.length < playerObj.maxInventory){
 
-            let newItem = new Item(utility.rarr(Object.keys(itemsRef)), iLvl)
+            let newItem = new xxDa.Item(xxUt.rarr(Object.keys(xxDa.itemsRef)), iLvl)
             if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
             playerObj.inventory.push(newItem)
 
@@ -131,72 +131,72 @@ function resolvePassiveItem(item, event){
 
 //Generate enemy action for the next turn
 function genEnemyActions(){
-    enemyObj.roll = utility.rng(enemyObj.dice) //Roll enemy dice
-    let actionRoll = utility.rng(100)          //roll to pick action
+    enemyObj.roll = xxUt.rng(enemyObj.dice) //Roll enemy dice
+    let actionRoll = xxUt.rng(100)          //roll to pick action
     let enemyAc                                //Final action
     let aAction = []  
-    let actionKeys = Object.keys(enemyActions) //Get keys
+    let actionKeys = Object.keys(xxDa.enemyActions) //Get keys
 
     //If weakened enemy starts recovering
     if(enemyObj.def < 0 || enemyObj.def < 0 || enemyObj.def < 0){
-        enemyActions.Recover.rate = 1
+        xxDa.enemyActions.Recover.rate = 1
     }
     else{
-        enemyActions.Recover.rate = undefined
+        xxDa.enemyActions.Recover.rate = undefined
     }
 
     // If low life enamble detonate
     if(enemyObj.maxLife / enemyObj.life > 3){
-        enemyActions.Detonate.rate = 1
+        xxDa.enemyActions.Detonate.rate = 1
     }else{
-        enemyActions.Detonate.rate = undefined
+        xxDa.enemyActions.Detonate.rate = undefined
     }
 
 
     //Pick action
-    if(actionRoll < 2 && utility.objContainsByPropValue(enemyActions, 'rate', 4)){//1%
+    if(actionRoll < 2 && xxUt.objContainsByPropValue(xxDa.enemyActions, 'rate', 4)){//1%
         for(let i = 0; i < actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 4){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(xxDa.enemyActions[actionKeys[i]].rate === 4){
+                aAction.push(xxDa.enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = utility.rarr(aAction)
+        enemyAc = xxUt.rarr(aAction)
     }
-    if(actionRoll < 7 && utility.objContainsByPropValue(enemyActions, 'rate', 3)){//5%
+    if(actionRoll < 7 && xxUt.objContainsByPropValue(xxDa.enemyActions, 'rate', 3)){//5%
         for(let i = 0; i < actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 3){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(xxDa.enemyActions[actionKeys[i]].rate === 3){
+                aAction.push(xxDa.enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = utility.rarr(aAction)
+        enemyAc = xxUt.rarr(aAction)
     } 
-    else if (actionRoll < 17 && utility.objContainsByPropValue(enemyActions, 'rate', 2)){//10%
+    else if (actionRoll < 17 && xxUt.objContainsByPropValue(xxDa.enemyActions, 'rate', 2)){//10%
         for(let i =0; i<actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 2){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(xxDa.enemyActions[actionKeys[i]].rate === 2){
+                aAction.push(xxDa.enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = utility.rarr(aAction)
+        enemyAc = xxUt.rarr(aAction)
     } 
-    else if (actionRoll < 47 && utility.objContainsByPropValue(enemyActions, 'rate', 1)){//30%
+    else if (actionRoll < 47 && xxUt.objContainsByPropValue(xxDa.enemyActions, 'rate', 1)){//30%
         for(let i =0; i<actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 1){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(xxDa.enemyActions[actionKeys[i]].rate === 1){
+                aAction.push(xxDa.enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = utility.rarr(aAction)
+        enemyAc = xxUt.rarr(aAction)
     } //55% att
-    else {enemyAc = enemyActions.Attack.action}
+    else {enemyAc = xxDa.enemyActions.Attack.action}
 
     enemyObj.action = enemyAc
 }
 
-
-
 class Game {
     //Combat start
     initiateCombat(){
-        combatState = new CombatState
+        combatState = new xxDa.CombatState
+        window.combatState = combatState
+
         if(playerObj === undefined || playerObj.life < 1 ){genPlayer()}
     
         //Restore flat def
@@ -210,12 +210,14 @@ class Game {
         }
     
         //Generates enemy
-        enemyObj = new EnemyObj
-        utility.el('enemyImg').setAttribute('src', enemyObj.image)
+        enemyObj = new xxDa.EnemyObj
+        window.enemyObj = enemyObj
+
+        xxUt.el('enemyImg').setAttribute('src', enemyObj.image)
 
         genEnemyActions() 
-        updateUi()
-        genCards()
+        xxUi.updateUi()
+        xxUi.genCards()
     }
 
     //Turn
@@ -230,7 +232,7 @@ class Game {
             playerObj.lastAction = `Turn ${combatState.turn}: `
     
             let itemid = buttonElem.getAttribute('itemid')
-            let sourceItem = utility.findObj(playerObj.inventory, 'itemid', itemid)
+            let sourceItem = xxUt.findObj(playerObj.inventory, 'itemid', itemid)
             let playerAction = sourceItem.action
     
     
@@ -243,7 +245,7 @@ class Game {
             //Extra actions
             else if(sourceItem.type === 'extra'){
                 if (playerAction === 'Reroll'){
-                    playerObj.roll = utility.rng(playerObj.dice) 
+                    playerObj.roll = xxUt.rng(playerObj.dice) 
                 }
                 else if (playerAction === 'ExtraAttack'){
                     playerDmgDone = 1 + playerObj.power //Set damage
@@ -261,8 +263,8 @@ class Game {
                 //Deal with durability
                 this.resolveDurability(sourceItem)
 
-                updateUi()
-                genCards()
+                xxUi.updateUi()
+                xxUi.genCards()
                 this.combatEndCheck()
                 return
             }
@@ -323,17 +325,17 @@ class Game {
                     enemyDmgDone += (1 + enemyObj.power)
                 }
                 else if (enemyObj.action === 'Fortify'){
-                    let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                    let x = Math.round((enemyObj.roll + xxDa.gameState.stage) *0.25)
                     enemyObj.def += x
                     combatState.enemyAction = ['Fortify', x]
                 }
                 else if (enemyObj.action === 'Empower'){
-                    let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                    let x = Math.round((enemyObj.roll + xxDa.gameState.stage) *0.25)
                     enemyObj.power += x
                     combatState.enemyAction = ['Empower', x]
                 }
                 else if (enemyObj.action === 'Rush'){
-                    let x = Math.round(1 + (gameState.stage) *0.2)
+                    let x = Math.round(1 + (xxDa.gameState.stage) *0.2)
                     enemyObj.dice += x
                     combatState.enemyAction = ['Rusn', x]
                 }
@@ -439,13 +441,13 @@ class Game {
             this.resolveDurability(sourceItem)
 
             //End turn updates
-            playerObj.roll = utility.rng(playerObj.dice) + playerObj.rollBonus
+            playerObj.roll = xxUt.rng(playerObj.dice) + playerObj.rollBonus
             playerObj.rollBonus = 0
             genEnemyActions()
             enemyObj.state = ''
             combatState.turn++
-            genCards() 
-            updateUi()
+            xxUi.genCards() 
+            xxUi.updateUi()
         }
 
     this.combatEndCheck()
@@ -455,26 +457,33 @@ class Game {
         //Check if game state changed
         //Defeat
         if(playerObj.life < 1 || playerObj.inventory.length < 1){
-            updateUi()
-            utility.toggleModal('gameOverScreen')
+            xxUi.updateUi()
+            xxUt.toggleModal('gameOverScreen')
         }
         //Victory
         else if (enemyObj.life < 1){
-            updateUi()
+            xxUi.updateUi()
 
-            gameState.stage++
+            //Gen rewards or open map if boss was killed
+            if(xxDa.gameState.stage % xxDa.gameState.bossFrequency === 0){
+                game.genReward('end') //End round
+                xxDa.gameState.encounter = 0
+            }
+            else{
+                game.genReward('gen', 3) //Number of rewards to give
+            }
 
+            xxDa.gameState.encounter++
+            xxDa.gameState.stage++
             playerObj.exp++ //Add 1 exp
             playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl
-
-            game.genReward('gen', 5) //Number of rewards to give
         }
     }
 
     resolveDurability(item){
         item.durability--
             if(item.durability<1){
-                utility.removeFromArr(playerObj.inventory, item)
+                xxUt.removeFromArr(playerObj.inventory, item)
                 if(item.type === 'passive'){
                     resolvePassiveItem(item)//Loose passive stat
                 }
@@ -483,22 +492,22 @@ class Game {
      
     //Rewards
     genReward(val, quant){
-        //Pick from reward pool    
-        if(val === 'gen'){
-            let rewardRefPool = utility.cloneArr(rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
+        xxUt.el('rewards').innerHTML = `` // clear modal body
+
+        if(val === 'gen'){//Pick from reward pool 
+            let rewardRefPool = xxUt.cloneArr(xxDa.rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
             let generatedItem
-            utility.el('rewards').innerHTML = `` // clear modal body
     
             for(let i =0; i < quant; i++){ //gen item per quant value in function
-                let reward = utility.rarr(rewardRefPool) //pick random reward
+                let reward = xxUt.rarr(rewardRefPool) //pick random reward
     
                 if(reward.type !== 'Item'){ //if reward is not item, remove it from array so it can't be picked again.
-                    utility.removeFromArr(rewardRefPool, reward)
+                    xxUt.removeFromArr(rewardRefPool, reward)
                 }
     
                 if(reward.type === 'Item'){//item
                     //Gen random item
-                    generatedItem = new Item(utility.rarr(Object.keys(itemsRef, gameState.stage)))
+                    generatedItem = new xxDa.Item(xxUt.rarr(Object.keys(xxDa.itemsRef, xxDa.gameState.stage)))
                     rewardPool.push(generatedItem)
                 }
                 else{//not item
@@ -523,21 +532,28 @@ class Game {
                 }
     
     
-                utility.el('rewards').append(button)
-    
+                xxUt.el('rewards').append(button)
             }
-    
-            utility.toggleModal('rewardScreen')
+
+            xxUt.toggleModal('rewardScreen')
         }
-        //Resolve reward
-        else {
+        else if(val === 'end'){
+            let button = document.createElement('button')
+            button.setAttribute('onclick', 'xxUt.screen("map")')
+            button.innerHTML = 'Return to map'
+            xxUt.el('rewards').append(button)
+    
+            xxUt.toggleModal('rewardScreen')
+        }
+        
+        else {//Resolve reward
             //Add selected reward to player
             if(val === 'Heal'){
                 playerObj.life += Math.floor(playerObj.maxLife / 2)
                 if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
             }
             else if(val === 'Repair'){
-                playerObj.inventory[utility.rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
+                playerObj.inventory[xxUt.rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (xxDa.gameState.stage * 0.25))
             }
             else if(val === 'Bag'){
                 playerObj.maxInventory++
@@ -546,7 +562,7 @@ class Game {
                 playerObj.flatDef++
             }
             else if (val === 'Train'){
-                playerObj.maxLife += Math.floor(4 + (gameState.stage * 0.5))
+                playerObj.maxLife += Math.floor(4 + (xxDa.gameState.stage * 0.5))
             }
             else if(val==='Power'){
                 playerObj.flatPower++
@@ -565,9 +581,9 @@ class Game {
             }
     
             this.initiateCombat()
-            genCards()
-            updateUi()
-            utility.toggleModal('rewardScreen')
+            xxUi.genCards()
+            xxUi.updateUi()
+            xxUt.toggleModal('rewardScreen')
         }
     }
 }
@@ -575,6 +591,3 @@ class Game {
 //Makes game methods global
 let game = new Game
 window.game = game
-game.initiateCombat()
-
-window.playerObj = playerObj

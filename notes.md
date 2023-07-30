@@ -15,3 +15,16 @@
     - Rng quiz quantity and rewards.
 - Shop to spend gold.
 - Map to move around.
+
+
+- Flow
+    - Generate all objects
+    + Map area
+    + Player chooses to fight
+        - Initiate fight
+        - Player action -> 
+        - Turn calculation
+        - Damage calculation
+        - Eval win/loss/continue
+        - Reward
+        - Return to hub

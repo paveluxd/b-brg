@@ -1,5 +1,13 @@
-import {Utility} from "./utility.js"
-let utility = new Utility()
+import xxUt from "./utility.js"
+
+
+export class GameData {
+    // SkillTree() {
+    //     constructor(){
+
+    //     }
+    // }
+}
 
 //Classes
 export class Item {
@@ -50,7 +58,7 @@ export class PlayerObj {
         this.flatDice     = this.defaultDice
         this.dice         = this.defaultDice
 
-        this.roll         = utility.rng(this.defaultDice) //initial roll
+        this.roll         = xxUt.rng(this.defaultDice) //initial roll
         this.rollBonus    = 0
 
         this.maxInventory = 8
@@ -70,31 +78,31 @@ export class EnemyObj {
         this.life  = gameState.enemyLifeBase
         this.maxLife = this.life
 
-        this.power = Math.ceil(utility.rng(gameState.stage * 0.5, 0)),
-        this.def   = Math.ceil(utility.rng(gameState.stage * 0.3, 0)),
+        this.power = Math.ceil(xxUt.rng(gameState.stage * 0.5, 0)),
+        this.def   = Math.ceil(xxUt.rng(gameState.stage * 0.3, 0)),
 
         this.dice  = 4 + Math.round(gameState.stage * 0.2),
         
         this.level = gameState.stage
         this.image = `./img/enemy/${gameState.stage}.png`
-        utility.el('enemyImg').classList.remove('boss')
+        xxUt.el('enemyImg').classList.remove('boss')
 
 
         //Create boss every 10 levels
-        if(gameState.stage % 10 === 0){
+        if(gameState.stage % gameState.bossFrequency === 0){
             gameState.enemyLifeBase+= 4 //Enemies +4 life after boss is killed
 
             this.life  = Math.round(gameState.enemyLifeBase * 1.25)
             this.maxLife = this.life
 
-            this.power = Math.ceil(utility.rng(gameState.stage * 0.3, 0)),
-            this.def   = Math.ceil(utility.rng(gameState.stage * 0.3, 0)),
+            this.power = Math.ceil(xxUt.rng(gameState.stage * 0.3, 0)),
+            this.def   = Math.ceil(xxUt.rng(gameState.stage * 0.3, 0)),
 
             this.dice  = 12
             
             this.level = gameState.stage
-            this.image = `./img/boss/${gameState.stage/10}.png`
-            utility.el('enemyImg').classList.add('boss')
+            this.image = `./img/boss/${gameState.stage/gameState.bossFrequency}.png`
+            xxUt.el('enemyImg').classList.add('boss')
         }
     }
 }
@@ -113,9 +121,13 @@ export class GameState{
     constructor(){
         this.stage = 1
         this.enemyLifeBase = 6
+        this.bossFrequency = 5
+        this.encounter = 1
     }
 }
+
 export let gameState = new GameState
+
 
 
 //item = action
@@ -249,3 +261,16 @@ export let passiveTreeRef = [
     //Durability
     {id:'chance-save-dur'}, //20% chance to not loose durability on use <item type>
 ]
+
+export default{
+    Item,
+    PlayerObj,
+    EnemyObj,
+    CombatState,
+    GameState,
+    itemsRef,
+    gameState,
+    rewardRef,
+    enemyActions,
+    passiveTreeRef,
+}

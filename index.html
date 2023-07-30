@@ -14,190 +14,195 @@
 </head>
 
 <body>
+
+    <!-- Map -->
+    <div id="map" class="screen tab">
+        <div class="row" style="width: 100%; gap:48px;">
+            <button onclick="screen('combat'), game.initiateCombat()">Fight</button> <br>
+            <button onclick="screen('shop')">Shop</button>
+        </div>
+    </div>
+
+
+    <!-- Combat -->
+    <div id="combat" class="screen hide">
+        <p id="log">stage: 1<br> turn:1</p>
     
-    <p id="log">stage: 1<br> turn:1</p>
-
-    <!-- Combat ui -->
-    <div class="column grow" style="align-items: stretch; padding: 0 4px;">
-        <div class="row" style="align-items: stretch; flex-grow: 1;">
-            <!-- Player -->
-            <div class="column" style="">
-                <div class="imgcont">
-                    <p id="plDmgInd" class="floating-ind">0</p>
-
-                    <img src="./img/char-knight.svg">
-                </div>
-
-                
-            </div>
-    
-            <!-- Enemy -->
-            <div class="column" style="">
-
+        <!-- Units -->
+        <div class="column grow" style="align-items: stretch; padding: 0 4px;">
+            <div class="row" style="align-items: stretch; flex-grow: 1;">
+                <!-- Player -->
                 <div class="column">
-                    <div id="intent">Will attack for 3 damage.</div>
-                    <svg height="12" width="12" style="fill: black;">
-                        <polygon points="0,0 6,12 12,0"/>
-                    </svg>
-                </div>
-
-                <div class="imgcont">
-                    <p id="enDmgInd" class="floating-ind">0</p>
-
-                    <img id="enemyImg" src="./img/enemy/1.png" class="flip">
-                </div>
-
-                
-
-                
-            </div>
-        </div>
-    </div>
-
-
-    <div style="max-width: 480px;">
-        <!-- Actions -->
-        <div id="stats" class="row">
-            <!-- Player --> 
-            <div class="column">
-                    <div class="row stat">
-                        <img src="./img/ico/hp-bb.svg" alt="">
-                        <div id="p-life"></div>
+                    <div class="imgcont">
+                        <p id="plDmgInd" class="floating-ind">0</p>
+    
+                        <img src="./img/char-knight.svg">
                     </div>
-                    <div class="row stat">
-                        <img src="./img/ico/dice-bb.svg" alt="">
-                        <div id="p-dice"></div>
-                    </div>
-            </div>
-                
-            <div class="column">
-                    <div class="row stat">
-                        <img src="./img/ico/shield-bb.svg" alt="">
-                        <p id="p-def"></p>
-                    </div>
-                    <div class="row stat">
-                        <img src="./img/ico/power-bb.svg" alt="">
-                        <p id="p-power"></p>
-                    </div>
+    
                     
-            </div>
+                </div>
+        
+                <!-- Enemy -->
+                <div class="column">
     
-            <!-- Menu -->
-            <button onclick="utility.toggleModal('character')" style="border: none; background-color: var(--black);"><img src="./img/ico/settings-pale.svg"></button>
-    
-    
-            <!-- Enemy -->
-            <div class="column">
-                    <div class="row stat">
-                        <img src="./img/ico/hp-bb.svg" alt="">
-                        <div id="life"></div>
+                    <div class="column">
+                        <div id="intent">Will attack for 3 damage.</div>
+                        <svg height="12" width="12" style="fill: black;">
+                            <polygon points="0,0 6,12 12,0"/>
+                        </svg>
                     </div>
     
-                    <div class="row stat">
-                        <img src="./img/ico/dice-bb.svg" alt="">
-                        <div id="dice"></div>
-                    </div>
-            </div>
-                
-            <div class="column">
-                    <div class="row stat">
-                        <img src="./img/ico/shield-bb.svg" alt="">
-                        <p id="def"></p>
+                    <div class="imgcont">
+                        <p id="enDmgInd" class="floating-ind">0</p>
+    
+                        <img id="enemyImg" src="./img/enemy/1.png" class="flip">
                     </div>
     
-                    <div class="row stat">
-                        <img src="./img/ico/power-bb.svg" alt="">
-                        <p id="power"></p>
-                    </div>
-                
+                    
+    
+                    
+                </div>
             </div>
         </div>
     
-        <div id="playerActionContainer" class="actions-container"></div>
+        <!-- UI -->
+        <div style="max-width: 480px;">
+            <!-- Actions -->
+            <div id="stats" class="row">
+                <!-- Player --> 
+                <div class="column">
+                        <div class="row stat">
+                            <img src="./img/ico/hp-bb.svg" alt="">
+                            <div id="p-life"></div>
+                        </div>
+                        <div class="row stat">
+                            <img src="./img/ico/dice-bb.svg" alt="">
+                            <div id="p-dice"></div>
+                        </div>
+                </div>
+                    
+                <div class="column">
+                        <div class="row stat">
+                            <img src="./img/ico/shield-bb.svg" alt="">
+                            <p id="p-def"></p>
+                        </div>
+                        <div class="row stat">
+                            <img src="./img/ico/power-bb.svg" alt="">
+                            <p id="p-power"></p>
+                        </div>
+                        
+                </div>
+        
+                <!-- Menu button-->
+                <button onclick="screen('combat-menu')" style="border: none; background-color: var(--black);">
+                    <img src="./img/ico/settings-pale.svg">
+                </button>
+        
+        
+                <!-- Enemy -->
+                <div class="column">
+                        <div class="row stat">
+                            <img src="./img/ico/hp-bb.svg" alt="">
+                            <div id="life"></div>
+                        </div>
+        
+                        <div class="row stat">
+                            <img src="./img/ico/dice-bb.svg" alt="">
+                            <div id="dice"></div>
+                        </div>
+                </div>
+                    
+                <div class="column">
+                        <div class="row stat">
+                            <img src="./img/ico/shield-bb.svg" alt="">
+                            <p id="def"></p>
+                        </div>
+        
+                        <div class="row stat">
+                            <img src="./img/ico/power-bb.svg" alt="">
+                            <p id="power"></p>
+                        </div>
+                    
+                </div>
+            </div>
+        
+            <div id="playerActionContainer" class="actions-container"></div>
+        </div>
     </div>
+
     
 
+    <!-- Tabs -->
+    <div id="tab-container" class="column">
+        <div id="info-modal">
+            <h2>Placeholder name</h2>
+            <p>Placeholder description</p>
+        </div>
 
-    <!-- Quiz -->
-    <div class="column grow quiz-container hide">
-        <p>Question placeholder?</p>
-        <p>___ ___ ___</p>
-        <div class="row gapSm button-container">
-            <button>Keyword</button>
-            <button>Keyword</button>
-            <button>Keyword</button>
-            <button>Keyword</button>
-            <button>Keyword</button>
-            <button>Keyword</button>
-            <button>Keyword</button>
-            <button>Keyword</button>
+        <div id="tabs" class="row">
         </div>
     </div>
 
 
-    <!-- Menu -->
-    <div class="modal " id="character">
+    <!-- Screens -->
+    <!-- character -->
+    <div id="character" class="screen hide tab" >
         <div class="modal-container">
-
             <div class="modal-header">
-                <h2>Menu</h2>
+                <h2>Character</h2>
             </div>
 
             <div class="column button-container modal-body">
-                <p>TBA</p>
-
-                
+                <img src="./img/char-knight.svg">
+                - Lvl/exp<br>
+                - Core stats<br>
+                - Sub-stats<br>
+                - Actions
             </div>
 
         </div>
-    </div>
-
-    <div id="tabs" class="row" style="position: fixed; bottom: 0px;">
-        <button>Character</button>
-        <button onclick="utility.toggleModal('map')">Map</button>
-        <button onclick="utility.toggleModal('inventory')">Inventory</button>
-        <button onclick="utility.toggleModal('tree')">Tree</button>
-        <button onclick="utility.toggleModal('character')">X</button>
     </div>
 
     <!-- Tree -->
-    <div id="tree" class="modal hide">
+    <div id="tree" class="screen hide tab" >
         <div class="modal-container">
             <div class="modal-header">
-                <h2>Tree</h2>
+                Tree
             </div>
 
             <div class="column button-container modal-body">
-                <p>TBA</p>  
+                Skills<br>
+                Modal with skill description<br> 
             </div>
         </div>
     </div>
 
-    <!-- Map -->
-    <div id="map" class="modal hide">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2>map</h2>
-            </div>
-
-            <div class="column button-container modal-body">
-                <p>TBA</p>  
-            </div>
-        </div>
-    </div>
-
-    <div id="inventory" class="modal hide">
+    <!-- Inventory -->
+    <div id="inventory" class="screen hide tab" >
         <div class="modal-container">
             <div class="modal-header">
                 <h2>Inventory</h2>
             </div>
 
             <div class="column button-container modal-body">
-                <p>TBA</p>  
+                Items and item slots
             </div>
         </div>
     </div>
 
+    <!-- Shop -->
+    <div id="shop" class="screen hide" >
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Shop</h2>
+                <button onclick=" screen('map', this)">Close shop</button>
+            </div>
+
+            <div class="column button-container modal-body">
+                Buy & sell items
+            </div>
+        </div>
+    </div>
 
 
     <!-- Combat end screen -->
@@ -210,7 +215,6 @@
 
             <div id="rewards" class="modal-body"></div>
        </div>
-        </div>
     </div>
 
     <!-- Game over -->

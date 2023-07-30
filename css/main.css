@@ -12,27 +12,48 @@ html{
 
     --black:     rgb(0, 0, 0);
     --grey:      rgba(0,0,0,0.5);
+    --border:    rgba(0,0,0,0.2);
     --white:     rgb(255, 255, 255);
     --light-bg:  rgb(227, 236, 241);
     --red:       rgb(255, 103, 56);
 }
 body{
+    height: 100%;
+    
     display: flex;
-    overflow: hidden;
-    align-items: center;
     flex-direction: column;
+    
+    overflow: hidden;
 
-    min-height: calc(100% - 0px);
-    padding: 0 8px;
-
-    background: var(--grass-base);
-
-    font-size: 16px;
     font-family: 'arial', sans-serif;
-    color: var(--black);
+    font-size: 16px;
     line-height: 125%;
-
+    color: var(--black);
 }
+
+
+
+/* Screens */
+.screen{
+    flex: 1;
+    padding: 8px;
+
+    display: flex;
+    align-items: stretch;
+}
+
+#combat{
+    background: var(--grass-base);
+    flex-direction: column;
+}
+
+#map{
+    background-image: url(/img/bg/map.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 
 
 /*New UI*/
@@ -78,11 +99,46 @@ body{
 .modal-header{
     display: flex;
     justify-content: space-between;
-    padding: 16px 8px;
+    padding: 16px 16px;
 }
 
 .modal-body{
     padding: 0 8px 24px 8px;
+}
+
+
+/* Tabs */
+#tab-container{
+    min-width: 100%;
+    position: fixed; 
+    bottom: 0px; 
+    z-index: 1;
+
+    display: flex;
+
+    align-items: stretch;
+}
+
+#info-modal{
+    background-color: var(--light-bg);
+    /* width: 100%; */
+    padding: 16px;
+}
+
+#tab-container button{
+    min-width: 0;
+    /* width: 100%; */
+    flex: 1 1 0px;
+    border: none;
+    border: 1px solid var(--border);
+}
+
+#tab-container button:last-child{
+    min-width: 52px;
+}
+
+.active{
+    background-color: red;
 }
 
 
@@ -185,6 +241,8 @@ button:disabled{
     color: var(--green-pale) !important;
 }
 
+
+
 /* Stats */
 #stats{
     background-color: var(--black);
@@ -208,12 +266,12 @@ button:disabled{
 }
 
 
+
 /**/
 .container{
     flex-grow: 1;
     min-height: 100%;
 }
-
 
 .row {
     display: flex;
@@ -227,6 +285,7 @@ button:disabled{
     align-items: center;
     justify-content: center;
 }
+
 
 
 /* Overrides */
