@@ -1,6 +1,6 @@
-import xxUt from "./utility.js"
+import xut from "./utility.js"
 
-
+//Game data for skill tree?
 export class GameData {
     // SkillTree() {
     //     constructor(){
@@ -9,16 +9,103 @@ export class GameData {
     // }
 }
 
+//Game state
+export class GameState{
+    constructor(){
+        this.stage = 1
+        this.enemyLifeBase = 6
+        this.bossFrequency = 5
+        this.encounter = 1
+    }
+}
+
+//
+export class CombatState {
+    constructor(){
+        this.turn = 1
+        this.enemyDmgTaken = 0
+        this.playerDmgTaken = 0
+        this.enemyAction = []
+        this.playerAction = []
+    }
+}
+
+//
+export class PlayerObj {
+    constructor(){
+        //Core
+        this.maxLife      = 999 
+        this.life         = this.maxLife
+        this.flatPower    = 0
+        this.power        = 0
+        this.flatDef      = 0   
+        this.def          = 0
+
+        this.defaultDice  = 6 //needed as ref in case flat dice is modified by item
+        this.flatDice     = this.defaultDice
+        this.dice         = this.defaultDice
+
+        this.roll         = xut.rng(this.defaultDice) //initial roll
+        this.rollBonus    = 0
+
+        this.maxInventory = 8
+        this.inventory    = []
+
+        //Sub-stats
+
+        //Misc-stats
+        this.gold         = 0
+        this.exp          = 0
+        this.lvl          = 1
+    }
+}
+
+//
+export class EnemyObj {
+    constructor(){
+        this.life  = gameState.enemyLifeBase
+        this.maxLife = this.life
+
+        this.power = Math.ceil(xut.rng(gameState.stage * 0.5, 0)),
+        this.def   = Math.ceil(xut.rng(gameState.stage * 0.3, 0)),
+
+        this.dice  = 4 + Math.round(gameState.stage * 0.2),
+        
+        this.level = gameState.stage
+        this.image = `./img/enemy/${gameState.stage}.png`
+        xut.el('enemyImg').classList.remove('boss')
+
+
+        //Create boss every 10 levels
+        if(gameState.stage % gameState.bossFrequency === 0){
+            gameState.enemyLifeBase+= 4 //Enemies +4 life after boss is killed
+
+            this.life  = Math.round(gameState.enemyLifeBase * 1.25)
+            this.maxLife = this.life
+
+            this.power = Math.ceil(xut.rng(gameState.stage * 0.3, 0)),
+            this.def   = Math.ceil(xut.rng(gameState.stage * 0.3, 0)),
+
+            this.dice  = 12
+            
+            this.level = gameState.stage
+            this.image = `./img/boss/${gameState.stage/gameState.bossFrequency}.png`
+            xut.el('enemyImg').classList.add('boss')
+        }
+    }
+}
+
 //Classes
 export class Item {
     constructor(key, iLvl){
+        //Static properties taken from reference
         if(iLvl === undefined && gameState !== undefined){iLvl = gameState.stage}else{iLvl = 1}
         this.action = key
         this.desc = itemsRef[key].desc
         this.type = itemsRef[key].type
 
 
-        //Variable properties
+        //Variable properties generated
         let extraProps = [
             {key:'name', val: `${key} scroll`},
             {key:'itemid', val: "id" + Math.random().toString(8).slice(2)},//gens unique id
@@ -44,89 +131,8 @@ export class Item {
     }
 }
 
-export class PlayerObj {
-    constructor(){
-        //Core
-        this.maxLife      = 999 
-        this.life         = this.maxLife
-        this.flatPower    = 0
-        this.power        = 0
-        this.flatDef      = 0   
-        this.def          = 0
-
-        this.defaultDice  = 6 //needed as ref in case flat dice is modified by item
-        this.flatDice     = this.defaultDice
-        this.dice         = this.defaultDice
-
-        this.roll         = xxUt.rng(this.defaultDice) //initial roll
-        this.rollBonus    = 0
-
-        this.maxInventory = 8
-        this.inventory    = []
-
-        //Sub-stats
-
-        //Misc-stats
-        this.gold         = 0
-        this.exp          = 0
-        this.lvl          = 1
-    }
-}
-
-export class EnemyObj {
-    constructor(){
-        this.life  = gameState.enemyLifeBase
-        this.maxLife = this.life
-
-        this.power = Math.ceil(xxUt.rng(gameState.stage * 0.5, 0)),
-        this.def   = Math.ceil(xxUt.rng(gameState.stage * 0.3, 0)),
-
-        this.dice  = 4 + Math.round(gameState.stage * 0.2),
-        
-        this.level = gameState.stage
-        this.image = `./img/enemy/${gameState.stage}.png`
-        xxUt.el('enemyImg').classList.remove('boss')
 
 
-        //Create boss every 10 levels
-        if(gameState.stage % gameState.bossFrequency === 0){
-            gameState.enemyLifeBase+= 4 //Enemies +4 life after boss is killed
-
-            this.life  = Math.round(gameState.enemyLifeBase * 1.25)
-            this.maxLife = this.life
-
-            this.power = Math.ceil(xxUt.rng(gameState.stage * 0.3, 0)),
-            this.def   = Math.ceil(xxUt.rng(gameState.stage * 0.3, 0)),
-
-            this.dice  = 12
-            
-            this.level = gameState.stage
-            this.image = `./img/boss/${gameState.stage/gameState.bossFrequency}.png`
-            xxUt.el('enemyImg').classList.add('boss')
-        }
-    }
-}
-
-export class CombatState {
-    constructor(){
-        this.turn = 1
-        this.enemyDmgTaken = 0
-        this.playerDmgTaken = 0
-        this.enemyAction = []
-        this.playerAction = []
-    }
-}
-
-export class GameState{
-    constructor(){
-        this.stage = 1
-        this.enemyLifeBase = 6
-        this.bossFrequency = 5
-        this.encounter = 1
-    }
-}
-
-export let gameState = new GameState
 
 
 
@@ -163,7 +169,7 @@ export let itemsRef = {
     d8:      {desc: 'Use d8 for rolls while this is in inventory (passive)', type: 'passive', effectMod: 8,}
 }
 
-
+//Rewards
 export let rewardRef = [
     {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
     {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
@@ -180,7 +186,7 @@ export let rewardRef = [
     {type:'Bag', freq: 1, desc: 'Gain an additional inventory slot'}
 ]
 
-
+//Ene actions
 export let enemyActions = {
     Attack:      {        action: 'Attack',  desc: `Attack`},
     Block:       {rate:1, action: 'Block',   desc: `Block`},
@@ -216,9 +222,9 @@ export let enemyActions = {
 }
 
 //Tree -> Nodes
-export let passiveTreeRef = [
+export let skillTreeRef = [
     //Core stats
-    {id:'add-life'},
+    {id:'add-life', desc:'add 10 base life'},
     {id:'add-def'},
     {id:'add-power'},
     {id:'add-dice'},
@@ -262,6 +268,7 @@ export let passiveTreeRef = [
     {id:'chance-save-dur'}, //20% chance to not loose durability on use <item type>
 ]
 
+
 export default{
     Item,
     PlayerObj,
@@ -269,8 +276,7 @@ export default{
     CombatState,
     GameState,
     itemsRef,
-    gameState,
     rewardRef,
     enemyActions,
-    passiveTreeRef,
+    skillTreeRef,
 }

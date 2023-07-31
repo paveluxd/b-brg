@@ -16,7 +16,7 @@
 <body>
 
     <!-- Map -->
-    <div id="map" class="screen tab">
+    <div id="map" class="screen tab hide">
         <div class="row" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), game.initiateCombat()">Fight</button> <br>
             <button onclick="screen('shop')">Shop</button>
@@ -94,7 +94,7 @@
                 </div>
         
                 <!-- Menu button-->
-                <button onclick="screen('combat-menu')" style="border: none; background-color: var(--black);">
+                <button onclick="screen('character', 'combat-menu')" style="border: none; background-color: var(--black);">
                     <img src="./img/ico/settings-pale.svg">
                 </button>
         
@@ -130,11 +130,10 @@
         </div>
     </div>
 
-    
 
     <!-- Tabs -->
     <div id="tab-container" class="column">
-        <div id="info-modal">
+        <div id="info-modal" class="hide">
             <h2>Placeholder name</h2>
             <p>Placeholder description</p>
         </div>
@@ -146,36 +145,26 @@
 
     <!-- Screens -->
     <!-- character -->
-    <div id="character" class="screen hide tab" >
+    <div id="character" class="screen tab" >
         <div class="modal-container">
-            <div class="modal-header">
-                <h2>Character</h2>
-            </div>
 
-            <div class="column button-container modal-body">
-                <img src="./img/char-knight.svg">
-                - Lvl/exp<br>
-                - Core stats<br>
-                - Sub-stats<br>
-                - Actions
-            </div>
+            <div class="modal-header"><h2>Character</h2></div>
+            <div id='character-content' class="column modal-body"></div>
 
         </div>
     </div>
+
 
     <!-- Tree -->
     <div id="tree" class="screen hide tab" >
         <div class="modal-container">
-            <div class="modal-header">
-                Tree
-            </div>
 
-            <div class="column button-container modal-body">
-                Skills<br>
-                Modal with skill description<br> 
-            </div>
+            <div class="modal-header">Tree</div>
+            <div id="skill-tree" class="modal-body"></div>
+
         </div>
     </div>
+
 
     <!-- Inventory -->
     <div id="inventory" class="screen hide tab" >
@@ -190,6 +179,7 @@
         </div>
     </div>
 
+
     <!-- Shop -->
     <div id="shop" class="screen hide" >
         <div class="modal-container">
@@ -203,7 +193,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Combat end screen -->
     <div class="modal hide" id="rewardScreen">

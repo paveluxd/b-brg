@@ -48,7 +48,10 @@ function removeFromArr(data, elem){ //Removes elem from array
 }
 
 function el(id, mod){//Returns gtml elem by id
-    if(id.startsWith('.')){
+    if(mod === 'all' && id.startsWith('.')){
+        return document.querySelectorAll(id)
+    }
+    else if(id.startsWith('.')){
         return document.querySelector(id)
     }
     else{
@@ -69,7 +72,7 @@ function upp(string){//Sets 1st letter to uppercase
 }
 
 function log(val){
-    console.log(val)
+    return console.log(val)
 }
 
 export default{

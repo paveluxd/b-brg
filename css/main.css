@@ -54,6 +54,11 @@ body{
     background-size: cover;
 }
 
+#skill-tree{
+    display: flex;
+    flex-wrap: wrap;
+}
+
 
 
 /*New UI*/

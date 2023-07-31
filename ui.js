@@ -1,21 +1,18 @@
-import  xxut from "./utility.js"
-import xxDa from './data.js'
+import xut from "./utility.js"
+import xda from './data.js'
 
 
-//UI
-//Manage tabs
-
-//Generate tabs
+//Gen tabs
 function genTabs(){
     //Clear tabs
-     xxut.el('tabs').innerHTML = ''
+    xut.el('tabs').innerHTML = ''
     let screens = ['map', 'character', 'inventory', 'tree']
     //Gen map tabs
     screens.forEach(elem => {
         let tab = document.createElement('button')
         tab.addEventListener('click', function(){screen(elem)})
-        tab.innerHTML =  xxut.upp(elem)
-         xxut.el('tabs').append(tab)
+        tab.innerHTML = xut.upp(elem)
+        xut.el('tabs').append(tab)
     })
     
     //Add hidden close button
@@ -23,31 +20,30 @@ function genTabs(){
     tab.setAttribute('onclick', `screen('combat', this, "overlay")`)
     tab.classList.add('hide')
     tab.innerHTML = 'Close'
-     xxut.el('tabs').append(tab)
+    xut.el('tabs').append(tab)
 }
-
 genTabs()
 
-//Change screens
-window.screen = function(id){
+//Manage screens
+window.screen = function(id, mod){
 
     //Hide everything
-    document.querySelectorAll('.screen').forEach(t => t.classList.add('hide')); //screens
-        xxut.el('tab-container').classList.add('hide')  //tabs
+    xut.el('.screen', 'all').forEach(t => t.classList.add('hide')); //screens
+    xut.el('.modal', 'all').forEach(t => t.classList.add('hide'));//screens
+    xut.el('tab-container').classList.add('hide')  //tabs
     
     //Show tabs                     
-    if(xxut.el(id).classList.contains('tab')){//if it's a tab, show tabs
-        xxut.el('tab-container').classList.remove('hide')
+    if(xut.el(id).classList.contains('tab')){//if it's a tab, show tabs
+       xut.el('tab-container').classList.remove('hide')
     }
 
-    if(id === 'combat-menu'){
-        xxut.el('character').classList.remove('hide');//display screen with id
-        xxut.el('tab-container').lastChild.classList.remove('hide')
-        xxut.el('tab-container').firstChild.classList.add('hide')
-
+    if(mod === 'combat-menu'){
+       xut.el('character').classList.remove('hide');//display screen with id
+       xut.el('tabs').lastChild.classList.remove('hide')
+       xut.el('tabs').firstChild.classList.add('hide')
     }
     else{
-        xxut.el(id).classList.remove('hide');//display screen with id
+       xut.el(id).classList.remove('hide');//display screen with id
     }
 }
 
@@ -55,33 +51,34 @@ window.screen = function(id){
 function floatText(target, string){
 
     if(target === 'en'){
-         xxut.el('enDmgInd').innerHTML = string
-         xxut.runAnim( xxut.el('enDmgInd'), 'float-num')
+        xut.el('enDmgInd').innerHTML = string
+        xut.runAnim(xut.el('enDmgInd'), 'float-num')
     }
     else{
-         xxut.el('plDmgInd').innerHTML = string
-         xxut.runAnim( xxut.el('plDmgInd'), 'float-num')
+        xut.el('plDmgInd').innerHTML = string
+        xut.runAnim(xut.el('plDmgInd'), 'float-num')
     }
 
 
     //if positive -> text green etc
     if(string[0] === '-'){
-         xxut.el('enDmgInd').setAttribute('style', 'color:red;')
-         xxut.el('plDmgInd').setAttribute('style', 'color:red;')
+        xut.el('enDmgInd').setAttribute('style', 'color:red;')
+        xut.el('plDmgInd').setAttribute('style', 'color:red;')
 
     }
     else{
-         xxut.el('enDmgInd').setAttribute('style', 'color:white;')
-         xxut.el('plDmgInd').setAttribute('style', 'color:white;')
+        xut.el('enDmgInd').setAttribute('style', 'color:white;')
+        xut.el('plDmgInd').setAttribute('style', 'color:white;')
 
     }
 }
 
+
 function updateUi(){
     //log
-     xxut.el('log').innerHTML = `
-        Encounter: ${xxDa.gameState.encounter} / ${xxDa.gameState.bossFrequency} <br> 
-        Stage: ${xxDa.gameState.stage}
+    xut.el('log').innerHTML = `
+        Encounter: ${gameState.encounter} / ${gameState.bossFrequency} <br> 
+        Stage: ${gameState.stage}
         Turn: ${combatState.turn} <br>
         Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
     ` 
@@ -118,34 +115,34 @@ function updateUi(){
     }
 
     //Player stats
-     xxut.el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
-     xxut.el('p-def').innerHTML = `${playerObj.def}`
-     xxut.el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
-     xxut.el('p-power').innerHTML = `${playerObj.power}`        
+    xut.el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
+    xut.el('p-def').innerHTML = `${playerObj.def}`
+    xut.el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
+    xut.el('p-power').innerHTML = `${playerObj.power}`        
 
     //Enemy stats
-     xxut.el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
-     xxut.el('def').innerHTML = `${enemyObj.def}`
-     xxut.el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
-     xxut.el('power').innerHTML = `${enemyObj.power}`        
+    xut.el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
+    xut.el('def').innerHTML = `${enemyObj.def}`
+    xut.el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
+    xut.el('power').innerHTML = `${enemyObj.power}`        
 
     if(enemyObj.action === 'Attack'){
-         xxut.el('intent').innerHTML = `${xxDa.enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
+        xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
     }
     else if(enemyObj.action === 'Block'){
-         xxut.el('intent').innerHTML = `${xxDa.enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
+        xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
     }
     else if (enemyObj.action === 'Detonate'){
-         xxut.el('intent').innerHTML = `Will ${xxDa.enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
+        xut.el('intent').innerHTML = `Will ${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
     }
     else{
-         xxut.el('intent').innerHTML = `${xxDa.enemyActions[enemyObj.action].desc}`
+        xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc}`
     }
 }
 
 //Action buttons
 function genCards(){
-     xxut.el('playerActionContainer').innerHTML = ''
+    xut.el('playerActionContainer').innerHTML = ''
     
     //Add buttons per player item
     playerObj.inventory.forEach(item => {
@@ -171,12 +168,12 @@ function genCards(){
         button.append(bar, content)
         updateBtnLabel(button, item)
         
-        if(item.cooldown !== undefined && item.cooldown < xxDa.itemsRef[item.action].cooldown){
+        if(item.cooldown !== undefined && item.cooldown < xda.itemsRef[item.action].cooldown){
             item.cooldown++
             button.disabled = true
         }
 
-         xxut.el('playerActionContainer').append(button)
+        xut.el('playerActionContainer').append(button)
     })
 
     //Add empty item slots
@@ -186,10 +183,11 @@ function genCards(){
         button.innerHTML = `[ ]`
         button.disabled = true
         button.classList.add('action', 'empty-slot')
-         xxut.el('playerActionContainer').append(button) 
+        xut.el('playerActionContainer').append(button) 
     }
 
 }
+
 
 function updateBtnLabel(buttonElem, itemObj){
     if(itemObj.action === 'Attack'){
@@ -230,10 +228,66 @@ function updateBtnLabel(buttonElem, itemObj){
     }
 }
 
+
+//Gen skill-tree page
+function genSkillTree(){
+    xut.el('skill-tree').innerHTML = ''
+
+    xda.skillTreeRef.forEach(node => {
+        let btn = document.createElement('button')
+    
+        let description = ''
+    
+        if(node.desc !== undefined){
+            description = xut.upp(node.desc) + '.'
+        }
+    
+        btn.innerHTML = `${xut.upp(node.id)} <br> ${description}`
+        xut.el('skill-tree').append(btn)
+    })
+}
+
+
+//Gen character page
+function genCharPage(){
+    let cont = xut.el('character-content')
+
+    //Build actions array
+    let actions = []
+    playerObj.inventory.forEach(item => {
+        actions.push(`<br>${item.action} (x${item.durability})`)
+    })
+
+    for(let i = 0; i < playerObj.maxInventory - playerObj.inventory.length; i++){
+        actions.push('<br>[....................]')
+    }
+
+    //Add text
+    cont.innerHTML =`
+        Stage: ${gameState.stage}
+        <br>Level: ${playerObj.exp} (exp: ${playerObj.lvl})
+        <br>Gold: ${playerObj.gold} 
+        <br>
+
+        <br>Life: ${playerObj.life} / ${playerObj.maxLife}
+        <br>Def: ${playerObj.def} 
+        <br>Power: ${playerObj.power} 
+        <br>Dice: d${playerObj.flatDice} 
+        <br>
+
+        <br>Inventory: ${actions}
+    `
+}
+
+
+
+
 export default{
     screen,
     floatText,
     updateUi,
     genCards,
-    updateBtnLabel
+    updateBtnLabel,
+    genSkillTree,
+    genCharPage,
 }
