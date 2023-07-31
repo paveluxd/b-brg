@@ -1,5 +1,6 @@
-import xut from "./utility.js"
+import xut from './utility.js'
 import xda from './data.js'
+import xma from './main.js'
 
 
 //Gen tabs
@@ -22,7 +23,7 @@ function genTabs(){
     tab.innerHTML = 'Close'
     xut.el('tabs').append(tab)
 }
-genTabs()
+
 
 //Manage screens
 window.screen = function(id, mod){
@@ -75,68 +76,75 @@ function floatText(target, string){
 
 
 function updateUi(){
-    //log
-    xut.el('log').innerHTML = `
-        Encounter: ${gameState.encounter} / ${gameState.bossFrequency} <br> 
-        Stage: ${gameState.stage}
-        Turn: ${combatState.turn} <br>
-        Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
-    ` 
+    updateCharPage()
+    updateTree()
 
-    //Enemy floating number
-    if(combatState.enemyDmgTaken > 0){//Attack
-        floatText('en',`-${combatState.enemyDmgTaken} life`)
-    }
-    else if(combatState.enemyAction[0] === 'Fortify'){
-        floatText('en',`+${combatState.enemyAction[1]} def`)
-    }
-    else if(combatState.enemyAction[0] === 'Empower'){
-        floatText('en',`+${combatState.enemyAction[1]} power`)
-    }
-    else if(combatState.enemyAction[0] === 'Rush'){
-        floatText('en',`+${combatState.enemyAction[1]} dice`)
-    }
-    else if(combatState.enemyAction[0] === 'Sleep'){
-        floatText('en',`Zzzzz`)
-    }
-    else if(combatState.enemyAction[0] === 'Block'){
-        floatText('en',`Blocked ${combatState.enemyAction[1]}`)
-    }
-    else if(combatState.enemyAction[0] === 'Recover'){
-        floatText('en',`Recovered ${combatState.enemyAction[1]} ${combatState.enemyAction[2]}`)
-    }
+    //Log stats at the top
+    if(typeof combatState !== 'undefined'){
 
-    combatState.enemyAction = []
     
+        xut.el('log').innerHTML = `
+            Encounter: ${gameState.encounter} / ${gameState.bossFrequency} <br> 
+            Stage: ${gameState.stage}
+            Turn: ${combatState.turn} <br>
+            Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
+        ` 
 
-    //Player floating number
-    if(combatState.playerDmgTaken > 0){
-        floatText('pl',`-${combatState.playerDmgTaken} life`)
-    }
+        //Enemy floating number
+        if(combatState.enemyDmgTaken > 0){//Attack
+            floatText('en',`-${combatState.enemyDmgTaken} life`)
+        }
+        else if(combatState.enemyAction[0] === 'Fortify'){
+            floatText('en',`+${combatState.enemyAction[1]} def`)
+        }
+        else if(combatState.enemyAction[0] === 'Empower'){
+            floatText('en',`+${combatState.enemyAction[1]} power`)
+        }
+        else if(combatState.enemyAction[0] === 'Rush'){
+            floatText('en',`+${combatState.enemyAction[1]} dice`)
+        }
+        else if(combatState.enemyAction[0] === 'Sleep'){
+            floatText('en',`Zzzzz`)
+        }
+        else if(combatState.enemyAction[0] === 'Block'){
+            floatText('en',`Blocked ${combatState.enemyAction[1]}`)
+        }
+        else if(combatState.enemyAction[0] === 'Recover'){
+            floatText('en',`Recovered ${combatState.enemyAction[1]} ${combatState.enemyAction[2]}`)
+        }
 
-    //Player stats
-    xut.el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
-    xut.el('p-def').innerHTML = `${playerObj.def}`
-    xut.el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
-    xut.el('p-power').innerHTML = `${playerObj.power}`        
+        combatState.enemyAction = []
+        
+        //Player floating number
+        if(combatState.playerDmgTaken > 0){
+            floatText('pl',`-${combatState.playerDmgTaken} life`)
+        }
 
-    //Enemy stats
-    xut.el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
-    xut.el('def').innerHTML = `${enemyObj.def}`
-    xut.el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
-    xut.el('power').innerHTML = `${enemyObj.power}`        
+        //Player stats
+        xut.el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
+        xut.el('p-def').innerHTML = `${playerObj.def}`
+        xut.el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
+        xut.el('p-power').innerHTML = `${playerObj.power}`        
 
-    if(enemyObj.action === 'Attack'){
-        xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
-    }
-    else if(enemyObj.action === 'Block'){
-        xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
-    }
-    else if (enemyObj.action === 'Detonate'){
-        xut.el('intent').innerHTML = `Will ${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
-    }
-    else{
-        xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc}`
+        //Enemy stats
+        xut.el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
+        xut.el('def').innerHTML = `${enemyObj.def}`
+        xut.el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
+        xut.el('power').innerHTML = `${enemyObj.power}`        
+
+        //Enemy intent
+        if(enemyObj.action === 'Attack'){
+            xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
+        }
+        else if(enemyObj.action === 'Block'){
+            xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
+        }
+        else if (enemyObj.action === 'Detonate'){
+            xut.el('intent').innerHTML = `Will ${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
+        }
+        else{
+            xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc}`
+        }
     }
 }
 
@@ -230,11 +238,12 @@ function updateBtnLabel(buttonElem, itemObj){
 
 
 //Gen skill-tree page
-function genSkillTree(){
-    xut.el('skill-tree').innerHTML = ''
+function updateTree(){
+    xut.el('skill-tree').innerHTML = `Available passive point: ${playerObj.passivePoints}`
 
     xda.skillTreeRef.forEach(node => {
         let btn = document.createElement('button')
+        btn.addEventListener('click', function(){xma.addPassivePoint(node)})
     
         let description = ''
     
@@ -249,7 +258,7 @@ function genSkillTree(){
 
 
 //Gen character page
-function genCharPage(){
+function updateCharPage(){
     let cont = xut.el('character-content')
 
     //Build actions array
@@ -265,7 +274,7 @@ function genCharPage(){
     //Add text
     cont.innerHTML =`
         Stage: ${gameState.stage}
-        <br>Level: ${playerObj.exp} (exp: ${playerObj.lvl})
+        <br>Level: ${playerObj.lvl} (exp: ${playerObj.exp})
         <br>Gold: ${playerObj.gold} 
         <br>
 
@@ -283,11 +292,12 @@ function genCharPage(){
 
 
 export default{
+    genTabs,
     screen,
     floatText,
     updateUi,
     genCards,
     updateBtnLabel,
-    genSkillTree,
-    genCharPage,
+    updateTree,
+    updateCharPage,
 }

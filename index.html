@@ -16,7 +16,7 @@
 <body>
 
     <!-- Map -->
-    <div id="map" class="screen tab hide">
+    <div id="map" class="screen tab">
         <div class="row" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), game.initiateCombat()">Fight</button> <br>
             <button onclick="screen('shop')">Shop</button>
@@ -144,8 +144,8 @@
 
 
     <!-- Screens -->
-    <!-- character -->
-    <div id="character" class="screen tab" >
+    <!-- Character -->
+    <div id="character" class="screen hide tab" >
         <div class="modal-container">
 
             <div class="modal-header"><h2>Character</h2></div>
@@ -194,17 +194,19 @@
         </div>
     </div>
 
+
     <!-- Combat end screen -->
-    <div class="modal hide" id="rewardScreen">
-        <div class="modal-container">
+    <div id="rewardScreen" class="modal hide" >
+        <div  class="modal-container">
 
             <div class="modal-header">
                 <h2 id="combatEndIndicator">Victory! Choose your reward.</h2>
             </div>
 
-            <div id="rewards" class="modal-body"></div>
+            <div id="reward-container" class="modal-body"></div>
        </div>
     </div>
+
 
     <!-- Game over -->
     <div class="modal hide" id="gameOverScreen">

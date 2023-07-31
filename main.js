@@ -11,15 +11,9 @@ let rewardPool = []
 //Gen everything for the game
 window.gameState = new xda.GameState
 genPlayer()
-xui.genSkillTree()
-xui.genCharPage()
-
-
-
-
-export default{
-    rewardPool
-}
+xui.updateTree()
+xui.updateCharPage()
+xui.genTabs()
 
 //Generate
 function genPlayer(){
@@ -200,405 +194,428 @@ function genEnemyActions(){
     enemyObj.action = enemyAc
 }
 
-class Game {
-    //Combat start
-    initiateCombat(){
-        combatState = new xda.CombatState
-        window.combatState = combatState
 
-        if(playerObj === undefined || playerObj.life < 1 ){
-            genPlayer()
-        }
-        
-        //Restore flat def
-        if(playerObj.def !== playerObj.flatDef){
-            playerObj.def = playerObj.flatDef
-        }
+//Combat start
+function initiateCombat(){
+    combatState = new xda.CombatState
+    window.combatState = combatState
+
+    if(playerObj === undefined || playerObj.life < 1 ){
+        genPlayer()
+    }
     
-        //Restore flat power
-        if(playerObj.power < playerObj.flatPower){
-            playerObj.power = playerObj.flatPower
-        }
-    
-        //Generates enemy
-        enemyObj = new xda.EnemyObj
-        window.enemyObj = enemyObj
-
-        xut.el('enemyImg').setAttribute('src', enemyObj.image)
-
-        genEnemyActions() 
-        xui.updateUi()
-        xui.genCards()
+    //Restore flat def
+    if(playerObj.def !== playerObj.flatDef){
+        playerObj.def = playerObj.flatDef
     }
 
-    //Turn
-    turnCalc(buttonElem, itemId){
-    
-        //Damage calculation
-        if (enemyObj.life > 0 && playerObj.life > 0) {
-            let playerDmgDone = 0
-            combatState.playerDmgTaken = 0
-            let enemyDmgDone = 0
-            combatState.enemyDmgTaken = 0
-            playerObj.lastAction = `Turn ${combatState.turn}: `
-    
-            let itemid = buttonElem.getAttribute('itemid')
-            let sourceItem = xut.findObj(playerObj.inventory, 'itemid', itemid)
-            let playerAction = sourceItem.action
-    
-    
-            //PRE TURN
-            //Stat modification actions has to be done before generic actions
-            if(playerAction==='Counter'){
-                enemyObj.state='Skip turn'
-            }
+    //Restore flat power
+    if(playerObj.power < playerObj.flatPower){
+        playerObj.power = playerObj.flatPower
+    }
 
-            //Extra actions
-            else if(sourceItem.type === 'extra'){
-                if (playerAction === 'Reroll'){
-                    playerObj.roll = xut.rng(playerObj.dice) 
-                }
-                else if (playerAction === 'ExtraAttack'){
-                    playerDmgDone = 1 + playerObj.power //Set damage
+    //Generates enemy
+    enemyObj = new xda.EnemyObj
+    window.enemyObj = enemyObj
 
-                    if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
-    
-                    playerDmgDone -= enemyObj.def             //Reduce dmg by def
-                    if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
-                    enemyObj.life -= playerDmgDone            //Reduce life
+    xut.el('enemyImg').setAttribute('src', enemyObj.image)
 
-                    //Trigger enemy damage indicator
-                    combatState.enemyDmgTaken = playerDmgDone 
-                }
+    genEnemyActions() 
+    xui.updateUi()
+    xui.genCards()
+}
 
-                //Deal with durability
-                this.resolveDurability(sourceItem)
+//Turn
+function turnCalc(buttonElem, itemId){
 
-                xui.updateUi()
-                xui.genCards()
-                this.combatEndCheck()
-                return
-            }
-    
-    
-            //TURN
-            //Player action
-            if      (playerAction === 'Attack'){
-                playerDmgDone += playerObj.roll + playerObj.power
-            }
-            else if (playerAction === 'Fireball'){
-                let mult = playerObj.maxInventory - playerObj.inventory.length 
-                if(mult < 1){mult = 0}
-                playerDmgDone += playerObj.roll * mult
-            }
-            else if (playerAction === 'Block'){
-                enemyDmgDone -= playerObj.roll //- playerObj.power
-            }
-            else if (playerAction === "Repair"){
-                playerObj.inventory.forEach(elem => {
-                    if(elem.action !== 'Repair' && elem.type !== 'passive'){
-                        elem.durability += sourceItem.effectMod
-                    }
-                })
-            }
-            else if (playerAction === 'Fortify'){
-                playerObj.def += playerObj.roll
-            }
-            else if (playerAction === 'Dodge'){
-                playerAction.rollBonus += Math.floor(playerObj.roll * 0.5)
-            }
-            else if (playerAction === 'Break'){
-                enemyObj.def -= playerObj.roll
-            }
-            else if (playerAction === 'Weaken'){
-                enemyObj.power -= playerObj.roll
-            }
-            else if (playerAction === 'Root'){
-                enemyObj.dice -= sourceItem.effectMod
-            }
-            else if (playerAction === 'Barrier'){
-                playerObj.protection = 'Barrier'
-                sourceItem.cooldown = 0
+    //Damage calculation
+    if (enemyObj.life > 0 && playerObj.life > 0) {
+        let playerDmgDone = 0
+        combatState.playerDmgTaken = 0
+        let enemyDmgDone = 0
+        combatState.enemyDmgTaken = 0
+        playerObj.lastAction = `Turn ${combatState.turn}: `
 
+        let itemid = buttonElem.getAttribute('itemid')
+        let sourceItem = xut.findObj(playerObj.inventory, 'itemid', itemid)
+        let playerAction = sourceItem.action
+
+
+        //PRE TURN
+        //Stat modification actions has to be done before generic actions
+        if(playerAction==='Counter'){
+            enemyObj.state='Skip turn'
+        }
+
+        //Extra actions
+        else if(sourceItem.type === 'extra'){
+            if (playerAction === 'Reroll'){
+                playerObj.roll = xut.rng(playerObj.dice) 
             }
-            
-            //Enemy action
-            if(enemyObj.state !== 'Skip turn'){
-    
-                if      (enemyObj.action === 'Attack'){
-                    enemyDmgDone += enemyObj.roll + enemyObj.power 
-                }
-                else if (enemyObj.action === 'Block'){//block
-                    playerDmgDone -= enemyObj.roll
-                    combatState.enemyAction = ['Block', enemyObj.roll]
-                }
-                else if (enemyObj.action === 'Multistrike'){
-                    enemyDmgDone += (1 + enemyObj.power)
-                }
-                else if (enemyObj.action === 'Fortify'){
-                    let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
-                    enemyObj.def += x
-                    combatState.enemyAction = ['Fortify', x]
-                }
-                else if (enemyObj.action === 'Empower'){
-                    let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
-                    enemyObj.power += x
-                    combatState.enemyAction = ['Empower', x]
-                }
-                else if (enemyObj.action === 'Rush'){
-                    let x = Math.round(1 + (gameState.stage) *0.2)
-                    enemyObj.dice += x
-                    combatState.enemyAction = ['Rusn', x]
-                }
-                else if (enemyObj.action === 'Sleep'){
-                    combatState.enemyAction = ['Sleep']
-                }
-                else if (enemyObj.action === 'Recover'){
-                    if(enemyObj.def < 0){
-                        combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'def'] //abs turns integer positive
-                        enemyObj.def = 0
-                    }
-                    else if(enemyObj.power < 0){
-                        combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'power'] //abs turns integer positive
-                        enemyObj.power = 0
-    
-                    }
-                    else if(enemyObj.dice < 6){
-                        combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'dice'] //abs turns integer positive
-                        enemyObj.dice = 6
-    
-                    }
-                }
-                else if (enemyObj.action === 'Detonate'){
-                    enemyDmgDone += enemyObj.maxLife                    
-                }
-                
-            }
-    
-    
-            //DAMAGE CALCULATION
-            //Damage inflicted by player
-            if (['Attack', 'Fireball'].indexOf(playerAction) > -1){
+            else if (playerAction === 'ExtraAttack'){
+                playerDmgDone = 1 + playerObj.power //Set damage
+
                 if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
-    
-                playerDmgDone -= enemyObj.def             //Check def
+
+                playerDmgDone -= enemyObj.def             //Reduce dmg by def
                 if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
                 enemyObj.life -= playerDmgDone            //Reduce life
 
                 //Trigger enemy damage indicator
                 combatState.enemyDmgTaken = playerDmgDone 
             }
-    
-            //Damage inflicted by enemy
-            if(enemyObj.state !== 'Skip turn'){
 
-                //Reduce damage if barrier
-                if(playerObj.protection === 'Barrier'){
-                    playerObj.protection = ''
-                    enemyDmgDone = Math.round(enemyDmgDone * 0.25)
+            //Deal with durability
+            this.resolveDurability(sourceItem)
+
+            xui.updateUi()
+            xui.genCards()
+            this.combatEndCheck()
+            return
+        }
+
+
+        //TURN
+        //Player action
+        if      (playerAction === 'Attack'){
+            playerDmgDone += playerObj.roll + playerObj.power
+        }
+        else if (playerAction === 'Fireball'){
+            let mult = playerObj.maxInventory - playerObj.inventory.length 
+            if(mult < 1){mult = 0}
+            playerDmgDone += playerObj.roll * mult
+        }
+        else if (playerAction === 'Block'){
+            enemyDmgDone -= playerObj.roll //- playerObj.power
+        }
+        else if (playerAction === "Repair"){
+            playerObj.inventory.forEach(elem => {
+                if(elem.action !== 'Repair' && elem.type !== 'passive'){
+                    elem.durability += sourceItem.effectMod
                 }
+            })
+        }
+        else if (playerAction === 'Fortify'){
+            playerObj.def += playerObj.roll
+        }
+        else if (playerAction === 'Dodge'){
+            playerAction.rollBonus += Math.floor(playerObj.roll * 0.5)
+        }
+        else if (playerAction === 'Break'){
+            enemyObj.def -= playerObj.roll
+        }
+        else if (playerAction === 'Weaken'){
+            enemyObj.power -= playerObj.roll
+        }
+        else if (playerAction === 'Root'){
+            enemyObj.dice -= sourceItem.effectMod
+        }
+        else if (playerAction === 'Barrier'){
+            playerObj.protection = 'Barrier'
+            sourceItem.cooldown = 0
 
-                if(['Attack'].indexOf(enemyObj.action) > -1){
+        }
+        
+        //Enemy action
+        if(enemyObj.state !== 'Skip turn'){
+
+            if      (enemyObj.action === 'Attack'){
+                enemyDmgDone += enemyObj.roll + enemyObj.power 
+            }
+            else if (enemyObj.action === 'Block'){//block
+                playerDmgDone -= enemyObj.roll
+                combatState.enemyAction = ['Block', enemyObj.roll]
+            }
+            else if (enemyObj.action === 'Multistrike'){
+                enemyDmgDone += (1 + enemyObj.power)
+            }
+            else if (enemyObj.action === 'Fortify'){
+                let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                enemyObj.def += x
+                combatState.enemyAction = ['Fortify', x]
+            }
+            else if (enemyObj.action === 'Empower'){
+                let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                enemyObj.power += x
+                combatState.enemyAction = ['Empower', x]
+            }
+            else if (enemyObj.action === 'Rush'){
+                let x = Math.round(1 + (gameState.stage) *0.2)
+                enemyObj.dice += x
+                combatState.enemyAction = ['Rusn', x]
+            }
+            else if (enemyObj.action === 'Sleep'){
+                combatState.enemyAction = ['Sleep']
+            }
+            else if (enemyObj.action === 'Recover'){
+                if(enemyObj.def < 0){
+                    combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'def'] //abs turns integer positive
+                    enemyObj.def = 0
+                }
+                else if(enemyObj.power < 0){
+                    combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'power'] //abs turns integer positive
+                    enemyObj.power = 0
+
+                }
+                else if(enemyObj.dice < 6){
+                    combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'dice'] //abs turns integer positive
+                    enemyObj.dice = 6
+
+                }
+            }
+            else if (enemyObj.action === 'Detonate'){
+                enemyDmgDone += enemyObj.maxLife                    
+            }
+            
+        }
+
+
+        //DAMAGE CALCULATION
+        //Damage inflicted by player
+        if (['Attack', 'Fireball'].indexOf(playerAction) > -1){
+            if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
+
+            playerDmgDone -= enemyObj.def             //Check def
+            if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
+            enemyObj.life -= playerDmgDone            //Reduce life
+
+            //Trigger enemy damage indicator
+            combatState.enemyDmgTaken = playerDmgDone 
+        }
+
+        //Damage inflicted by enemy
+        if(enemyObj.state !== 'Skip turn'){
+
+            //Reduce damage if barrier
+            if(playerObj.protection === 'Barrier'){
+                playerObj.protection = ''
+                enemyDmgDone = Math.round(enemyDmgDone * 0.25)
+            }
+
+            if(['Attack'].indexOf(enemyObj.action) > -1){
+
+                //Reduce def on low hit
+                if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}
     
+                enemyDmgDone -= playerObj.def
+
+                //Set positive damage to 0
+                if (enemyDmgDone < 0){enemyDmgDone = 0} 
+                playerObj.life -= enemyDmgDone
+
+                //Trigger player damage indicator
+                combatState.playerDmgTaken = enemyDmgDone
+            }
+            else if (['Multistrike'].indexOf(enemyObj.action) > -1){
+                for (let i = 0; i < 3; i ++){
+
+                    //Move to a diff var due to def reducing dmg done 3 times
+                    let playerDamageTaken = enemyDmgDone
+
                     //Reduce def on low hit
                     if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}
-        
-                    enemyDmgDone -= playerObj.def
     
+                    //Reduce damage by def
+                    playerDamageTaken -= playerObj.def
+
                     //Set positive damage to 0
-                    if (enemyDmgDone < 0){enemyDmgDone = 0} 
-                    playerObj.life -= enemyDmgDone
+                    if (playerDamageTaken < 0){playerDamageTaken = 0} 
+                    playerObj.life -= playerDamageTaken
 
                     //Trigger player damage indicator
                     combatState.playerDmgTaken = enemyDmgDone
                 }
-                else if (['Multistrike'].indexOf(enemyObj.action) > -1){
-                    for (let i = 0; i < 3; i ++){
-    
-                        //Move to a diff var due to def reducing dmg done 3 times
-                        let playerDamageTaken = enemyDmgDone
-    
-                        //Reduce def on low hit
-                        if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}
-        
-                        //Reduce damage by def
-                        playerDamageTaken -= playerObj.def
-    
-                        //Set positive damage to 0
-                        if (playerDamageTaken < 0){playerDamageTaken = 0} 
-                        playerObj.life -= playerDamageTaken
-
-                        //Trigger player damage indicator
-                        combatState.playerDmgTaken = enemyDmgDone
-                    }
-                }
-                else if(['Detonate'].indexOf(enemyObj.action) > -1 && enemyObj.life < 0){
-
-                        playerObj.life -= enemyDmgDone
-
-                        //Trigger player damage indicator
-                        combatState.playerDmgTaken = enemyDmgDone
-                }
             }
-    
-            //POST CALCULATION
-            //Heal after damage taken to make heal effective if you heal near hp cap.
-            if (playerAction === 'Heal'){
-                playerObj.life += sourceItem.effectMod
-                if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
-            }
-    
-            //Deal with durability
-            this.resolveDurability(sourceItem)
+            else if(['Detonate'].indexOf(enemyObj.action) > -1 && enemyObj.life < 0){
 
-            //End turn updates
-            playerObj.roll = xut.rng(playerObj.dice) + playerObj.rollBonus
-            playerObj.rollBonus = 0
-            genEnemyActions()
-            enemyObj.state = ''
-            combatState.turn++
-            xui.genCards() 
-            xui.updateUi()
+                    playerObj.life -= enemyDmgDone
+
+                    //Trigger player damage indicator
+                    combatState.playerDmgTaken = enemyDmgDone
+            }
         }
 
-    this.combatEndCheck()
+        //POST CALCULATION
+        //Heal after damage taken to make heal effective if you heal near hp cap.
+        if (playerAction === 'Heal'){
+            playerObj.life += sourceItem.effectMod
+            if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
+        }
+
+        //Deal with durability
+        this.resolveDurability(sourceItem)
+
+        //End turn updates
+        playerObj.roll = xut.rng(playerObj.dice) + playerObj.rollBonus
+        playerObj.rollBonus = 0
+        genEnemyActions()
+        enemyObj.state = ''
+        combatState.turn++
+        xui.genCards() 
+        xui.updateUi()
     }
 
-    combatEndCheck(){
-        //Check if game state changed
-        //Defeat
-        if(playerObj.life < 1 || playerObj.inventory.length < 1){
-            xui.updateUi()
-            xut.toggleModal('gameOverScreen')
-        }
-        //Victory
-        else if (enemyObj.life < 1){
-            xui.updateUi()
+this.combatEndCheck()
+}
 
-            //Gen rewards or open map if boss was killed
-            if(gameState.stage % gameState.bossFrequency === 0){
-                game.genReward('end') //End round
-                gameState.encounter = 0
-            }
-            else{
-                game.genReward('gen', 3) //Number of rewards to give
-            }
-
-            gameState.encounter++
-            gameState.stage++
-            playerObj.exp++ //Add 1 exp
-            playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl
-        }
+function combatEndCheck(){
+    //Check if game state changed
+    //Defeat
+    if(playerObj.life < 1 || playerObj.inventory.length < 1){
+        xui.updateUi()
+        xut.toggleModal('gameOverScreen')
     }
+    //Victory
+    else if (enemyObj.life < 1){
+        xui.updateUi()
 
-    resolveDurability(item){
-        item.durability--
-            if(item.durability<1){
-                xut.removeFromArr(playerObj.inventory, item)
-                if(item.type === 'passive'){
-                    resolvePassiveItem(item)//Loose passive stat
-                }
-            }
-    }
-     
-    //Rewards
-    genReward(val, quant){
-        xut.el('rewards').innerHTML = `` // clear modal body
+        //Gen rewards or open map if boss was killed
+        if(gameState.stage % gameState.bossFrequency === 0){
+            game.genReward('end') //End round
+            gameState.encounter = 0
+        }
+        else{
+            game.genReward('gen', 3) //Number of rewards to give
+        }
 
-        if(val === 'gen'){//Pick from reward pool 
-            let rewardRefPool = xut.cloneArr(xda.rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
-            let generatedItem
-    
-            for(let i =0; i < quant; i++){ //gen item per quant value in function
-                let reward = xut.rarr(rewardRefPool) //pick random reward
-    
-                if(reward.type !== 'Item'){ //if reward is not item, remove it from array so it can't be picked again.
-                    xut.removeFromArr(rewardRefPool, reward)
-                }
-    
-                if(reward.type === 'Item'){//item
-                    //Gen random item
-                    generatedItem = new xda.Item(xut.rarr(Object.keys(xda.itemsRef, gameState.stage)))
-                    rewardPool.push(generatedItem)
-                }
-                else{//not item
-                    rewardPool.push(reward)
-                }
-    
-                //Create buttons
-                let button = document.createElement('button')
-                
-                //if item add item desck
-                if(reward.type === 'Item'){
-                    button.innerHTML = `
-                    <h3>${generatedItem.action} (Durability: ${generatedItem.durability})</h3> 
-                    ${generatedItem.desc} (requires empty item slot).`
-                    
-                    button.setAttribute('onclick', `game.genReward('${reward.type}', '${generatedItem.itemid}')`) //quant will be id for items
-                }
-                
-                else{
-                    button.innerHTML = `${reward.desc}`
-                    button.setAttribute('onclick', `game.genReward('${reward.type}')`)
-                }
-    
-    
-                xut.el('rewards').append(button)
-            }
-
-            xut.toggleModal('rewardScreen')
-        }
-        else if(val === 'end'){
-            let button = document.createElement('button')
-            button.setAttribute('onclick', 'screen("map")')
-            button.innerHTML = 'Return to map'
-            xut.el('rewards').append(button)
-    
-            xut.toggleModal('rewardScreen')
-        }
-        
-        else {//Resolve reward
-            //Add selected reward to player
-            if(val === 'Heal'){
-                playerObj.life += Math.floor(playerObj.maxLife / 2)
-                if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
-            }
-            else if(val === 'Repair'){
-                playerObj.inventory[xut.rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
-            }
-            else if(val === 'Bag'){
-                playerObj.maxInventory++
-            }
-            else if(val === 'Enhance'){
-                playerObj.flatDef++
-            }
-            else if (val === 'Train'){
-                playerObj.maxLife += Math.floor(4 + (gameState.stage * 0.5))
-            }
-            else if(val==='Power'){
-                playerObj.flatPower++
-            }
-            else {
-                //Get item from reward gen
-                rewardPool.forEach(elem => {
-                    if(elem.itemid !== undefined && elem.itemid === quant){
-                        if(playerObj.inventory.length < playerObj.maxInventory){
-                            if(elem.type === 'passive'){resolvePassiveItem(elem, 'add')}
-                            playerObj.inventory.push(elem)
-                        }
-                    }
-                })
-                rewardPool = []
-            }
-    
-            this.initiateCombat()
-            xui.genCards()
-            xui.updateUi()
-            xut.toggleModal('rewardScreen')
-        }
+        gameState.encounter++
+        gameState.stage++
+        playerObj.exp++ //Add 1 exp
+        playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl
     }
 }
 
-//Makes game methods global
-let game = new Game
-window.game = game
+function resolveDurability(item){
+    item.durability--
+        if(item.durability<1){
+            xut.removeFromArr(playerObj.inventory, item)
+            if(item.type === 'passive'){
+                resolvePassiveItem(item)//Loose passive stat
+            }
+        }
+}
+    
+//Rewards
+function genReward(val, quant){
+
+    //Clear modal body
+    xut.el('reward-container').innerHTML = `` 
+
+
+    //Pick from reward pool
+    if(val === 'gen'){ 
+        let rewardRefPool = xut.cloneArr(xda.rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
+        let generatedItem
+
+        for(let i =0; i < quant; i++){ //gen item per quant value in function
+            let reward = xut.rarr(rewardRefPool) //pick random reward
+
+            if(reward.type !== 'Item'){ //if reward is not item, remove it from array so it can't be picked again.
+                xut.removeFromArr(rewardRefPool, reward)
+            }
+
+            if(reward.type === 'Item'){//item
+                //Gen random item
+                generatedItem = new xda.Item(xut.rarr(Object.keys(xda.itemsRef, gameState.stage)))
+                rewardPool.push(generatedItem)
+            }
+            else{//not item
+                rewardPool.push(reward)
+            }
+
+            //Create buttons
+            let button = document.createElement('button')
+            
+            //if item add item desck
+            if(reward.type === 'Item'){
+                button.innerHTML = `
+                <h3>${generatedItem.action} (Durability: ${generatedItem.durability})</h3> 
+                ${generatedItem.desc} (requires empty item slot).`
+                
+                button.setAttribute('onclick', `game.genReward('${reward.type}', '${generatedItem.itemid}')`) //quant will be id for items
+            }
+            
+            else{
+                button.innerHTML = `${reward.desc}`
+                button.setAttribute('onclick', `game.genReward('${reward.type}')`)
+            }
+
+            xut.el('reward-container').append(button)
+        }
+
+        xut.toggleModal('rewardScreen')
+    }
+    else if(val === 'end'){
+        let button = document.createElement('button')
+        button.setAttribute('onclick', 'screen("map")')
+        button.innerHTML = 'Return to map'
+        xut.el('reward-container').append(button)
+
+        xut.toggleModal('rewardScreen')//Show rewards modal
+    }
+
+
+    //Resolve reward
+    else {
+        if(val       === 'Heal'){
+            playerObj.life += Math.floor(playerObj.maxLife / 2)
+            if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
+        }
+        else if(val  === 'Repair'){
+            playerObj.inventory[xut.rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
+        }
+        else if(val  === 'Bag'){
+            playerObj.maxInventory++
+        }
+        else if(val  === 'Enhance'){
+            playerObj.flatDef++
+        }
+        else if (val === 'Train'){
+            playerObj.maxLife += Math.floor(4 + (gameState.stage * 0.5))
+        }
+        else if(val  ==='Power'){
+            playerObj.flatPower++
+        }
+        else if(val  ==='Gold'){
+            playerObj.gold += xut.rng(gameState.stage, 1)
+        }
+        else {
+            //Get item from reward gen
+            rewardPool.forEach(elem => {
+                if(elem.itemid !== undefined && elem.itemid === quant){
+                    if(playerObj.inventory.length < playerObj.maxInventory){
+                        if(elem.type === 'passive'){resolvePassiveItem(elem, 'add')}
+                        playerObj.inventory.push(elem)
+                    }
+                }
+            })
+            rewardPool = []
+        }
+
+        this.initiateCombat()
+        xui.genCards()
+        xui.updateUi()
+        xut.toggleModal('rewardScreen')
+    }
+}
+
+function addPassivePoint(node){
+    xut.log(node.id)
+
+    if(playerObj.passivePoints > 0){
+        playerObj.passiveNodes.push(node)
+
+        if(node.id === 'add-life'){
+            //Change stat
+            playerObj.life += 10
+            
+        }
+    
+        xui.updateUi()
+    }
+}
+
+export default{
+    rewardPool,
+    addPassivePoint,
+}

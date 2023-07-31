@@ -56,7 +56,9 @@ export class PlayerObj {
         //Misc-stats
         this.gold         = 0
         this.exp          = 0
-        this.lvl          = 1
+        this.lvl          = 7
+        this.passiveNodes  = []
+        this.passivePoints = this.lvl - this.passiveNodes -1
     }
 }
 
@@ -180,10 +182,11 @@ export let rewardRef = [
 
     {type:'Train', freq: 1, desc: 'Increase maximum life'},
     {type:'Enhance', freq: 1, desc: 'Increase defence'},
-    {type:'Power', freq: 1, desc: 'Increase power by 1.'},
+    {type:'Power', freq: 1, desc: 'Increase power by 1'},
     {type:'Heal', freq: 1, desc: 'Restore life'},
     {type:'Repair', freq: 1, desc:'Repair random item'},
-    {type:'Bag', freq: 1, desc: 'Gain an additional inventory slot'}
+    {type:'Bag', freq: 1, desc: 'Gain an additional inventory slot'},
+    {type:'Gold', freq: 1, desc: 'Gold rewad'},
 ]
 
 //Ene actions
