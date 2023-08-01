@@ -616,6 +616,10 @@ function addPassivePoint(node){
 }
 
 export default{
+    initiateCombat,
+    turnCalc,
+    resolveDurability,
+    genReward,
     rewardPool,
     addPassivePoint,
 }
