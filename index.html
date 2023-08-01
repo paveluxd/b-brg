@@ -18,7 +18,7 @@
     <!-- Map -->
     <div id="map" class="screen tab">
         <div class="row" style="width: 100%; gap:48px;">
-            <button onclick="screen('combat'), game.initiateCombat()">Fight</button> <br>
+            <button onclick="screen('combat'), initiateCombat()">Fight</button> <br>
             <button onclick="screen('shop')">Shop</button>
         </div>
     </div>
@@ -214,12 +214,14 @@
             <div class="column button-container modal-body" style="margin: auto;">
                 <h1 style="font-weight: 600;">Game over!</h1>
                 <p id="gameOverScreenLog">Refresh the page to try again.</p>
-                <!-- <button onclick="toggleModal('gameOverScreen'), initiateCombat()">Start over</button> -->
             </div>
         </div>
     </div>
 
 </body>
-<script type="module" src="main.js">
-</script>
+
+<script src="utility.js"></script>
+<script src="data.js"></script>
+<script src="ui.js"></script>
+<script src="main.js"></script>
 </html>

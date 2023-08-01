@@ -74,18 +74,3 @@ function upp(string){//Sets 1st letter to uppercase
 function log(val){
     return console.log(val)
 }
-
-export default{
-    runAnim,
-    toggleModal,
-    rng,
-    rarr,
-    shuffle,
-    findObj,
-    removeFromArr,
-    el,
-    cloneArr,
-    objContainsByPropValue,
-    upp,
-    log,
-}

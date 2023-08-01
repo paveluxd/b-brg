@@ -1,24 +1,13 @@
-import xda from './data.js'
-import xui from './ui.js'
-import xut from './utility.js'
-window.xut = xut
-window.xda = xda
-window.xui = xui
+
+
 
 let playerObj, enemyObj, combatState
 let rewardPool = []
 
-//Gen everything for the game
-window.gameState = new xda.GameState
-genPlayer()
-xui.updateTree()
-xui.updateCharPage()
-xui.genTabs()
 
 //Generate
 function genPlayer(){
-    playerObj = new xda.PlayerObj
-    window.playerObj = playerObj
+    playerObj = new PlayerObj
 
     let startingItems = ['Attack', 'Block','ExtraAttack']
     startingItems.forEach(key => {addTargetItem(key)})
@@ -28,11 +17,12 @@ function genPlayer(){
     // addRandomItem(2)
 }
 
+
 //ADD ITEMS
 function addTargetItem(key, iLvl){
     if(playerObj.inventory.length < playerObj.maxInventory){
 
-        let newItem = new xda.Item(key, iLvl)
+        let newItem = new Item(key, iLvl)
         if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
         playerObj.inventory.push(newItem)
 
@@ -45,7 +35,7 @@ function addRandomItem(quant, iLvl){
     for(let i =0; i< quant; i++){
         if(playerObj.inventory.length < playerObj.maxInventory){
 
-            let newItem = new xda.Item(xut.rarr(Object.keys(xda.itemsRef)), iLvl)
+            let newItem = new Item(rarr(Object.keys(itemsRef)), iLvl)
             if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
             playerObj.inventory.push(newItem)
 
@@ -134,62 +124,62 @@ function resolvePassiveItem(item, event){
 
 //Generate enemy action for the next turn
 function genEnemyActions(){
-    enemyObj.roll = xut.rng(enemyObj.dice) //Roll enemy dice
-    let actionRoll = xut.rng(100)          //roll to pick action
+    enemyObj.roll = rng(enemyObj.dice) //Roll enemy dice
+    let actionRoll = rng(100)          //roll to pick action
     let enemyAc                                //Final action
     let aAction = []  
-    let actionKeys = Object.keys(xda.enemyActions) //Get keys
+    let actionKeys = Object.keys(enemyActions) //Get keys
 
     //If weakened enemy starts recovering
     if(enemyObj.def < 0 || enemyObj.def < 0 || enemyObj.def < 0){
-        xda.enemyActions.Recover.rate = 1
+        enemyActions.Recover.rate = 1
     }
     else{
-        xda.enemyActions.Recover.rate = undefined
+        enemyActions.Recover.rate = undefined
     }
 
     // If low life enamble detonate
     if(enemyObj.maxLife / enemyObj.life > 3){
-        xda.enemyActions.Detonate.rate = 1
+        enemyActions.Detonate.rate = 1
     }else{
-        xda.enemyActions.Detonate.rate = undefined
+        enemyActions.Detonate.rate = undefined
     }
 
 
     //Pick action
-    if(actionRoll < 2 && xut.objContainsByPropValue(xda.enemyActions, 'rate', 4)){//1%
+    if(actionRoll < 2 && objContainsByPropValue(enemyActions, 'rate', 4)){//1%
         for(let i = 0; i < actionKeys.length; i++){
-            if(xda.enemyActions[actionKeys[i]].rate === 4){
-                aAction.push(xda.enemyActions[actionKeys[i]].action)
+            if(enemyActions[actionKeys[i]].rate === 4){
+                aAction.push(enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = xut.rarr(aAction)
+        enemyAc = rarr(aAction)
     }
-    if(actionRoll < 7 && xut.objContainsByPropValue(xda.enemyActions, 'rate', 3)){//5%
+    if(actionRoll < 7 && objContainsByPropValue(enemyActions, 'rate', 3)){//5%
         for(let i = 0; i < actionKeys.length; i++){
-            if(xda.enemyActions[actionKeys[i]].rate === 3){
-                aAction.push(xda.enemyActions[actionKeys[i]].action)
+            if(enemyActions[actionKeys[i]].rate === 3){
+                aAction.push(enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = xut.rarr(aAction)
+        enemyAc = rarr(aAction)
     } 
-    else if (actionRoll < 17 && xut.objContainsByPropValue(xda.enemyActions, 'rate', 2)){//10%
+    else if (actionRoll < 17 && objContainsByPropValue(enemyActions, 'rate', 2)){//10%
         for(let i =0; i<actionKeys.length; i++){
-            if(xda.enemyActions[actionKeys[i]].rate === 2){
-                aAction.push(xda.enemyActions[actionKeys[i]].action)
+            if(enemyActions[actionKeys[i]].rate === 2){
+                aAction.push(enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = xut.rarr(aAction)
+        enemyAc = rarr(aAction)
     } 
-    else if (actionRoll < 47 && xut.objContainsByPropValue(xda.enemyActions, 'rate', 1)){//30%
+    else if (actionRoll < 47 && objContainsByPropValue(enemyActions, 'rate', 1)){//30%
         for(let i =0; i<actionKeys.length; i++){
-            if(xda.enemyActions[actionKeys[i]].rate === 1){
-                aAction.push(xda.enemyActions[actionKeys[i]].action)
+            if(enemyActions[actionKeys[i]].rate === 1){
+                aAction.push(enemyActions[actionKeys[i]].action)
             }
         }
-        enemyAc = xut.rarr(aAction)
+        enemyAc = rarr(aAction)
     } //55% att
-    else {enemyAc = xda.enemyActions.Attack.action}
+    else {enemyAc = enemyActions.Attack.action}
 
     enemyObj.action = enemyAc
 }
@@ -197,8 +187,7 @@ function genEnemyActions(){
 
 //Combat start
 function initiateCombat(){
-    combatState = new xda.CombatState
-    window.combatState = combatState
+    combatState = new CombatState
 
     if(playerObj === undefined || playerObj.life < 1 ){
         genPlayer()
@@ -215,14 +204,13 @@ function initiateCombat(){
     }
 
     //Generates enemy
-    enemyObj = new xda.EnemyObj
-    window.enemyObj = enemyObj
+    enemyObj = new EnemyObj
 
-    xut.el('enemyImg').setAttribute('src', enemyObj.image)
+    el('enemyImg').setAttribute('src', enemyObj.image)
 
     genEnemyActions() 
-    xui.updateUi()
-    xui.genCards()
+    updateUi()
+    genCards()
 }
 
 //Turn
@@ -237,7 +225,7 @@ function turnCalc(buttonElem, itemId){
         playerObj.lastAction = `Turn ${combatState.turn}: `
 
         let itemid = buttonElem.getAttribute('itemid')
-        let sourceItem = xut.findObj(playerObj.inventory, 'itemid', itemid)
+        let sourceItem = findObj(playerObj.inventory, 'itemid', itemid)
         let playerAction = sourceItem.action
 
 
@@ -250,7 +238,7 @@ function turnCalc(buttonElem, itemId){
         //Extra actions
         else if(sourceItem.type === 'extra'){
             if (playerAction === 'Reroll'){
-                playerObj.roll = xut.rng(playerObj.dice) 
+                playerObj.roll = rng(playerObj.dice) 
             }
             else if (playerAction === 'ExtraAttack'){
                 playerDmgDone = 1 + playerObj.power //Set damage
@@ -266,11 +254,11 @@ function turnCalc(buttonElem, itemId){
             }
 
             //Deal with durability
-            this.resolveDurability(sourceItem)
+            resolveDurability(sourceItem)
 
-            xui.updateUi()
-            xui.genCards()
-            this.combatEndCheck()
+            updateUi()
+            genCards()
+            combatEndCheck()
             return
         }
 
@@ -443,39 +431,39 @@ function turnCalc(buttonElem, itemId){
         }
 
         //Deal with durability
-        this.resolveDurability(sourceItem)
+        resolveDurability(sourceItem)
 
         //End turn updates
-        playerObj.roll = xut.rng(playerObj.dice) + playerObj.rollBonus
+        playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
         playerObj.rollBonus = 0
         genEnemyActions()
         enemyObj.state = ''
         combatState.turn++
-        xui.genCards() 
-        xui.updateUi()
+        genCards() 
+        updateUi()
     }
 
-this.combatEndCheck()
+    combatEndCheck()
 }
 
 function combatEndCheck(){
     //Check if game state changed
     //Defeat
     if(playerObj.life < 1 || playerObj.inventory.length < 1){
-        xui.updateUi()
-        xut.toggleModal('gameOverScreen')
+        updateUi()
+        toggleModal('gameOverScreen')
     }
     //Victory
     else if (enemyObj.life < 1){
-        xui.updateUi()
+        updateUi()
 
         //Gen rewards or open map if boss was killed
         if(gameState.stage % gameState.bossFrequency === 0){
-            game.genReward('end') //End round
+            genReward('end') //End round
             gameState.encounter = 0
         }
         else{
-            game.genReward('gen', 3) //Number of rewards to give
+            genReward('gen', 3) //Number of rewards to give
         }
 
         gameState.encounter++
@@ -488,35 +476,36 @@ function combatEndCheck(){
 function resolveDurability(item){
     item.durability--
         if(item.durability<1){
-            xut.removeFromArr(playerObj.inventory, item)
+            removeFromArr(playerObj.inventory, item)
             if(item.type === 'passive'){
                 resolvePassiveItem(item)//Loose passive stat
             }
         }
 }
     
+
 //Rewards
 function genReward(val, quant){
 
     //Clear modal body
-    xut.el('reward-container').innerHTML = `` 
+    el('reward-container').innerHTML = `` 
 
 
     //Pick from reward pool
     if(val === 'gen'){ 
-        let rewardRefPool = xut.cloneArr(xda.rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
+        let rewardRefPool = cloneArr(rewardRef) //copy rewards ref array to avoid duplicates when generating random rewards
         let generatedItem
 
         for(let i =0; i < quant; i++){ //gen item per quant value in function
-            let reward = xut.rarr(rewardRefPool) //pick random reward
+            let reward = rarr(rewardRefPool) //pick random reward
 
             if(reward.type !== 'Item'){ //if reward is not item, remove it from array so it can't be picked again.
-                xut.removeFromArr(rewardRefPool, reward)
+                removeFromArr(rewardRefPool, reward)
             }
 
             if(reward.type === 'Item'){//item
                 //Gen random item
-                generatedItem = new xda.Item(xut.rarr(Object.keys(xda.itemsRef, gameState.stage)))
+                generatedItem = new Item(rarr(Object.keys(itemsRef, gameState.stage)))
                 rewardPool.push(generatedItem)
             }
             else{//not item
@@ -532,26 +521,26 @@ function genReward(val, quant){
                 <h3>${generatedItem.action} (Durability: ${generatedItem.durability})</h3> 
                 ${generatedItem.desc} (requires empty item slot).`
                 
-                button.setAttribute('onclick', `game.genReward('${reward.type}', '${generatedItem.itemid}')`) //quant will be id for items
+                button.setAttribute('onclick', `genReward('${reward.type}', '${generatedItem.itemid}')`) //quant will be id for items
             }
             
             else{
                 button.innerHTML = `${reward.desc}`
-                button.setAttribute('onclick', `game.genReward('${reward.type}')`)
+                button.setAttribute('onclick', `genReward('${reward.type}')`)
             }
 
-            xut.el('reward-container').append(button)
+            el('reward-container').append(button)
         }
 
-        xut.toggleModal('rewardScreen')
+        toggleModal('rewardScreen')
     }
     else if(val === 'end'){
         let button = document.createElement('button')
         button.setAttribute('onclick', 'screen("map")')
         button.innerHTML = 'Return to map'
-        xut.el('reward-container').append(button)
+        el('reward-container').append(button)
 
-        xut.toggleModal('rewardScreen')//Show rewards modal
+        toggleModal('rewardScreen')//Show rewards modal
     }
 
 
@@ -562,7 +551,7 @@ function genReward(val, quant){
             if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
         }
         else if(val  === 'Repair'){
-            playerObj.inventory[xut.rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
+            playerObj.inventory[rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
         }
         else if(val  === 'Bag'){
             playerObj.maxInventory++
@@ -577,7 +566,7 @@ function genReward(val, quant){
             playerObj.flatPower++
         }
         else if(val  ==='Gold'){
-            playerObj.gold += xut.rng(gameState.stage, 1)
+            playerObj.gold += rng(gameState.stage, 1)
         }
         else {
             //Get item from reward gen
@@ -593,14 +582,14 @@ function genReward(val, quant){
         }
 
         this.initiateCombat()
-        xui.genCards()
-        xui.updateUi()
-        xut.toggleModal('rewardScreen')
+        genCards()
+        updateUi()
+        toggleModal('rewardScreen')
     }
 }
 
 function addPassivePoint(node){
-    xut.log(node.id)
+    log(node.id)
 
     if(playerObj.passivePoints > 0){
         playerObj.passiveNodes.push(node)
@@ -611,15 +600,14 @@ function addPassivePoint(node){
             
         }
     
-        xui.updateUi()
+        updateUi()
     }
 }
 
-export default{
-    initiateCombat,
-    turnCalc,
-    resolveDurability,
-    genReward,
-    rewardPool,
-    addPassivePoint,
-}
+
+//Gen everything for the game
+gameState = new GameState
+genPlayer()
+updateTree()
+updateCharPage()
+genTabs()

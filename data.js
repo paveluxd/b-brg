@@ -1,7 +1,5 @@
-import xut from "./utility.js"
-
 //Game data for skill tree?
-export class GameData {
+class GameData {
     // SkillTree() {
     //     constructor(){
 
@@ -10,7 +8,7 @@ export class GameData {
 }
 
 //Game state
-export class GameState{
+class GameState{
     constructor(){
         this.stage = 1
         this.enemyLifeBase = 6
@@ -20,7 +18,7 @@ export class GameState{
 }
 
 //
-export class CombatState {
+class CombatState {
     constructor(){
         this.turn = 1
         this.enemyDmgTaken = 0
@@ -31,7 +29,7 @@ export class CombatState {
 }
 
 //
-export class PlayerObj {
+class PlayerObj {
     constructor(){
         //Core
         this.maxLife      = 999 
@@ -45,7 +43,7 @@ export class PlayerObj {
         this.flatDice     = this.defaultDice
         this.dice         = this.defaultDice
 
-        this.roll         = xut.rng(this.defaultDice) //initial roll
+        this.roll         = rng(this.defaultDice) //initial roll
         this.rollBonus    = 0
 
         this.maxInventory = 8
@@ -63,19 +61,19 @@ export class PlayerObj {
 }
 
 //
-export class EnemyObj {
+class EnemyObj {
     constructor(){
         this.life  = gameState.enemyLifeBase
         this.maxLife = this.life
 
-        this.power = Math.ceil(xut.rng(gameState.stage * 0.5, 0)),
-        this.def   = Math.ceil(xut.rng(gameState.stage * 0.3, 0)),
+        this.power = Math.ceil(rng(gameState.stage * 0.5, 0)),
+        this.def   = Math.ceil(rng(gameState.stage * 0.3, 0)),
 
         this.dice  = 4 + Math.round(gameState.stage * 0.2),
         
         this.level = gameState.stage
         this.image = `./img/enemy/${gameState.stage}.png`
-        xut.el('enemyImg').classList.remove('boss')
+        el('enemyImg').classList.remove('boss')
 
 
         //Create boss every 10 levels
@@ -85,20 +83,20 @@ export class EnemyObj {
             this.life  = Math.round(gameState.enemyLifeBase * 1.25)
             this.maxLife = this.life
 
-            this.power = Math.ceil(xut.rng(gameState.stage * 0.3, 0)),
-            this.def   = Math.ceil(xut.rng(gameState.stage * 0.3, 0)),
+            this.power = Math.ceil(rng(gameState.stage * 0.3, 0)),
+            this.def   = Math.ceil(rng(gameState.stage * 0.3, 0)),
 
             this.dice  = 12
             
             this.level = gameState.stage
             this.image = `./img/boss/${gameState.stage/gameState.bossFrequency}.png`
-            xut.el('enemyImg').classList.add('boss')
+            el('enemyImg').classList.add('boss')
         }
     }
 }
 
 //Classes
-export class Item {
+class Item {
     constructor(key, iLvl){
         //Static properties taken from reference
         if(iLvl === undefined && gameState !== undefined){iLvl = gameState.stage}else{iLvl = 1}
@@ -135,11 +133,8 @@ export class Item {
 
 
 
-
-
-
 //item = action
-export let itemsRef = {
+let itemsRef = {
     //Item key is used as 'action' string
     Attack:  {desc: "Deal damage equal to dice roll value", durability:12 },
     ExtraAttack:  {desc: "Deal 1 damage as extra action", type:'extra'}, //add varioation with cd and cost
@@ -172,7 +167,7 @@ export let itemsRef = {
 }
 
 //Rewards
-export let rewardRef = [
+let rewardRef = [
     {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
     {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
     {type:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
@@ -190,7 +185,7 @@ export let rewardRef = [
 ]
 
 //Ene actions
-export let enemyActions = {
+let enemyActions = {
     Attack:      {        action: 'Attack',  desc: `Attack`},
     Block:       {rate:1, action: 'Block',   desc: `Block`},
     Multistrike: {rate:2, action: 'Multistrike', desc: `Multistrike`},
@@ -225,7 +220,7 @@ export let enemyActions = {
 }
 
 //Tree -> Nodes
-export let skillTreeRef = [
+let skillTreeRef = [
     //Core stats
     {id:'add-life', desc:'add 10 base life'},
     {id:'add-def'},
@@ -270,16 +265,3 @@ export let skillTreeRef = [
     //Durability
     {id:'chance-save-dur'}, //20% chance to not loose durability on use <item type>
 ]
-
-
-export default{
-    Item,
-    PlayerObj,
-    EnemyObj,
-    CombatState,
-    GameState,
-    itemsRef,
-    rewardRef,
-    enemyActions,
-    skillTreeRef,
-}

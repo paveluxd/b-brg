@@ -1,19 +1,14 @@
-import xut from './utility.js'
-import xda from './data.js'
-import xma from './main.js'
-
-
 //Gen tabs
 function genTabs(){
     //Clear tabs
-    xut.el('tabs').innerHTML = ''
+    el('tabs').innerHTML = ''
     let screens = ['map', 'character', 'inventory', 'tree']
     //Gen map tabs
     screens.forEach(elem => {
         let tab = document.createElement('button')
         tab.addEventListener('click', function(){screen(elem)})
-        tab.innerHTML = xut.upp(elem)
-        xut.el('tabs').append(tab)
+        tab.innerHTML = upp(elem)
+        el('tabs').append(tab)
     })
     
     //Add hidden close button
@@ -21,30 +16,30 @@ function genTabs(){
     tab.setAttribute('onclick', `screen('combat', this, "overlay")`)
     tab.classList.add('hide')
     tab.innerHTML = 'Close'
-    xut.el('tabs').append(tab)
+    el('tabs').append(tab)
 }
 
 
 //Manage screens
-window.screen = function(id, mod){
+function screen(id, mod){
 
     //Hide everything
-    xut.el('.screen', 'all').forEach(t => t.classList.add('hide')); //screens
-    xut.el('.modal', 'all').forEach(t => t.classList.add('hide'));//screens
-    xut.el('tab-container').classList.add('hide')  //tabs
+    el('.screen', 'all').forEach(t => t.classList.add('hide')); //screens
+    el('.modal', 'all').forEach(t => t.classList.add('hide'));//screens
+    el('tab-container').classList.add('hide')  //tabs
     
     //Show tabs                     
-    if(xut.el(id).classList.contains('tab')){//if it's a tab, show tabs
-       xut.el('tab-container').classList.remove('hide')
+    if(el(id).classList.contains('tab')){//if it's a tab, show tabs
+       el('tab-container').classList.remove('hide')
     }
 
     if(mod === 'combat-menu'){
-       xut.el('character').classList.remove('hide');//display screen with id
-       xut.el('tabs').lastChild.classList.remove('hide')
-       xut.el('tabs').firstChild.classList.add('hide')
+       el('character').classList.remove('hide');//display screen with id
+       el('tabs').lastChild.classList.remove('hide')
+       el('tabs').firstChild.classList.add('hide')
     }
     else{
-       xut.el(id).classList.remove('hide');//display screen with id
+       el(id).classList.remove('hide');//display screen with id
     }
 }
 
@@ -52,29 +47,29 @@ window.screen = function(id, mod){
 function floatText(target, string){
 
     if(target === 'en'){
-        xut.el('enDmgInd').innerHTML = string
-        xut.runAnim(xut.el('enDmgInd'), 'float-num')
+        el('enDmgInd').innerHTML = string
+        runAnim(el('enDmgInd'), 'float-num')
     }
     else{
-        xut.el('plDmgInd').innerHTML = string
-        xut.runAnim(xut.el('plDmgInd'), 'float-num')
+        el('plDmgInd').innerHTML = string
+        runAnim(el('plDmgInd'), 'float-num')
     }
 
 
     //if positive -> text green etc
     if(string[0] === '-'){
-        xut.el('enDmgInd').setAttribute('style', 'color:red;')
-        xut.el('plDmgInd').setAttribute('style', 'color:red;')
+        el('enDmgInd').setAttribute('style', 'color:red;')
+        el('plDmgInd').setAttribute('style', 'color:red;')
 
     }
     else{
-        xut.el('enDmgInd').setAttribute('style', 'color:white;')
-        xut.el('plDmgInd').setAttribute('style', 'color:white;')
+        el('enDmgInd').setAttribute('style', 'color:white;')
+        el('plDmgInd').setAttribute('style', 'color:white;')
 
     }
 }
 
-
+//
 function updateUi(){
     updateCharPage()
     updateTree()
@@ -83,7 +78,7 @@ function updateUi(){
     if(typeof combatState !== 'undefined'){
 
     
-        xut.el('log').innerHTML = `
+        el('log').innerHTML = `
             Encounter: ${gameState.encounter} / ${gameState.bossFrequency} <br> 
             Stage: ${gameState.stage}
             Turn: ${combatState.turn} <br>
@@ -121,36 +116,36 @@ function updateUi(){
         }
 
         //Player stats
-        xut.el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
-        xut.el('p-def').innerHTML = `${playerObj.def}`
-        xut.el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
-        xut.el('p-power').innerHTML = `${playerObj.power}`        
+        el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
+        el('p-def').innerHTML = `${playerObj.def}`
+        el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
+        el('p-power').innerHTML = `${playerObj.power}`        
 
         //Enemy stats
-        xut.el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
-        xut.el('def').innerHTML = `${enemyObj.def}`
-        xut.el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
-        xut.el('power').innerHTML = `${enemyObj.power}`        
+        el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
+        el('def').innerHTML = `${enemyObj.def}`
+        el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
+        el('power').innerHTML = `${enemyObj.power}`        
 
         //Enemy intent
         if(enemyObj.action === 'Attack'){
-            xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
+            el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
         }
         else if(enemyObj.action === 'Block'){
-            xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
+            el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
         }
         else if (enemyObj.action === 'Detonate'){
-            xut.el('intent').innerHTML = `Will ${xda.enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
+            el('intent').innerHTML = `Will ${enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
         }
         else{
-            xut.el('intent').innerHTML = `${xda.enemyActions[enemyObj.action].desc}`
+            el('intent').innerHTML = `${enemyActions[enemyObj.action].desc}`
         }
     }
 }
 
 //Action buttons
 function genCards(){
-    xut.el('playerActionContainer').innerHTML = ''
+    el('playerActionContainer').innerHTML = ''
     
     //Add buttons per player item
     playerObj.inventory.forEach(item => {
@@ -169,19 +164,19 @@ function genCards(){
 
         let content = document.createElement('section')
         
-        button.setAttribute('onclick', `game.turnCalc(this)`)
+        button.setAttribute('onclick', `turnCalc(this)`)
         button.setAttribute('itemid', item.itemid) // add item id
         button.classList.add('action')
 
         button.append(bar, content)
         updateBtnLabel(button, item)
         
-        if(item.cooldown !== undefined && item.cooldown < xda.itemsRef[item.action].cooldown){
+        if(item.cooldown !== undefined && item.cooldown < itemsRef[item.action].cooldown){
             item.cooldown++
             button.disabled = true
         }
 
-        xut.el('playerActionContainer').append(button)
+        el('playerActionContainer').append(button)
     })
 
     //Add empty item slots
@@ -191,7 +186,7 @@ function genCards(){
         button.innerHTML = `[ ]`
         button.disabled = true
         button.classList.add('action', 'empty-slot')
-        xut.el('playerActionContainer').append(button) 
+        el('playerActionContainer').append(button) 
     }
 
 }
@@ -236,30 +231,28 @@ function updateBtnLabel(buttonElem, itemObj){
     }
 }
 
-
 //Gen skill-tree page
 function updateTree(){
-    xut.el('skill-tree').innerHTML = `Available passive point: ${playerObj.passivePoints}`
+    el('skill-tree').innerHTML = `Available passive point: ${playerObj.passivePoints}`
 
-    xda.skillTreeRef.forEach(node => {
+    skillTreeRef.forEach(node => {
         let btn = document.createElement('button')
-        btn.addEventListener('click', function(){xma.addPassivePoint(node)})
+        btn.addEventListener('click', function(){addPassivePoint(node)})
     
         let description = ''
     
         if(node.desc !== undefined){
-            description = xut.upp(node.desc) + '.'
+            description = upp(node.desc) + '.'
         }
     
-        btn.innerHTML = `${xut.upp(node.id)} <br> ${description}`
-        xut.el('skill-tree').append(btn)
+        btn.innerHTML = `${upp(node.id)} <br> ${description}`
+        el('skill-tree').append(btn)
     })
 }
 
-
 //Gen character page
 function updateCharPage(){
-    let cont = xut.el('character-content')
+    let cont = el('character-content')
 
     //Build actions array
     let actions = []
@@ -286,18 +279,4 @@ function updateCharPage(){
 
         <br>Inventory: ${actions}
     `
-}
-
-
-
-
-export default{
-    genTabs,
-    screen,
-    floatText,
-    updateUi,
-    genCards,
-    updateBtnLabel,
-    updateTree,
-    updateCharPage,
 }
