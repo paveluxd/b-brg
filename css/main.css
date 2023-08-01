@@ -48,7 +48,7 @@ body{
 }
 
 #map{
-    background-image: url(/img/bg/map.jpeg);
+    background-image: url(./img/bg/map.jpeg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
