@@ -152,7 +152,7 @@ function syncActionTiles(){
     el('playerActionContainer').innerHTML = ''
     
     //Add button per player item
-    playerObj.actions.forEach(item => {
+    playerObj.actions.forEach(action => {
 
         //Add top decorative bar with cut corners
         let bar = document.createElement('div')
@@ -170,54 +170,54 @@ function syncActionTiles(){
         //Create button elem
         let button = document.createElement('button')
         button.setAttribute('onclick', `turnCalc(this)`) // On click run next turn
-        button.setAttribute('itemid', item.itemid)       // Add a unique id
+        button.setAttribute('actionId', action.actionId)       // Add a unique id
         button.classList.add('action')
         
         
         //Updates button labels based on actions
         //Modifies 'content' section
         button.append(bar, content) //Add decorative bar and content section to button
-        if     (['Attack'].indexOf(item.action) > -1){
+        if     (['Attack'].indexOf(action.actionKey) > -1){
             button.querySelector('section').innerHTML = `
             <span>
-            <h3>${item.action} for ${playerObj.roll + playerObj.power}</h3> 
-            <p>x${item.durability}</p>
+            <h3>${action.actionName} for ${playerObj.roll + playerObj.power}</h3> 
+            <p>x${action.actionCharge}</p>
             </span>
-            <p class='desc'>${item.desc}</p>
+            <p class='desc'>${action.desc}</p>
             `   
         }
-        else if(['Fireball'].indexOf(item.action) > -1){        
+        else if(['Fireball'].indexOf(action.actionKey) > -1){        
             button.querySelector('section').innerHTML = `
             <span>
-            <h3>${item.action} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
-            <p>x${item.durability}</p>
+            <h3>${action.actionName} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
+            <p>x${action.actionCharge}</p>
             </span>
-                <p class='desc'>${item.desc}</p>
+                <p class='desc'>${action.desc}</p>
                 `
         }
-        else if(['Block', 'Break'].indexOf(item.action) > -1){
+        else if(['Block', 'Break'].indexOf(action.actionKey) > -1){
                 button.querySelector('section').innerHTML = `
                 <span>
-                <h3>${item.action} ${playerObj.roll}</h3> 
-                <p>x${item.durability}</p>
+                <h3>${action.actionName} ${playerObj.roll}</h3> 
+                <p>x${action.actionCharge}</p>
                 </span>
-                <p class='desc'>${item.desc}</p>
+                <p class='desc'>${action.desc}</p>
                 `      
         }
         else{
             button.querySelector('section').innerHTML = `
                 <span>
-                    <h3>${item.action}</h3> 
-                    <p>x${item.durability}</p>
+                    <h3>${action.actionName}</h3> 
+                    <p>x${action.actionCharge}</p>
                 </span>
-                <p class='desc'>${item.desc}</p>
+                <p class='desc'>${action.desc}</p>
             `        
         }
         
 
         //If item is on cooldown, increase cd counter
-        if(item.cooldown !== undefined && item.cooldown < actionsRef[item.action].cooldown){
-            item.cooldown++
+        if(action.cooldown !== undefined && action.cooldown < actionsRef[action.action].cooldown){
+            action.cooldown++
             button.disabled = true
         }
 
@@ -268,8 +268,8 @@ function syncCharPage(){
 
     //Build actions array
     let actions = []
-    playerObj.actions.forEach(item => {
-        actions.push(`<br>${item.action} (x${item.durability})`)
+    playerObj.actions.forEach(action => {
+        actions.push(`<br>${action.actionKey} (x${action.actionCharge})`)
     })
 
     for(let i = 0; i < playerObj.actionSlots - playerObj.actions.length; i++){

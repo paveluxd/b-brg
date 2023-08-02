@@ -50,11 +50,12 @@ class PlayerObj {
         this.inventorySlots = 20 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ['attack', 'belt','extraAttack']
+        this.startingItems  = ['sword', 'spellBook']
 
         //Skills
         this.actionSlots    = 6
         this.actions        = [] //Actions gained from items
+        this.draftActions   = [] //Draft actions gained from items
 
         //Sub-stats
         this.gold           = 0
@@ -104,58 +105,91 @@ class EnemyObj {
 
 //Classes
 class ItemObj {
-    constructor(key, iLvl){
-        //Static properties taken from reference
-        if(iLvl === undefined && gameState !== undefined){iLvl = gameState.stage}else{iLvl = 1}
-        this.action = key
-        this.desc = actionsRef[key].desc
-        this.actionType = actionsRef[key].actionType
+    constructor(itemKey, iLvl){
 
+        //Static properties taken from reference
+        this.actions = []
+
+        //Gen item actions
+        itemsRef[itemKey].actions.forEach(actionKey =>{
+            this.actions.push(new ActionObj(actionKey))
+        })
+
+        //set iLvl to stage val
+        if(iLvl === undefined && gameState !== undefined){
+            iLvl = gameState.stage
+        }else{
+            iLvl = 1
+        } 
 
         //Variable properties generated
-        let extraProps = [
-            {key:'name'       ,val: `${key} scroll`},
-            {key:'itemid'     ,val: "id" + Math.random().toString(8).slice(2)},//gens unique id
-            {key:'durability' ,val: 10},
-            {key:'mod'        ,val: 0},
-            {key:'cost'       ,val: 12}, 
-            {key:'cooldown'   ,val: undefined},
+        let props = [
+            {key:'itemName'    ,val: upp(itemKey)},
+            {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
+            {key:'durability'  ,val: 10},
+            {key:'cost'        ,val: 12}, 
+            {key:'itemType'    ,val: 'generic'},
         ]
 
 
         //Resolves extra properties that either have default from above or gain value from ref object
-        extraProps.forEach(property => {
-            if(actionsRef[key].actionType === 'passive' && property.key === 'durability'){
-                this.durability = 1 //set dur of all passive items to 1.
-            } 
-            else if(actionsRef[key][property.key] === undefined){
-                this[property.key] = property.val //if no prop, set it to extraProps vlaue
+        props.forEach(property => {
+            if(itemsRef[itemKey][property.key] === undefined){
+                this[property.key] = property.val //if no prop, set it to extra props vlaue
             }
             else {
-                this[property.key] = actionsRef[key][property.key] //if exists in ref, set it as red.
+                this[property.key] = itemsRef[itemKey][property.key] //if exists in ref, set it as red.
             }
         })
     }
 }
 
+//
+class ActionObj {
+    constructor(actionKey){
+        //Static props
+        this.actionKey = actionKey
+        
+
+        //Variable properties generated
+        let props = [
+            {key:'actionName'  ,val: upp(actionKey)},
+            {key:'actionId'    ,val: "ac" + Math.random().toString(8).slice(2)},//gens unique id
+            {key:'actionCharge',val: 10},
+            {key:'actionMod'   ,val: 0},
+            {key:'cooldown'    ,val: undefined},
+            {key:'actionType'  ,val: 'generic'},
+            {key:'desc'        ,val: ''}
+        ]
+
+        //Resolves extra props
+        props.forEach(property => {
+            if(actionsRef[actionKey].actionType === 'passive' && property.key === 'actionCharge'){
+                this.actionCharge = 1 //set action charge of all passive items to 1.
+            } 
+            else if(actionsRef[actionKey][property.key] === undefined){
+                this[property.key] = property.val //if no prop, set it to extra props vlaue
+            }
+            else {
+                this[property.key] = actionsRef[actionKey][property.key] //if exists in ref, set it as red.
+            }
+        })
+    }
+}
 
 let itemsRef = {
-    sword: {
-        action:['attack'], 
-        draftActions:[], 
-        passiveStats:[],
-        passiveFx: [],
-        itemType:'' //none, weapon, helm etc.
-    }
+    sword:     {actions:['attack'], itemType:'weapon',},
+    shiled:    {actions:['block'],},
+    spellBook: {actions:['fireball'],},
 }
 
 //item = action
 let actionsRef = {
     //Item key is used as 'action' string
-    attack:      {desc: "deal damage equal to dice roll value", durability:12 },
+    attack:      {desc: "deal damage equal to dice roll value", actionCharge:12 },
     extraAttack: {desc: "deal 1 damage as extra action", actionType:'extra'}, //add varioation with cd and cost
-    repair:      {desc: 'restore durability to all different type items', mod: 2,},
-    fireball:    {desc: 'deal damage equal to (roll x empty item slots)', durability: 6,},
+    repair:      {desc: 'restore action charge to all different type actions', actionMod: 2,},
+    fireball:    {desc: 'deal damage equal to (roll x empty item slots)', actionCharge: 6,},
     dodge:       {desc: 'skip turn to keep half of your roll for the next turn', },
 
     block:       {desc: 'block damage equal to dice roll value', },
@@ -163,25 +197,25 @@ let actionsRef = {
     barrier:     {desc: `reduce incomming damage by 75%, cd:3`, cooldown: 3, },
     
     //Player stats
-    heal:        {desc: "restore 12 life", durability: 3, mod: 12},
-    fortify:     {desc: 'increase def until the end of this fight', durability:1, mod: 3,},
-    reroll:      {desc: "instant action: Reroll your dice.", durability: 10, actionType:'extra'},
+    heal:        {desc: "restore 12 life", actionCharge: 3, actionMod: 12},
+    fortify:     {desc: 'increase def until the end of this fight', actionCharge:1, actionMod: 3,},
+    reroll:      {desc: "instant action: Reroll your dice.", actionCharge: 10, actionType:'extra'},
     // Focus:   {desc: 'Increase next turn roll'},
     // Rage:    {desc: 'Increase power until the end of this fight'},
 
     //Enemy states
-    weaken:      {desc: 'reduce enemy power', durability: 3,},
-    break:       {desc: 'reduce enemy defence', durability: 3,},
-    counter:     {desc: 'prevent enemy action', durability: 3},
-    root:        {desc: 'reduce enemy dice by 2', durability: 3, mod: 3,},
+    weaken:      {desc: 'reduce enemy power', actionCharge: 3,},
+    break:       {desc: 'reduce enemy defence', actionCharge: 3,},
+    counter:     {desc: 'prevent enemy action', actionCharge: 3},
+    root:        {desc: 'reduce enemy dice by 2', actionCharge: 3, actionMod: 3,},
     // Stun:     {desc: 'Prevent enemy for acting during this turn'},
 
     //Passive items
-    shield:      {desc: 'add 3 def while in inventory (passive)', actionType: 'passive', mod: 3,},
-    amulet:      {desc: 'add 2 power while in inventory (passive)', actionType: 'passive', mod: 2,},
-    belt:        {desc: 'add 20 max life while in inventory (passive)', actionType: 'passive', mod: 20,},
-    leatherBelt: {desc: 'add 20% max life while in inventory (passive)', actionType: 'passive', mod: 0.2,},
-    d8:          {desc: 'use d8 for rolls while this is in inventory (passive)', actionType: 'passive', mod: 8,}
+    shield:      {desc: 'add 3 def while in inventory (passive)'                ,actionType: 'passive', actionMod: 3,},
+    amulet:      {desc: 'add 2 power while in inventory (passive)'              ,actionType: 'passive', actionMod: 2,},
+    belt:        {desc: 'add 20 max life while in inventory (passive)'          ,actionType: 'passive', actionMod: 20,},
+    leatherBelt: {desc: 'add 20% max life while in inventory (passive)'         ,actionType: 'passive', actionMod: 0.2,},
+    d8:          {desc: 'use d8 for rolls while this is in inventory (passive)' ,actionType: 'passive', actionMod: 8,}
 
     //Misc
     //Town-portal item, escape combat.
@@ -201,7 +235,7 @@ let rewardRef = [
     {rewardType:'Enhance' ,freq: 1, desc: 'Increase defence'},
     {rewardType:'Power'   ,freq: 1, desc: 'Increase power by 1'},
     {rewardType:'Heal'    ,freq: 1, desc: 'Restore life'},
-    {rewardType:'Repair'  ,freq: 1, desc:'Repair random item'},
+    {rewardType:'Repair'  ,freq: 1, desc: 'Repair random item'},
     {rewardType:'Bag'     ,freq: 1, desc: 'Gain an additional actions slot'},
     {rewardType:'Gold'    ,freq: 1, desc: 'Gold rewad'},
 ]
@@ -244,11 +278,11 @@ let eneActionRef = {
 //Tree -> Nodes
 let treeRef = [
     //Core stats
-    {id:'add-life'      ,desc:'add 10 base life'         ,nodeType:'baseLife'    ,mod: 10  },
-    {id:'percent-life'  ,desc:'increse base life by 25%' ,nodeType:'percentLife' ,mod: 0.25},
-    {id:'add-def'       ,desc:'gain 1 basse def'         ,nodeType:'baseDef'     ,mod: 1   },
-    {id:'add-power'     ,desc:'gain 1 base power'        ,nodeType:'basePower'   ,mod: 1   },
-    {id:'add-dice'      ,desc:'gain 2 to base dice'      ,nodeType:'baseDice'    ,mod: 2   },
+    {id:'add-life'      ,desc:'add 10 base life'         ,nodeType:'baseLife'    ,nodeMod: 10  },
+    {id:'percent-life'  ,desc:'increse base life by 25%' ,nodeType:'percentLife' ,nodeMod: 0.25},
+    {id:'add-def'       ,desc:'gain 1 basse def'         ,nodeType:'baseDef'     ,nodeMod: 1   },
+    {id:'add-power'     ,desc:'gain 1 base power'        ,nodeType:'basePower'   ,nodeMod: 1   },
+    {id:'add-dice'      ,desc:'gain 2 to base dice'      ,nodeType:'baseDice'    ,nodeMod: 2   },
     {id:'add-inventory'},
 
 
@@ -285,6 +319,6 @@ let treeRef = [
     //Exp
 
 
-    //Durability
-    {id:'chance-save-dur'}, //20% chance to not loose durability on use <item type>
+    //Aaction charge
+    {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
 ]
