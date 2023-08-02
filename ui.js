@@ -1,24 +1,27 @@
 //Gen tabs
 function genTabs(){
+
     //Clear tabs
     el('tabs').innerHTML = ''
+
+    //Add hidden close button
+    let tab = document.createElement('button')
+    tab.setAttribute('onclick', `screen('combat', this, "overlay")`)
+    tab.classList.add('hide')
+    tab.innerHTML = 'X'
+    tab.id = 'close-tab'
+    el('tabs').append(tab)
+
     let screens = ['map', 'character', 'inventory', 'tree']
     //Gen map tabs
     screens.forEach(elem => {
         let tab = document.createElement('button')
         tab.addEventListener('click', function(){screen(elem)})
         tab.innerHTML = upp(elem)
+        tab.id = `${elem}-tab`
         el('tabs').append(tab)
     })
-    
-    //Add hidden close button
-    let tab = document.createElement('button')
-    tab.setAttribute('onclick', `screen('combat', this, "overlay")`)
-    tab.classList.add('hide')
-    tab.innerHTML = 'Close'
-    el('tabs').append(tab)
 }
-
 
 //Manage screens
 function screen(id, mod){
@@ -33,17 +36,17 @@ function screen(id, mod){
        el('tab-container').classList.remove('hide')
     }
 
-    if(mod === 'combat-menu'){
+    if(mod === 'combat-menu'){//switch visible tabs
        el('character').classList.remove('hide');//display screen with id
-       el('tabs').lastChild.classList.remove('hide')
-       el('tabs').firstChild.classList.add('hide')
+       el('close-tab').classList.remove('hide')
+       el('map-tab').classList.add('hide')
     }
     else{
        el(id).classList.remove('hide');//display screen with id
     }
 }
 
-
+//Animation
 function floatText(target, string){
 
     if(target === 'en'){
@@ -70,9 +73,10 @@ function floatText(target, string){
 }
 
 //
-function updateUi(){
-    updateCharPage()
-    updateTree()
+function syncUi(){
+    syncActionTiles()
+    syncCharPage()
+    syncTree()
 
     //Log stats at the top
     if(typeof combatState !== 'undefined'){
@@ -129,29 +133,28 @@ function updateUi(){
 
         //Enemy intent
         if(enemyObj.action === 'Attack'){
-            el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
+            el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
         }
         else if(enemyObj.action === 'Block'){
-            el('intent').innerHTML = `${enemyActions[enemyObj.action].desc} ${enemyObj.roll} damage`
+            el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc} ${enemyObj.roll} damage`
         }
         else if (enemyObj.action === 'Detonate'){
-            el('intent').innerHTML = `Will ${enemyActions[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
+            el('intent').innerHTML = `Will ${eneActionRef[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
         }
         else{
-            el('intent').innerHTML = `${enemyActions[enemyObj.action].desc}`
+            el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc}`
         }
     }
 }
 
-//Action buttons
-function genCards(){
+//Action tiles
+function syncActionTiles(){
     el('playerActionContainer').innerHTML = ''
     
-    //Add buttons per player item
-    playerObj.inventory.forEach(item => {
-        let button = document.createElement('button')
+    //Add button per player item
+    playerObj.actions.forEach(item => {
 
-        //add top decorative bar
+        //Add top decorative bar with cut corners
         let bar = document.createElement('div')
         bar.innerHTML = `
                     <svg height="4" width="4" style="fill: black;">
@@ -160,18 +163,60 @@ function genCards(){
                     <svg height="4" width="4" style="fill: black;">
                         <polygon points="4,0 0,0 4,4"/>
                     </svg>
-                    `
+                    `// Creates svg triangles
 
-        let content = document.createElement('section')
-        
-        button.setAttribute('onclick', `turnCalc(this)`)
-        button.setAttribute('itemid', item.itemid) // add item id
+        let content = document.createElement('section')  // Section that contains name and desc
+
+        //Create button elem
+        let button = document.createElement('button')
+        button.setAttribute('onclick', `turnCalc(this)`) // On click run next turn
+        button.setAttribute('itemid', item.itemid)       // Add a unique id
         button.classList.add('action')
-
-        button.append(bar, content)
-        updateBtnLabel(button, item)
         
-        if(item.cooldown !== undefined && item.cooldown < itemsRef[item.action].cooldown){
+        
+        //Updates button labels based on actions
+        //Modifies 'content' section
+        button.append(bar, content) //Add decorative bar and content section to button
+        if     (['Attack'].indexOf(item.action) > -1){
+            button.querySelector('section').innerHTML = `
+            <span>
+            <h3>${item.action} for ${playerObj.roll + playerObj.power}</h3> 
+            <p>x${item.durability}</p>
+            </span>
+            <p class='desc'>${item.desc}</p>
+            `   
+        }
+        else if(['Fireball'].indexOf(item.action) > -1){        
+            button.querySelector('section').innerHTML = `
+            <span>
+            <h3>${item.action} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
+            <p>x${item.durability}</p>
+            </span>
+                <p class='desc'>${item.desc}</p>
+                `
+        }
+        else if(['Block', 'Break'].indexOf(item.action) > -1){
+                button.querySelector('section').innerHTML = `
+                <span>
+                <h3>${item.action} ${playerObj.roll}</h3> 
+                <p>x${item.durability}</p>
+                </span>
+                <p class='desc'>${item.desc}</p>
+                `      
+        }
+        else{
+            button.querySelector('section').innerHTML = `
+                <span>
+                    <h3>${item.action}</h3> 
+                    <p>x${item.durability}</p>
+                </span>
+                <p class='desc'>${item.desc}</p>
+            `        
+        }
+        
+
+        //If item is on cooldown, increase cd counter
+        if(item.cooldown !== undefined && item.cooldown < actionsRef[item.action].cooldown){
             item.cooldown++
             button.disabled = true
         }
@@ -179,8 +224,9 @@ function genCards(){
         el('playerActionContainer').append(button)
     })
 
+
     //Add empty item slots
-    let emptySlots = playerObj.maxInventory - playerObj.inventory.length
+    let emptySlots = playerObj.actionSlots - playerObj.actions.length
     for (let i =0; i < emptySlots; i++){
         let button = document.createElement('button')
         button.innerHTML = `[ ]`
@@ -188,56 +234,15 @@ function genCards(){
         button.classList.add('action', 'empty-slot')
         el('playerActionContainer').append(button) 
     }
-
-}
-
-
-function updateBtnLabel(buttonElem, itemObj){
-    if(itemObj.action === 'Attack'){
-        buttonElem.querySelector('section').innerHTML = `
-        <span>
-            <h3>${itemObj.action} for ${playerObj.roll + playerObj.power}</h3> 
-            <p>x${itemObj.durability}</p>
-        </span>
-        <p class='desc'>${itemObj.desc}</p>
-    `   
-    }
-    else if(itemObj.action === 'Fireball'){        
-        buttonElem.querySelector('section').innerHTML = `
-            <span>
-                <h3>${itemObj.action} for ${playerObj.roll * (playerObj.maxInventory - playerObj.inventory.length)}</h3> 
-                <p>x${itemObj.durability}</p>
-            </span>
-            <p class='desc'>${itemObj.desc}</p>
-        `
-    }
-    else if (['Block', 'Break'].indexOf(itemObj.action) > -1){
-        buttonElem.querySelector('section').innerHTML = `
-            <span>
-                <h3>${itemObj.action} ${playerObj.roll}</h3> 
-                <p>x${itemObj.durability}</p>
-            </span>
-            <p class='desc'>${itemObj.desc}</p>
-        `      
-    }
-    else{
-        buttonElem.querySelector('section').innerHTML = `
-            <span>
-                <h3>${itemObj.action}</h3> 
-                <p>x${itemObj.durability}</p>
-            </span>
-            <p class='desc'>${itemObj.desc}</p>
-        `        
-    }
 }
 
 //Gen skill-tree page
-function updateTree(){
-    el('skill-tree').innerHTML = `Available passive point: ${playerObj.passivePoints}`
+function syncTree(){
+    el('skill-tree').innerHTML = `Available passive point: ${playerObj.treePoints}`
 
-    skillTreeRef.forEach(node => {
+    treeRef.forEach(node => {
         let btn = document.createElement('button')
-        btn.addEventListener('click', function(){addPassivePoint(node)})
+        btn.addEventListener('click', function(){addTreeNode(node)})
     
         let description = ''
     
@@ -245,22 +250,29 @@ function updateTree(){
             description = upp(node.desc) + '.'
         }
     
+        btn.id = node.id
         btn.innerHTML = `${upp(node.id)} <br> ${description}`
         el('skill-tree').append(btn)
+    })
+
+    playerObj.treeNodes.forEach(node => {
+        el(node.id).disabled = true
     })
 }
 
 //Gen character page
-function updateCharPage(){
+function syncCharPage(){
+    playerObj.treePoints = playerObj.lvl - playerObj.treeNodes.length -1
+
     let cont = el('character-content')
 
     //Build actions array
     let actions = []
-    playerObj.inventory.forEach(item => {
+    playerObj.actions.forEach(item => {
         actions.push(`<br>${item.action} (x${item.durability})`)
     })
 
-    for(let i = 0; i < playerObj.maxInventory - playerObj.inventory.length; i++){
+    for(let i = 0; i < playerObj.actionSlots - playerObj.actions.length; i++){
         actions.push('<br>[....................]')
     }
 
@@ -268,6 +280,7 @@ function updateCharPage(){
     cont.innerHTML =`
         Stage: ${gameState.stage}
         <br>Level: ${playerObj.lvl} (exp: ${playerObj.exp})
+        <br>Passive skill points: ${playerObj.treePoints}
         <br>Gold: ${playerObj.gold} 
         <br>
 
@@ -277,6 +290,6 @@ function updateCharPage(){
         <br>Dice: d${playerObj.flatDice} 
         <br>
 
-        <br>Inventory: ${actions}
+        <br>Skills slots: ${actions}
     `
 }

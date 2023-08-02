@@ -1,43 +1,59 @@
 
 
+//Add actions
+//Add equipment
+//Redo  rewards
 
-let playerObj, enemyObj, combatState
-let rewardPool = []
+//Build the tree
 
 
-//Generate
-function genPlayer(){
+//This function is triggered from the html
+function initGame(){
+    //Check LS
+
+    //If LS empty
+    gameState = new GameState
+
+
+    //Gen player
     playerObj = new PlayerObj
-
-    let startingItems = ['Attack', 'Block','ExtraAttack']
-    startingItems.forEach(key => {addTargetItem(key)})
-
-    playerObj.inventory[0].durability = 99
-    playerObj.inventory[1].durability = 99 
+    playerObj.startingItems.forEach(key => {
+        addTargetItem(key)
+        // resolvePassiveItem()
+    })
+    playerObj.actions[0].durability = 99
+    playerObj.actions[1].durability = 99 
     // addRandomItem(2)
+
+
+    //Gen remaining UI
+    syncTree() //merge
+    syncCharPage() //merge?
+    genTabs() //merge ui
 }
 
 
 //ADD ITEMS
 function addTargetItem(key, iLvl){
-    if(playerObj.inventory.length < playerObj.maxInventory){
+    if(playerObj.actions.length < playerObj.actionSlots){
 
-        let newItem = new Item(key, iLvl)
-        if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
-        playerObj.inventory.push(newItem)
+        let newItem = newItemObjkey, iLvl)
+        if(newItem.actionType === 'passive'){resolvePassiveItem(newItem, 'add')}
+        playerObj.actions.push(newItem)
 
     }else{
         console.log('Inventory is full.');
     }
 }
 
+//
 function addRandomItem(quant, iLvl){
     for(let i =0; i< quant; i++){
-        if(playerObj.inventory.length < playerObj.maxInventory){
+        if(playerObj.actions.length < playerObj.actionSlots){
 
-            let newItem = new Item(rarr(Object.keys(itemsRef)), iLvl)
-            if(newItem.type === 'passive'){resolvePassiveItem(newItem, 'add')}
-            playerObj.inventory.push(newItem)
+            let newItem = newItemObjrarr(Object.keys(actionsRef)), iLvl)
+            if(newItem.actionType === 'passive'){resolvePassiveItem(newItem, 'add')}
+            playerObj.actions.push(newItem)
 
         }else{
             console.log('Inventory is full.');
@@ -45,68 +61,69 @@ function addRandomItem(quant, iLvl){
     }
 }
 
+
+//Replace this with a loop that will check all player items and regen stats.
 function resolvePassiveItem(item, event){
     if(event === 'add'){
         if(item.action==='Shield'){
-            playerObj.flatDef += item.effectMod
+            playerObj.flatDef += item.mod
         }
         else if(item.action==='Amulet'){
-            playerObj.flatPower += item.effectMod
+            playerObj.flatPower += item.mod
         }
         else if(item.action==='Belt'){
-            playerObj.maxLife += item.effectMod
+            resolvePlayerStats('add', 'maxLife')
         }
         else if(item.action==='d8'){
-            playerObj.flatDice = item.effectMod
-            playerObj.dice = item.effectMod
+            playerObj.flatDice = item.mod
+            playerObj.dice = item.mod
         }
-        
     }
-    else{
+    else{ //Removed
 
         if(item.action==='Shield'){
 
-            if(0 < playerObj.flatDef < item.effectMod){
+            if(0 < playerObj.flatDef < item.mod){
                 playerObj.flatDef = 0 //Sync stats to avoid negative
             } 
             else{
-                playerObj.flatDef -= item.effectMod //Update flat to restore at the start of the round
+                playerObj.flatDef -= item.mod //Update flat to restore at the start of the round
             }
             
-            if(0 < playerObj.def < item.effectMod){
+            if(0 < playerObj.def < item.mod){
                 playerObj.def = 0
             }
             else{
-                let reductionVal = item.effectMod - (playerObj.flatDef - playerObj.def) //Takes into consideration flat vs actual stat diff
+                let reductionVal = item.mod - (playerObj.flatDef - playerObj.def) //Takes into consideration flat vs actual stat diff
                 playerObj.def -= reductionVal //Update here if you loose item during combat
             }
         }
 
         else if(item.action==='Amulet'){
             
-            if(0 < playerObj.flatPower < item.effectMod){
+            if(0 < playerObj.flatPower < item.mod){
                 playerObj.flatPower = 0 //Sync stats to avoid negative
             } 
             else{
-                playerObj.flatPower -= item.effectMod //Update flat to restore at the start of the round
+                playerObj.flatPower -= item.mod //Update flat to restore at the start of the round
             }
             
-            if(0 < playerObj.power < item.effectMod){
+            if(0 < playerObj.power < item.mod){
                 playerObj.power = 0
             }
             else{
-                let reductionVal = item.effectMod - (playerObj.flatDef - playerObj.def) //Takes into consideration flat vs actual stat diff
+                let reductionVal = item.mod - (playerObj.flatDef - playerObj.def) //Takes into consideration flat vs actual stat diff
                 playerObj.def -= reductionVal //Update here if you loose item during combat
             }
         }  
 
         else if(item.action==='Belt'){
             
-            if(0 < playerObj.maxLife < item.effectMod){
+            if(0 < playerObj.maxLife < item.mod){
                 playerObj.flatPower = 1 //Sync stats to avoid negative
             } 
             else{
-                playerObj.maxLife -= item.effectMod //Update flat to restore at the start of the round
+                playerObj.maxLife -= item.mod //Update flat to restore at the start of the round
             }
 
             if(playerObj.life > playerObj.maxLife){
@@ -115,102 +132,88 @@ function resolvePassiveItem(item, event){
         } 
 
         else if(item.action==='d8'){
-            playerObj.flatDice = playerObj.defaultDice
-            playerObj.dice = playerObj.defaultDice
+            playerObj.flatDice = playerObj.initialDice
+            playerObj.dice = playerObj.initialDice
         }
 
     }
 }
 
 //Generate enemy action for the next turn
-function genEnemyActions(){
+function genEneAction(){
     enemyObj.roll = rng(enemyObj.dice) //Roll enemy dice
     let actionRoll = rng(100)          //roll to pick action
     let enemyAc                                //Final action
     let aAction = []  
-    let actionKeys = Object.keys(enemyActions) //Get keys
+    let actionKeys = Object.keys(eneActionRef) //Get keys
 
     //If weakened enemy starts recovering
     if(enemyObj.def < 0 || enemyObj.def < 0 || enemyObj.def < 0){
-        enemyActions.Recover.rate = 1
+        eneActionRef.Recover.rate = 1
     }
     else{
-        enemyActions.Recover.rate = undefined
+        eneActionRef.Recover.rate = undefined
     }
 
     // If low life enamble detonate
     if(enemyObj.maxLife / enemyObj.life > 3){
-        enemyActions.Detonate.rate = 1
+        eneActionRef.Detonate.rate = 1
     }else{
-        enemyActions.Detonate.rate = undefined
+        eneActionRef.Detonate.rate = undefined
     }
 
 
     //Pick action
-    if(actionRoll < 2 && objContainsByPropValue(enemyActions, 'rate', 4)){//1%
+    if(actionRoll < 2 && objContainsByPropValue(eneActionRef, 'rate', 4)){//1%
         for(let i = 0; i < actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 4){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(eneActionRef[actionKeys[i]].rate === 4){
+                aAction.push(eneActionRef[actionKeys[i]].action)
             }
         }
         enemyAc = rarr(aAction)
     }
-    if(actionRoll < 7 && objContainsByPropValue(enemyActions, 'rate', 3)){//5%
+    if(actionRoll < 7 && objContainsByPropValue(eneActionRef, 'rate', 3)){//5%
         for(let i = 0; i < actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 3){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(eneActionRef[actionKeys[i]].rate === 3){
+                aAction.push(eneActionRef[actionKeys[i]].action)
             }
         }
         enemyAc = rarr(aAction)
     } 
-    else if (actionRoll < 17 && objContainsByPropValue(enemyActions, 'rate', 2)){//10%
+    else if (actionRoll < 17 && objContainsByPropValue(eneActionRef, 'rate', 2)){//10%
         for(let i =0; i<actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 2){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(eneActionRef[actionKeys[i]].rate === 2){
+                aAction.push(eneActionRef[actionKeys[i]].action)
             }
         }
         enemyAc = rarr(aAction)
     } 
-    else if (actionRoll < 47 && objContainsByPropValue(enemyActions, 'rate', 1)){//30%
+    else if (actionRoll < 47 && objContainsByPropValue(eneActionRef, 'rate', 1)){//30%
         for(let i =0; i<actionKeys.length; i++){
-            if(enemyActions[actionKeys[i]].rate === 1){
-                aAction.push(enemyActions[actionKeys[i]].action)
+            if(eneActionRef[actionKeys[i]].rate === 1){
+                aAction.push(eneActionRef[actionKeys[i]].action)
             }
         }
         enemyAc = rarr(aAction)
     } //55% att
-    else {enemyAc = enemyActions.Attack.action}
+    else {enemyAc = eneActionRef.Attack.action}
 
     enemyObj.action = enemyAc
 }
 
-
 //Combat start
 function initiateCombat(){
-    combatState = new CombatState
+    combatState = new CombatState                       //New obj for every fight
 
-    if(playerObj === undefined || playerObj.life < 1 ){
-        genPlayer()
-    }
-    
-    //Restore flat def
-    if(playerObj.def !== playerObj.flatDef){
-        playerObj.def = playerObj.flatDef
-    }
-
-    //Restore flat power
-    if(playerObj.power < playerObj.flatPower){
-        playerObj.power = playerObj.flatPower
-    }
+    resolvePlayerStats('reset-to-flat')                 //Restores def and pow to flat values
 
     //Generates enemy
-    enemyObj = new EnemyObj
+    enemyObj = new EnemyObj                            //New enemy for every fight 
+    el('enemyImg').setAttribute('src', enemyObj.image) //adds ene img to index
+    genEneAction()                                     //Gen before player turn and after
 
-    el('enemyImg').setAttribute('src', enemyObj.image)
-
-    genEnemyActions() 
-    updateUi()
-    genCards()
+    //UI
+    syncUi()
 }
 
 //Turn
@@ -225,7 +228,7 @@ function turnCalc(buttonElem, itemId){
         playerObj.lastAction = `Turn ${combatState.turn}: `
 
         let itemid = buttonElem.getAttribute('itemid')
-        let sourceItem = findObj(playerObj.inventory, 'itemid', itemid)
+        let sourceItem = findObj(playerObj.actions, 'itemid', itemid)
         let playerAction = sourceItem.action
 
 
@@ -236,7 +239,7 @@ function turnCalc(buttonElem, itemId){
         }
 
         //Extra actions
-        else if(sourceItem.type === 'extra'){
+        else if(sourceItem.actionType === 'extra'){
             if (playerAction === 'Reroll'){
                 playerObj.roll = rng(playerObj.dice) 
             }
@@ -256,8 +259,7 @@ function turnCalc(buttonElem, itemId){
             //Deal with durability
             resolveDurability(sourceItem)
 
-            updateUi()
-            genCards()
+            syncUi()
             combatEndCheck()
             return
         }
@@ -269,7 +271,7 @@ function turnCalc(buttonElem, itemId){
             playerDmgDone += playerObj.roll + playerObj.power
         }
         else if (playerAction === 'Fireball'){
-            let mult = playerObj.maxInventory - playerObj.inventory.length 
+            let mult = playerObj.actionSlots - playerObj.actions.length 
             if(mult < 1){mult = 0}
             playerDmgDone += playerObj.roll * mult
         }
@@ -277,9 +279,9 @@ function turnCalc(buttonElem, itemId){
             enemyDmgDone -= playerObj.roll //- playerObj.power
         }
         else if (playerAction === "Repair"){
-            playerObj.inventory.forEach(elem => {
-                if(elem.action !== 'Repair' && elem.type !== 'passive'){
-                    elem.durability += sourceItem.effectMod
+            playerObj.actions.forEach(elem => {
+                if(elem.action !== 'Repair' && elem.actionType !== 'passive'){
+                    elem.durability += sourceItem.mod
                 }
             })
         }
@@ -296,7 +298,7 @@ function turnCalc(buttonElem, itemId){
             enemyObj.power -= playerObj.roll
         }
         else if (playerAction === 'Root'){
-            enemyObj.dice -= sourceItem.effectMod
+            enemyObj.dice -= sourceItem.mod
         }
         else if (playerAction === 'Barrier'){
             playerObj.protection = 'Barrier'
@@ -426,7 +428,7 @@ function turnCalc(buttonElem, itemId){
         //POST CALCULATION
         //Heal after damage taken to make heal effective if you heal near hp cap.
         if (playerAction === 'Heal'){
-            playerObj.life += sourceItem.effectMod
+            playerObj.life += sourceItem.mod
             if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
         }
 
@@ -436,26 +438,24 @@ function turnCalc(buttonElem, itemId){
         //End turn updates
         playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
         playerObj.rollBonus = 0
-        genEnemyActions()
+        genEneAction()
         enemyObj.state = ''
         combatState.turn++
-        genCards() 
-        updateUi()
+        syncUi()
     }
 
     combatEndCheck()
 }
 
+//Check if game state changed
 function combatEndCheck(){
-    //Check if game state changed
     //Defeat
-    if(playerObj.life < 1 || playerObj.inventory.length < 1){
-        updateUi()
+    if(playerObj.life < 1 || playerObj.actions.length < 1){
+        syncUi()
         toggleModal('gameOverScreen')
     }
     //Victory
     else if (enemyObj.life < 1){
-        updateUi()
 
         //Gen rewards or open map if boss was killed
         if(gameState.stage % gameState.bossFrequency === 0){
@@ -469,21 +469,23 @@ function combatEndCheck(){
         gameState.encounter++
         gameState.stage++
         playerObj.exp++ //Add 1 exp
-        playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl
+        playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl'
+
+        syncUi()        
     }
 }
 
+//
 function resolveDurability(item){
     item.durability--
         if(item.durability<1){
-            removeFromArr(playerObj.inventory, item)
-            if(item.type === 'passive'){
+            removeFromArr(playerObj.actions, item)
+            if(item.actionType === 'passive'){
                 resolvePassiveItem(item)//Loose passive stat
             }
         }
 }
     
-
 //Rewards
 function genReward(val, quant){
 
@@ -499,13 +501,13 @@ function genReward(val, quant){
         for(let i =0; i < quant; i++){ //gen item per quant value in function
             let reward = rarr(rewardRefPool) //pick random reward
 
-            if(reward.type !== 'Item'){ //if reward is not item, remove it from array so it can't be picked again.
+            if(reward.rewardType !== 'Item'){ //if reward is not item, remove it from array so it can't be picked again.
                 removeFromArr(rewardRefPool, reward)
             }
 
-            if(reward.type === 'Item'){//item
+            if(reward.rewardType === 'Item'){//item
                 //Gen random item
-                generatedItem = new Item(rarr(Object.keys(itemsRef, gameState.stage)))
+                generatedItem = newItemObjrarr(Object.keys(actionsRef, gameState.stage)))
                 rewardPool.push(generatedItem)
             }
             else{//not item
@@ -516,17 +518,17 @@ function genReward(val, quant){
             let button = document.createElement('button')
             
             //if item add item desck
-            if(reward.type === 'Item'){
+            if(reward.rewardType === 'Item'){
                 button.innerHTML = `
                 <h3>${generatedItem.action} (Durability: ${generatedItem.durability})</h3> 
                 ${generatedItem.desc} (requires empty item slot).`
                 
-                button.setAttribute('onclick', `genReward('${reward.type}', '${generatedItem.itemid}')`) //quant will be id for items
+                button.setAttribute('onclick', `genReward('${reward.rewardType}', '${generatedItem.itemid}')`) //quant will be id for items
             }
             
             else{
                 button.innerHTML = `${reward.desc}`
-                button.setAttribute('onclick', `genReward('${reward.type}')`)
+                button.setAttribute('onclick', `genReward('${reward.rewardType}')`)
             }
 
             el('reward-container').append(button)
@@ -551,10 +553,10 @@ function genReward(val, quant){
             if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
         }
         else if(val  === 'Repair'){
-            playerObj.inventory[rng(playerObj.inventory.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
+            playerObj.actions[rng(playerObj.actions.length) -1].durability += Math.floor(5 + (gameState.stage * 0.25))
         }
         else if(val  === 'Bag'){
-            playerObj.maxInventory++
+            playerObj.actionSlots++
         }
         else if(val  === 'Enhance'){
             playerObj.flatDef++
@@ -562,52 +564,90 @@ function genReward(val, quant){
         else if (val === 'Train'){
             playerObj.maxLife += Math.floor(4 + (gameState.stage * 0.5))
         }
-        else if(val  ==='Power'){
+        else if(val  === 'Power'){
             playerObj.flatPower++
         }
-        else if(val  ==='Gold'){
+        else if(val  === 'Gold'){
             playerObj.gold += rng(gameState.stage, 1)
         }
         else {
             //Get item from reward gen
             rewardPool.forEach(elem => {
                 if(elem.itemid !== undefined && elem.itemid === quant){
-                    if(playerObj.inventory.length < playerObj.maxInventory){
-                        if(elem.type === 'passive'){resolvePassiveItem(elem, 'add')}
-                        playerObj.inventory.push(elem)
+                    if(playerObj.actions.length < playerObj.actionSlots){
+                        if(elem.actionType === 'passive'){resolvePassiveItem(elem, 'add')}
+                        playerObj.actions.push(elem)
                     }
                 }
             })
             rewardPool = []
         }
 
-        this.initiateCombat()
-        genCards()
-        updateUi()
+        initiateCombat()
+        
+        syncUi()
         toggleModal('rewardScreen')
     }
 }
 
-function addPassivePoint(node){
-    log(node.id)
+//Spend tree points
+function addTreeNode(node){
 
-    if(playerObj.passivePoints > 0){
-        playerObj.passiveNodes.push(node)
-
+    if(playerObj.treePoints > 0){
+        playerObj.treeNodes.push(node)// Add skill node to player obj
+        
         if(node.id === 'add-life'){
-            //Change stat
-            playerObj.life += 10
-            
+            resolvePlayerStats('add', 'maxLife')
+        }else if(node.id === 'percent-life'){
+            playerObj.maxLifeMod += 0.25
+            resolvePlayerStats('add', 'maxLife')
         }
     
-        updateUi()
+        syncUi()
     }
 }
 
+//
+function resolvePlayerStats(mod, stat){
+    if(stat == 'maxLife' && mod == 'add'){
 
-//Gen everything for the game
-gameState = new GameState
-genPlayer()
-updateTree()
-updateCharPage()
-genTabs()
+        let extraFlatLife = 0
+        extraFlatLife += playerObj.initialLife
+        playerObj.maxLifeMod = playerObj.initLifeMod
+
+        // Check items
+        playerObj.actions.forEach(item => {
+            if(item.name == 'Belt'){//change to type
+                extraFlatLife += item.mod
+            }
+            else if (item.name == 'LeatherBelt'){
+                playerObj.maxLifeMod += node.mod
+            }
+        })
+
+        // Check tree nodes
+        playerObj.treeNodes.forEach(node => {
+            if(node.nodeType == 'flatLife'){
+                extraFlatLife += node.mod
+            }
+            else if(node.nodeType == 'percentLife'){
+                playerObj.maxLifeMod += node.mod
+            }
+        })
+
+        //Multiply by life mod
+        playerObj.maxLife = Math.round(extraFlatLife * playerObj.maxLifeMod)
+    }
+
+    if(mod == 'reset-to-flat'){
+       //Restore flat def
+        if(playerObj.def !== playerObj.flatDef){
+            playerObj.def = playerObj.flatDef
+        }
+
+        //Restore flat power
+        if(playerObj.power < playerObj.flatPower){
+            playerObj.power = playerObj.flatPower
+        } 
+    }
+}
