@@ -34,7 +34,7 @@ class PlayerObj {
         this.maxLife        = this.initialLife
         this.life           = this.maxLife
 
-        this.flatPower      = 0
+        this.flatPower      = 11
         this.power          = 0
         this.flatDef        = 0   
         this.def            = 0
@@ -55,7 +55,9 @@ class PlayerObj {
         //Skills
         this.actionSlots    = 6
         this.actions        = [] //Actions gained from items
-        this.draftActions   = [] //Draft actions gained from items
+        this.tempActions    = []
+
+        // this.draftActions   = [] //Draft actions gained from items
 
         //Sub-stats
         this.gold           = 0
@@ -125,14 +127,14 @@ class ItemObj {
         //Variable properties generated
         let props = [
             {key:'itemName'    ,val: upp(itemKey)},
-            {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
-            {key:'durability'  ,val: 10},
-            {key:'cost'        ,val: 12}, 
             {key:'itemType'    ,val: 'generic'},
+            {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
+            // {key:'durability'  ,val: 10},
+            // {key:'cost'        ,val: 12}, 
         ]
 
 
-        //Resolves extra properties that either have default from above or gain value from ref object
+        //Resolve props via default above / value from ref
         props.forEach(property => {
             if(itemsRef[itemKey][property.key] === undefined){
                 this[property.key] = property.val //if no prop, set it to extra props vlaue
@@ -164,23 +166,25 @@ class ActionObj {
 
         //Resolves extra props
         props.forEach(property => {
-            if(actionsRef[actionKey].actionType === 'passive' && property.key === 'actionCharge'){
-                this.actionCharge = 1 //set action charge of all passive items to 1.
-            } 
-            else if(actionsRef[actionKey][property.key] === undefined){
+            if(typeof actionsRef[actionKey][property.key] === 'undefined'){
                 this[property.key] = property.val //if no prop, set it to extra props vlaue
             }
             else {
                 this[property.key] = actionsRef[actionKey][property.key] //if exists in ref, set it as red.
             }
+
+            //Set action charge of all passive items to 1.
+            if(actionsRef[actionKey].actionType === 'passive' && property.key === 'actionCharge'){
+                this.actionCharge = 1 
+            } 
         })
     }
 }
 
 let itemsRef = {
     sword:     {actions:['attack'], itemType:'weapon',},
-    shiled:    {actions:['block'],},
-    spellBook: {actions:['fireball'],},
+    shield:    {actions:['block'],},
+    spellBook: {actions:['fireball','barrier'],},
 }
 
 //item = action
@@ -224,20 +228,16 @@ let actionsRef = {
 
 //Rewards
 let rewardRef = [
-    {rewardType:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
-    {rewardType:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
-    {rewardType:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
-    {rewardType:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
-    {rewardType:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
-    {rewardType:'Item', freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    {rewardType:'Item'    ,freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    {rewardType:'Action'  ,freq: 1, desc: 'Get random item (requires empty slot)'}, 
 
-    {rewardType:'Train'   ,freq: 1, desc: 'Increase maximum life'},
-    {rewardType:'Enhance' ,freq: 1, desc: 'Increase defence'},
-    {rewardType:'Power'   ,freq: 1, desc: 'Increase power by 1'},
-    {rewardType:'Heal'    ,freq: 1, desc: 'Restore life'},
-    {rewardType:'Repair'  ,freq: 1, desc: 'Repair random item'},
-    {rewardType:'Bag'     ,freq: 1, desc: 'Gain an additional actions slot'},
-    {rewardType:'Gold'    ,freq: 1, desc: 'Gold rewad'},
+    // {rewardType:'Train'   ,freq: 1, desc: 'Increase maximum life'},
+    // {rewardType:'Enhance' ,freq: 1, desc: 'Increase defence'},
+    // {rewardType:'Power'   ,freq: 1, desc: 'Increase power by 1'},
+    // {rewardType:'Heal'    ,freq: 1, desc: 'Restore life'},
+    // {rewardType:'Repair'  ,freq: 1, desc: 'Repair random item'},
+    // {rewardType:'Bag'     ,freq: 1, desc: 'Gain an additional actions slot'},
+    // {rewardType:'Gold'    ,freq: 1, desc: 'Gold rewad'},
 ]
 
 //Ene actions

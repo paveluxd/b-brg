@@ -46,32 +46,6 @@ function screen(id, mod){
     }
 }
 
-//Animation
-function floatText(target, string){
-
-    if(target === 'en'){
-        el('enDmgInd').innerHTML = string
-        runAnim(el('enDmgInd'), 'float-num')
-    }
-    else{
-        el('plDmgInd').innerHTML = string
-        runAnim(el('plDmgInd'), 'float-num')
-    }
-
-
-    //if positive -> text green etc
-    if(string[0] === '-'){
-        el('enDmgInd').setAttribute('style', 'color:red;')
-        el('plDmgInd').setAttribute('style', 'color:red;')
-
-    }
-    else{
-        el('enDmgInd').setAttribute('style', 'color:white;')
-        el('plDmgInd').setAttribute('style', 'color:white;')
-
-    }
-}
-
 //
 function syncUi(){
     syncActionTiles()
@@ -165,7 +139,10 @@ function syncActionTiles(){
                     </svg>
                     `// Creates svg triangles
 
-        let content = document.createElement('section')  // Section that contains name and desc
+
+        // Section that contains name and desc
+        let content = document.createElement('section')  
+
 
         //Create button elem
         let button = document.createElement('button')
@@ -177,7 +154,8 @@ function syncActionTiles(){
         //Updates button labels based on actions
         //Modifies 'content' section
         button.append(bar, content) //Add decorative bar and content section to button
-        if     (['Attack'].indexOf(action.actionKey) > -1){
+
+        if     (['attack'].indexOf(action.actionKey) > -1){
             button.querySelector('section').innerHTML = `
             <span>
             <h3>${action.actionName} for ${playerObj.roll + playerObj.power}</h3> 
@@ -186,7 +164,7 @@ function syncActionTiles(){
             <p class='desc'>${action.desc}</p>
             `   
         }
-        else if(['Fireball'].indexOf(action.actionKey) > -1){        
+        else if(['fireball'].indexOf(action.actionKey) > -1){        
             button.querySelector('section').innerHTML = `
             <span>
             <h3>${action.actionName} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
@@ -195,7 +173,7 @@ function syncActionTiles(){
                 <p class='desc'>${action.desc}</p>
                 `
         }
-        else if(['Block', 'Break'].indexOf(action.actionKey) > -1){
+        else if(['block', 'Break'].indexOf(action.actionKey) > -1){
                 button.querySelector('section').innerHTML = `
                 <span>
                 <h3>${action.actionName} ${playerObj.roll}</h3> 
@@ -213,13 +191,14 @@ function syncActionTiles(){
                 <p class='desc'>${action.desc}</p>
             `        
         }
-        
+
 
         //If item is on cooldown, increase cd counter
-        if(action.cooldown !== undefined && action.cooldown < actionsRef[action.action].cooldown){
+        if(typeof action.cooldown !== 'undefined' && action.cooldown < actionsRef[action.actionKey].cooldown){
             action.cooldown++
             button.disabled = true
         }
+
 
         el('playerActionContainer').append(button)
     })
@@ -292,4 +271,30 @@ function syncCharPage(){
 
         <br>Skills slots: ${actions}
     `
+}
+
+//Animation
+function floatText(target, string){
+
+    if(target === 'en'){
+        el('enDmgInd').innerHTML = string
+        runAnim(el('enDmgInd'), 'float-num')
+    }
+    else{
+        el('plDmgInd').innerHTML = string
+        runAnim(el('plDmgInd'), 'float-num')
+    }
+
+
+    //if positive -> text green etc
+    if(string[0] === '-'){
+        el('enDmgInd').setAttribute('style', 'color:red;')
+        el('plDmgInd').setAttribute('style', 'color:red;')
+
+    }
+    else{
+        el('enDmgInd').setAttribute('style', 'color:white;')
+        el('plDmgInd').setAttribute('style', 'color:white;')
+
+    }
 }
