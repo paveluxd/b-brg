@@ -321,4 +321,8 @@ let treeRef = [
 
     //Aaction charge
     {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
+
+
+    //Ideas
+    //All fireballs that you draft have +5 charge.
 ]

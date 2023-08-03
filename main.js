@@ -657,3 +657,8 @@ function resolvePlayerStats(mod, stat){
         })
     })
 }
+
+
+
+//Start the game
+initGame()
