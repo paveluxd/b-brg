@@ -2,20 +2,28 @@
 * {
     /* border: 1px solid rgb(255, 0, 166) !important; */
 }
+
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
 html{
     height: 100%;
 }
 :root {
     --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
     --green:     rgb(0, 240, 96);
-    --green-pale:rgba(0, 240, 96,0.5);
+    --green50:rgba(0, 240, 96,0.5);
 
     --black:     rgb(0, 0, 0);
     --grey:      rgba(0,0,0,0.5);
     --border:    rgba(0,0,0,0.2);
     --white:     rgb(255, 255, 255);
+    --w0:        rgb(255, 255, 255,0);
     --light-bg:  rgb(227, 236, 241);
+
     --red:       rgb(255, 103, 56);
+    --yellow:    rgb(255,230,0);
 }
 body{
     height: 100%;
@@ -48,12 +56,24 @@ body{
 }
 
 #map{
-    background-image: url(../img/bg/map.jpeg);
+    background-image: url(../img/bg/3.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
-
+#map button{
+    border: none;
+    background-color: var(--w0);
+}
+#map button div{
+    border-radius: 99px;
+    background-color: var(--black);
+    color: var(--white);
+    gap: 8px;
+    padding: 8px 16px 8px 12px;
+    display: flex;
+    flex-direction: row;
+}
 #skill-tree{
     display: flex;
     flex-wrap: wrap;
@@ -79,7 +99,6 @@ body{
     width: 100vw;
     height: 100vh;
 }
-
 .modal-container{
     max-height: 800px;
     max-width: 800px;
@@ -94,19 +113,16 @@ body{
 
     position: relative;
 }
-
 .modal-slide{
     animation-name: modal-slide;
     animation-duration: 0.5s;
     animation-iteration-count: 1;
 }
-
 .modal-header{
     display: flex;
     justify-content: space-between;
     padding: 16px 16px;
 }
-
 .modal-body{
     padding: 0 8px 24px 8px;
 }
@@ -159,19 +175,16 @@ button{
     flex-direction: column;
     align-items: center;
 
-    color: var(--blac);
+    color: var(--black);
 }
-
 button:hover{
     background-color: rgb(232, 232, 232);
     transition: all 200ms;
 }
-
 button:active{
     background-color: rgba(240, 240, 240, 1);
     border: 2px solid rgba(80, 80, 80, 1);
 }
-
 button:disabled{
     cursor: auto;
     border: none;
@@ -186,7 +199,7 @@ button:disabled{
     /* min-width: 132px; */
     width: calc(50% - 1px);
     height: auto;
-    min-height: 64px;
+    min-height: 60px;
     padding: 0px;
 
     flex-direction: column;
@@ -207,7 +220,7 @@ button:disabled{
 .action span{
     display: flex;
     justify-content: space-between;
-    padding: 0 8px 4px 8px;
+    padding: 0 8px 0px 8px;
 }
 .action span p {
     color: var(--grey);
@@ -231,11 +244,8 @@ button:disabled{
     align-content: flex-start;
 
     gap: 2px;
-    height: 208px;
-    /* border-radius: 0 0 4px 4px; */
-
+    height: 184px;
     overflow-y: scroll;
-    background-color: var(--black);
 
     /* //Hide bar */
     -ms-overflow-style: none;  /* IE and Edge */
@@ -243,28 +253,46 @@ button:disabled{
 }
 .empty-slot{
     font-family: 'JetBrains mono', sans-serif;
-    color: var(--green-pale) !important;
+    color: var(--green50) !important;
 }
 
 
 
 /* Stats */
-#stats{
+#stats-container{
+    max-width: 480px;
+    border-radius: 8px 0 8px 8px;
+    border: 2px solid var(--black);
     background-color: var(--black);
+    overflow: hidden;
+
+}
+#stats{
     border-radius: 4px 4px 0 0;
     font-family: 'JetBrains mono', sans-serif;
     color: var(--green);
-    font-size: 12px;
+    font-size: 14px;
 
-    padding: 0 8px;
-    justify-content: space-between;
+    display: flex;
+    width: 100%;
+    justify-content: stretch;
 }
-#stats .column{
-    align-items: flex-start;
+.stat-group{
+    display: flex;
+    flex-wrap: wrap;
+    flex:1 1 0;
+    justify-content: center;
+
+    margin: 11px auto 11px auto;
 }
 .stat{
+    display: flex;
     gap: 2px;
-    align-items: flex-start;
+    width: 72px;
+}
+.sm{
+    width: 52px;
+    color: var(--white) !important;
 }
 .stat p{
     width: 22px;
@@ -311,9 +339,11 @@ h3{
 }
 
 #intent{
-    background-color: black;
-    color: wheat;
-    padding: 8px 12px;
+    background-color: var(--yellow);
+    color: var(--black);
+    padding: 4px 12px;
+    font-size: 14px;
+    line-height: 14px;
     text-align: center;
 }
 

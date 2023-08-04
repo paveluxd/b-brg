@@ -16,18 +16,45 @@
 <body>
 
     <!-- Map -->
-    <div id="map" class="screen tab">
-        <div class="row" style="width: 100%; gap:48px;">
-            <button onclick="screen('combat'), initiateCombat()">Fight</button> <br>
-            <button onclick="screen('shop')">Shop</button>
+    <div id="map" class="screen tab hide">
+        <div class="column" style="width: 100%; gap:48px;">
+            <button onclick="screen('combat'), initiateCombat()">
+                <div>
+                    <img src="./img/ico/attack.svg" alt="">
+                    Ruins
+                </div> 
+            </button> 
+            
+            <button onclick="screen('shop')">
+                <div>
+                    <img src="./img/ico/gold.svg" alt="">
+                    Camp
+                </div> 
+            </button>
+            <button onclick=" ">
+                <div>
+                    <img src="./img/ico/fish.svg" alt="">
+                    Lake
+                </div>  
+            </button>
+            <button onclick=" ">   
+                <div>
+                    <img src="./img/ico/wood.svg" alt="">
+                    Forest
+                </div>             
+            </button>
         </div>
     </div>
 
 
     <!-- Combat -->
-    <div id="combat" class="screen hide">
+    <div id="combat" class="screen">
         <p id="log">stage: 1<br> turn:1</p>
-    
+        <!-- Menu button-->
+        <button onclick="screen('character', 'combat-menu')" style="border: none; background-color: var(--w0); width: 52px;">
+            <img src="./img/ico/settings-pale.svg">
+        </button>
+
         <!-- Units -->
         <div class="column grow" style="align-items: stretch; padding: 0 4px;">
             <div class="row" style="align-items: stretch; flex-grow: 1;">
@@ -44,85 +71,65 @@
         
                 <!-- Enemy -->
                 <div class="column">
-    
-                    <div class="column">
-                        <div id="intent">Will attack for 3 damage.</div>
-                        <svg height="12" width="12" style="fill: black;">
-                            <polygon points="0,0 6,12 12,0"/>
-                        </svg>
-                    </div>
-    
                     <div class="imgcont">
                         <p id="enDmgInd" class="floating-ind">0</p>
     
                         <img id="enemyImg" src="./img/enemy/1.png" class="flip">
-                    </div>
-    
-                    
-    
-                    
+                    </div>                
                 </div>
             </div>
         </div>
     
         <!-- UI -->
-        <div style="max-width: 480px;">
+        <div class="row" style="justify-content: flex-end;">
+            <svg height="12" width="12" style="fill: var(--yellow);">
+                <polygon points="12,12 12,0 4,6"/>
+            </svg>
+            <div id="intent">Will attack for 3 damage.</div>
+        </div>
+
+        <div id="stats-container">
             <!-- Actions -->
-            <div id="stats" class="row">
+            <div id="stats">
                 <!-- Player --> 
-                <div class="column">
-                        <div class="row stat">
-                            <img src="./img/ico/hp-bb.svg" alt="">
-                            <div id="p-life"></div>
-                        </div>
-                        <div class="row stat">
+                <div class="stat-group">
+                        <div class="stat">
                             <img src="./img/ico/dice-bb.svg" alt="">
                             <div id="p-dice"></div>
                         </div>
-                </div>
-                    
-                <div class="column">
-                        <div class="row stat">
-                            <img src="./img/ico/shield-bb.svg" alt="">
-                            <p id="p-def"></p>
-                        </div>
-                        <div class="row stat">
-                            <img src="./img/ico/power-bb.svg" alt="">
+                        <div class="stat sm">
+                            <img src="./img/ico/power-bb-w.svg" alt="">
                             <p id="p-power"></p>
                         </div>
-                        
+                        <div class="stat">
+                            <img src="./img/ico/hp-bb.svg" alt="">
+                            <div id="p-life"></div>
+                        </div>
+                        <div class="stat sm">
+                            <img src="./img/ico/shield-bb-w.svg" alt="">
+                            <p id="p-def"></p>
+                        </div>
                 </div>
         
-                <!-- Menu button-->
-                <button onclick="screen('character', 'combat-menu')" style="border: none; background-color: var(--black);">
-                    <img src="./img/ico/settings-pale.svg">
-                </button>
-        
-        
                 <!-- Enemy -->
-                <div class="column">
-                        <div class="row stat">
-                            <img src="./img/ico/hp-bb.svg" alt="">
-                            <div id="life"></div>
-                        </div>
-        
-                        <div class="row stat">
+                <div class="stat-group">
+                        <div class="stat">
                             <img src="./img/ico/dice-bb.svg" alt="">
                             <div id="dice"></div>
                         </div>
-                </div>
-                    
-                <div class="column">
-                        <div class="row stat">
-                            <img src="./img/ico/shield-bb.svg" alt="">
+                        <div class="stat sm">
+                            <img src="./img/ico/power-bb-w.svg" alt="">
+                            <p id="power"></p>
+                        </div>
+                        <div class="stat">
+                            <img src="./img/ico/hp-bb.svg" alt="">
+                            <div id="life"></div>
+                        </div>
+                        <div class="stat sm">
+                            <img src="./img/ico/shield-bb-w.svg" alt="">
                             <p id="def"></p>
                         </div>
         
-                        <div class="row stat">
-                            <img src="./img/ico/power-bb.svg" alt="">
-                            <p id="power"></p>
-                        </div>
-                    
                 </div>
             </div>
         
@@ -132,7 +139,7 @@
 
 
     <!-- Tabs -->
-    <div id="tab-container" class="column">
+    <div id="tab-container" class="column hide">
         <div id="info-modal" class="hide">
             <h2>Placeholder name</h2>
             <p>Placeholder description</p>

@@ -364,26 +364,26 @@ function genReward(val, quant){
     }
     //Resolve reward
     else {
-        if     (val  === 'Heal'){
+        if     (val == 'Heal'){
             playerObj.life += Math.floor(playerObj.maxLife / 2)
             if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
         }
-        else if(val  === 'Repair'){
+        else if(val == 'Repair'){
             playerObj.actions[rng(playerObj.actions.length) -1].actionCharge += Math.floor(5 + (gameState.stage * 0.25))
         }
-        else if(val  === 'Bag'){
+        else if(val == 'Bag'){
             playerObj.actionSlots++
         }
-        else if(val  === 'Enhance'){
+        else if(val == 'Enhance'){
             playerObj.flatDef++
         }
-        else if(val  === 'Train'){
+        else if(val == 'Train'){
             playerObj.maxLife += Math.floor(4 + (gameState.stage * 0.5))
         }
-        else if(val  === 'Power'){
+        else if(val == 'Power'){
             playerObj.flatPower++
         }
-        else if(val  === 'Gold'){
+        else if(val == 'Gold'){
             playerObj.gold += rng(gameState.stage, 1)
         }
         else if(val == 'Action'){//Get action
@@ -700,3 +700,4 @@ function addTreeNode(node){
 
 //Start the game
 initGame()
+initiateCombat()

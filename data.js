@@ -48,12 +48,12 @@ class PlayerObj {
 
         //Inventory
         this.inventorySlots = 20 
-        this.equipmentSlots = 6
+        this.equipmentSlots = 8
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = ['sword', 'spellBook']
 
         //Skills
-        this.actionSlots    = 6
+        this.actionSlots    = 12
         this.actions        = [] //Actions gained from items
         this.tempActions    = []
 
@@ -192,9 +192,9 @@ let actionsRef = {
     //Item key is used as 'action' string
     attack:      {desc: "deal damage equal to dice roll value", actionCharge:12 },
     extraAttack: {desc: "deal 1 damage as extra action", actionType:'extra'}, //add varioation with cd and cost
-    repair:      {desc: 'restore action charge to all different type actions', actionMod: 2,},
-    fireball:    {desc: 'deal damage equal to (roll x empty item slots)', actionCharge: 6,},
-    dodge:       {desc: 'skip turn to keep half of your roll for the next turn', },
+    repair:      {desc: 'restore action charge to all other actions', actionMod: 2,},
+    fireball:    {desc: 'deal damage equal to roll x empty action slots', actionCharge: 6,},
+    dodge:       {desc: 'keep half of your roll for the next turn', },
 
     block:       {desc: 'block damage equal to dice roll value', },
     //block that gives def if broken
@@ -224,6 +224,30 @@ let actionsRef = {
     //Misc
     //Town-portal item, escape combat.
     //Resurect with 1 hp item.
+
+    //War
+    // Increase power and reduce def by your roll, needs def greater than 1
+    // Increase def by half of your roll, needs roll more than 3
+    // Stun the enemy, pay 2 defence
+    // Attack and break enemy def by 4, needs roll greater than 5
+
+    //Alch
+    // Heal for roll multiplied by 4, pay 1 gold for every heal
+    // Gain 2 gold, needs roll `1` or `2`
+    // Swap rolls, pay 2 gold, at 0 gold another stat is taken
+    // Blast enemy for roll multiplied by gold, loose all gold
+
+    //Hun
+    // Increase power by 2, needs max roll
+    // Stun enemy, pay 1 power
+    // Instantly steal(add to your) enemy roll, needs roll `1` or `2`
+    // Attack for dice multiplied by power, pay 1 power, needs roll > 5
+
+    //Rog
+    // Instantly decrease enemy roll by 2, pay 2 roll
+    // Instantly deal 2 + power as damage, pay 3 roll
+    // Instantly reduce enemy dice by 1, pay 4 roll
+    // Instantly deal 2 + power as damage, increase power by 1, pay 5 roll
 }
 
 //Rewards

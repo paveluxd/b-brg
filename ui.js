@@ -94,15 +94,15 @@ function syncUi(){
         }
 
         //Player stats
-        el('p-life').innerHTML = `${playerObj.life}/${playerObj.maxLife}`
+        el('p-life').innerHTML = `${playerObj.life}`
         el('p-def').innerHTML = `${playerObj.def}`
-        el('p-dice').innerHTML = `${playerObj.roll} (d${playerObj.dice})`
+        el('p-dice').innerHTML = `${playerObj.roll}<span style="color: var(--green50);">/${playerObj.dice}</span>`
         el('p-power').innerHTML = `${playerObj.power}`        
 
         //Enemy stats
-        el('life').innerHTML = `${enemyObj.life}/${enemyObj.maxLife}`
+        el('life').innerHTML = `${enemyObj.life}`
         el('def').innerHTML = `${enemyObj.def}`
-        el('dice').innerHTML = `${enemyObj.roll} (d${enemyObj.dice})`
+        el('dice').innerHTML = `${enemyObj.roll}<span style="color: var(--green50);">/${enemyObj.dice}</span>`
         el('power').innerHTML = `${enemyObj.power}`        
 
         //Enemy intent
