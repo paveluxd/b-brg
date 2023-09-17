@@ -29,8 +29,8 @@ class PlayerObj {
     constructor(){
         //Core
         this.initialLife    = 100
-        this.initLifeMod    = 1
-        this.maxLifeMod     = this.initLifeMod
+        this.initLifeMod    = 1 
+        this.maxLifeMod     = this.initLifeMod //used for passives that multiply life by % value.
         this.maxLife        = this.initialLife
         this.life           = this.maxLife
 
@@ -48,12 +48,12 @@ class PlayerObj {
 
         //Inventory
         this.inventorySlots = 20 
-        this.equipmentSlots = 8
+        this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ['sword', 'spellBook']
+        this.startingItems  = ['sword']
 
         //Skills
-        this.actionSlots    = 12
+        this.actionSlots    = 6
         this.actions        = [] //Actions gained from items
         this.tempActions    = []
 
@@ -64,7 +64,7 @@ class PlayerObj {
 
         //Progression
         this.exp            = 0
-        this.lvl            = 4
+        this.lvl            = 1
         this.treeNodes      = []
         this.treePoints     = 0
     }
@@ -86,7 +86,7 @@ class EnemyObj {
         el('enemyImg').classList.remove('boss')
 
 
-        //Create boss every 10 levels
+        //Create boss every N levels
         if(gameState.stage % gameState.bossFrequency === 0){
             gameState.enemyLifeBase+= 4 //Enemies +4 life after boss is killed
 
@@ -124,7 +124,7 @@ class ItemObj {
             iLvl = 1
         } 
 
-        //Variable properties generated
+        //Gen variable properties
         let props = [
             {key:'itemName'    ,val: upp(itemKey)},
             {key:'itemType'    ,val: 'generic'},
@@ -137,10 +137,10 @@ class ItemObj {
         //Resolve props via default above / value from ref
         props.forEach(property => {
             if(itemsRef[itemKey][property.key] === undefined){
-                this[property.key] = property.val //if no prop, set it to extra props vlaue
+                this[property.key] = property.val //if no prop, set it to extra props value
             }
             else {
-                this[property.key] = itemsRef[itemKey][property.key] //if exists in ref, set it as red.
+                this[property.key] = itemsRef[itemKey][property.key] //if exists in ref, set it as ref.
             }
         })
     }
@@ -253,7 +253,7 @@ let actionsRef = {
 //Rewards
 let rewardRef = [
     {rewardType:'Item'    ,freq: 1, desc: 'Get random item (requires empty slot)'}, 
-    {rewardType:'Action'  ,freq: 1, desc: 'Get random item (requires empty slot)'}, 
+    // {rewardType:'Action'  ,freq: 1, desc: 'Get random item (requires empty slot)'}, 
 
     // {rewardType:'Train'   ,freq: 1, desc: 'Increase maximum life'},
     // {rewardType:'Enhance' ,freq: 1, desc: 'Increase defence'},

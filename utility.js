@@ -74,3 +74,15 @@ function upp(string){//Sets 1st letter to uppercase
 function log(val){
     return console.log(val)
 }
+
+function findByProperty(dataArr, propertyName, propertyValue){ //Used to dind items by id in array
+    let foundItem
+    dataArr.forEach(item => {
+        if(item[propertyName] === propertyValue){
+            // log(item)
+            foundItem = item
+        }
+    })
+
+    return foundItem
+}

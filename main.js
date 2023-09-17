@@ -1,4 +1,4 @@
-//INIT GAME
+//INITITATE GAME
 function initGame(){
     //Check LS
 
@@ -10,11 +10,7 @@ function initGame(){
     playerObj = new PlayerObj
     playerObj.startingItems.forEach(key => {
         addTargetItem(key)
-        // resolvePassiveItem()
     })
-    // playerObj.actions[0].actionCharge = 99
-    // playerObj.actions[1].actionCharge = 99 
-    // addRandomItem(2)
 
 
     //Gen remaining UI
@@ -23,7 +19,7 @@ function initGame(){
     genTabs() //merge ui
 }
 
-//INIT COMBAT
+//INITITATE COMBAT
 function initiateCombat(){
     combatState = new CombatState                      //New obj for every fight
     resolvePlayerStats('reset-to-flat')                //Restores def and pow to flat values
@@ -432,7 +428,6 @@ function genReward(val, quant){
         syncUi()
     }
 
-    log(playerObj)
 }
 
 //RECALC STATS
@@ -528,7 +523,7 @@ function addRandomItem(quant, iLvl){
     }
 }
 
-//Ene actions
+//Enemy actions
 function genEneAction(){
     enemyObj.roll = rng(enemyObj.dice) //Roll enemy dice
     let actionRoll = rng(100)          //roll to pick action

@@ -16,16 +16,16 @@
 <body>
 
     <!-- Map -->
-    <div id="map" class="screen tab">
+    <div id="map" class="screen hide tab">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
                     <img src="./img/ico/attack.svg" alt="">
-                    Ruins
+                    Fight
                 </div> 
             </button> 
             
-            <button onclick="screen('shop')">
+            <!-- <button onclick="screen('shop')">
                 <div>
                     <img src="./img/ico/gold.svg" alt="">
                     Camp
@@ -42,7 +42,7 @@
                     <img src="./img/ico/wood.svg" alt="">
                     Forest
                 </div>             
-            </button>
+            </button> -->
         </div>
     </div>
 
@@ -174,14 +174,34 @@
 
 
     <!-- Inventory -->
-    <div id="inventory" class="screen hide tab" >
+    <div id="inventory" class="screen tab" >
         <div class="modal-container">
             <div class="modal-header">
                 <h2>Inventory</h2>
             </div>
 
-            <div class="column button-container modal-body">
+            <div id="inventory-list" class="column modal-body">
                 Items and item slots
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Item modal -->
+    <div id="item-modal" class="hide modal" >
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2></h2>
+            </div>
+
+            <div id="item-modal-body" class="column modal-body">
+                Item details
+            </div>
+
+            <div class="tab row">
+                <button onclick=" toggleModal('item-modal')">Close</button>
+                <button>Equip</button>
+                <button>Drop item</button>
             </div>
         </div>
     </div>
@@ -195,7 +215,7 @@
                 <button onclick=" screen('map', this)">Close shop</button>
             </div>
 
-            <div class="column button-container modal-body">
+            <div class="column  modal-body">
                 Buy & sell items
             </div>
         </div>
@@ -218,7 +238,7 @@
     <!-- Game over -->
     <div class="modal hide" id="gameOverScreen">
         <div class="modal-container">
-            <div class="column button-container modal-body" style="margin: auto;">
+            <div class="column  modal-body" style="margin: auto;">
                 <h1 style="font-weight: 600;">Game over!</h1>
                 <p id="gameOverScreenLog">Refresh the page to try again.</p>
             </div>

@@ -12,7 +12,7 @@ function genTabs(){
     tab.id = 'close-tab'
     el('tabs').append(tab)
 
-    let screens = ['map', 'character', 'inventory', 'tree']
+    let screens = ['map', 'character', 'inventory'] // add 'tree' to arr to enable tree tab
     //Gen map tabs
     screens.forEach(elem => {
         let tab = document.createElement('button')
@@ -51,6 +51,7 @@ function syncUi(){
     syncActionTiles()
     syncCharPage()
     syncTree()
+    syncInventory()
 
     //Log stats at the top
     if(typeof combatState !== 'undefined'){
@@ -248,7 +249,7 @@ function syncCharPage(){
     //Build actions array
     let actions = []
     playerObj.actions.forEach(action => {
-        actions.push(`<br>${action.actionKey} (x${action.actionCharge})`)
+        actions.push(`<br>- ${upp(action.actionKey)} (x${action.actionCharge})`)
     })
 
     for(let i = 0; i < playerObj.actionSlots - playerObj.actions.length; i++){
@@ -259,8 +260,6 @@ function syncCharPage(){
     cont.innerHTML =`
         Stage: ${gameState.stage}
         <br>Level: ${playerObj.lvl} (exp: ${playerObj.exp})
-        <br>Passive skill points: ${playerObj.treePoints}
-        <br>Gold: ${playerObj.gold} 
         <br>
 
         <br>Life: ${playerObj.life} / ${playerObj.maxLife}
@@ -271,6 +270,39 @@ function syncCharPage(){
 
         <br>Skills slots: ${actions}
     `
+    // <br>Passive skill points: ${playerObj.treePoints}
+    // <br>Gold: ${playerObj.gold} 
+}
+
+//Inventory
+function syncInventory(){
+    let content = el('inventory-list')
+    content.innerHTML = ''
+
+    
+    playerObj.inventory.forEach(item => {
+        let btn = document.createElement('button')
+        btn.innerHTML = `${item.itemName} (${item.itemType})<br>`
+        btn.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
+        //add item id?
+        content.append(btn)
+
+        
+    })
+}
+
+//Gen item modal
+function genItemModal(itemId){
+    let itemModal = el('item-modal-body')
+    let itemObj = findByProperty(playerObj.inventory, 'itemId', itemId)
+
+    itemModal.innerHTML = ``
+    
+    itemModal.innerHTML = `${itemObj.itemName} (${itemObj.itemType})<br><br>Adds actions: <br>`
+
+    itemObj.actions.forEach(action => {
+        itemModal.innerHTML += `<br> ${action.actionName} (x${action.actionCharge}): ${upp(action.desc)}.<br>`
+    })
 }
 
 //Animation
