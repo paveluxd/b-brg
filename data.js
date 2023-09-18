@@ -28,13 +28,13 @@ class CombatState {
 class PlayerObj {
     constructor(){
         //Core
-        this.initialLife    = 100
+        this.initialLife    = 50
         this.initLifeMod    = 1 
         this.maxLifeMod     = this.initLifeMod //used for passives that multiply life by % value.
         this.maxLife        = this.initialLife
         this.life           = this.maxLife
 
-        this.flatPower      = 11
+        this.flatPower      = 8
         this.power          = 0
         this.flatDef        = 0   
         this.def            = 0
@@ -50,7 +50,8 @@ class PlayerObj {
         this.inventorySlots = 20 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ['sword']
+        this.equippedItems  = [] 
+        this.startingItems  = ['sword','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield']
 
         //Skills
         this.actionSlots    = 6
@@ -129,6 +130,7 @@ class ItemObj {
             {key:'itemName'    ,val: upp(itemKey)},
             {key:'itemType'    ,val: 'generic'},
             {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
+            {key: 'equipped'    ,val: false}
             // {key:'durability'  ,val: 10},
             // {key:'cost'        ,val: 12}, 
         ]

@@ -8,6 +8,8 @@ function initGame(){
 
     //Gen player
     playerObj = new PlayerObj
+
+    //Resolve ititial items
     playerObj.startingItems.forEach(key => {
         addTargetItem(key)
     })
@@ -406,7 +408,7 @@ function genReward(val, quant){
                         playerObj.inventory.push(elem)
                     }
                     else {
-                        //Trigger item swap
+                        //If no inventory slots, trigger item swap screen
                     }
                 }
             })
@@ -432,7 +434,7 @@ function genReward(val, quant){
 
 //RECALC STATS
 function resolvePlayerStats(mod, stat){
-    if(stat == 'maxLife' && mod == 'add'){
+    if(stat === 'maxLife' && mod === 'add'){
 
         let extraFlatLife = 0
         extraFlatLife += playerObj.initialLife
@@ -462,7 +464,7 @@ function resolvePlayerStats(mod, stat){
         playerObj.maxLife = Math.round(extraFlatLife * playerObj.maxLifeMod)
     }
 
-    if(mod == 'reset-to-flat'){
+    if(mod === 'reset-to-flat'){
        //Restore flat def
         if(playerObj.def !== playerObj.flatDef){
             playerObj.def = playerObj.flatDef
@@ -479,10 +481,12 @@ function resolvePlayerStats(mod, stat){
 
 
     playerObj.inventory.forEach(item => {
-        item.actions.forEach(action => {
-            if(playerObj.actionSlots > playerObj.actions.length)
-            playerObj.actions.push(action)
-        })
+        if(item.equipped === true){
+            item.actions.forEach(action => {
+                if(playerObj.actionSlots > playerObj.actions.length)
+                playerObj.actions.push(action)
+            })
+        }
     })
 
     //Add temporary actions
@@ -500,11 +504,28 @@ function resolvePlayerStats(mod, stat){
 //ADD ITEMS
 function addTargetItem(key, iLvl){
     if(playerObj.inventory.length < playerObj.inventorySlots){
+        let newItem = new ItemObj(key, iLvl)
 
-        playerObj.inventory.push(new ItemObj(key, iLvl))
+        //Calculate empty equippment slots
+        let equippedItems = 0
+
+        playerObj.inventory.forEach(item => {
+            if(item.equipped === true){
+                equippedItems++
+            }
+        })
+
+        //If there are empty equippment slots, eqiop item automatically
+        if(playerObj.equipmentSlots > equippedItems){
+            newItem.equipped = true
+        }
+
+        //Add item to the inventory
+        playerObj.inventory.push(newItem)
+
         resolvePlayerStats()//Adjust this to recalc all items
-
-    }else{
+    }
+    else{
         console.log('Inventory is full.');
     }
 }
@@ -514,13 +535,41 @@ function addRandomItem(quant, iLvl){
         if(playerObj.actions.length < playerObj.actionSlots){
 
             let newItem = new ItemObj(rarr(Object.keys(actionsRef)), iLvl)
-            if(newItem.actionType === 'passive'){resolvePassiveItem(newItem, 'add')}
+            if(newItem.actionType === 'passive'){
+                resolvePassiveItem(newItem, 'add')
+            }
             playerObj.actions.push(newItem)
 
         }else{
             console.log('Inventory is full.');
         }
     }
+}
+
+function removeItem(itemId){
+    let item = findByProperty(playerObj.inventory, 'itemId', itemId)
+    
+    //Remove item actions
+    item.actions.forEach(action => {
+        removeFromArr(playerObj.actions, action)
+    })
+
+    //Remove from inventory
+    removeFromArr(playerObj.inventory, item)
+
+    syncUi()
+}
+
+function equipItem(item){
+    if(item.equipped !== undefined && item.equipped === false){
+        item.equipped = true
+    } 
+    else{
+        item.equipped = false
+    }
+
+    resolvePlayerStats()//Adjust this to recalc all items
+    syncUi()
 }
 
 //Enemy actions

@@ -114,6 +114,8 @@ body{
     border-radius: 0px;
 
     position: relative;
+    overflow: auto;
+    padding-bottom: 180px;
 }
 .modal-slide{
     animation-name: modal-slide;
@@ -256,6 +258,28 @@ button:disabled{
 .empty-slot{
     font-family: 'JetBrains mono', sans-serif;
     color: var(--green50) !important;
+}
+
+/*Items & inventory*/
+#inventory-list{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.equipped{
+    border: 2px solid green;
+    background-color: rgba(0, 255, 17, 0.164);
+}
+.item-card{
+    outline: 2px solid var(--black);
+    border-radius: 8px;
+    display: flex;
+}
+
+.item-card button:first-child{
+    width: 100%;
 }
 
 

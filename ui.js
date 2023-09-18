@@ -240,7 +240,7 @@ function syncTree(){
     })
 }
 
-//Gen character page
+//Character page
 function syncCharPage(){
     playerObj.treePoints = playerObj.lvl - playerObj.treeNodes.length -1
 
@@ -281,17 +281,29 @@ function syncInventory(){
 
     
     playerObj.inventory.forEach(item => {
+        let card = document.createElement('div')
+        card.classList.add('item-card')
         let btn = document.createElement('button')
         btn.innerHTML = `${item.itemName} (${item.itemType})<br>`
         btn.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
-        //add item id?
-        content.append(btn)
 
+        //Add equip button
+        let equipBtn = document.createElement('button')
+        equipBtn.innerHTML = 'Equipped'
+
+        if(item.equipped){ // Keeps equip indicator even if buttons are redrawn with syncui()
+            equipBtn.classList.add('equipped')
+        }
+
+        equipBtn.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
         
+        card.append(btn, equipBtn)
+        content.append(card)      
+          
     })
 }
 
-//Gen item modal
+//Item modal
 function genItemModal(itemId){
     let itemModal = el('item-modal-body')
     let itemObj = findByProperty(playerObj.inventory, 'itemId', itemId)
@@ -303,6 +315,16 @@ function genItemModal(itemId){
     itemObj.actions.forEach(action => {
         itemModal.innerHTML += `<br> ${action.actionName} (x${action.actionCharge}): ${upp(action.desc)}.<br>`
     })
+
+    //Add drop item button
+    let btn = document.createElement('button')
+    btn.innerHTML = 'Drop item'
+    btn.setAttribute('onclick',`removeItem("${itemId}"), toggleModal('item-modal')`)
+    let closeBtn = document.createElement('button')
+    closeBtn.innerHTML = 'Close'
+    closeBtn.setAttribute('onclick', 'toggleModal("item-modal")')
+
+    itemModal.append(btn, closeBtn)
 }
 
 //Animation
