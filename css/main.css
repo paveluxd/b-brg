@@ -80,6 +80,11 @@ body{
     flex-wrap: wrap;
 }
 
+#character-content {
+    align-items: flex-start;
+    padding: 16px;
+}
+
 
 
 /*New UI*/
@@ -348,8 +353,14 @@ button:disabled{
 
 
 /* Overrides */
-h3{
+h3, h2{
     font-weight: 600;
+}
+
+li {
+    border-left: 2px solid var(--border);
+    padding-left: 8px;
+    margin-bottom: 8px;
 }
 
 #log{
@@ -412,6 +423,14 @@ h3{
 .flip{transform: scaleX(-1);}
 .grow{flex-grow: 1;}
 
+
+/*Transitions*/
+.enemyEntrance{
+    animation-name: enemy-entrance;
+    animation-duration: 2s;
+    animation-iteration-count: 1;
+}
+
 /* Keyframes */
 /* Animate damage numbers */
 @keyframes dmgnum {
@@ -437,5 +456,14 @@ h3{
   
     100% {
         bottom: 0px;
+    }
+}
+
+@keyframes enemy-entrance {
+    0%{
+        margin-left: 120px;
+    }
+    100%{
+        margin-left: 0px;
     }
 }

@@ -16,9 +16,9 @@ function initGame(){
 
 
     //Gen remaining UI
-    syncTree() //merge
+    syncTree()     //merge
     syncCharPage() //merge?
-    genTabs() //merge ui
+    genTabs()      //merge ui
 }
 
 //INITITATE COMBAT
@@ -85,15 +85,26 @@ function turnCalc(buttonElem, actionId){
 
         //TURN
         //Player action
-        if      (playerAction === 'attack'){
+        if      (playerAction === 'rangedAttack'){
             playerDmgDone += playerObj.roll + playerObj.power
+        }
+        if (playerAction === 'meleeAttack'){
+            //Get action mod
+            let actionMod
+            playerObj.actions.forEach(action => {
+                if(action.actionKey === 'meleeAttack'){
+                actionMod = action.actionMod
+            }
+            })
+            playerDmgDone += actionMod
+            console.log(playerDmgDone);
         }
         else if (playerAction === 'fireball'){
             let mult = playerObj.actionSlots - playerObj.actions.length 
             if(mult < 1){mult = 0}
             playerDmgDone += playerObj.roll * mult
         }
-        else if (playerAction === 'block'){
+        else if (playerAction === 'shieldBlock'){
             enemyDmgDone -= playerObj.roll //- playerObj.power
         }
         else if (playerAction === "repair"){
@@ -180,8 +191,8 @@ function turnCalc(buttonElem, actionId){
 
         //DAMAGE CALCULATION
         //Damage inflicted by player
-        if (['attack', 'fireball'].indexOf(playerAction) > -1){
-            if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
+        if (['meleeAttack', 'rangedAttack', 'fireball'].indexOf(playerAction) > -1){
+            if(enemyObj.def >= playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
 
             playerDmgDone -= enemyObj.def             //Check def
             if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
@@ -203,7 +214,7 @@ function turnCalc(buttonElem, actionId){
             if(['Attack'].indexOf(enemyObj.action) > -1){
 
                 //Reduce def on low hit
-                if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}
+                if(playerObj.def >= enemyDmgDone && playerObj.def > 0){playerObj.def--} //Reduce def
     
                 enemyDmgDone -= playerObj.def
 
@@ -221,7 +232,7 @@ function turnCalc(buttonElem, actionId){
                     let playerDamageTaken = enemyDmgDone
 
                     //Reduce def on low hit
-                    if(playerObj.def > enemyDmgDone && playerObj.def > 0){playerObj.def--}
+                    if(playerObj.def >= enemyDmgDone && playerObj.def > 0){playerObj.def--} //Reduce def
     
                     //Reduce damage by def
                     playerDamageTaken -= playerObj.def
@@ -257,6 +268,7 @@ function turnCalc(buttonElem, actionId){
         playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
         playerObj.rollBonus = 0
         genEneAction()
+
         enemyObj.state = ''
         combatState.turn++
         syncUi()
@@ -281,7 +293,7 @@ function combatEndCheck(){
         }
         //Next fight
         else{
-            gameState.encounter++
+            gameState.encounter++ 
         }
         
         //Reward
@@ -428,6 +440,7 @@ function genReward(val, quant){
         }
 
         syncUi()
+        runAnim(el('enemySprite'), 'enemyEntrance') // Animates enemy sprite moving in at the start of the combat.
     }
 
 }
@@ -465,6 +478,8 @@ function resolvePlayerStats(mod, stat){
     }
 
     if(mod === 'reset-to-flat'){
+        //Resolve life
+
        //Restore flat def
         if(playerObj.def !== playerObj.flatDef){
             playerObj.def = playerObj.flatDef
@@ -476,26 +491,48 @@ function resolvePlayerStats(mod, stat){
         } 
     }
 
+    log(2)
+
     //Get all actions from all items and move them to actions arr
     playerObj.actions = []
 
-
+    //Adds actions from items to players actions array.
     playerObj.inventory.forEach(item => {
-        if(item.equipped === true){
+
+        //Check all equipped items
+        if(item.equipped){
+
+            //Add all actions from equipped item.
             item.actions.forEach(action => {
-                if(playerObj.actionSlots > playerObj.actions.length)
-                playerObj.actions.push(action)
+                if(playerObj.actionSlots > playerObj.actions.length){
+                    playerObj.actions.push(action)
+                }
             })
+
+            //Resolve passive bonuses from equipped item.
+            if(item.passiveStats.length > 0){
+                item.passiveStats.forEach(statObj => {
+    
+                    //Add flat life.
+                    if(statObj.stat === 'life'){
+                        playerObj.life += statObj.value
+                        playerObj.maxLife += statObj.value
+                    }
+
+                    else if(statObj.stat === 'power'){
+                        playerObj.power += statObj.value
+                    }
+                })
+            }
         }
     })
 
-    //Add temporary actions
+    //Add temporary actions to players actions array,
     playerObj.tempActions.forEach(action => {
         if(playerObj.actionSlots > playerObj.actions.length){
             playerObj.actions.push(action)
         }
     })
-
 }
 
 
@@ -503,48 +540,42 @@ function resolvePlayerStats(mod, stat){
 
 //ADD ITEMS
 function addTargetItem(key, iLvl){
+
+    //Check if there are slots in the inventory.
     if(playerObj.inventory.length < playerObj.inventorySlots){
+
+        //Create new item obj
         let newItem = new ItemObj(key, iLvl)
 
-        //Calculate empty equippment slots
-        let equippedItems = 0
-
-        playerObj.inventory.forEach(item => {
-            if(item.equipped === true){
-                equippedItems++
-            }
-        })
-
-        //If there are empty equippment slots, eqiop item automatically
-        if(playerObj.equipmentSlots > equippedItems){
+        //If empty equippment slots, equip item automatically.
+        if(playerObj.equipmentSlots > calcEquippedItems()){
             newItem.equipped = true
         }
 
-        //Add item to the inventory
+        //Add item to the inventory.
         playerObj.inventory.push(newItem)
-
-        resolvePlayerStats()//Adjust this to recalc all items
     }
     else{
-        console.log('Inventory is full.');
+        alert('Inventory is full.')
     }
 }
 
-function addRandomItem(quant, iLvl){
-    for(let i =0; i< quant; i++){
-        if(playerObj.actions.length < playerObj.actionSlots){
+//Not used atm
+// function addRandomItem(quant, iLvl){
+//     for(let i =0; i< quant; i++){
+//         if(playerObj.actions.length < playerObj.actionSlots){
 
-            let newItem = new ItemObj(rarr(Object.keys(actionsRef)), iLvl)
-            if(newItem.actionType === 'passive'){
-                resolvePassiveItem(newItem, 'add')
-            }
-            playerObj.actions.push(newItem)
+//             let newItem = new ItemObj(rarr(Object.keys(actionsRef)), iLvl)
+//             if(newItem.actionType === 'passive'){
+//                 resolvePassiveItem(newItem, 'add')
+//             }
+//             playerObj.actions.push(newItem)
 
-        }else{
-            console.log('Inventory is full.');
-        }
-    }
-}
+//         }else{
+//             console.log('Inventory is full.');
+//         }
+//     }
+// }
 
 function removeItem(itemId){
     let item = findByProperty(playerObj.inventory, 'itemId', itemId)
@@ -568,7 +599,7 @@ function equipItem(item){
         item.equipped = false
     }
 
-    resolvePlayerStats()//Adjust this to recalc all items
+    resolvePlayerStats('reset-to-flat')//Adjust this to recalc all items
     syncUi()
 }
 
@@ -733,7 +764,8 @@ function addTreeNode(node){
         
         if(node.id === 'add-life'){
             resolvePlayerStats('add', 'maxLife')
-        }else if(node.id === 'percent-life'){
+        }
+        else if(node.id === 'percent-life'){
             playerObj.maxLifeMod += 0.25
             resolvePlayerStats('add', 'maxLife')
         }

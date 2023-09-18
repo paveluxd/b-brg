@@ -34,7 +34,7 @@ class PlayerObj {
         this.maxLife        = this.initialLife
         this.life           = this.maxLife
 
-        this.flatPower      = 8
+        this.flatPower      = 0
         this.power          = 0
         this.flatDef        = 0   
         this.def            = 0
@@ -47,11 +47,10 @@ class PlayerObj {
         this.rollBonus      = 0
 
         //Inventory
-        this.inventorySlots = 20 
+        this.inventorySlots = 12 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.equippedItems  = [] 
-        this.startingItems  = ['sword','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield','shield']
+        this.startingItems  = ['sword','shield', 'helmet', 'ring']
 
         //Skills
         this.actionSlots    = 6
@@ -114,9 +113,11 @@ class ItemObj {
         this.actions = []
 
         //Gen item actions
-        itemsRef[itemKey].actions.forEach(actionKey =>{
-            this.actions.push(new ActionObj(actionKey))
-        })
+        if(itemsRef[itemKey].actions !== undefined){
+            itemsRef[itemKey].actions.forEach(actionKey =>{
+                this.actions.push(new ActionObj(actionKey))
+            })
+        }
 
         //set iLvl to stage val
         if(iLvl === undefined && gameState !== undefined){
@@ -130,7 +131,8 @@ class ItemObj {
             {key:'itemName'    ,val: upp(itemKey)},
             {key:'itemType'    ,val: 'generic'},
             {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
-            {key: 'equipped'    ,val: false}
+            {key:'equipped'    ,val: false},
+            {key:'passiveStats',val: []},
             // {key:'durability'  ,val: 10},
             // {key:'cost'        ,val: 12}, 
         ]
@@ -184,21 +186,32 @@ class ActionObj {
 }
 
 let itemsRef = {
-    sword:     {actions:['attack'], itemType:'weapon',},
-    shield:    {actions:['block'],},
-    spellBook: {actions:['fireball','barrier'],},
+    sword:     {actions:['meleeAttack'], itemType:'weapon',},
+    bow:       {actions:['rangedAttack'], itemType:'weapon',},
+    shield:    {actions:['shieldBlock'], itemType:'off-hand'},
+    book:      {actions:['fireball','barrier'],},
+
+    helmet:    {passiveStats:[{stat:"life", value:10}], itemType:'helmet', },
+    ring:      {passiveStats:[{stat:"power", value:1}, {stat:"life", value:5}]},
+
+    //dagger: {actions:['multistrike'], itemType:'weapon'},
+    //spear: {actions:['spearAttack'], itemType:'weapon'}, //gain +1 dmg after you attacked with this.
+    //knife: {actions:['extraAttack'], itemType:'off-hand'},
 }
 
 //item = action
 let actionsRef = {
     //Item key is used as 'action' string
     attack:      {desc: "deal damage equal to dice roll value", actionCharge:12 },
+    meleeAttack: {desc: "deal 2 damage", actionCharge:24, actionMod:2, },
+    rangedAttack:{desc: 'deal damage equal to dice roll', actionCharge: 12,},
+
     extraAttack: {desc: "deal 1 damage as extra action", actionType:'extra'}, //add varioation with cd and cost
     repair:      {desc: 'restore action charge to all other actions', actionMod: 2,},
     fireball:    {desc: 'deal damage equal to roll x empty action slots', actionCharge: 6,},
     dodge:       {desc: 'keep half of your roll for the next turn', },
 
-    block:       {desc: 'block damage equal to dice roll value', },
+    shieldBlock:       {desc: 'block damage equal to dice roll value', },
     //block that gives def if broken
     barrier:     {desc: `reduce incomming damage by 75%, cd:3`, cooldown: 3, },
     
@@ -217,11 +230,11 @@ let actionsRef = {
     // Stun:     {desc: 'Prevent enemy for acting during this turn'},
 
     //Passive items
-    shield:      {desc: 'add 3 def while in inventory (passive)'                ,actionType: 'passive', actionMod: 3,},
-    amulet:      {desc: 'add 2 power while in inventory (passive)'              ,actionType: 'passive', actionMod: 2,},
-    belt:        {desc: 'add 20 max life while in inventory (passive)'          ,actionType: 'passive', actionMod: 20,},
-    leatherBelt: {desc: 'add 20% max life while in inventory (passive)'         ,actionType: 'passive', actionMod: 0.2,},
-    d8:          {desc: 'use d8 for rolls while this is in inventory (passive)' ,actionType: 'passive', actionMod: 8,}
+    // shield:      {desc: 'add 3 def while in inventory (passive)'                ,actionType: 'passive', actionMod: 3,},
+    // amulet:      {desc: 'add 2 power while in inventory (passive)'              ,actionType: 'passive', actionMod: 2,},
+    // belt:        {desc: 'add 20 max life while equipped'                        ,actionType: 'passive', actionMod: 20,},
+    // leatherBelt: {desc: 'add 20% max life while in inventory (passive)'         ,actionType: 'passive', actionMod: 0.2,},
+    // d8:          {desc: 'use d8 for rolls while this is in inventory (passive)' ,actionType: 'passive', actionMod: 8,}
 
     //Misc
     //Town-portal item, escape combat.

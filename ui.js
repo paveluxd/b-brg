@@ -12,7 +12,8 @@ function genTabs(){
     tab.id = 'close-tab'
     el('tabs').append(tab)
 
-    let screens = ['map', 'character', 'inventory'] // add 'tree' to arr to enable tree tab
+    let screens = ['map', 'character', 'inventory'] // add 'tree','inventory' to arr to enable tree tab
+
     //Gen map tabs
     screens.forEach(elem => {
         let tab = document.createElement('button')
@@ -40,6 +41,7 @@ function screen(id, mod){
        el('character').classList.remove('hide');//display screen with id
        el('close-tab').classList.remove('hide')
        el('map-tab').classList.add('hide')
+       el('inventory-tab').classList.add('hide')
     }
     else{
        el(id).classList.remove('hide');//display screen with id
@@ -247,13 +249,14 @@ function syncCharPage(){
     let cont = el('character-content')
 
     //Build actions array
-    let actions = []
+    let actions = ``
     playerObj.actions.forEach(action => {
-        actions.push(`<br>- ${upp(action.actionKey)} (x${action.actionCharge})`)
+        actions += `<li>${upp(action.actionKey)} (x${action.actionCharge}): ${upp(action.desc)}.</li>`
     })
 
+    //Add placeholders for actions
     for(let i = 0; i < playerObj.actionSlots - playerObj.actions.length; i++){
-        actions.push('<br>[....................]')
+        actions += '<li>-</li>'
     }
 
     //Add text
@@ -268,7 +271,12 @@ function syncCharPage(){
         <br>Dice: d${playerObj.flatDice} 
         <br>
 
-        <br>Skills slots: ${actions}
+        <br>Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}
+        <br>Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}
+
+        <br>
+        <br><h3>Actions ${playerObj.actions.length}/${playerObj.actionSlots}</h3> 
+        <ul>${actions}</ul>
     `
     // <br>Passive skill points: ${playerObj.treePoints}
     // <br>Gold: ${playerObj.gold} 
@@ -298,8 +306,7 @@ function syncInventory(){
         equipBtn.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
         
         card.append(btn, equipBtn)
-        content.append(card)      
-          
+        content.append(card)         
     })
 }
 
@@ -308,8 +315,6 @@ function genItemModal(itemId){
     let itemModal = el('item-modal-body')
     let itemObj = findByProperty(playerObj.inventory, 'itemId', itemId)
 
-    itemModal.innerHTML = ``
-    
     itemModal.innerHTML = `${itemObj.itemName} (${itemObj.itemType})<br><br>Adds actions: <br>`
 
     itemObj.actions.forEach(action => {
@@ -320,6 +325,8 @@ function genItemModal(itemId){
     let btn = document.createElement('button')
     btn.innerHTML = 'Drop item'
     btn.setAttribute('onclick',`removeItem("${itemId}"), toggleModal('item-modal')`)
+
+    //Add close button
     let closeBtn = document.createElement('button')
     closeBtn.innerHTML = 'Close'
     closeBtn.setAttribute('onclick', 'toggleModal("item-modal")')
@@ -351,4 +358,16 @@ function floatText(target, string){
         el('plDmgInd').setAttribute('style', 'color:white;')
 
     }
+}
+
+//Calc equipped items
+function calcEquippedItems(){
+    let equipped = 0
+    playerObj.inventory.forEach(item => {
+        if(item.equipped === true){
+            equipped++
+        }
+    })
+
+    return equipped
 }
