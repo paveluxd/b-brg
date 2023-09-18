@@ -372,6 +372,7 @@ function genReward(val, quant){
 
         toggleModal('rewardScreen')
     }
+
     //Resolve reward
     else {
         if     (val == 'Heal'){
@@ -400,10 +401,17 @@ function genReward(val, quant){
             
             rewardPool.forEach(elem => {
                 if(elem.actionId !== undefined && elem.actionId === quant){
+
+                    //If there are empty action slots -> add action.
                     if(playerObj.actions.length < playerObj.actionSlots){
+
+                        //Resolve passive action
+                        //Remove, now passives are on item level
                         if(elem.actionType === 'passive'){
                             resolvePassiveItem(elem, 'add')
                         }
+
+                        //Add temporary action
                         playerObj.tempActions.push(elem)
                     }
                     else {
@@ -478,7 +486,6 @@ function resolvePlayerStats(mod, stat){
     }
 
     if(mod === 'reset-to-flat'){
-        //Resolve life
 
        //Restore flat def
         if(playerObj.def !== playerObj.flatDef){
@@ -490,8 +497,6 @@ function resolvePlayerStats(mod, stat){
             playerObj.power = playerObj.flatPower
         } 
     }
-
-    log(2)
 
     //Get all actions from all items and move them to actions arr
     playerObj.actions = []
@@ -560,23 +565,7 @@ function addTargetItem(key, iLvl){
     }
 }
 
-//Not used atm
-// function addRandomItem(quant, iLvl){
-//     for(let i =0; i< quant; i++){
-//         if(playerObj.actions.length < playerObj.actionSlots){
-
-//             let newItem = new ItemObj(rarr(Object.keys(actionsRef)), iLvl)
-//             if(newItem.actionType === 'passive'){
-//                 resolvePassiveItem(newItem, 'add')
-//             }
-//             playerObj.actions.push(newItem)
-
-//         }else{
-//             console.log('Inventory is full.');
-//         }
-//     }
-// }
-
+//Remove item from the inventory.
 function removeItem(itemId){
     let item = findByProperty(playerObj.inventory, 'itemId', itemId)
     
@@ -591,15 +580,22 @@ function removeItem(itemId){
     syncUi()
 }
 
+//Equip/Unequip item
 function equipItem(item){
     if(item.equipped !== undefined && item.equipped === false){
         item.equipped = true
+
+        //Resolve stats for equipped item.
+        //
     } 
     else{
         item.equipped = false
+
+        //Resolve stats for unequipped item.
+        //
     }
 
-    resolvePlayerStats('reset-to-flat')//Adjust this to recalc all items
+    resolvePlayerStats()//Adjust this to recalc all items
     syncUi()
 }
 
@@ -672,6 +668,7 @@ function resolveCharge(action){
             removeFromArr(playerObj.actions, action)
             removeFromArr(playerObj.tempActions, action)
 
+            //Resolve stats if passive action removed due to charge loss
             if(action.actionType === 'passive'){
                 //Remove action
                 resolvePassiveItem(action)//Loose passive stat
