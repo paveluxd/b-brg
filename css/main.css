@@ -268,7 +268,8 @@ button:disabled{
 /*Items & inventory*/
 #inventory-list{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 8px;
     align-items: stretch;
 }
@@ -281,6 +282,7 @@ button:disabled{
     outline: 2px solid var(--black);
     border-radius: 8px;
     display: flex;
+    width: 48%;
 }
 
 .item-card button:first-child{

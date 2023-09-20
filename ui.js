@@ -41,7 +41,7 @@ function screen(id, mod){
        el('character').classList.remove('hide');//display screen with id
        el('close-tab').classList.remove('hide')
        el('map-tab').classList.add('hide')
-       el('inventory-tab').classList.add('hide')
+    //    el('inventory-tab').classList.add('hide')
     }
     else{
        el(id).classList.remove('hide');//display screen with id
@@ -255,24 +255,22 @@ function syncCharPage(){
     })
 
     //Add placeholders for actions
-    for(let i = 0; i < playerObj.actionSlots - playerObj.actions.length; i++){
-        actions += '<li>-</li>'
-    }
+    // 
+    
 
     //Add text
     cont.innerHTML =`
-        Stage: ${gameState.stage}
-        <br>Level: ${playerObj.lvl} (exp: ${playerObj.exp})
-        <br>
+        Stage: ${gameState.stage} / Level: ${playerObj.lvl} (exp: ${playerObj.exp})
 
-        <br>Life: ${playerObj.life} / ${playerObj.maxLife}
-        <br>Def: ${playerObj.def} 
-        <br>Power: ${playerObj.power} 
-        <br>Dice: d${playerObj.flatDice} 
         <br>
+        Life: ${playerObj.life} / ${playerObj.maxLife}
+        / Def: ${playerObj.def} 
+        / Power: ${playerObj.power} 
+        / Dice: d${playerObj.flatDice} 
 
-        <br>Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}
-        <br>Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}
+        <br>
+        Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}
+        / Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}
 
         <br>
         <br><h3>Actions ${playerObj.actions.length}/${playerObj.actionSlots}</h3> 

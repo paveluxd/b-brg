@@ -27,35 +27,39 @@ class CombatState {
 //
 class PlayerObj {
     constructor(){
-        //Core
-        this.initialLife    = 50
-        this.initLifeMod    = 1 
-        this.maxLifeMod     = this.initLifeMod //used for passives that multiply life by % value.
-        this.maxLife        = this.initialLife
-        this.life           = this.maxLife
+        //Life
+        this.baseLife       = 50            //Lvl 1 char life
+        this.flatLife       = this.baseLife //Life cap
+        this.life           = this.baseLife //Current life
 
-        this.flatPower      = 0
-        this.power          = 0
-        this.flatDef        = 0   
-        this.def            = 0
+        //Power
+        this.basePower      = 0
+        this.flatPower      = this.basePower
+        this.power          = this.basePower
+
+        //Def
+        this.baseDef        = 50
+        this.flatDef        = this.baseDef
+        this.def            = this.baseDef
 
         //Dice
-        this.initialDice    = 6 //needed as ref in case flat dice is modified by item
-        this.flatDice       = this.initialDice
-        this.dice           = this.initialDice
-        this.roll           = rng(this.initialDice) //initial roll
+        this.baseDice       = 6 //needed as ref in case flat dice is modified by item
+        this.flatDice       = this.baseDice
+        this.dice           = this.baseDice
+
+        this.roll           = rng(this.baseDice) //initial roll
         this.rollBonus      = 0
 
         //Inventory
         this.inventorySlots = 12 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ['sword','shield', 'helmet', 'ring']
+        this.startingItems  = ['bow','belt', 'helmet','helmet', 'chainmail', 'dice8']
 
-        //Skills
+        //Actions
         this.actionSlots    = 6
         this.actions        = [] //Actions gained from items
-        this.tempActions    = []
+        this.tempActions    = [] //Temporary actions
 
         // this.draftActions   = [] //Draft actions gained from items
 
@@ -73,8 +77,8 @@ class PlayerObj {
 //
 class EnemyObj {
     constructor(){
-        this.life  = gameState.enemyLifeBase
-        this.maxLife = this.life
+        this.life     = gameState.enemyLifeBase
+        this.flatLife = this.life
 
         this.power = Math.ceil(rng(gameState.stage * 0.5, 0)),
         this.def   = Math.ceil(rng(gameState.stage * 0.3, 0)),
@@ -91,7 +95,7 @@ class EnemyObj {
             gameState.enemyLifeBase+= 4 //Enemies +4 life after boss is killed
 
             this.life  = Math.round(gameState.enemyLifeBase * 1.25)
-            this.maxLife = this.life
+            this.flatLife= this.life
 
             this.power = Math.ceil(rng(gameState.stage * 0.3, 0)),
             this.def   = Math.ceil(rng(gameState.stage * 0.3, 0)),
@@ -165,7 +169,8 @@ class ActionObj {
             {key:'actionMod'   ,val: 0},
             {key:'cooldown'    ,val: undefined},
             {key:'actionType'  ,val: 'generic'},
-            {key:'desc'        ,val: ''}
+            {key:'desc'        ,val: ''},
+            {key:'passiveStats',val: []},
         ]
 
         //Resolves extra props
@@ -188,58 +193,82 @@ class ActionObj {
 let itemsRef = {
     sword:     {actions:['meleeAttack'], itemType:'weapon',},
     bow:       {actions:['rangedAttack'], itemType:'weapon',},
-    shield:    {actions:['shieldBlock'], itemType:'off-hand'},
+    shield:    {actions:['shieldBlock'], itemType:'off-hand',},
     book:      {actions:['fireball','barrier'],},
 
-    helmet:    {passiveStats:[{stat:"life", value:10}], itemType:'helmet', },
-    ring:      {passiveStats:[{stat:"power", value:1}, {stat:"life", value:5}]},
+    helmet:    {passiveStats:[{stat:"life", value:10}], itemType:'helmet',},
+    belt:      {passiveStats:[{stat:"life%", value:50}], itemType:'belt',},
+    chainmail: {passiveStats:[{stat:"def", value:2}], itemType:'body protection',},
+    dice8:     {passiveStats:[{stat:'dice', value:8}],itemType:'dice'},
+
+
+    ring:      {actions:['lifeCharge', 'enduranceCharge'],
+                passiveStats:[
+                    {stat:"power", value:1}, 
+                    {stat:"life", value:10},
+                ]},
 
     //dagger: {actions:['multistrike'], itemType:'weapon'},
     //spear: {actions:['spearAttack'], itemType:'weapon'}, //gain +1 dmg after you attacked with this.
     //knife: {actions:['extraAttack'], itemType:'off-hand'},
 }
 
-//item = action
 let actionsRef = {
-    //Item key is used as 'action' string
-    attack:      {desc: "deal damage equal to dice roll value", actionCharge:12 },
-    meleeAttack: {desc: "deal 2 damage", actionCharge:24, actionMod:2, },
-    rangedAttack:{desc: 'deal damage equal to dice roll', actionCharge: 12,},
+    //key is used as 'action' string.
+    //Every action has to be added to turn calculation to work.
+
+    meleeAttack: {desc: "deal 2 damage", actionCharge:124, actionMod:2, },
+    rangedAttack:{desc: 'deal damage equal to dice roll value', actionCharge: 112,},
 
     extraAttack: {desc: "deal 1 damage as extra action", actionType:'extra'}, //add varioation with cd and cost
     repair:      {desc: 'restore action charge to all other actions', actionMod: 2,},
     fireball:    {desc: 'deal damage equal to roll x empty action slots', actionCharge: 6,},
     dodge:       {desc: 'keep half of your roll for the next turn', },
 
-    shieldBlock:       {desc: 'block damage equal to dice roll value', },
-    //block that gives def if broken
+    shieldBlock: {desc: 'block damage equal to dice roll value', },
     barrier:     {desc: `reduce incomming damage by 75%, cd:3`, cooldown: 3, },
+    //block that gives def if broken
+    //shield:{desc: 'Reduce attack that deals more than 6 damage to 0, loose 1 def.', actionCharge: 3,},
     
     //Player stats
     heal:        {desc: "restore 12 life", actionCharge: 3, actionMod: 12},
     fortify:     {desc: 'increase def until the end of this fight', actionCharge:1, actionMod: 3,},
     reroll:      {desc: "instant action: Reroll your dice.", actionCharge: 10, actionType:'extra'},
-    // Focus:   {desc: 'Increase next turn roll'},
-    // Rage:    {desc: 'Increase power until the end of this fight'},
+    // focus:   {desc: 'Increase next turn roll'},
+    // rage:    {desc: 'Increase power until the end of this fight'},
 
     //Enemy states
     weaken:      {desc: 'reduce enemy power', actionCharge: 3,},
     break:       {desc: 'reduce enemy defence', actionCharge: 3,},
     counter:     {desc: 'prevent enemy action', actionCharge: 3},
     root:        {desc: 'reduce enemy dice by 2', actionCharge: 3, actionMod: 3,},
-    // Stun:     {desc: 'Prevent enemy for acting during this turn'},
+    // stun:        {desc: 'Prevent enemy for acting during this turn'},
 
-    //Passive items
-    // shield:      {desc: 'add 3 def while in inventory (passive)'                ,actionType: 'passive', actionMod: 3,},
-    // amulet:      {desc: 'add 2 power while in inventory (passive)'              ,actionType: 'passive', actionMod: 2,},
-    // belt:        {desc: 'add 20 max life while equipped'                        ,actionType: 'passive', actionMod: 20,},
-    // leatherBelt: {desc: 'add 20% max life while in inventory (passive)'         ,actionType: 'passive', actionMod: 0.2,},
-    // d8:          {desc: 'use d8 for rolls while this is in inventory (passive)' ,actionType: 'passive', actionMod: 8,}
+    //Passive actions, 
+    //Provide effect while in action bar.
+    lifeCharge:   {
+        desc: 'adds 10 max life while in action bar (passive)', 
+        passiveStats:[{stat:'life', value:10}],
+        actionCharge: 1,
+    },
+
+    enduranceCharge:{
+        desc: 'Increases life by 50% (passive)', 
+        passiveStats:[{stat:'life%', value:50}],
+        actionCharge: 1,   
+    },
+
+    //*Covert these old passive actions into new format.
+    // shield:      {desc: 'add 3 def while in action bar (passive)'                ,actionType: 'passive', actionMod: 3,},
+    // amulet:      {desc: 'add 2 power while in action bar (passive)'              ,actionType: 'passive', actionMod: 2,},
+    // d8:          {desc: 'use d8 for rolls while this is in action bar (passive)' ,actionType: 'passive', actionMod: 8,}
+    
 
     //Misc
     //Town-portal item, escape combat.
     //Resurect with 1 hp item.
 
+    //Legacy
     //War
     // Increase power and reduce def by your roll, needs def greater than 1
     // Increase def by half of your roll, needs roll more than 3
@@ -317,8 +346,9 @@ let eneActionRef = {
 //Tree -> Nodes
 let treeRef = [
     //Core stats
-    {id:'add-life'      ,desc:'add 10 base life'         ,nodeType:'baseLife'    ,nodeMod: 10  },
-    {id:'percent-life'  ,desc:'increse base life by 25%' ,nodeType:'percentLife' ,nodeMod: 0.25},
+    {id:'add-life'      ,desc:'add 10 base life'         , passiveStats:[{stat:'life', value:10}],},
+    {id:'percent-life'  ,desc:'increse base life by 25%' , passiveStats:[{stat:'life%', value:25}],},
+
     {id:'add-def'       ,desc:'gain 1 basse def'         ,nodeType:'baseDef'     ,nodeMod: 1   },
     {id:'add-power'     ,desc:'gain 1 base power'        ,nodeType:'basePower'   ,nodeMod: 1   },
     {id:'add-dice'      ,desc:'gain 2 to base dice'      ,nodeType:'baseDice'    ,nodeMod: 2   },
