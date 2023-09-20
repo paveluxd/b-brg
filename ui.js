@@ -295,7 +295,7 @@ function syncInventory(){
 
         //Add equip button
         let equipBtn = document.createElement('button')
-        equipBtn.innerHTML = 'Equipped'
+        equipBtn.innerHTML = 'Equ.'
 
         if(item.equipped){ // Keeps equip indicator even if buttons are redrawn with syncui()
             equipBtn.classList.add('equipped')

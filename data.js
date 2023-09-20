@@ -54,7 +54,7 @@ class PlayerObj {
         this.inventorySlots = 12 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ['bow','belt', 'helmet','helmet', 'chainmail', 'dice8']
+        this.startingItems  = ['bow','belt', 'helmet','helmet', 'chainmail', 'plate', 'dice8']
 
         //Actions
         this.actionSlots    = 6
@@ -198,15 +198,25 @@ let itemsRef = {
 
     helmet:    {passiveStats:[{stat:"life", value:10}], itemType:'helmet',},
     belt:      {passiveStats:[{stat:"life%", value:50}], itemType:'belt',},
-    chainmail: {passiveStats:[{stat:"def", value:2}], itemType:'body protection',},
+    chainmail: {passiveStats:[{stat:"def", value:2}], itemType:'body armor',},
     dice8:     {passiveStats:[{stat:'dice', value:8}],itemType:'dice'},
 
 
     ring:      {actions:['lifeCharge', 'enduranceCharge'],
                 passiveStats:[
-                    {stat:"power", value:1}, 
-                    {stat:"life", value:10},
-                ]},
+                        {stat:"power", value:1}, 
+                        {stat:"life", value:10},
+                    ]
+                },
+    plate:       {
+                    passiveStats:[
+                        {stat:"power", value:1}, 
+                        {stat:"def",   value:2},
+                        {stat:"life",  value:10},
+                        {stat:"life%", value:10},
+                    ],
+                    itemType:'body armor'
+                }
 
     //dagger: {actions:['multistrike'], itemType:'weapon'},
     //spear: {actions:['spearAttack'], itemType:'weapon'}, //gain +1 dmg after you attacked with this.

@@ -672,7 +672,7 @@ function resolvePlayerStats(){
     let defDeviation = playerObj.def - playerObj.flatDef
 
     let baseDice = playerObj.baseDice
-    let flatDice = 0
+    let flatDice = baseDice
     let diceDeviation = playerObj.dice - playerObj.flatDice
 
     //Extracts stats
@@ -699,9 +699,9 @@ function resolvePlayerStats(){
                 flatDef += statObj.value
             }
 
-            //
+            //Replace dice
             else if(statObj.stat === 'dice'){
-                flatDice += statObj.value
+                flatDice = statObj.value
             }
         })
     }}
@@ -743,7 +743,7 @@ function resolvePlayerStats(){
     playerObj.def = playerObj.flatDef + defDeviation
 
     //Dice
-    // playerObj.flatDice = baseDice + (baseDice - flatDice)
+    playerObj.flatDice = flatDice
     playerObj.dice = playerObj.flatDice + diceDeviation
 }
 
