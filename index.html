@@ -16,7 +16,7 @@
 <body>
 
     <!-- Map -->
-    <div id="map" class="screen hide tab">
+    <div id="map" class="screen tab">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
@@ -48,7 +48,7 @@
 
 
     <!-- Combat -->
-    <div id="combat" class="screen">
+    <div id="combat" class="screen hide">
         <p id="log">stage: 1<br> turn:1</p>
         <!-- Menu button-->
         <button onclick="screen('character', 'combat-menu')" style="border: none; background-color: var(--w0); width: 52px;">
@@ -90,7 +90,7 @@
 
         <div id="stats-container">
             <!-- Actions -->
-            <div id="stats">
+            <div id="stats" onclick="screen('character', 'combat-menu')">
                 <!-- Player --> 
                 <div class="stat-group">
                         <div class="stat">
@@ -139,7 +139,7 @@
 
 
     <!-- Tabs -->
-    <div id="tab-container" class="column hide">
+    <div id="tab-container" class="column">
         <div id="tabs" class="row">
         </div>
     </div>
@@ -149,10 +149,6 @@
     <!-- Character -->
     <div id="character" class="screen hide tab" >
         <div class="modal-container">
-
-            <div class="modal-header">
-                <h3>Character stats</h3>
-            </div>
 
             <div id='character-content' class="column modal-body"></div>
 

@@ -270,23 +270,54 @@ button:disabled{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 8px;
     align-items: stretch;
+    justify-content: flex-start;
+
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    padding: 0px;
 }
 
-.equipped{
-    border: 2px solid green;
-    background-color: rgba(0, 255, 17, 0.164);
-}
 .item-card{
-    outline: 2px solid var(--black);
-    border-radius: 8px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    border-radius: 0px;
     display: flex;
-    width: 48%;
+    flex-direction: column;
+    width: 50%;
+    min-height: 160px;
+    position: relative;
+    padding: 4px;
+    gap: 12px;
 }
 
 .item-card button:first-child{
     width: 100%;
+    height: auto;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-grow: 1;
+    padding: 0px;
+    border: none;
+}
+
+.equip-button{
+    width: max-content;
+    border-radius: 4px;
+}
+.equipped{
+    border: 1px solid green;
+    background-color: rgba(0, 255, 17, 0.164);
+}
+
+.drop-button{
+    height: 24px;
+    width: max-content;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    border-radius: 4px;
 }
 
 

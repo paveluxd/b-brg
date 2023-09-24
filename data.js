@@ -28,7 +28,7 @@ class CombatState {
 class PlayerObj {
     constructor(){
         //Life
-        this.baseLife       = 50            //Lvl 1 char life
+        this.baseLife       = 16            //Lvl 1 char life
         this.flatLife       = this.baseLife //Life cap
         this.life           = this.baseLife //Current life
 
@@ -38,7 +38,7 @@ class PlayerObj {
         this.power          = this.basePower
 
         //Def
-        this.baseDef        = 50
+        this.baseDef        = 0
         this.flatDef        = this.baseDef
         this.def            = this.baseDef
 
@@ -54,7 +54,7 @@ class PlayerObj {
         this.inventorySlots = 12 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ['bow','belt', 'helmet','helmet', 'chainmail', 'plate', 'dice8']
+        this.startingItems  = ['sword','shield']
 
         //Actions
         this.actionSlots    = 6
@@ -227,8 +227,8 @@ let actionsRef = {
     //key is used as 'action' string.
     //Every action has to be added to turn calculation to work.
 
-    meleeAttack: {desc: "deal 2 damage", actionCharge:124, actionMod:2, },
-    rangedAttack:{desc: 'deal damage equal to dice roll value', actionCharge: 112,},
+    meleeAttack: {desc: "deal 3 damage", actionCharge:99, actionMod:3, },
+    rangedAttack:{desc: 'deal damage equal to dice roll value', actionCharge: 99,},
 
     extraAttack: {desc: "deal 1 damage as extra action", actionType:'extra'}, //add varioation with cd and cost
     repair:      {desc: 'restore action charge to all other actions', actionMod: 2,},

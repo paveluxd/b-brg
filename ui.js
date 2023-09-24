@@ -12,7 +12,7 @@ function genTabs(){
     tab.id = 'close-tab'
     el('tabs').append(tab)
 
-    let screens = ['map', 'character', 'inventory'] // add 'tree','inventory' to arr to enable tree tab
+    let screens = ['map', 'character'] // add 'tree' , 'inventory','inventory' to arr to enable tree tab
 
     //Gen map tabs
     screens.forEach(elem => {
@@ -260,17 +260,14 @@ function syncCharPage(){
 
     //Add text
     cont.innerHTML =`
-        Stage: ${gameState.stage} / Level: ${playerObj.lvl} (exp: ${playerObj.exp})
+        Life: ${playerObj.life} / ${playerObj.flatLife} <br>
+        Def: ${playerObj.def} <br>
+        Power: ${playerObj.power} <br>
+        Dice: d${playerObj.flatDice} <br>
 
         <br>
-        Life: ${playerObj.life} / ${playerObj.maxLife}
-        / Def: ${playerObj.def} 
-        / Power: ${playerObj.power} 
-        / Dice: d${playerObj.flatDice} 
-
-        <br>
-        Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}
-        / Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}
+        Level: ${playerObj.lvl} (exp: ${playerObj.exp}) / Stage: ${gameState.stage}<br>
+        Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots} / Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}
 
         <br>
         <br><h3>Actions ${playerObj.actions.length}/${playerObj.actionSlots}</h3> 
@@ -287,15 +284,33 @@ function syncInventory(){
 
     
     playerObj.inventory.forEach(item => {
+
+        //Creates card container
         let card = document.createElement('div')
         card.classList.add('item-card')
+
+        //Creates body btn
         let btn = document.createElement('button')
-        btn.innerHTML = `${item.itemName} (${item.itemType})<br>`
         btn.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
+
+        let itemDesc = `<h3>${item.itemName} (${item.itemType})</h3><br>`
+
+        //Added actions
+        item.actions.forEach(action =>{
+            itemDesc += `${action.actionName}(x${action.actionCharge}) - ${upp(action.desc)}.`
+        })
+
+        //Added stats
+        item.passiveStats.forEach(stat =>{
+            itemDesc += `${upp(stat.stat)}: ${stat.value} <br> `
+        })
+
+        btn.innerHTML = itemDesc
 
         //Add equip button
         let equipBtn = document.createElement('button')
-        equipBtn.innerHTML = 'Equ.'
+        equipBtn.innerHTML = 'Equipped'
+        equipBtn.classList.add('equip-button')
 
         if(item.equipped){ // Keeps equip indicator even if buttons are redrawn with syncui()
             equipBtn.classList.add('equipped')
@@ -303,7 +318,18 @@ function syncInventory(){
 
         equipBtn.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
         
-        card.append(btn, equipBtn)
+        //Add drop button
+        let dropBtn = document.createElement('button')
+        dropBtn.innerHTML = 'Drop'
+        dropBtn.classList.add('drop-button')
+
+        //Removes the item
+        dropBtn.addEventListener('click', function(){
+            this.remove()
+            removeItem(item.itemId)
+        })
+
+        card.append(btn, equipBtn, dropBtn)
         content.append(card)         
     })
 }
