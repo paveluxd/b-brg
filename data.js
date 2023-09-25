@@ -267,12 +267,7 @@ let actionsRef = {
         passiveStats:[{stat:'life%', value:50}],
         actionCharge: 1,   
     },
-
-    //*Covert these old passive actions into new format.
-    // shield:      {desc: 'add 3 def while in action bar (passive)'                ,actionType: 'passive', actionMod: 3,},
-    // amulet:      {desc: 'add 2 power while in action bar (passive)'              ,actionType: 'passive', actionMod: 2,},
-    // d8:          {desc: 'use d8 for rolls while this is in action bar (passive)' ,actionType: 'passive', actionMod: 8,}
-    
+        
 
     //Misc
     //Town-portal item, escape combat.
