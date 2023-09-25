@@ -12,7 +12,7 @@ function genTabs(){
     tab.id = 'close-tab'
     el('tabs').append(tab)
 
-    let screens = ['map', 'character'] // add 'tree' , 'inventory','inventory' to arr to enable tree tab
+    let screens = ['map', 'character', 'inventory'] // add 'tree' , 'inventory','inventory' to arr to enable tree tab
 
     //Gen map tabs
     screens.forEach(elem => {
