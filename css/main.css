@@ -39,7 +39,18 @@ body{
     color: var(--black);
 }
 
+#gameStartScreen{
+    text-align: center;
+    font-size: 14px;
+}
 
+#gameStartScreen button{
+    font-family: 'open-sans', sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    color: grey;
+    border:none
+}
 
 /* Screens */
 .screen{
