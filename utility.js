@@ -71,7 +71,7 @@ function upp(string){//Sets 1st letter to uppercase
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
-function findByProperty(dataArr, propertyName, propertyValue){ //Used to dind items by id in array
+function findByProperty(dataArr, propertyName, propertyValue){ //Used to find items by id in array
     let foundItem
     dataArr.forEach(item => {
         if(item[propertyName] === propertyValue){
@@ -93,7 +93,6 @@ function csvJSON(csv){
     // NOTE: If your columns contain commas in their values, you'll need
     // to deal with those before doing the next step 
     // (you might convert them to &&& or something, then covert them back later)
-    // jsfiddle showing the issue https://jsfiddle.net/
     var headers=lines[0].split(",");
   
     for(var i=1;i<lines.length;i++){
@@ -111,4 +110,4 @@ function csvJSON(csv){
   
     //return result; //JavaScript object
     return JSON.stringify(result); //JSON
-  }
+}

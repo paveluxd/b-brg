@@ -111,14 +111,17 @@ class EnemyObj {
 
 //Classes
 class ItemObj {
-    constructor(itemKey, iLvl){
+    constructor(itemName, iLvl){
 
         //Static properties taken from reference
         this.actions = []
 
+        //Finds item by item name property
+        let itemData = findByProperty(itemsRef, 'itemName', itemName)
+        
         //Gen item actions
-        if(itemsRef[itemKey].actions !== undefined){
-            itemsRef[itemKey].actions.forEach(actionKey =>{
+        if(itemData.actions !== undefined){
+            itemData.actions.forEach(actionKey =>{
                 this.actions.push(new ActionObj(actionKey))
             })
         }
@@ -132,7 +135,7 @@ class ItemObj {
 
         //Gen variable properties
         let props = [
-            {key:'itemName'    ,val: upp(itemKey)},
+            {key:'itemName'    ,val: upp(itemName)},
             {key:'itemType'    ,val: 'generic'},
             {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
             {key:'equipped'    ,val: false},
@@ -142,13 +145,13 @@ class ItemObj {
         ]
 
 
-        //Resolve props via default above / value from ref
+        //Resolve props via default value above, or value from reference object
         props.forEach(property => {
-            if(itemsRef[itemKey][property.key] === undefined){
+            if(itemData[property.key] === undefined){
                 this[property.key] = property.val //if no prop, set it to extra props value
             }
             else {
-                this[property.key] = itemsRef[itemKey][property.key] //if exists in ref, set it as ref.
+                this[property.key] = itemData[property.key] //if exists in ref, set it as ref.
             }
         })
     }
@@ -171,133 +174,27 @@ class ActionObj {
             {key:'actionType'  ,val: 'generic'},
             {key:'desc'        ,val: ''},
             {key:'passiveStats',val: []},
+            {key:'id',          val: '???'}
         ]
 
         //Resolves extra props
         props.forEach(property => {
-            if(typeof actionsRef[actionKey][property.key] === 'undefined'){
+            //Find action by actionName
+            let actionData = findByProperty(actionsRef, 'actionName', actionKey)
+
+            if(typeof actionData[property.key] === 'undefined' || actionData[property.key] === ''){
                 this[property.key] = property.val //if no prop, set it to extra props vlaue
             }
             else {
-                this[property.key] = actionsRef[actionKey][property.key] //if exists in ref, set it as red.
+                this[property.key] = actionData[property.key] //if exists in ref, set it as red.
             }
 
             //Set action charge of all passive items to 1.
-            if(actionsRef[actionKey].actionType === 'passive' && property.key === 'actionCharge'){
+            if(actionData.actionType === 'passive' && property.key === 'actionCharge'){
                 this.actionCharge = 1 
             } 
         })
     }
-}
-
-let itemsRef = {
-    
-    sword:     {actions:['meleeAttack'], itemType:'weapon',},
-    bow:       {actions:['rangedAttack'], itemType:'weapon',},
-    shield:    {actions:['shieldBlock'], itemType:'off-hand',},
-    book:      {actions:['fireball','barrier'],},
-
-    helmet:    {passiveStats:[{stat:"life", value:10}], itemType:'helmet',},
-    belt:      {passiveStats:[{stat:"life%", value:50}], itemType:'belt',},
-    chainmail: {passiveStats:[{stat:"def", value:2}], itemType:'body armor',},
-    dice8:     {passiveStats:[{stat:'dice', value:8}],itemType:'dice'},
-
-
-    ring:      {actions:['lifeCharge', 'enduranceCharge'],
-                passiveStats:[
-                        {stat:"power", value:1}, 
-                        {stat:"life", value:10},
-                    ]
-                },
-    plate:       {
-                    passiveStats:[
-                        {stat:"power", value:1}, 
-                        {stat:"def",   value:2},
-                        {stat:"life",  value:10},
-                        {stat:"life%", value:10},
-                    ],
-                    itemType:'body armor'
-                }
-
-    //dagger: {actions:['multistrike'], itemType:'weapon'},
-    //spear: {actions:['spearAttack'], itemType:'weapon'}, //gain +1 dmg after you attacked with this.
-    //knife: {actions:['extraAttack'], itemType:'off-hand'},
-}
-
-let actionsRef = {
-    //key is used as 'action' string.
-    //Every action has to be added to turn calculation to work.
-
-    meleeAttack: {desc: "deal 3 damage", actionCharge:99, actionMod:3, },
-    rangedAttack:{desc: 'deal damage equal to dice roll value', actionCharge: 99,},
-
-    extraAttack: {desc: "deal 1 damage as extra action", actionType:'extra'}, //add varioation with cd and cost
-    repair:      {desc: 'restore action charge to all other actions', actionMod: 2,},
-    fireball:    {desc: 'deal damage equal to roll x empty action slots', actionCharge: 6,},
-    dodge:       {desc: 'keep half of your roll for the next turn', },
-
-    shieldBlock: {desc: 'block damage equal to dice roll value', },
-    barrier:     {desc: `reduce incomming damage by 75%, cd:3`, cooldown: 3, },
-    //block that gives def if broken
-    //shield:{desc: 'Reduce attack that deals more than 6 damage to 0, loose 1 def.', actionCharge: 3,},
-    
-    //Player stats
-    heal:        {desc: "restore 12 life", actionCharge: 3, actionMod: 12},
-    fortify:     {desc: 'increase def until the end of this fight', actionCharge:1, actionMod: 3,},
-    reroll:      {desc: "instant action: Reroll your dice.", actionCharge: 10, actionType:'extra'},
-    // focus:   {desc: 'Increase next turn roll'},
-    // rage:    {desc: 'Increase power until the end of this fight'},
-
-    //Enemy states
-    weaken:      {desc: 'reduce enemy power', actionCharge: 3,},
-    break:       {desc: 'reduce enemy defence', actionCharge: 3,},
-    counter:     {desc: 'prevent enemy action', actionCharge: 3},
-    root:        {desc: 'reduce enemy dice by 2', actionCharge: 3, actionMod: 3,},
-    // stun:        {desc: 'Prevent enemy for acting during this turn'},
-
-    //Passive actions, 
-    //Provide effect while in action bar.
-    lifeCharge:   {
-        desc: 'adds 10 max life while in action bar (passive)', 
-        passiveStats:[{stat:'life', value:10}],
-        actionCharge: 1,
-    },
-
-    enduranceCharge:{
-        desc: 'Increases life by 50% (passive)', 
-        passiveStats:[{stat:'life%', value:50}],
-        actionCharge: 1,   
-    },
-
-
-    //Misc
-    //Town-portal item, escape combat.
-    //Resurect with 1 hp item.
-
-    //Legacy
-    //War
-    // Increase power and reduce def by your roll, needs def greater than 1
-    // Increase def by half of your roll, needs roll more than 3
-    // Stun the enemy, pay 2 defence
-    // Attack and break enemy def by 4, needs roll greater than 5
-
-    //Alch
-    // Heal for roll multiplied by 4, pay 1 gold for every heal
-    // Gain 2 gold, needs roll `1` or `2`
-    // Swap rolls, pay 2 gold, at 0 gold another stat is taken
-    // Blast enemy for roll multiplied by gold, loose all gold
-
-    //Hun
-    // Increase power by 2, needs max roll
-    // Stun enemy, pay 1 power
-    // Instantly steal(add to your) enemy roll, needs roll `1` or `2`
-    // Attack for dice multiplied by power, pay 1 power, needs roll > 5
-
-    //Rog
-    // Instantly decrease enemy roll by 2, pay 2 roll
-    // Instantly deal 2 + power as damage, pay 3 roll
-    // Instantly reduce enemy dice by 1, pay 4 roll
-    // Instantly deal 2 + power as damage, increase power by 1, pay 5 roll
 }
 
 //Rewards

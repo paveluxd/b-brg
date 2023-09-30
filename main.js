@@ -51,17 +51,18 @@ function turnCalc(buttonElem, actionId){
 
         let actionId = buttonElem.getAttribute('actionId')
         let sourceItem = findObj(playerObj.actions, 'actionId', actionId)
-        let playerAction = sourceItem.actionKey
-
+        let playerAction = sourceItem.id //changed to ide form actionKey to link with num
+        console.log(sourceItem);
 
         //PRE TURN
         //Stat modification actions has to be done before generic actions
         if(playerAction               === 'counter'){
             enemyObj.state='Skip turn'
         }
+
         //Extra actions
         else if(sourceItem.actionType === 'extra'){
-            if (playerAction === 'Reroll'){
+            if      (playerAction === 'Reroll'){
                 playerObj.roll = rng(playerObj.dice) 
             }
             else if (playerAction === 'ExtraAttack'){
@@ -88,14 +89,14 @@ function turnCalc(buttonElem, actionId){
 
         //TURN
         //Player action
-        if (playerAction === 'rangedAttack'){
+        if      (playerAction === 'rangedAttack'){
             playerDmgDone += playerObj.roll + playerObj.power
         }
-        if (playerAction === 'meleeAttack'){
+        else if (playerAction === 'a7'){ //sword attack
             //Get action mod
             let actionMod
             playerObj.actions.forEach(action => {
-                if(action.actionKey === 'meleeAttack'){
+                if(action.id === 'a7'){
                 actionMod = action.actionMod
             }
             })
@@ -193,7 +194,8 @@ function turnCalc(buttonElem, actionId){
 
         //DAMAGE CALCULATION
         //Damage inflicted by player
-        if (['meleeAttack', 'rangedAttack', 'fireball'].indexOf(playerAction) > -1){
+        //Melee attack(a7) / 
+        if (['a7', 'rangedAttack', 'fireball'].indexOf(playerAction) > -1){
             if(enemyObj.def >= playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
 
             playerDmgDone -= enemyObj.def             //Check def
@@ -763,5 +765,3 @@ function addTreeNode(node){
 //Start the game
 initGame()
 initiateCombat()
-
-console.table(actionsRef)

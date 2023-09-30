@@ -131,18 +131,6 @@ function syncActionTiles(){
     //Add button per player item
     playerObj.actions.forEach(action => {
 
-        //Add top decorative bar with cut corners
-        let bar = document.createElement('div')
-        bar.innerHTML = `
-                    <svg height="4" width="4" style="fill: black;">
-                        <polygon points="0,0 0,4 4,0"/>
-                    </svg>
-                    <svg height="4" width="4" style="fill: black;">
-                        <polygon points="4,0 0,0 4,4"/>
-                    </svg>
-                    `// Creates svg triangles
-
-
         // Section that contains name and desc
         let content = document.createElement('section')  
 
@@ -156,7 +144,7 @@ function syncActionTiles(){
         
         //Updates button labels based on actions
         //Modifies 'content' section
-        button.append(bar, content) //Add decorative bar and content section to button
+        button.append(content) //Add decorative bar and content section to button
 
         if     (['attack'].indexOf(action.actionKey) > -1){
             button.querySelector('section').innerHTML = `
@@ -164,34 +152,34 @@ function syncActionTiles(){
             <h3>${action.actionName} for ${playerObj.roll + playerObj.power}</h3> 
             <p>x${action.actionCharge}</p>
             </span>
-            <p class='desc'>${action.desc}</p>
+            <p class='desc'>${action.desc}.</p>
             `   
         }
         else if(['fireball'].indexOf(action.actionKey) > -1){        
             button.querySelector('section').innerHTML = `
             <span>
-            <h3>${action.actionName} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
+            <h3>${upp(action.actionName)} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
             <p>x${action.actionCharge}</p>
             </span>
-                <p class='desc'>${action.desc}</p>
+                <p class='desc'>${upp(action.desc)}.</p>
                 `
         }
         else if(['block', 'Break'].indexOf(action.actionKey) > -1){
                 button.querySelector('section').innerHTML = `
                 <span>
-                <h3>${action.actionName} ${playerObj.roll}</h3> 
+                <h3>${upp(action.actionName)} ${playerObj.roll}</h3> 
                 <p>x${action.actionCharge}</p>
                 </span>
-                <p class='desc'>${action.desc}</p>
+                <p class='desc'>${upp(action.desc)}.</p>
                 `      
         }
         else{
             button.querySelector('section').innerHTML = `
                 <span>
-                    <h3>${action.actionName}</h3> 
+                    <h3>${upp(action.actionName)}</h3> 
                     <p>x${action.actionCharge}</p>
                 </span>
-                <p class='desc'>${action.desc}</p>
+                <p class='desc'>${upp(action.desc)}.</p>
             `        
         }
 
