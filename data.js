@@ -191,6 +191,7 @@ class ActionObj {
 }
 
 let itemsRef = {
+    
     sword:     {actions:['meleeAttack'], itemType:'weapon',},
     bow:       {actions:['rangedAttack'], itemType:'weapon',},
     shield:    {actions:['shieldBlock'], itemType:'off-hand',},
@@ -267,7 +268,7 @@ let actionsRef = {
         passiveStats:[{stat:'life%', value:50}],
         actionCharge: 1,   
     },
-        
+
 
     //Misc
     //Town-portal item, escape combat.
