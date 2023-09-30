@@ -90,7 +90,7 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "fortify scroll",
+    "actionName": "fortify",
     "desc": "+2 def until the end of encounter",
     "actionMod": 2,
     "actionCharge": 1,
@@ -151,8 +151,8 @@ let actionsRef = [
   },
   {
     "actionName": "life charge",
-    "desc": "+8 max life while in action bar",
-    "actionMod": 8,
+    "desc": "+10 max life while in action bar",
+    "actionMod": 10,
     "actionCharge": 1,
     "cooldown": "",
     "passiveStats": [{stat:'life', value:10}],
@@ -174,7 +174,7 @@ let actionsRef = [
     "desc": "if you rolled 6, you can perform an additional action",
     "actionMod": "",
     "actionCharge": 3,
-    "cooldown": "",
+    "cooldown": 1,
     "passiveStats": "",
     "keyId": 17,
     "actionType": ""
@@ -345,19 +345,19 @@ let actionsRef = [
     "actionMod": 2,
     "actionCharge": 1,
     "cooldown": "",
-    "passiveStats": [{stat:'life', value:10}],
+    "passiveStats": [{stat:'dice-mod', value:2}],
     "keyId": 30,
     "actionType": ""
   },
   {
     "actionName": "curse of slowness",
-    "desc": "reduce target roll by 2",
-    "actionMod": 2,
+    "desc": "reduce target roll by 4 (extra action)",
+    "actionMod": 4,
     "actionCharge": 1,
     "cooldown": "",
     "passiveStats": "",
     "keyId": 24,
-    "actionType": ""
+    "actionType": "extra-action"
   },
   {
     "actionName": "order charge",
@@ -404,7 +404,7 @@ let actionsRef = [
     "desc": "next attack deals 2x dmg, requires roll greater than 8",
     "actionMod": 200,
     "actionCharge": 12,
-    "cooldown": "",
+    "cooldown": 1,
     "passiveStats": "",
     "keyId": 36,
     "actionType": "extra-action"

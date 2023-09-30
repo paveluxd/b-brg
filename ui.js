@@ -116,7 +116,7 @@ function syncUi(){
             el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc} ${enemyObj.roll} damage`
         }
         else if (enemyObj.action === 'Detonate'){
-            el('intent').innerHTML = `Will ${eneActionRef[enemyObj.action].desc} for ${enemyObj.maxLife} damage`
+            el('intent').innerHTML = `Will ${eneActionRef[enemyObj.action].desc} for ${enemyObj.flatLife} damage`
         }
         else{
             el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc}`
@@ -145,10 +145,19 @@ function syncActionTiles(){
         
         //Updates button labels based on actions
         //Modifies 'content' section
-        button.append(content) //Add decorative bar and content section to button
+        button.append(content) //Add content section to button
 
         //!!! REPACE WITH keyID
-        
+
+        //Cooldonw management
+        let cooldownCounter = ''
+
+        //If action is on cooldown disable the button
+        if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
+            cooldownCounter = `(cd:${action.cooldown})` 
+            button.disabled = true
+        }
+
         if     (['attack'].indexOf(referenceAction.actionName) > -1){
             button.querySelector('section').innerHTML = `
             <span>
@@ -180,18 +189,12 @@ function syncActionTiles(){
             button.querySelector('section').innerHTML = `
                 <span>
                     <h3>${upp(action.actionName)}</h3> 
-                    <p>x${action.actionCharge}</p>
+                    <p>x${action.actionCharge}${cooldownCounter}</p>
                 </span>
                 <p class='desc'>${upp(action.desc)}.</p>
             `        
         }
 
-
-        //If item is on cooldown, increase cd counter
-        if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
-            action.cooldown++
-            button.disabled = true
-        }
 
 
         el('playerActionContainer').append(button)

@@ -38,7 +38,7 @@ class PlayerObj {
         this.life           = this.baseLife //Current life
 
         //Power
-        this.basePower      = 6
+        this.basePower      = 0
         this.flatPower      = this.basePower
         this.power          = this.basePower
 
@@ -48,7 +48,7 @@ class PlayerObj {
         this.def            = this.baseDef
 
         //Dice
-        this.baseDice       = 12 //needed as ref in case flat dice is modified by item
+        this.baseDice       = 6 //needed as ref in case flat dice is modified by item
         this.flatDice       = this.baseDice
         this.dice           = this.baseDice
 
@@ -59,7 +59,13 @@ class PlayerObj {
         this.inventorySlots = 12 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ["boots", 'book of fire' ] //
+        this.startingItems  = [
+            'hammer',
+            'knife',
+            "woolen gloves",
+            "gloves"
+ 
+        ]
 
         //Actions
         this.actionSlots    = 6
