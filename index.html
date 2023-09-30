@@ -15,7 +15,7 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal " >
+    <div id="gameStartScreen" class="modal hide" >
         <div class="modal-container">
             <div class="column  modal-body" style="margin: auto;">
                 <img src="" alt="">
@@ -27,7 +27,7 @@
     </div>
 
     <!-- Map -->
-    <div id="map" class="screen tab ">
+    <div id="map" class="screen tab hide">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
@@ -58,7 +58,7 @@
     </div>
 
     <!-- Combat -->
-    <div id="combat" class="screen hide">
+    <div id="combat" class="screen">
         <p id="log">stage: 1<br> turn:1</p>
         <!-- Menu button-->
         <button onclick="screen('character', 'combat-menu')" style="border: none; background-color: var(--w0); width: 52px;">

@@ -67,8 +67,8 @@ function syncUi(){
         ` 
 
         //Enemy floating number
-        if(combatState.enemyDmgTaken > 0){//Attack
-            floatText('en',`-${combatState.enemyDmgTaken} life`)
+        if(combatState.dmgTakenByEnemy > 0){//Attack
+            floatText('en',`-${combatState.dmgTakenByEnemy} life`)
         }
         else if(combatState.enemyAction[0] === 'Fortify'){
             floatText('en',`+${combatState.enemyAction[1]} def`)
@@ -92,8 +92,8 @@ function syncUi(){
         combatState.enemyAction = []
         
         //Player floating number
-        if(combatState.playerDmgTaken > 0){
-            floatText('pl',`-${combatState.playerDmgTaken} life`)
+        if(combatState.dmgTakenByPlayer > 0){
+            floatText('pl',`-${combatState.dmgTakenByPlayer} life`)
         }
 
         //Player stats
@@ -134,6 +134,7 @@ function syncActionTiles(){
         // Section that contains name and desc
         let content = document.createElement('section')  
 
+        let referenceAction = findByProperty(actionsRef, 'keyId', action.keyId);
 
         //Create button elem
         let button = document.createElement('button')
@@ -146,7 +147,9 @@ function syncActionTiles(){
         //Modifies 'content' section
         button.append(content) //Add decorative bar and content section to button
 
-        if     (['attack'].indexOf(action.actionKey) > -1){
+        //!!! REPACE WITH keyID
+        
+        if     (['attack'].indexOf(referenceAction.actionName) > -1){
             button.querySelector('section').innerHTML = `
             <span>
             <h3>${action.actionName} for ${playerObj.roll + playerObj.power}</h3> 
@@ -155,7 +158,7 @@ function syncActionTiles(){
             <p class='desc'>${action.desc}.</p>
             `   
         }
-        else if(['fireball'].indexOf(action.actionKey) > -1){        
+        else if(['fireball'].indexOf(referenceAction.actionName) > -1){        
             button.querySelector('section').innerHTML = `
             <span>
             <h3>${upp(action.actionName)} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
@@ -164,7 +167,7 @@ function syncActionTiles(){
                 <p class='desc'>${upp(action.desc)}.</p>
                 `
         }
-        else if(['block', 'Break'].indexOf(action.actionKey) > -1){
+        else if(['block', 'Break'].indexOf(referenceAction.actionName) > -1){
                 button.querySelector('section').innerHTML = `
                 <span>
                 <h3>${upp(action.actionName)} ${playerObj.roll}</h3> 
@@ -185,7 +188,7 @@ function syncActionTiles(){
 
 
         //If item is on cooldown, increase cd counter
-        if(typeof action.cooldown !== 'undefined' && action.cooldown < actionsRef[action.actionKey].cooldown){
+        if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
             action.cooldown++
             button.disabled = true
         }

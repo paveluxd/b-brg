@@ -31,262 +31,377 @@ function initiateCombat(){
     if(playerObj.power < playerObj.flatPower){
         playerObj.power = playerObj.flatPower
     } 
-
+    
     resolvePlayerStats()
+
+    //Roll player dice
+    console.log(1);
+    playerObj.roll = rng(playerObj.dice)
+
     syncUi()
 }
 
-//TURN CALCULATION
-function turnCalc(buttonElem, actionId){
+//TURN CALCULATION (player action logic)
+//Resolve an issue when you have 1 extra action and no way to pay the cost. See iron dagger.
+function turnCalc(buttonElem){
 
-    //Damage calculation
-    if (enemyObj.life > 0 && playerObj.life > 0) {
-        let playerDmgDone = 0
-        combatState.playerDmgTaken = 0
+    //Reset damage clac vars
+    combatState.dmgDoneByPlayer = 0
+    combatState.dmgTakenByPlayer = 0
+    combatState.dmgDoneByEnemy = 0
+    combatState.dmgTakenByEnemy = 0
 
-        let enemyDmgDone = 0
-        combatState.enemyDmgTaken = 0
+    playerObj.lastAction = `Turn ${combatState.turn}: ` //Used for ui
+    combatState.sourceAction = findObj(playerObj.actions, 'actionId', buttonElem.getAttribute('actionId')) //Get action id from button elem
+    let playerActionKey = combatState.sourceAction.keyId //Changed to id form actionKey to link with num
+    let actionMod = combatState.sourceAction.actionMod
 
-        playerObj.lastAction = `Turn ${combatState.turn}: `
+    //PRE TURN - Stat modification actions has to be done before generic actions.
 
-        let actionId = buttonElem.getAttribute('actionId')
-        let sourceItem = findObj(playerObj.actions, 'actionId', actionId)
-        let playerAction = sourceItem.id //changed to ide form actionKey to link with num
-        console.log(sourceItem);
+    //PLAYER ACTIONS
+    if       (playerActionKey ===  'a1'){// "mace"
 
-        //PRE TURN
-        //Stat modification actions has to be done before generic actions
-        if(playerAction               === 'counter'){
-            enemyObj.state='Skip turn'
+        combatState.dmgDoneByPlayer += actionMod + playerObj.power
+
+        if(playerObj.roll === 4){
+            playerObj.def += 1
         }
 
-        //Extra actions
-        else if(sourceItem.actionType === 'extra'){
-            if      (playerAction === 'Reroll'){
-                playerObj.roll = rng(playerObj.dice) 
+    }else if (playerActionKey ===  'a2'){// "hammer"
+
+        if(playerObj.roll > 4 ){
+            combatState.dmgDoneByPlayer += 6 + playerObj.power
+        }
+        else {
+            combatState.dmgDoneByPlayer += actionMod + playerObj.power
+        }
+
+    }else if (playerActionKey ===  'a3'){// ice shards "book of magic" 
+
+        if(playerObj.power > 0){
+            playerObj.power -= 1 //Cost
+
+            let mult = playerObj.actionSlots - playerObj.actions.length 
+    
+            if(mult < 1){
+                mult = 0
             }
-            else if (playerAction === 'ExtraAttack'){
-                playerDmgDone = 1 + playerObj.power //Set damage
-
-                if(enemyObj.def > playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
-
-                playerDmgDone -= enemyObj.def             //Reduce dmg by def
-                if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
-                enemyObj.life -= playerDmgDone            //Reduce life
-
-                //Trigger enemy damage indicator
-                combatState.enemyDmgTaken = playerDmgDone 
-            }
-
-            //Deal with durability
-            resolveCharge(sourceItem)
-
-            syncUi()
-            combatEndCheck()
+    
+            combatState.dmgDoneByPlayer += (actionMod + playerObj.power) * mult
+        }
+        else{
+            alert('Not enough power to pay for action cost.')
             return
         }
 
+    }else if (playerActionKey ===  'a4'){// "dagger pair" 
 
-        //TURN
-        //Player action
-        if      (playerAction === 'rangedAttack'){
-            playerDmgDone += playerObj.roll + playerObj.power
-        }
-        else if (playerAction === 'a7'){ //sword attack
-            //Get action mod
-            let actionMod
-            playerObj.actions.forEach(action => {
-                if(action.id === 'a7'){
-                actionMod = action.actionMod
-            }
-            })
-            playerDmgDone += actionMod
-        }
-        else if (playerAction === 'fireball'){
-            let mult = playerObj.actionSlots - playerObj.actions.length 
-            if(mult < 1){mult = 0}
-            playerDmgDone += playerObj.roll * mult
-        }
-        else if (playerAction === 'shieldBlock'){
-            enemyDmgDone -= playerObj.roll //- playerObj.power
-        }
-        else if (playerAction === "repair"){
-            playerObj.actions.forEach(elem => {
-                if(elem.action !== 'repair' && elem.actionType !== 'passive'){
-                    elem.actionCharge += sourceItem.actionMod
-                }
-            })
-        }
-        else if (playerAction === 'fortify'){
-            playerObj.def += playerObj.roll
-        }
-        else if (playerAction === 'dodge'){
-            playerAction.rollBonus += Math.floor(playerObj.roll * 0.5)
-        }
-        else if (playerAction === 'break'){
-            enemyObj.def -= playerObj.roll
-        }
-        else if (playerAction === 'weaken'){
-            enemyObj.power -= playerObj.roll
-        }
-        else if (playerAction === 'root'){
-            enemyObj.dice -= sourceItem.actionMod
-        }
-        else if (playerAction === 'barrier'){
-            playerObj.protection = 'Barrier'
-            sourceItem.cooldown = 0
+        combatState.dmgDoneByPlayer += (actionMod + playerObj.power) * 2
 
+    }else if (playerActionKey ===  'a5'){// "bow" bow attack
+        combatState.dmgDoneByPlayer += playerObj.roll + playerObj.power
+    }else if (playerActionKey ===  'a6'){// knife attack
+
+        //Resolve action cost
+        if(playerObj.roll < 3){
+            alert('Action requires roll greater than 2.')
+            return
+        } else {
+            playerObj.roll -= 3
+            combatState.dmgDoneByPlayer = combatState.sourceAction.actionMod + playerObj.power 
+        }
+    }else if (playerActionKey ===  'a7'){// sword attack 
+        combatState.dmgDoneByPlayer += combatState.sourceAction.actionMod
+    }else if (playerActionKey ===  'a8'){// "axe" 
+
+        let maxLife = playerObj.life //Deal with overcap life
+
+        if(playerObj.flatLife > playerObj.life){
+            maxLife = playerObj.flatLife
+        }
+
+        playerObj.life -= 5
+
+        combatState.dmgDoneByPlayer += playerObj.flatLife - playerObj.life + playerObj.power
+
+    }else if (playerActionKey ===  'a9'){// ice lance "book of ice"
+
+        if(playerObj.power > 0){
+            playerObj.power -= 1 //Cost
+    
+            combatState.dmgDoneByPlayer += playerObj.power
+
+        }
+        else{
+            alert('Not enough power to pay for action cost.')
+            return
+        }
+
+    }else if (playerActionKey === 'a10'){// "iron dagger"
+
+        //Resolve action cost
+        if(playerObj.roll < 5){
+            alert('Action requires roll greater than 5.')
+            return
         }
         
-        //Enemy action
-        if(enemyObj.state !== 'Skip turn'){
+        // else if(playerObj.roll < 5 && playerObj.actions.length === 1){
+        //     alert('You had no resources to perform your only action, your turn was skipped.');
+        // } 
+        
+        else{
 
-            if      (enemyObj.action === 'Attack'){
-                enemyDmgDone += enemyObj.roll + enemyObj.power 
-            }
-            else if (enemyObj.action === 'Block'){//block
-                playerDmgDone -= enemyObj.roll
-                combatState.enemyAction = ['Block', enemyObj.roll]
-            }
-            else if (enemyObj.action === 'Multistrike'){
-                enemyDmgDone += (1 + enemyObj.power)
-            }
-            else if (enemyObj.action === 'Fortify'){
-                let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
-                enemyObj.def += x
-                combatState.enemyAction = ['Fortify', x]
-            }
-            else if (enemyObj.action === 'Empower'){
-                let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
-                enemyObj.power += x
-                combatState.enemyAction = ['Empower', x]
-            }
-            else if (enemyObj.action === 'Rush'){
-                let x = Math.round(1 + (gameState.stage) *0.2)
-                enemyObj.dice += x
-                combatState.enemyAction = ['Rusn', x]
-            }
-            else if (enemyObj.action === 'Sleep'){
-                combatState.enemyAction = ['Sleep']
-            }
-            else if (enemyObj.action === 'Recover'){
-                if(enemyObj.def < 0){
-                    combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'def'] //abs turns integer positive
-                    enemyObj.def = 0
-                }
-                else if(enemyObj.power < 0){
-                    combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'power'] //abs turns integer positive
-                    enemyObj.power = 0
+            playerObj.roll -= 5
 
-                }
-                else if(enemyObj.dice < 6){
-                    combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'dice'] //abs turns integer positive
-                    enemyObj.dice = 6
-
-                }
-            }
-            else if (enemyObj.action === 'Detonate'){
-                enemyDmgDone += enemyObj.flatLife                   
-            }
+            combatState.dmgDoneByPlayer = combatState.sourceAction.actionMod + playerObj.power
+            
+            playerObj.power += 1
             
         }
 
+    }else if (playerActionKey === 'a11'){// lightning "book of lightning"
 
-        //DAMAGE CALCULATION
-        //Damage inflicted by player
-        //Melee attack(a7) / 
-        if (['a7', 'rangedAttack', 'fireball'].indexOf(playerAction) > -1){
-            if(enemyObj.def >= playerDmgDone && enemyObj.def > 0){enemyObj.def--}//Reduce def on low hit
+        if(playerObj.power > 1){
 
-            playerDmgDone -= enemyObj.def             //Check def
-            if(playerDmgDone < 0){playerDmgDone = 0}  //Set positive damage to 0
-            enemyObj.life -= playerDmgDone            //Reduce life
+            playerObj.power -= 2 //Cost
+    
+            combatState.dmgDoneByPlayer += rng(20) + playerObj.power
 
-            //Trigger enemy damage indicator
-            combatState.enemyDmgTaken = playerDmgDone 
+        }
+        else{
+            alert('Not enough power to pay for action cost.')
+            return
         }
 
-        //Damage inflicted by enemy
-        if(enemyObj.state !== 'Skip turn'){
+    }else if (playerActionKey === 'a12'){// shield bash
 
-            //Reduce damage if barrier
-            if(playerObj.protection === 'Barrier'){
-                playerObj.protection = ''
-                enemyDmgDone = Math.round(enemyDmgDone * 0.25)
-            }
+        combatState.dmgDoneByPlayer += playerObj.def * playerObj.power
 
-            if(['Attack'].indexOf(enemyObj.action) > -1){
+    }else if (playerActionKey === 'a13'){// fireball "book of fire"
 
-                //Reduce def on low hit
-                if(playerObj.def >= enemyDmgDone && playerObj.def > 0){playerObj.def--} //Reduce def
+        combatState.dmgDoneByPlayer += actionMod + playerObj.power
+
+    }else if (playerActionKey === 'a14'){// pyroblast "book of fire"
+
+        if(playerObj.power > 0){
+            playerObj.power -= 1 //Cost
     
-                enemyDmgDone -= playerObj.def
+            combatState.dmgDoneByPlayer += playerObj.power * playerObj.roll
 
-                //Set positive damage to 0
-                if (enemyDmgDone < 0){enemyDmgDone = 0} 
-                playerObj.life -= enemyDmgDone
+        }
+        else{
+            alert('Not enough power to pay for action cost.')
+            return
+        }
+        
 
-                //Trigger player damage indicator
-                combatState.playerDmgTaken = enemyDmgDone
-            }
-            else if (['Multistrike'].indexOf(enemyObj.action) > -1){
-                for (let i = 0; i < 3; i ++){
+    }else if (playerActionKey === 'a15'){// block "shield"
 
-                    //Move to a diff var due to def reducing dmg done 3 times
-                    let playerDamageTaken = enemyDmgDone
+        combatState.dmgDoneByEnemy -= actionMod - playerObj.dice
 
-                    //Reduce def on low hit
-                    if(playerObj.def >= enemyDmgDone && playerObj.def > 0){playerObj.def--} //Reduce def
-    
-                    //Reduce damage by def
-                    playerDamageTaken -= playerObj.def
+    }else if (playerActionKey === 'a16'){// barrier
+        
+        playerObj.protection = ['Barrier']
 
-                    //Set positive damage to 0
-                    if (playerDamageTaken < 0){playerDamageTaken = 0} 
-                    playerObj.life -= playerDamageTaken
+        combatState.sourceAction.cooldown = 0
 
-                    //Trigger player damage indicator
-                    combatState.playerDmgTaken = enemyDmgDone
+    }else if (playerActionKey === 'a18'){// dash "boots" (keep 50% of roll)
+
+        playerObj.rollBonus += Math.floor(playerObj.roll * 0.5)
+
+    }else if (playerActionKey === 'a19'){// reroll
+        playerObj.roll = rng(playerObj.dice) 
+    }else if (playerActionKey === "a20"){// "scroll of repetition"
+
+        playerObj.inventory.forEach(item => {
+            item.actions.forEach(action => {
+                if(action.keyId !== 'a20'){
+                    action.actionCharge += combatState.sourceAction.actionMod
                 }
-            }
-            else if(['Detonate'].indexOf(enemyObj.action) > -1 && enemyObj.life < 0){
+            })
+        })
+    }else if (playerActionKey === 'a21'){// weakness
+        enemyObj.power -= combatState.sourceAction.actionMod
+    }else if (playerActionKey === 'a22'){// wounds
+        enemyObj.def -= combatState.sourceAction.actionMod
+    }else if (playerActionKey === 'a23'){// chain
+        enemyObj.dice -= combatState.sourceAction.actionMod
+    }else if (playerActionKey === 'a25'){// stun
 
-                    playerObj.life -= enemyDmgDone
-
-                    //Trigger player damage indicator
-                    combatState.playerDmgTaken = enemyDmgDone
-            }
+        if(playerObj.roll === 1){
+            enemyObj.state = 'Skip turn'
         }
-
-        //POST CALCULATION
-        //Heal after damage taken to make heal effective if you heal near hp cap.
-        if (playerAction === 'heal'){
-            playerObj.life += sourceItem.actionMod
-            if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
+        
+        else{
+            alert('Action requires roll 1.')
+            return
         }
+    }else if (playerActionKey === 'a34'){// fortification
+        playerObj.def += playerObj.roll
+    }else if (playerActionKey === 'a42'){// shield block
+        combatState.dmgDoneByEnemy -= playerObj.roll //- playerObj.power
+    }
+    
+    enemyActionLogic()
+    damageCalc()
 
-        //Deal with durability
-        resolveCharge(sourceItem)
-
-        //End turn updates
-        playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
-        playerObj.rollBonus = 0
-        genEneAction()
-
-        enemyObj.state = ''
-        combatState.turn++
-        syncUi()
+    //POST DMG CALC EFFECTS - Healing potion - heal after damage is taken.
+    if (playerActionKey === 'a33'){
+        playerObj.life += combatState.sourceAction.actionMod
+        if(playerObj.life > playerObj.maxLife){playerObj.life = playerObj.maxLife}
     }
 
     combatEndCheck()
 }
 
-//COMBAT END CHECK (Separate due to extra actions win check)
+
+//Enemy action logic
+function enemyActionLogic(){
+    if(enemyObj.state !== 'Skip turn' && combatState.sourceAction.actionType !== "extra-action"){
+
+        if      (enemyObj.action === 'Attack'){
+            combatState.dmgDoneByEnemy += enemyObj.roll + enemyObj.power 
+        }
+        else if (enemyObj.action === 'Block'){//block
+            combatState.dmgDoneByPlayer -= enemyObj.roll
+            combatState.enemyAction = ['Block', enemyObj.roll]
+        }
+        else if (enemyObj.action === 'Multistrike'){
+            combatState.dmgDoneByEnemy += (1 + enemyObj.power)
+        }
+        else if (enemyObj.action === 'Fortify'){
+            let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+            enemyObj.def += x
+            combatState.enemyAction = ['Fortify', x]
+        }
+        else if (enemyObj.action === 'Empower'){
+            let x = Math.round((enemyObj.roll + gameState.stage) *0.25)
+            enemyObj.power += x
+            combatState.enemyAction = ['Empower', x]
+        }
+        else if (enemyObj.action === 'Rush'){
+            let x = Math.round(1 + (gameState.stage) *0.2)
+            enemyObj.dice += x
+            combatState.enemyAction = ['Rusn', x]
+        }
+        else if (enemyObj.action === 'Sleep'){
+            combatState.enemyAction = ['Sleep']
+        }
+        else if (enemyObj.action === 'Recover'){
+            if(enemyObj.def < 0){
+                combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'def'] //abs turns integer positive
+                enemyObj.def = 0
+            }
+            else if(enemyObj.power < 0){
+                combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'power'] //abs turns integer positive
+                enemyObj.power = 0
+
+            }
+            else if(enemyObj.dice < 6){
+                combatState.enemyAction = ['Recover', Math.abs(enemyObj.def), 'dice'] //abs turns integer positive
+                enemyObj.dice = 6
+
+            }
+        }
+        else if (enemyObj.action === 'Detonate'){
+            combatState.dmgDoneByEnemy += enemyObj.flatLife                   
+        }
+        
+    }
+}
+
+//Turn damage calculation
+function damageCalc(){
+    //Damage inflicted by player
+    //Melee attack (a7) / bow attack (a5) / ice shards (a3) / knife (a6)
+    // if (['a7', 'a5', 'a3', 'a6'].indexOf(combatState.sourceAction.keyId) > -1){
+    if(combatState.dmgDoneByPlayer > 0){//calculate all skills that deal damage?
+
+        //Reduce def on low hit
+        if(enemyObj.def >= combatState.dmgDoneByPlayer && enemyObj.def > 0){
+            enemyObj.def--
+        }
+
+        //Check def
+        combatState.dmgDoneByPlayer -= enemyObj.def
+        
+        //Set positive damage to 0
+        if(combatState.dmgDoneByPlayer < 0){
+            combatState.dmgDoneByPlayer = 0
+        }
+        
+        //Reduce life
+        enemyObj.life -= combatState.dmgDoneByPlayer            
+
+        //Trigger enemy damage indicator
+        combatState.dmgTakenByEnemy = combatState.dmgDoneByPlayer 
+    }
+
+    //Damage inflicted by enemy
+    if(enemyObj.state !== 'Skip turn' && combatState.sourceAction.actionType !== "extra-action"){
+
+        //Reduce damage if barrier
+        if(playerObj.protection !== undefined && playerObj.protection[0] === 'Barrier'){
+
+            playerObj.protection = '' //Reset variable
+
+            // Convert action mod (75) to barrier reduction %
+            combatState.dmgDoneByEnemy = Math.round(combatState.dmgDoneByEnemy * (1 - combatState.sourceAction.actionMod / 100)) 
+        }
+
+        if(['Attack'].indexOf(enemyObj.action) > -1){
+
+            //Reduce def on low hit
+            if(playerObj.def >= combatState.dmgDoneByEnemy && playerObj.def > 0){playerObj.def--} //Reduce def
+
+            combatState.dmgDoneByEnemy -= playerObj.def
+
+            //Set positive damage to 0
+            if (combatState.dmgDoneByEnemy < 0){combatState.dmgDoneByEnemy = 0} 
+            playerObj.life -= combatState.dmgDoneByEnemy
+
+            //Trigger player damage indicator
+            combatState.dmgTakenByPlayer = combatState.dmgDoneByEnemy
+        }
+        else if (['Multistrike'].indexOf(enemyObj.action) > -1){
+            for (let i = 0; i < 3; i ++){
+
+                //Move to a diff var due to def reducing dmg done 3 times
+                let playerDamageTaken = combatState.dmgDoneByEnemy
+
+                //Reduce def on low hit
+                if(playerObj.def >= combatState.dmgDoneByEnemy && playerObj.def > 0){playerObj.def--} //Reduce def
+
+                //Reduce damage by def
+                playerDamageTaken -= playerObj.def
+
+                //Set positive damage to 0
+                if (playerDamageTaken < 0){playerDamageTaken = 0} 
+                playerObj.life -= playerDamageTaken
+
+                //Trigger player damage indicator
+                combatState.dmgTakenByPlayer = combatState.dmgDoneByEnemy
+            }
+        }
+        else if(['Detonate'].indexOf(enemyObj.action) > -1 && enemyObj.life < 0){
+
+                playerObj.life -= combatState.dmgDoneByEnemy
+
+                //Trigger player damage indicator
+                combatState.dmgTakenByPlayer = combatState.dmgDoneByEnemy
+        }
+    }
+}
+
+//End of turn checks
 function combatEndCheck(){ 
 
-    //Defeat
+    //Deal with action charges
+    resolveCharge(combatState.sourceAction)
+    
+
+    //Defeat (also loose if 0 actions)
     if(playerObj.life < 1 || playerObj.actions.length < 1){
-        syncUi()
         toggleModal('gameOverScreen')
     }
 
@@ -304,18 +419,33 @@ function combatEndCheck(){
         }
         
         //Reward
-        genReward('gen', 6) //Number of rewards to give
+        genReward('gen', 40) //Number of rewards to give
 
         gameState.stage++
         playerObj.exp++                                   //Add 1 exp
+        
         playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl'
-        syncUi()        
     }
+
+    //Next turn (also end if roll reaches 0)
+
+    else if (playerObj.roll < 1 || combatState.sourceAction.actionType !== "extra-action") {
+
+        playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
+        playerObj.rollBonus = 0
+        genEneAction()
+
+        enemyObj.state = ''
+
+        combatState.turn++
+    }
+
+    syncUi()
 }
     
 //REWARD
 function genReward(val, quant){
-
+    
     //Clear modal body
     el('reward-container').innerHTML = `` 
 
@@ -333,7 +463,11 @@ function genReward(val, quant){
             }
 
             if(reward.rewardType === 'Item'){//Add item
-                generatedReward =  new ItemObj(rarr(Object.keys(itemsRef)))
+                let item = rarr(itemsRef) 
+                if(item === undefined){
+                    console.log(1);
+                }
+                generatedReward =  new ItemObj(item.itemName)
                 rewardPool.push(generatedReward)
             }
             else if(reward.rewardType == 'Action'){//Add temp action
@@ -704,6 +838,10 @@ function resolvePlayerStats(){
             //Replace dice
             else if(statObj.stat === 'dice'){
                 flatDice = statObj.value
+            }
+
+            else if(statObj.stat === 'dice-mod'){
+                flatDice += statObj.value
             }
         })
     }}

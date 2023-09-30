@@ -7,182 +7,254 @@ let itemsRef = [
     },
     {
       "itemName": "water potion",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["water potion"],
       "itemType": ""
     },
     {
       "itemName": "poison potion",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["poison potion"],
       "itemType": ""
     },
     {
       "itemName": "leather cape",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["dodge"],
       "itemType": ""
     },
     {
       "itemName": "spiked shield",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["shield bash"],
       "itemType": ""
     },
     {
       "itemName": "buckler",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["shield block"],
       "itemType": ""
     },
     {
       "itemName": "woolen boots",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["sprint"],
       "itemType": ""
     },
     {
       "itemName": "scroll of chains",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["curse of chain"],
       "itemType": ""
     },
     {
       "itemName": "scroll of wounds",
-      "passiveStats": [],
-      "actions": ["curse of wound"],
+      "passiveStats": "",
+      "actions": ["curse of wounds"],
       "itemType": ""
     },
     {
       "itemName": "scroll of repetition",
-      "passiveStats": [],
-      "actions": ["curse of repetition"],
+      "passiveStats": "",
+      "actions": ["scroll of repetition"],
       "itemType": ""
     },
     {
       "itemName": "scroll of slowness",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["curse of slowness"],
       "itemType": ""
     },
     {
       "itemName": "scroll of weakness",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["curse of weakness"],
       "itemType": ""
     },
     {
       "itemName": "scroll of fortification",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["fortify scroll"],
       "itemType": ""
     },
     {
       "itemName": "woolen gloves",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["critical hit"],
       "itemType": ""
     },
     {
       "itemName": "leather gloves",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["precision shot"],
       "itemType": ""
     },
     {
       "itemName": "leather boots",
-      "passiveStats": [],
-      "actions": ["reroll"],
+      "passiveStats": "",
+      "actions": ["roll"],
       "itemType": ""
     },
     {
       "itemName": "gloves",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["combo"],
       "itemType": ""
     },
     {
       "itemName": "chain",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["stun"],
       "itemType": "Secondary weapon"
     },
     {
       "itemName": "healing potion",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["healing potion"],
       "itemType": ""
     },
     {
       "itemName": "iron dagger",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["backstab"],
       "itemType": ""
     },
     {
       "itemName": "axe",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["rage strike"],
       "itemType": ""
     },
     {
       "itemName": "hammer",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["hammer attack"],
       "itemType": "Weapon"
     },
     {
       "itemName": "mace",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["mace attack"],
       "itemType": ""
     },
     {
       "itemName": "shield",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["block"],
       "itemType": ""
     },
     {
       "itemName": "knife",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["knife attack"],
       "itemType": "Secondary weapon"
     },
     {
       "itemName": "cape",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["static"],
       "itemType": ""
     },
     {
       "itemName": "boots",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["dash"],
       "itemType": ""
     },
     {
-      "itemName": "book of magic",
-      "passiveStats": [],
-      "actions": ["pyroblast", "fireball"],
-      "itemType": "Weapon"
-    },
-    {
       "itemName": "dagger pair",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["dagger attack"],
       "itemType": "Weapon"
     },
     {
       "itemName": "sword",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["sword attack"],
       "itemType": "Weapon"
     },
     {
       "itemName": "bow",
-      "passiveStats": [],
+      "passiveStats": "",
       "actions": ["bow attack"],
       "itemType": "Weapon"
+    },
+    {
+      "itemName": "dice 8",
+      "passiveStats": [{stat:"dice", value:8}],
+      "actions": "",
+      "itemType": "dice"
+    },
+    {
+      "itemName": "ring",
+      "passiveStats": "",
+      "actions": ["life charge", "endurance charge"],
+      "itemType": ""
+    },
+    {
+      "itemName": "book of ice",
+      "passiveStats": "",
+      "actions": ["ice lance", "ice shards", "freeze"],
+      "itemType": "Weapon"
+    },
+    {
+      "itemName": "book of lightning",
+      "passiveStats": "",
+      "actions": ["lightning", "barrier"],
+      "itemType": "Weapon"
+    },
+    {
+      "itemName": "book of fire",
+      "passiveStats": "",
+      "actions": ["fireball", "pyroblast"],
+      "itemType": "Weapon"
+    },
+    {
+      "itemName": "ring of chaos",
+      "passiveStats": "",
+      "actions": ["chaos charge"],
+      "itemType": ""
+    },
+    {
+      "itemName": "ring of order",
+      "passiveStats": "",
+      "actions": ["order charge"],
+      "itemType": ""
+    },
+    {
+      "itemName": "ring of twilight",
+      "passiveStats": "",
+      "actions": ["order charge", "chaos charge"],
+      "itemType": ""
+    },
+    {
+      "itemName": "ring of protection",
+      "passiveStats": "",
+      "actions": ["defence charge"],
+      "itemType": ""
+    },
+    {
+      "itemName": "ring of power",
+      "passiveStats": "",
+      "actions": ["power charge"],
+      "itemType": ""
+    },
+    {
+      "itemName": "dice 12",
+      "passiveStats": [{stat:"dice", value:12}],
+      "actions": "",
+      "itemType": "dice"
+    },
+    {
+      "itemName": "dice 4",
+      "passiveStats": [{stat:"dice", value:4}],
+      "actions": "",
+      "itemType": "dice"
+    },
+    {
+      "itemName": "dice 10",
+      "passiveStats": [{stat:"dice", value:10}],
+      "actions": "",
+      "itemType": "dice"
     }
-]
+  ]

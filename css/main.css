@@ -217,6 +217,7 @@ button:disabled{
     align-items: stretch;
     flex-grow: 1;
     border: none;
+    border-radius: 4px;
 
     text-align: left;
     background-color: var(--light-bg);
@@ -230,7 +231,7 @@ button:disabled{
 .action span{
     display: flex;
     justify-content: space-between;
-    padding: 0 8px 0px 8px;
+    padding: 6px 8px 0px 8px;
 }
 .action span p {
     color: var(--grey);

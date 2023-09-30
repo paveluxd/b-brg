@@ -17,8 +17,13 @@ class GameState{
 class CombatState {
     constructor(){
         this.turn = 1
-        this.enemyDmgTaken = 0
-        this.playerDmgTaken = 0
+
+        this.dmgDoneByEnemy = 0
+        this.dmgTakenByEnemy = 0
+
+        this.dmgDoneByPlayer = 0
+        this.dmgTakenByPlayer = 0
+
         this.enemyAction = []
         this.playerAction = []
     }
@@ -28,12 +33,12 @@ class CombatState {
 class PlayerObj {
     constructor(){
         //Life
-        this.baseLife       = 16            //Lvl 1 char life
+        this.baseLife       = 100           //Lvl 1 char life
         this.flatLife       = this.baseLife //Life cap
         this.life           = this.baseLife //Current life
 
         //Power
-        this.basePower      = 0
+        this.basePower      = 6
         this.flatPower      = this.basePower
         this.power          = this.basePower
 
@@ -43,18 +48,18 @@ class PlayerObj {
         this.def            = this.baseDef
 
         //Dice
-        this.baseDice       = 6 //needed as ref in case flat dice is modified by item
+        this.baseDice       = 12 //needed as ref in case flat dice is modified by item
         this.flatDice       = this.baseDice
         this.dice           = this.baseDice
 
-        this.roll           = rng(this.baseDice) //initial roll
+        this.roll           = 0
         this.rollBonus      = 0
 
         //Inventory
         this.inventorySlots = 12 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
-        this.startingItems  = ['sword','shield']
+        this.startingItems  = ["boots", 'book of fire' ] //
 
         //Actions
         this.actionSlots    = 6
@@ -77,11 +82,11 @@ class PlayerObj {
 //
 class EnemyObj {
     constructor(){
-        this.life     = gameState.enemyLifeBase
+        this.life     = 100 //+ gameState.enemyLifeBase
         this.flatLife = this.life
 
-        this.power = Math.ceil(rng(gameState.stage * 0.5, 0)),
-        this.def   = Math.ceil(rng(gameState.stage * 0.3, 0)),
+        this.power = Math.ceil(rng(gameState.stage * 0.01, 0)),
+        this.def   = Math.ceil(rng(gameState.stage * 0.01, 0)),
 
         this.dice  = 4 + Math.round(gameState.stage * 0.2),
         
@@ -119,13 +124,7 @@ class ItemObj {
         //Finds item by item name property
         let itemData = findByProperty(itemsRef, 'itemName', itemName)
         
-        //Gen item actions
-        if(itemData.actions !== undefined){
-            itemData.actions.forEach(actionKey =>{
-                this.actions.push(new ActionObj(actionKey))
-            })
-        }
-
+        
         //set iLvl to stage val
         if(iLvl === undefined && gameState !== undefined){
             iLvl = gameState.stage
@@ -144,16 +143,29 @@ class ItemObj {
             // {key:'cost'        ,val: 12}, 
         ]
 
-
+        
         //Resolve props via default value above, or value from reference object
         props.forEach(property => {
-            if(itemData[property.key] === undefined){
+            // console.log(property.key, property.val);
+            if(itemData[property.key] === undefined || itemData[property.key] === ''){
                 this[property.key] = property.val //if no prop, set it to extra props value
             }
             else {
                 this[property.key] = itemData[property.key] //if exists in ref, set it as ref.
             }
         })
+
+
+        //Gen item actions
+        if(itemData.actions.length === 0){
+            itemData.actions = []
+        }
+
+        if(itemData.actions !== undefined){
+            itemData.actions.forEach(actionKey =>{
+                this.actions.push(new ActionObj(actionKey))
+            })
+        }   
     }
 }
 
@@ -174,11 +186,14 @@ class ActionObj {
             {key:'actionType'  ,val: 'generic'},
             {key:'desc'        ,val: ''},
             {key:'passiveStats',val: []},
-            {key:'id',          val: '???'}
+            {key:'keyId'       ,val: '???'}
         ]
 
         //Resolves extra props
         props.forEach(property => {
+
+            // console.log(property)
+
             //Find action by actionName
             let actionData = findByProperty(actionsRef, 'actionName', actionKey)
 
@@ -298,3 +313,8 @@ let treeRef = [
     //Ideas
     //All fireballs that you draft have +5 charge.
 ]
+
+//Convert action id to strings
+actionsRef.forEach(action => {
+    action.keyId = `a${action.keyId}`
+})
