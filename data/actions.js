@@ -337,7 +337,7 @@ let actionsRef = [
     "cooldown": "",
     "passiveStats": "",
     "keyId": 39,
-    "actionType": ""
+    "actionType": "extra-action"
   },
   {
     "actionName": "chaos charge",
@@ -377,7 +377,7 @@ let actionsRef = [
     "cooldown": "",
     "passiveStats": "",
     "keyId": 41,
-    "actionType": ""
+    "actionType": "extra-action"
   },
   {
     "actionName": "static",
@@ -390,11 +390,11 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "precision shot",
-    "desc": "pay 1 power, your next attack ignores def",
+    "actionName": "precision",
+    "desc": "pay 1 power, your next attack ignores def (extra action)(cooldown 1)",
     "actionMod": 1,
     "actionCharge": 3,
-    "cooldown": "",
+    "cooldown": 1,
     "passiveStats": "",
     "keyId": 37,
     "actionType": "extra-action"
@@ -407,7 +407,7 @@ let actionsRef = [
     "cooldown": 1,
     "passiveStats": "",
     "keyId": 36,
-    "actionType": "extra-action"
+    "actionType": ""
   },
   {
     "actionName": "dodge",

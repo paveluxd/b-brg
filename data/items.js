@@ -86,7 +86,7 @@ let itemsRef = [
     {
       "itemName": "leather gloves",
       "passiveStats": "",
-      "actions": ['precision shot'],
+      "actions": ['precision'],
       "itemType": ""
     },
     {

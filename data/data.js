@@ -33,7 +33,7 @@ class CombatState {
 class PlayerObj {
     constructor(){
         //Life
-        this.baseLife       = 100           //Lvl 1 char life
+        this.baseLife       = 20           //Lvl 1 char life
         this.flatLife       = this.baseLife //Life cap
         this.life           = this.baseLife //Current life
 
@@ -55,16 +55,18 @@ class PlayerObj {
         this.roll           = 0
         this.rollBonus      = 0
 
+        //Temporary buffs
+        this.piercing       = false
+        this.swordDmgMod    = 0
+
         //Inventory
-        this.inventorySlots = 12 
+        this.inventorySlots = 18 
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = [
-            'hammer',
-            'knife',
-            "woolen gloves",
-            "gloves"
- 
+            "sword",
+            'buckler',
+            'healing potion',
         ]
 
         //Actions
@@ -88,16 +90,17 @@ class PlayerObj {
 //
 class EnemyObj {
     constructor(){
-        this.life     = 100 //+ gameState.enemyLifeBase
+        this.life     = 12 //+ gameState.enemyLifeBase
         this.flatLife = this.life
+        this.power    = Math.ceil(rng(gameState.stage * 0.01, 0)),
+        this.def      = 0 + Math.ceil(rng(gameState.stage * 0.01, 0)),
+        this.dice     = 4 + Math.round(gameState.stage * 0.2),
+        this.level    = gameState.stage
+        this.image    = `./img/enemy/${gameState.stage}.png`
 
-        this.power = Math.ceil(rng(gameState.stage * 0.01, 0)),
-        this.def   = Math.ceil(rng(gameState.stage * 0.01, 0)),
+        this.poisoned = false
+        this.poisonStacks = 0
 
-        this.dice  = 4 + Math.round(gameState.stage * 0.2),
-        
-        this.level = gameState.stage
-        this.image = `./img/enemy/${gameState.stage}.png`
         el('enemyImg').classList.remove('boss')
 
 

@@ -23,10 +23,15 @@ function initiateCombat(){
     genEneAction()                                     //Gen before player turn and after. Do it at this stage because it references eneObj.
     
     //Remove temporary buffs from previous encounter
+
+    //Restore sword dmg buff
+    playerObj.swordDmgMod    = 0
+
     //Restore flat def
     if(playerObj.def !== playerObj.flatDef){
         playerObj.def = playerObj.flatDef
     }
+
     //Restore flat power
     if(playerObj.power < playerObj.flatPower){
         playerObj.power = playerObj.flatPower
@@ -52,12 +57,51 @@ function turnCalc(buttonElem){
     combatState.dmgTakenByEnemy = 0
 
     playerObj.lastAction = `Turn ${combatState.turn}: ` //Used for ui
+
+    //Save previous action
+    if(combatState.sourceAction !== undefined){
+        combatState.previousAction = combatState.sourceAction 
+    }
+
     combatState.sourceAction = findObj(playerObj.actions, 'actionId', buttonElem.getAttribute('actionId')) //Get action id from button elem
-    let playerActionKey = combatState.sourceAction.keyId //Changed to id form actionKey to link with num
     let actionMod = combatState.sourceAction.actionMod
+    let playerActionKey = combatState.sourceAction.keyId
 
     //PRE TURN - Stat modification actions has to be done before generic actions.
+    //Resolve poison
+    if(
+        enemyObj.poisonStacks > 0 && 
+        combatState.turn > 1 && 
+        combatState.previousAction.actionType !== 'extra-action')
+    {
 
+        //Reduce random stat by 1 per posion stack
+        for(i=0; i < enemyObj.poisonStacks; i++){
+            let statRoll = rng(6)
+
+            if(statRoll === 1 || statRoll === 2){
+                enemyObj.life -= 1
+                console.log('-1 life due to poison');
+            } else if (statRoll === 2){
+                enemyObj.def -= 1
+                console.log('-1 def due to poison');
+            } else if (statRoll === 3){
+                enemyObj.power -= 1
+                console.log('-1 power due to poison');
+            } else if (statRoll === 4){
+                enemyObj.roll -= 1
+                console.log('-1 roll due to poison');
+            } else if (statRoll === 5){
+                enemyObj.dice -= 1
+                console.log('-1 dice due to poison');
+            }
+        }
+
+        //Reduce poison stacks
+        enemyObj.poisonStacks -= 1
+    }
+
+    
     //PLAYER ACTIONS
     if       (playerActionKey ===  'a1'){// "mace"
 
@@ -112,7 +156,8 @@ function turnCalc(buttonElem){
         }
     }else if (playerActionKey ===  'a7'){// sword attack 
 
-        combatState.dmgDoneByPlayer += combatState.sourceAction.actionMod
+        combatState.dmgDoneByPlayer += combatState.sourceAction.actionMod + playerObj.swordDmgMod
+        playerObj.swordDmgMod += 1
 
     }else if (playerActionKey ===  'a8'){// "axe" 
 
@@ -162,7 +207,6 @@ function turnCalc(buttonElem){
         }
 
     }
-    
      else if (playerActionKey === 'a11'){// lightning "book of lightning"
 
         if(playerObj.power > 1){
@@ -206,7 +250,6 @@ function turnCalc(buttonElem){
     }else if (playerActionKey === 'a16'){// barrier
         
         playerObj.protection = ['Barrier']
-
         combatState.sourceAction.cooldown = 0
 
     }else if (playerActionKey === 'a18'){// dash "boots" (keep 50% of roll)
@@ -226,13 +269,12 @@ function turnCalc(buttonElem){
                 }
             })
         })
-    }
-    
-     else if (playerActionKey === 'a21'){// weakness "scroll of weakness"
+    }else if (playerActionKey === 'a21'){// weakness "scroll of weakness"
 
         enemyObj.power -= actionMod
 
-    }else if (playerActionKey === 'a22'){// wounds
+    } 
+     else if (playerActionKey === 'a22'){// wounds
 
         enemyObj.def -= actionMod
 
@@ -265,20 +307,13 @@ function turnCalc(buttonElem){
             return
         }
 
-    }
-    // a27 - life charge
-    // a28 - endurance charge (25% life)
-    // a29 - order charge
-    // a30 - chaos charge
-     else if (playerActionKey === 'a31'){// defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
+    }else if (playerActionKey === 'a31'){// defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
 
         // playerObj.def -= actionMod
         resolveCharge(combatState.sourceAction)
         resolvePlayerStats()
 
-    }
-    // a32 - power charge
-     else if (playerActionKey === 'a34'){// fortification
+    }else if (playerActionKey === 'a34'){// fortification
 
         playerObj.def += actionMod
 
@@ -291,24 +326,61 @@ function turnCalc(buttonElem){
             combatState.dmgDoneByEnemy = -99999 // write something custom later
         }
 
+    }else if (playerActionKey === 'a37'){// buff next attack with piercing "leather gloves"
+
+        if(playerObj.power > 0){
+
+            playerObj.power -= 1 //Cost
+            playerObj.piercing = true
+            combatState.sourceAction.cooldown = 0
+
+        }
+        else{
+            alert('Not enough power to pay for action cost.')
+            return
+        }
+
+    }else if (playerActionKey === 'a38'){// static "cape"
+
+        if(playerObj.roll > 8){
+
+            playerObj.power += 2 //Cost
+            
+        }
+        else{
+            alert('This action requires roll greater than 8.')
+            return
+        }
+
     }
-    
-     else if (playerActionKey === 'a40'){// water potion "water potion"
+     else if (playerActionKey === 'a39'){// sprint "woolen boots"
+
+            playerObj.roll += 2 //Cost
+
+    }else if (playerActionKey === 'a40'){// water potion "water potion"
 
         playerObj.power += actionMod
 
-    }
-    // 41 - poison potion
-     else if (playerActionKey === 'a42'){// shield block "buckler"
+    }else if (playerActionKey === 'a41'){// poison
+
+        enemyObj.poisoned = true
+
+    }else if (playerActionKey === 'a42'){// shield block "buckler"
 
         combatState.dmgDoneByEnemy -= playerObj.roll //- playerObj.power
 
     }
 
-    //Passive effects
+    //Passive effects checks
     playerObj.actions.forEach(action => {
+        if       (action.keyId === 'a17'){ // combo "gloves"
+            if(playerObj.roll === 6 && action.cooldown > 0){
 
-        if(action.keyId === 'a36'){ // critical hit "woolen gloves"
+                // console.log('extra-action');
+                combatState.turnState = 'extra-action'
+                action.cooldown = 0
+            }
+        }else if (action.keyId === 'a36'){ // critical hit "woolen gloves"
             if(playerObj.roll > 8 && action.cooldown > 0){
 
                 combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * (action.actionMod/100)
@@ -316,17 +388,9 @@ function turnCalc(buttonElem){
 
             }
         }
-        else if(action.keyId === 'a17'){ //combo bla "gloves"
-            if(playerObj.roll === 6 && action.cooldown > 0){
-
-                console.log('extra-action');
-                combatState.turnState = 'extra-action'
-
-                action.cooldown = 0
-            }
-        }
     })
         
+    
     
     enemyActionLogic()
     damageCalc()
@@ -404,19 +468,53 @@ function enemyActionLogic(){
 
 //Turn damage calculation
 function damageCalc(){
+    
     //Damage inflicted by player
     //Melee attack (a7) / bow attack (a5) / ice shards (a3) / knife (a6)
     // if (['a7', 'a5', 'a3', 'a6'].indexOf(combatState.sourceAction.keyId) > -1){
     if(combatState.dmgDoneByPlayer > 0){//calculate all skills that deal damage?
 
-        //Reduce def on low hit
-        if(enemyObj.def >= combatState.dmgDoneByPlayer && enemyObj.def > 0){
-            enemyObj.def--
+        //Apply poison on hit
+        if(enemyObj.poisoned === true){
+            let poisonStackCount = 1
+    
+            //If multistrike deal dice or any other mult
+            
+            if(combatState.sourceAction.keyId === 'a3'){
+                let mult = playerObj.actionSlots - playerObj.actions.length 
+    
+                if(mult < 1){
+                    mult = 0
+                }
+    
+                poisonStackCount = mult
+            } 
+            else if(combatState.sourceAction.keyId === 'a4'){
+                poisonStackCount = 2
+            }
+    
+            enemyObj.poisonStacks += poisonStackCount
+            console.log(`Enemy poison stacks: ${enemyObj.poisonStacks}`);
+        }
+        
+
+
+        //Resolve def
+        if(playerObj.piercing === false){//Ignore def if piercing state
+            
+            //Reduce def on low hit
+            if(enemyObj.def >= combatState.dmgDoneByPlayer && enemyObj.def > 0){
+                combatState.dmgDoneByPlayer -= enemyObj.def
+                enemyObj.def--
+            }
+            //Reduce dmg by def
+            else{
+                combatState.dmgDoneByPlayer -= enemyObj.def
+            }
         }
 
-        //Check def
-        combatState.dmgDoneByPlayer -= enemyObj.def
         
+
         //Set positive damage to 0
         if(combatState.dmgDoneByPlayer < 0){
             combatState.dmgDoneByPlayer = 0
@@ -428,6 +526,8 @@ function damageCalc(){
         //Trigger enemy damage indicator
         combatState.dmgTakenByEnemy = combatState.dmgDoneByPlayer 
 
+        //Reset piercing buff after attack was performed
+        playerObj.piercing = false
     }
 
     //Damage inflicted by enemy
@@ -499,7 +599,6 @@ function combatEndCheck(){
 
     //Deal with action charges
     resolveCharge(combatState.sourceAction)
-    console.log(combatState.turnState);
 
     //Defeat (also loose if 0 actions)
     if(playerObj.life < 1 || playerObj.actions.length < 1){
@@ -530,27 +629,25 @@ function combatEndCheck(){
 
     //Next turn (also end if roll reaches 0)
     
-    else if (
-            playerObj.roll < 1 || //ends turn if roll is 0
-            // combatState.turnState !== 'extra-action'|| // skips end turn for combo passive
-            combatState.sourceAction.actionType !== "extra-action" // skips end turn for extra actions
-        ) 
-    {
+    else if (playerObj.roll < 1 || combatState.sourceAction.actionType !== "extra-action"){
+        if(combatState.turnState !== 'extra-action'){
 
-        //Increase turn cooldowns
-        playerObj.actions.forEach(action => {
-            if(typeof action.cooldown !== 'undefined' && action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown){
-                action.cooldown++
-            }
-        })
-
-        playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
-        playerObj.rollBonus = 0
-        genEneAction()
-
-        enemyObj.state = ''
-
-        combatState.turn++
+            //Increase turn cooldowns
+            playerObj.actions.forEach(action => {
+                if(typeof action.cooldown !== 'undefined' && action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown){
+                    action.cooldown++
+                }
+            })
+    
+            playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
+            playerObj.rollBonus = 0
+            genEneAction()
+    
+            enemyObj.state = ''
+            enemyObj.poisoned = false //remove poisoned debuff at the end of the turn
+    
+            combatState.turn++
+        }
     }
 
     syncUi()
