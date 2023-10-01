@@ -90,11 +90,13 @@ class PlayerObj {
 //
 class EnemyObj {
     constructor(){
-        this.life     = 12 //+ gameState.enemyLifeBase
+        this.life     = 6 + gameState.enemyLifeBase
         this.flatLife = this.life
-        this.power    = Math.ceil(rng(gameState.stage * 0.01, 0)),
-        this.def      = 0 + Math.ceil(rng(gameState.stage * 0.01, 0)),
+
+        this.power    = Math.ceil(rng(gameState.stage * 0.1, 0)),
+        this.def      = 0 + Math.ceil(rng(gameState.stage * 0.3, 0)),
         this.dice     = 4 + Math.round(gameState.stage * 0.2),
+
         this.level    = gameState.stage
         this.image    = `./img/enemy/${gameState.stage}.png`
 
