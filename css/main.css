@@ -22,7 +22,7 @@ html{
     --w0:        rgb(255, 255, 255,0);
     --light-bg:  rgb(227, 236, 241);
 
-    --red:       rgb(255, 103, 56);
+    --orange:    rgb(255, 102, 54);
     --yellow:    rgb(255,230,0);
 }
 body{
@@ -362,6 +362,9 @@ button:disabled{
 }
 .stat p{
     width: 22px;
+}
+.life{
+    color: var(--orange);
 }
 
 

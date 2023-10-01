@@ -58,7 +58,7 @@ function syncUi(){
     //Log stats at the top
     if(typeof combatState !== 'undefined'){
 
-    
+        //In combat game log at the top left corner
         el('log').innerHTML = `
             Encounter: ${gameState.encounter} / ${gameState.bossFrequency} <br> 
             Stage: ${gameState.stage}
@@ -69,23 +69,17 @@ function syncUi(){
         //Enemy floating number
         if(combatState.dmgTakenByEnemy > 0){//Attack
             floatText('en',`-${combatState.dmgTakenByEnemy} life`)
-        }
-        else if(combatState.enemyAction[0] === 'Fortify'){
+        }else if(combatState.enemyAction[0] === 'Fortify'){
             floatText('en',`+${combatState.enemyAction[1]} def`)
-        }
-        else if(combatState.enemyAction[0] === 'Empower'){
+        }else if(combatState.enemyAction[0] === 'Empower'){
             floatText('en',`+${combatState.enemyAction[1]} power`)
-        }
-        else if(combatState.enemyAction[0] === 'Rush'){
+        }else if(combatState.enemyAction[0] === 'Rush'){
             floatText('en',`+${combatState.enemyAction[1]} dice`)
-        }
-        else if(combatState.enemyAction[0] === 'Sleep'){
+        }else if(combatState.enemyAction[0] === 'Sleep'){
             floatText('en',`Zzzzz`)
-        }
-        else if(combatState.enemyAction[0] === 'Block'){
+        }else if(combatState.enemyAction[0] === 'Block'){
             floatText('en',`Blocked ${combatState.enemyAction[1]}`)
-        }
-        else if(combatState.enemyAction[0] === 'Recover'){
+        }else if(combatState.enemyAction[0] === 'Recover'){
             floatText('en',`Recovered ${combatState.enemyAction[1]} ${combatState.enemyAction[2]}`)
         }
 
@@ -108,17 +102,14 @@ function syncUi(){
         el('dice').innerHTML = `${enemyObj.roll}<span style="color: var(--green50);">/${enemyObj.dice}</span>`
         el('power').innerHTML = `${enemyObj.power}`        
 
-        //Enemy intent
-        if(enemyObj.action === 'Attack'){
+        //Enemy intent indicator
+        if      (enemyObj.action === 'Attack'){
             el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
-        }
-        else if(enemyObj.action === 'Block'){
+        }else if(enemyObj.action === 'Block'){
             el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc} ${enemyObj.roll} damage`
-        }
-        else if (enemyObj.action === 'Detonate'){
+        }else if(enemyObj.action === 'Detonate'){
             el('intent').innerHTML = `Will ${eneActionRef[enemyObj.action].desc} for ${enemyObj.flatLife} damage`
-        }
-        else{
+        }else{
             el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc}`
         }
     }
