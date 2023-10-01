@@ -1,7 +1,7 @@
 let itemsRef = [
     {
       "itemName": "helmet",
-      "passiveStats": [{stat:'life', value:16}],
+      "passiveStats": [{stat:'life', value:16}, {stat:'def', value:16},{stat:'power', value:16},{stat:'dice', value:16}],
       "actions": "",
       "itemType": ""
     },
@@ -30,7 +30,7 @@ let itemsRef = [
       "itemType": ""
     },
     {
-      "itemName": "buckler",
+      "itemName": "shield",
       "passiveStats": "",
       "actions": ['shield block'],
       "itemType": ""

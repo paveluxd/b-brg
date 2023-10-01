@@ -16,10 +16,14 @@ html{
     --green50:rgba(0, 240, 96,0.5);
 
     --black:     rgb(0, 0, 0);
-    --grey:      rgb(126, 126, 126);
-    --border:    rgba(0,0,0,0.2);
+    --b10:       rgb(0, 0, 0, 0.1);
+    --b50:       rgb(0, 0, 0, 0.5);
+
     --white:     rgb(255, 255, 255);
     --w0:        rgb(255, 255, 255,0);
+
+    --grey:      rgb(126, 126, 126);
+    --border:    rgba(0,0,0,0.2);
     --light-bg:  rgb(227, 236, 241);
 
     --orange:    rgb(255, 102, 54);
@@ -40,11 +44,9 @@ body{
 }
 
 
-
 /* Screens */
 .screen{
     flex: 1;
-    padding: 8px;
 
     display: flex;
     align-items: stretch;
@@ -86,7 +88,6 @@ body{
 }
 
 
-
 /*New UI*/
 .mono-m{
     font-family: 'JetBrains Mono', monospace;
@@ -106,22 +107,21 @@ body{
     height: 100vh;
     z-index: 2;
 }
-
 .modal-container{
-    max-height: 800px;
+    /* max-height: 800px; */
     max-width: 800px;
-    width: calc(100%);
-    /* height: calc(100% -32px); */
+    height: 100%;
+    width: 100%;
 
     background-color: white;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    border-radius: 0px;
+    gap: 24px;
 
     position: relative;
     overflow: auto;
-    padding-bottom: 180px;
+    padding: 24px 24px 180px 24px;
 }
 .modal-slide{
     animation-name: modal-slide;
@@ -234,7 +234,7 @@ button:disabled{
     padding: 6px 8px 0px 8px;
 }
 .action span p {
-    color: var(--grey);
+    color: var(--grey); 
 }
 .action h3{
     font-weight: 600;
@@ -242,6 +242,7 @@ button:disabled{
 .action .desc{
     height: 32px;
     padding: 0 8px 8px 8px;
+    overflow: hidden;
 }
 /* Hides scroll bar */
 .actions-container::-webkit-scrollbar {
@@ -267,62 +268,77 @@ button:disabled{
     color: var(--green50) !important;
 }
 
+
 /*Items & inventory*/
 #inventory-list{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
-    justify-content: flex-start;
+    justify-content: stretch;
 
-    border-top: 1px solid var(--border);
-    border-left: 1px solid var(--border);
     padding: 0px;
+    gap: 2px;
 }
 
-.item-card{
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    border-radius: 0px;
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    min-height: 160px;
-    position: relative;
-    padding: 4px;
-    gap: 12px;
-}
+    .body-12{
+        font-size: 12px;
+        color: var(--black);
+        line-height: 18px;
+    }
 
-.item-card button:first-child{
-    width: 100%;
-    height: auto;
-    text-align: left;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-grow: 1;
-    padding: 0px;
-    border: none;
-}
+    .item-card{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        
+        border-radius: 4px;
+        background-color: var(--b10);
+    }
+    .item-card img{
+        height: 52px;
+        width: 52px;
+    }
+    .item-card button{
+        border: none;
+        background-color: var(--w0);
+        
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        
+        color: var(--b50);
+        font-style: italic;
+        font-weight: 600;
 
-.equip-button{
-    width: max-content;
-    border-radius: 4px;
-}
-.equipped{
-    border: 1px solid green;
-    background-color: rgba(0, 255, 17, 0.164);
-}
-
-.drop-button{
-    height: 24px;
-    width: max-content;
-    position: absolute;
-    right: 4px;
-    top: 4px;
-    border-radius: 4px;
-}
-
-
+        padding: 12px;
+    }
+    .item-card button img{
+        height: 24px;
+        width: 24px;
+    }
+    .desc-section{
+        padding: 8px 8px 0 0;
+    }
+    .top-container, .bottom-container{
+        display: flex;
+        min-height: 52px;
+    }
+    .bottom-container{
+        justify-content: space-between;
+    }
+    .equipped{
+        
+    }
+    .passive-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .passive-container img{
+        height: 16px;
+        width: 16px;
+    }
 
 /* Stats */
 #stats-container{
@@ -368,7 +384,6 @@ button:disabled{
 }
 
 
-
 /**/
 .container{
     flex-grow: 1;
@@ -389,9 +404,14 @@ button:disabled{
 }
 
 
-
 /* Overrides */
-h3, h2{
+h2{
+    font-family: 'Grenze', serif;
+    font-size: 36px;
+    line-height: 36px;
+}
+
+h3{
     font-weight: 600;
 }
 
@@ -456,6 +476,7 @@ li {
     animation-iteration-count: 1;
 }
 
+
 /* Utility */
 .hide{display: none !important;}
 .flip{transform: scaleX(-1);}
@@ -468,6 +489,7 @@ li {
     animation-duration: 2s;
     animation-iteration-count: 1;
 }
+
 
 /* Keyframes */
 /* Animate damage numbers */

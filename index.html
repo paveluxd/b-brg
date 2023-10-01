@@ -8,9 +8,15 @@
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/main.css">
 
+    <!-- //mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <!-- //Grenze -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -27,7 +33,7 @@
     </div>
 
     <!-- Map -->
-    <div id="map" class="screen tab">
+    <div id="map" class="screen tab hide">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
@@ -174,14 +180,10 @@
     </div>
 
     <!-- Inventory -->
-    <div id="inventory" class="screen hide tab" >
+    <div id="inventory" class="screen tab" >
         <div class="modal-container">
-            <div class="modal-header">
-                <h3>Inventory</h3>
-            </div>
-
+            <h2 id="inventory-heading"></h2>
             <div id="inventory-list" class="column modal-body"></div>
-
         </div>
     </div>
 

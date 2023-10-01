@@ -1,0 +1,26 @@
+<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="31" y="25" width="4" height="19" fill="#B3B3B3"/>
+<rect x="29" y="44" width="8" height="2" fill="#B3B3B3"/>
+<path d="M28 30H33H38" stroke="#B3B3B3" stroke-width="2"/>
+<path d="M29 30L33 33L37 30" stroke="#B3B3B3" stroke-width="2"/>
+<path d="M33 10L36 15V29H35L33 28V10Z" fill="#B3B3B3"/>
+<path d="M33 10H30V29H31L33 28V10Z" fill="#B3B3B3"/>
+<rect width="4" height="19" transform="matrix(1 0 0 -1 17 31)" fill="#B3B3B3"/>
+<rect width="8" height="2" transform="matrix(1 0 0 -1 15 12)" fill="#B3B3B3"/>
+<path d="M14 26H19H24" stroke="#B3B3B3" stroke-width="2"/>
+<path d="M15 26L19 23L23 26" stroke="#B3B3B3" stroke-width="2"/>
+<path d="M19 46L22 41V27H21L19 28V46Z" fill="#B3B3B3"/>
+<path d="M19 46H16V27H17L19 28V46Z" fill="#B3B3B3"/>
+<rect x="31" y="21" width="4" height="19" fill="black"/>
+<rect x="29" y="40" width="8" height="2" fill="black"/>
+<path d="M28 26H33H38" stroke="#3E3E3E" stroke-width="2"/>
+<path d="M29 26L33 29L37 26" stroke="black" stroke-width="2"/>
+<path d="M33 6L36 11V25H35L33 24V6Z" fill="#796C62"/>
+<path d="M33 6H30V25H31L33 24V6Z" fill="#796C62"/>
+<rect width="4" height="19" transform="matrix(1 0 0 -1 17 27)" fill="black"/>
+<rect width="8" height="2" transform="matrix(1 0 0 -1 15 8)" fill="black"/>
+<path d="M14 22H19H24" stroke="#3E3E3E" stroke-width="2"/>
+<path d="M15 22L19 19L23 22" stroke="black" stroke-width="2"/>
+<path d="M19 42L22 37V23H21L19 24V42Z" fill="#796C62"/>
+<path d="M19 42H16V23H17L19 24V42Z" fill="#796C62"/>
+</svg>

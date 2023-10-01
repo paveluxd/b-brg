@@ -8,6 +8,7 @@
     - 30 Hardcoded enemies
     - Tree
     - Shop
+    - Fix book images, they are too high
 
 - Notes
     - ctrl+k+0 to collapse all

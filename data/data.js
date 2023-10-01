@@ -38,7 +38,7 @@ class PlayerObj {
         this.life           = this.baseLife //Current life
 
         //Power
-        this.basePower      = 0
+        this.basePower      = 99
         this.flatPower      = this.basePower
         this.power          = this.basePower
 
@@ -65,8 +65,10 @@ class PlayerObj {
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = [
             "sword",
-            'buckler',
+            'helmet',
+            'shield',
             'healing potion',
+            'book of ice',
         ]
 
         //Actions

@@ -156,7 +156,7 @@ function turnCalc(buttonElem){
         }
     }else if (playerActionKey ===  'a7'){// sword attack 
 
-        combatState.dmgDoneByPlayer += combatState.sourceAction.actionMod + playerObj.swordDmgMod
+        combatState.dmgDoneByPlayer += combatState.sourceAction.actionMod + playerObj.power + playerObj.swordDmgMod
         playerObj.swordDmgMod += 1
 
     }else if (playerActionKey ===  'a8'){// "axe" 
@@ -391,7 +391,7 @@ function turnCalc(buttonElem){
     })
         
     
-    
+
     enemyActionLogic()
     damageCalc()
 
@@ -665,43 +665,57 @@ function genReward(val, quant){
         let rewardRefPool = cloneArr(rewardRef) //Copy rewards ref array to avoid duplicates when generating random rewards
         let generatedReward
 
-        for(let i =0; i < quant; i++){ //Gen item per quant value in function
-            let reward = rarr(rewardRefPool) //Pick random reward
+        //Gen item per quant value in function
+        for(let i =0; i < quant; i++){ 
 
-            if(['Item', 'Action'].indexOf(reward.rewardType) < -1){ //If reward is not item, remove it from array so it can't be picked again.
+            //Pick random reward
+            let reward = rarr(rewardRefPool) 
+
+            //If reward is not item, remove it from array so it can't be picked again.
+            if(['Item', 'Action'].indexOf(reward.rewardType) < -1){ 
                 removeFromArr(rewardRefPool, reward)
             }
 
-            if(reward.rewardType === 'Item'){//Add item
+            //Add item
+            if(reward.rewardType === 'Item'){
                 let item = rarr(itemsRef) 
-                if(item === undefined){
-                    console.log(1);
-                }
                 generatedReward =  new ItemObj(item.itemName)
                 rewardPool.push(generatedReward)
             }
+
             else if(reward.rewardType == 'Action'){//Add temp action
                 generatedReward =  new ActionObj(rarr(Object.keys(actionsRef)))
                 rewardPool.push(generatedReward)
             }
+
             else{//not item
                 rewardPool.push(reward)
             }
 
             //Create buttons
             let button = document.createElement('button')
+            let img
             
-            //If item add item desc
+            //Item reward
             if(reward.rewardType === 'Item'){
+
+                //Create item image
+                img = document.createElement('img')
+                img.setAttribute('src',`./img/items/${generatedReward.itemName}.svg`)
+                
+
                 button.innerHTML = `
                 <h3>${generatedReward.itemName} (item)</h3> 
                 (requires an empty inventory slot).`
                 
+                //'quant' value in function will be id for items
                 button.setAttribute('onclick', 
                     `genReward('${reward.rewardType}', 
                     '${generatedReward.itemId}'
-                )`) //'quant' value in function will be id for items
+                )`) 
             }
+
+            //Action reward
             else if(reward.rewardType == 'Action'){
                 button.innerHTML = `
                 <h3>${generatedReward.actionName} x ${generatedReward.actionCharge} (temp. action)</h3> 
@@ -713,11 +727,13 @@ function genReward(val, quant){
                 )`) //'quant' value in function will be id for items
             }
             
+            //Misc rewards
             else{
                 button.innerHTML = `${reward.desc}`
                 button.setAttribute('onclick', `genReward('${reward.rewardType}')`)
             }
 
+            button.append(img)
             el('reward-container').append(button)
         }
 
@@ -805,7 +821,6 @@ function genReward(val, quant){
     }
 
 }
-
 
 
 

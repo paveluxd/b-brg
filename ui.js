@@ -269,52 +269,91 @@ function syncInventory(){
 
     
     playerObj.inventory.forEach(item => {
+        //Set inventory heading
+        el('inventory-heading').innerHTML = `Inventory ${playerObj.inventory.length}/${playerObj.inventorySlots}`
 
         //Creates card container
         let card = document.createElement('div')
-        card.classList.add('item-card')
+        card.classList.add('item-card', 'body-12')
+        card.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
 
         //Creates body btn
-        let btn = document.createElement('button')
-        btn.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
+        let topContainer = document.createElement('div')
+        topContainer.classList.add('top-container')
+        let bottomContainer = document.createElement('div')
+        bottomContainer.classList.add('bottom-container')
 
-        let itemDesc = `<h3>${item.itemName} (${item.itemType})</h3><br>`
 
-        //Added actions
-        item.actions.forEach(action =>{
-            itemDesc += `${action.actionName}(x${action.actionCharge}) - ${upp(action.desc)}.`
-        })
+        //Item image
+        let img = document.createElement('img')
+        img.setAttribute('src',`./img/items/${item.itemName}.svg`)
+        topContainer.append(img)
 
-        //Added stats
-        item.passiveStats.forEach(stat =>{
-            itemDesc += `${upp(stat.stat)}: ${stat.value} <br> `
-        })
 
-        btn.innerHTML = itemDesc
+        //Desctioption
+            //Create container
+            let descSection = document.createElement('div')
+            descSection.classList.add('desc-section')
+        
+            //Add item type, only if it is non-generic
+            let itemType = ''
+            if(item.itemType !== 'generic'){
+                itemType = ` (${item.itemType})`
+            }
+
+            //Add title and type
+            descSection.innerHTML = `<h3>${upp(item.itemName)}${itemType}</h3>`
+
+            //Added actions
+            item.actions.forEach(action =>{
+                descSection.innerHTML += `<p>${upp(action.actionName)} (x${action.actionCharge}) - ${upp(action.desc)}.</p>`
+            })
+
+            topContainer.append(descSection)
+
+
+        //Add drop button
+            let dropBtn = document.createElement('button')
+            dropBtn.innerHTML = '<img src="./img/ico/item-x.svg"> <p>Drop</p>'
+            dropBtn.classList.add('drop-button', 'body-12')
+
+            //Removes the item
+            dropBtn.addEventListener('click', function(){
+                this.remove()
+                removeItem(item.itemId)
+            })
+
+
+        //Add passive stats
+            let pasiveStatContainer = document.createElement('div')
+            pasiveStatContainer.classList.add('passive-container')
+
+            //Add passives
+            item.passiveStats.forEach(stat =>{
+                //Add icon
+                let img = document.createElement('img')
+                img.setAttribute('src', `./img/ico/item-${stat.stat}.svg`)
+                pasiveStatContainer.append(img)
+                pasiveStatContainer.innerHTML += `${stat.value} <br> `
+            })
+
 
         //Add equip button
-        let equipBtn = document.createElement('button')
-        equipBtn.innerHTML = 'Equipped'
-        equipBtn.classList.add('equip-button')
+            let equipBtn = document.createElement('button')
+            equipBtn.innerHTML = '<p>Equip</p> <img src="./img/ico/item-equip-no.svg">'
+            equipBtn.classList.add('equip-button', 'body-12')
 
-        if(item.equipped){ // Keeps equip indicator even if buttons are redrawn with syncui()
-            equipBtn.classList.add('equipped')
-        }
+            // Keeps equip indicator even if buttons are redrawn with syncUi()
+            if(item.equipped){ 
+                equipBtn.classList.add('equipped')
+            }
 
-        equipBtn.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
+            equipBtn.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
         
-        //Add drop button
-        let dropBtn = document.createElement('button')
-        dropBtn.innerHTML = 'Drop'
-        dropBtn.classList.add('drop-button')
 
-        //Removes the item
-        dropBtn.addEventListener('click', function(){
-            this.remove()
-            removeItem(item.itemId)
-        })
-
-        card.append(btn, equipBtn, dropBtn)
+        
+        bottomContainer.append(dropBtn, pasiveStatContainer, equipBtn)
+        card.append(topContainer, bottomContainer)
         content.append(card)         
     })
 }
