@@ -69,6 +69,7 @@ class PlayerObj {
             'shield',
             'healing potion',
             'book of ice',
+            'book of ice',
         ]
 
         //Actions

@@ -167,7 +167,7 @@ body{
 
     position: relative;
     overflow: auto;
-    padding: 24px 24px 180px 24px;
+    padding: 24px 24px 96px 24px;
 }
 .modal-slide{
     animation-name: modal-slide;
@@ -518,6 +518,7 @@ li {
 .hide{display: none !important;}
 .flip{transform: scaleX(-1);}
 .grow{flex-grow: 1;}
+.enable-scroll{overflow:scroll;}
 
 
 /*Transitions*/
