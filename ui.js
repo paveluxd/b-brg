@@ -12,14 +12,21 @@ function genTabs(){
     tab.id = 'close-tab'
     el('tabs').append(tab)
 
-    let screens = ['map', 'character', 'inventory'] // add 'tree' , 'inventory','inventory' to arr to enable tree tab
+    let screens = [
+        ['map','map-tab'], 
+        ['character', 'character-tab'], 
+        ['inventory','inventory-tab']
+    ] // add 'tree' , 'inventory','inventory' to arr to enable tree tab
 
     //Gen map tabs
     screens.forEach(elem => {
         let tab = document.createElement('button')
-        tab.addEventListener('click', function(){screen(elem)})
-        tab.innerHTML = upp(elem)
-        tab.id = `${elem}-tab`
+        tab.addEventListener('click', function(){screen(elem[0])})
+
+        tab.innerHTML = `<img src="./img/ico/${elem[1]}.svg">${upp(elem[0])}`
+        tab.id = `${elem[0]}-tab`
+
+
         el('tabs').append(tab)
     })
 }
@@ -233,11 +240,7 @@ function syncCharPage(){
 
     let cont = el('character-content')
 
-    //Build actions array
-    let actions = ``
-    playerObj.actions.forEach(action => {
-        actions += `<li>${upp(action.actionKey)} (x${action.actionCharge}): ${upp(action.desc)}.</li>`
-    })
+    
 
     //Add placeholders for actions
     // 
@@ -245,24 +248,46 @@ function syncCharPage(){
 
     //Add text
     cont.innerHTML =`
-        Life: ${playerObj.life} / ${playerObj.flatLife} <br>
-        Def: ${playerObj.def} <br>
-        Power: ${playerObj.power} <br>
-        Dice: d${playerObj.flatDice} <br>
+        <h2>Character</h2>
 
-        <br>
-        Level: ${playerObj.lvl} (exp: ${playerObj.exp}) / Stage: ${gameState.stage}<br>
-        Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots} / Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}
+        <div id="stat-block" class = "grey-card body-14">
+            <div>
+                <p>Life: ${playerObj.life} / ${playerObj.flatLife}</p>
+                <p>Dice: d${playerObj.flatDice}</p>
+                <p>Power: ${playerObj.power}</p>
+                <p>Def: ${playerObj.def}</p>
+            </div>
 
-        <br>
-        <br><h3>Actions ${playerObj.actions.length}/${playerObj.actionSlots}</h3> 
-        <ul>${actions}</ul>
+            <div>
+                <p>Stage: ${gameState.stage} / Level: ${playerObj.lvl} (exp: ${playerObj.exp})</p>
+                <p>Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
+                <p>Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
+                <p>Actions: ${playerObj.actions.length}/${playerObj.actionSlots}</p>
+            </div>
+        </div>
+
+        <div id="actions-list"></div>
     `
     // <br>Passive skill points: ${playerObj.treePoints}
     // <br>Gold: ${playerObj.gold} 
+
+
+    //Build actions array
+    playerObj.actions.forEach(action => {
+        el('actions-list').innerHTML += `
+        <div class ="grey-card body-14">
+            <p>
+                <span class="name">${upp(action.actionKey)}</span>    
+                - ${upp(action.desc)}.
+            </p>
+
+            <span class="charges">x${action.actionCharge}</span>
+        </div>`
+    })
 }
 
 //Inventory
+//Move item card generation to a separate function
 function syncInventory(){
     let content = el('inventory-list')
     content.innerHTML = ''
@@ -275,10 +300,10 @@ function syncInventory(){
         //Creates card container
         let card = document.createElement('div')
         card.classList.add('item-card', 'body-12')
-        card.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
-
+        
         //Creates body btn
         let topContainer = document.createElement('div')
+        topContainer.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
         topContainer.classList.add('top-container')
         let bottomContainer = document.createElement('div')
         bottomContainer.classList.add('bottom-container')
@@ -346,11 +371,11 @@ function syncInventory(){
             // Keeps equip indicator even if buttons are redrawn with syncUi()
             if(item.equipped){ 
                 equipBtn.classList.add('equipped')
+                equipBtn.innerHTML = '<p>Equip</p> <img src="./img/ico/item-equip-yes.svg">' //Update checbox icon
             }
 
             equipBtn.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
         
-
         
         bottomContainer.append(dropBtn, pasiveStatContainer, equipBtn)
         card.append(topContainer, bottomContainer)

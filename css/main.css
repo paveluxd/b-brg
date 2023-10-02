@@ -20,6 +20,7 @@ html{
     --b50:       rgb(0, 0, 0, 0.5);
 
     --white:     rgb(255, 255, 255);
+    --w50:        rgb(255, 255, 255, 0.50);
     --w0:        rgb(255, 255, 255,0);
 
     --grey:      rgb(126, 126, 126);
@@ -44,6 +45,19 @@ body{
 }
 
 
+/* Font styles */
+.body-12{
+    font-size: 12px;
+    color: var(--black);
+    line-height: 18px;
+}
+.body-14{
+    font-size: 14px;
+    color: var(--black);
+    list-style: 20px
+}
+
+
 /* Screens */
 .screen{
     flex: 1;
@@ -58,7 +72,7 @@ body{
 }
 
 #map{
-    background-image: url(../img/bg/3.jpg);
+    background-image: url(../img/bg/1.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -84,7 +98,39 @@ body{
 
 #character-content {
     align-items: flex-start;
-    padding: 16px;
+    gap: 24px;
+    padding: 0px;
+    align-items: stretch;
+}
+.grey-card{
+    background-color: var(--b10);
+    border-radius: 4px;
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    position:relative
+}
+#stat-block div{
+    display: flex;
+    flex-direction: column;
+}
+#actions-list{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+#actions-list .grey-card{
+    flex-direction: column !important;
+    padding-right:32px;
+}
+#actions-list .name{
+    font-weight: 600;
+}
+#actions-list .charges{
+    color: var(--b50) !important;
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
 }
 
 
@@ -140,35 +186,33 @@ body{
 
 /* Tabs */
 #tab-container{
-    min-width: 100%;
+    width: calc(100% - 16px);
     position: fixed; 
-    bottom: 0px; 
+    bottom: 8px; 
     z-index: 1;
 
     display: flex;
-
     align-items: stretch;
+    overflow: hidden;
+
+    border-radius: 4px;
+    margin: 0 8px;
+}
+#tab-container button{
+    height: auto;
+    flex: 1 0 0px;
+    border: none;
+    background-color: var(--black);
+    color: var(--w50);
+}
+.active{
+    background-color: red;
 }
 
 #info-modal{
     background-color: var(--light-bg);
     /* width: 100%; */
     padding: 16px;
-}
-
-#tab-container button{
-    min-width: 0;
-    flex: 1 1 0px;
-    border: none;
-    border-top: 1px solid var(--border);
-}
-
-#tab-container button:last-child{
-    min-width: 52px;
-}
-
-.active{
-    background-color: red;
 }
 
 
@@ -280,13 +324,6 @@ button:disabled{
     padding: 0px;
     gap: 2px;
 }
-
-    .body-12{
-        font-size: 12px;
-        color: var(--black);
-        line-height: 18px;
-    }
-
     .item-card{
         display: flex;
         flex-direction: column;
