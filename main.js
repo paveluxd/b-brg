@@ -602,7 +602,7 @@ function combatEndCheck(){
 
     //Defeat (also loose if 0 actions)
     if(playerObj.life < 1 || playerObj.actions.length < 1){
-        toggleModal('gameOverScreen')
+        toggleModal('gameEndScreen')
     }
 
     //Victory
