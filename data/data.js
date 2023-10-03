@@ -38,7 +38,7 @@ class PlayerObj {
         this.life           = this.baseLife //Current life
 
         //Power
-        this.basePower      = 99
+        this.basePower      = 0
         this.flatPower      = this.basePower
         this.power          = this.basePower
 
@@ -65,11 +65,8 @@ class PlayerObj {
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = [
             "sword",
-            'helmet',
             'shield',
             'healing potion',
-            'book of ice',
-            'book of ice',
         ]
 
         //Actions
@@ -160,7 +157,9 @@ class ItemObj {
         
         //Resolve props via default value above, or value from reference object
         props.forEach(property => {
+
             // console.log(property.key, property.val);
+
             if(itemData[property.key] === undefined || itemData[property.key] === ''){
                 this[property.key] = property.val //if no prop, set it to extra props value
             }

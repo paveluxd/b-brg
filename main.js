@@ -695,24 +695,11 @@ function genReward(val, quant){
             //Create buttons
             let button = document.createElement('button')
             let img
+            let rewardElem
             
             //Item reward
             if(reward.rewardType === 'Item'){
-
-                //Create item image
-                img = document.createElement('img')
-                img.setAttribute('src',`./img/items/${generatedReward.itemName}.svg`)
-                
-
-                button.innerHTML = `
-                <h3>${generatedReward.itemName} (item)</h3> 
-                (requires an empty inventory slot).`
-                
-                //'quant' value in function will be id for items
-                button.setAttribute('onclick', 
-                    `genReward('${reward.rewardType}', 
-                    '${generatedReward.itemId}'
-                )`) 
+                rewardElem = genItemCard(generatedReward, 'reward')
             }
 
             //Action reward
@@ -734,7 +721,7 @@ function genReward(val, quant){
             }
 
             button.append(img)
-            el('reward-container').append(button)
+            el('reward-container').append(rewardElem)
         }
 
         toggleModal('rewardScreen')

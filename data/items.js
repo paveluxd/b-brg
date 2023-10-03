@@ -1,9 +1,9 @@
 let itemsRef = [
     {
-      "itemName": "helmet",
-      "passiveStats": [{stat:'life', value:16}, {stat:'def', value:16},{stat:'power', value:16},{stat:'dice', value:16}],
+      "itemName": "chainmail",
+      "passiveStats": [{stat:'life', value:6}, {stat:'def', value:1}],
       "actions": "",
-      "itemType": ""
+      "itemType": "body armor"
     },
     {
       "itemName": "water potion",
@@ -14,7 +14,7 @@ let itemsRef = [
     {
       "itemName": "poison potion",
       "passiveStats": "",
-      "actions": ['poison potion'],
+      "actions": ['poison'],
       "itemType": ""
     },
     {
@@ -26,13 +26,13 @@ let itemsRef = [
     {
       "itemName": "spiked shield",
       "passiveStats": "",
-      "actions": ['shield bash'],
+      "actions": ['bash'],
       "itemType": ""
     },
     {
       "itemName": "shield",
       "passiveStats": "",
-      "actions": ['shield block'],
+      "actions": ['deflect'],
       "itemType": ""
     },
     {
@@ -42,33 +42,33 @@ let itemsRef = [
       "itemType": ""
     },
     {
-      "itemName": "scroll of chains",
+      "itemName": "curse of chains",
       "passiveStats": "",
       "actions": ['curse of chain'],
       "itemType": ""
     },
     {
-      "itemName": "scroll of wounds",
+      "itemName": "curse of wounds",
       "passiveStats": "",
-      "actions": ['curse of wounds'],
+      "actions": ['wound'],
       "itemType": ""
     },
     {
       "itemName": "scroll of repetition",
       "passiveStats": "",
-      "actions": ['scroll of repetition'],
+      "actions": ['charge'],
       "itemType": ""
     },
     {
-      "itemName": "scroll of slowness",
+      "itemName": "curse of slowness",
       "passiveStats": "",
-      "actions": ['curse of slowness'],
+      "actions": ['slow'],
       "itemType": ""
     },
     {
-      "itemName": "scroll of weakness",
+      "itemName": "curse of weakness",
       "passiveStats": "",
-      "actions": ['curse of weakness'],
+      "actions": ['weaken'],
       "itemType": ""
     },
     {
@@ -122,7 +122,7 @@ let itemsRef = [
     {
       "itemName": "axe",
       "passiveStats": "",
-      "actions": ['rage strike'],
+      "actions": ['axe attack'],
       "itemType": ""
     },
     {
@@ -138,7 +138,7 @@ let itemsRef = [
       "itemType": ""
     },
     {
-      "itemName": "shield",
+      "itemName": "tower shield",
       "passiveStats": "",
       "actions": ['block'],
       "itemType": ""
@@ -180,14 +180,8 @@ let itemsRef = [
       "itemType": "Weapon"
     },
     {
-      "itemName": "ring of endurance",
-      "passiveStats": "",
-      "actions": ['endurance charge'],
-      "itemType": ""
-    },
-    {
       "itemName": "dice 4",
-      "passiveStats": [{stat:'dice', value:4}],
+      "passiveStats": [{stat:'dice', value:4}, {stat:'def', value:1}],
       "actions": "",
       "itemType": "dice"
     },
@@ -205,9 +199,15 @@ let itemsRef = [
     },
     {
       "itemName": "dice 12",
-      "passiveStats": [{stat:'dice', value:12}],
+      "passiveStats": [{stat:'dice', value:12}, {stat:'def', value:-1}],
       "actions": "",
       "itemType": "dice"
+    },
+    {
+      "itemName": "ring of endurance",
+      "passiveStats": "",
+      "actions": ['endurance charge'],
+      "itemType": ""
     },
     {
       "itemName": "ring of power",
@@ -240,6 +240,12 @@ let itemsRef = [
       "itemType": ""
     },
     {
+      "itemName": "ring of life",
+      "passiveStats": "",
+      "actions": ['life charge'],
+      "itemType": ""
+    },
+    {
       "itemName": "book of fire",
       "passiveStats": "",
       "actions": ['fireball', 'pyroblast'],
@@ -247,20 +253,38 @@ let itemsRef = [
     },
     {
       "itemName": "book of lightning",
-      "passiveStats": "",
-      "actions": ['lightning', 'barrier'],
+      "passiveStats": [{stat:'power', value:2}],
+      "actions": ['lightning'],
       "itemType": "Weapon"
     },
     {
       "itemName": "book of ice",
       "passiveStats": "",
-      "actions": ['ice lance', 'ice shards', 'freeze'],
+      "actions": ['lance', 'shards'],
       "itemType": "Weapon"
     },
     {
-      "itemName": "ring of life",
+      "itemName": "gambison",
+      "passiveStats": [{stat:'life', value:12}],
+      "actions": "",
+      "itemType": "body armor"
+    },
+    {
+      "itemName": "robe",
+      "passiveStats": [{stat:'power', value:1}],
+      "actions": "",
+      "itemType": "body armor"
+    },
+    {
+      "itemName": "plate armor",
+      "passiveStats": [{stat:'def', value:2}],
+      "actions": "",
+      "itemType": "body armor"
+    },
+    {
+      "itemName": "book of order",
       "passiveStats": "",
-      "actions": ['life charge'],
-      "itemType": ""
+      "actions": ['chains', 'barrier'],
+      "itemType": "Weapon"
     }
   ]

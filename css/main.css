@@ -14,6 +14,7 @@ html{
     --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
     --green:     rgb(0, 240, 96);
     --green50:rgba(0, 240, 96,0.5);
+    --green-bg: #576557;
 
     --black:     rgb(0, 0, 0);
     --b10:       rgb(0, 0, 0, 0.1);
@@ -35,8 +36,6 @@ body{
     
     display: flex;
     flex-direction: column;
-    
-    overflow: hidden;
 
     font-family: 'arial', sans-serif;
     font-size: 16px;
@@ -54,7 +53,7 @@ body{
 .body-14{
     font-size: 14px;
     color: var(--black);
-    list-style: 20px
+    line-height: 20px;
 }
 
 
@@ -66,9 +65,29 @@ body{
     align-items: stretch;
 }
 
+#gameStartScreen .modal-container, #gameEndScreen .modal-container{
+    gap: 0px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+#gameStartScreen .modal-container img, #gameEndScreen .modal-container img{
+    height: 224px;
+    width: 226px;
+}
+#gameStartScreen .modal-container .italic, #gameEndScreen .modal-container .italic{
+    width: 100%;
+    padding: 52px;
+    position: fixed;
+    bottom: 0;
+}
+
 #combat{
-    background: var(--grass-base);
+    background-image: url("/img/bg/combat-1.svg");
+    background-color: var(--green-bg);
     flex-direction: column;
+
+    padding: 8px;
 }
 
 #map{
@@ -166,8 +185,10 @@ body{
     gap: 24px;
 
     position: relative;
-    overflow: auto;
-    padding: 24px 24px 96px 24px;
+    padding: 24px 24px 24px 24px;
+}
+.tab-margin{
+    padding-bottom: 96px;       
 }
 .modal-slide{
     animation-name: modal-slide;
@@ -314,7 +335,7 @@ button:disabled{
 
 
 /*Items & inventory*/
-#inventory-list{
+#inventory-list, #reward-container{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -380,7 +401,7 @@ button:disabled{
 /* Stats */
 #stats-container{
     max-width: 480px;
-    border-radius: 8px 0 8px 8px;
+    border-radius: 4px 4px 8px 8px;
     border: 2px solid var(--black);
     background-color: var(--black);
     overflow: hidden;
@@ -470,14 +491,18 @@ li {
     height: 120px;
 }
 
-#intent{
-    background-color: var(--yellow);
-    color: var(--black);
-    padding: 4px 12px;
-    font-size: 14px;
-    line-height: 14px;
-    text-align: center;
+/* Intent indicator */
+#intent-indicator{
+    position: absolute; 
+    bottom: -32px;
+    padding-right: 12px;
 }
+#intent-indicator p{
+    text-wrap: nowrap;
+    background-color: var(--yellow);
+    padding: 4px 8px;
+}
+
 
 #rewards{
     display: flex;
@@ -494,6 +519,10 @@ li {
 .imgcont{
     position: relative;
     height: 124px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .boss{
@@ -515,10 +544,12 @@ li {
 
 
 /* Utility */
-.hide{display: none !important;}
-.flip{transform: scaleX(-1);}
-.grow{flex-grow: 1;}
-.enable-scroll{overflow:scroll;}
+.hide    {display: none !important;}
+.flip    {transform: scaleX(-1);}
+.grow    {flex-grow: 1;}
+.italic  {font-style: italic;}
+.b50     {color: var(--b50);}
+.bold    {font-weight: 600;}
 
 
 /*Transitions*/

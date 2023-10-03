@@ -1,11 +1,11 @@
 <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <rect x="9" y="9" width="34" height="34" fill="url(#pattern0)"/>
-<path d="M11 7H41V44H12.4806L11 42.1492V7Z" fill="white" stroke="black" stroke-width="2"/>
-<path d="M40 42L39.25 41L40 40V42Z" stroke="black" stroke-width="2"/>
-<path d="M41 5V38H11V6.41421L12.4142 5H41Z" fill="#5A5A5A" stroke="black" stroke-width="2"/>
-<rect x="20" y="14" width="12" height="15" fill="white" fill-opacity="0.24" stroke="black" stroke-width="2"/>
-<path d="M19 14H22.5L25 22L29 18V28" stroke="white" stroke-width="2"/>
-<path d="M20.7071 46.2929L20 45.5858L19.2929 46.2929L17.5858 48H17V42H23V48H22.4142L20.7071 46.2929Z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M11 9H41V46H12.4806L11 44.1492V9Z" fill="white" stroke="black" stroke-width="2"/>
+<path d="M40 44L39.25 43L40 42V44Z" stroke="black" stroke-width="2"/>
+<path d="M41 7V40H11V8.41421L12.4142 7H41Z" fill="#5A5A5A" stroke="black" stroke-width="2"/>
+<rect x="20" y="16" width="12" height="15" fill="white" fill-opacity="0.24" stroke="black" stroke-width="2"/>
+<path d="M19 16H22.5L25 24L29 20V30" stroke="white" stroke-width="2"/>
+<path d="M20.7071 48.2929L20 47.5858L19.2929 48.2929L17.5858 50H17V44H23V50H22.4142L20.7071 48.2929Z" fill="white" stroke="black" stroke-width="2"/>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image0_3462_8885" transform="scale(0.0294118)"/>

@@ -21,19 +21,35 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal hide" >
+    <div id="gameStartScreen" class="modal" onclick=" toggleModal('gameStartScreen')">
         <div class="modal-container">
-            <div class="column  modal-body" style="margin: auto;">
-                <img src="" alt="">
-                <h1 style="font-weight: 600;">New game screen</h1>
-                <p>Mini dungeon crawler game in the browser</p>
-                <button onclick=" toggleModal('gameStartScreen')">Tap to start</button>
-            </div>
+                
+                <img src="/img/bg/start.svg" alt="">
+                <p class="body-14">Mini dungeon crawler game<br>in the browser.</p>
+                
+                <p class="body-14 italic b50">Tap to start</p>
+            
         </div>
     </div>
 
+    <!-- Game over -->
+    <div id="gameEndScreen" class="modal hide"  onclick="">
+        <div class="modal-container">
+                
+            <img src="/img/bg/end.svg" alt="">
+            <p class="body-14">You reached <span class="bold">stage 5</span> out of 12<br>and lost the encounter.</p>
+            <p class="body-14 italic b50">Tap to start</p>
+        
+        </div>
+    </div>
+
+    <!-- TAB CONTAINER -->
+    <div id="tab-container" class="column"><div id="tabs" class="row"></div></div>
+
+
+
     <!-- Map -->
-    <div id="map" class="screen tab hide">
+    <div id="map" class="screen tab ">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
@@ -65,13 +81,11 @@
 
     <!-- Combat -->
     <div id="combat" class="screen hide">
-        <p id="log">stage: 1<br> turn:1</p>
-        <!-- Menu button-->
-        <button onclick="screen('character', 'combat-menu')" style="border: none; background-color: var(--w0); width: 52px;">
-            <img src="./img/ico/settings-pale.svg">
-        </button>
 
-        <!-- Units -->
+        <!-- Game info -->
+        <p id="log">stage: 1<br> turn:1</p>
+
+        <!-- Units images -->
         <div class="column grow" style="align-items: stretch; padding: 0 4px;">
             <div class="row" style="align-items: stretch; flex-grow: 1;">
                 <!-- Player -->
@@ -86,25 +100,24 @@
                 </div>
         
                 <!-- Enemy -->
-                <div id="enemySprite" class="column">
+                <div id="enemySprite" class="column" style="position: relative;">
                     <div class="imgcont">
                         <p id="enDmgInd" class="floating-ind">0</p>
     
                         <img id="enemyImg" src="./img/enemy/1.png" class="flip">
+
+                        <!-- UI:Enemy intent indicator -->
+                        <div id="intent-indicator" class="row">
+                            <svg height="12" width="12" style="fill: var(--yellow);"><polygon points="12,12 12,0 4,6"/></svg>
+                            <p id="intent" class="body-14"></p>
+                        </div>
                     </div>                
                 </div>
             </div>
         </div>
     
-        <!-- UI -->
-        <!-- Enemy intent indicator -->
-        <div class="row" style="justify-content: flex-end;">
-            <svg height="12" width="12" style="fill: var(--yellow);">
-                <polygon points="12,12 12,0 4,6"/>
-            </svg>
-            <div id="intent">Will attack for 3 damage.</div>
-        </div>
-
+        
+        <!-- UI: Actions -->
         <div id="stats-container">
             <!-- Actions container -->
             <div id="stats" onclick="screen('character', 'combat-menu')">
@@ -154,22 +167,58 @@
         </div>
     </div>
 
-    <!-- Tabs -->
-    <div id="tab-container" class="column">
-        <div id="tabs" class="row">
-        </div>
+    <!-- Victory screen -->
+    <div id="rewardScreen" class="modal hide" >
+        <div  class="modal-container">
+
+            <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
+
+                <h2 id="combatEndIndicator">Victory</h2>
+                <p class="body-14">
+                    You defeated the enemy.<br> 
+                    Pick one reward:
+                </p>
+            </div>
+            
+            <div id="reward-container" class="modal-body"></div>
+       </div>
     </div>
 
+
+
     <!-- Character -->
-    <div id="character" class="screen tab enable-scroll" >
-        <div class="modal-container">
+    <div id="character" class="screen tab hide" >
+        <div class="modal-container tab-margin">
 
             <div id='character-content' class="column modal-body"></div>
 
         </div>
     </div>
 
-    <!-- Tree -->
+    <!-- Inventory -->
+    <div id="inventory" class="screen hide tab" >
+        <div class="modal-container tab-margin">
+            <h2 id="inventory-heading"></h2>
+            <div id="inventory-list" class="modal-body"></div>
+        </div>
+    </div>
+
+        <!-- Item modal -->
+        <div id="item-modal" class="hide modal" >
+            <div class="modal-container tab-margin">
+                <div class="modal-header">
+                    <h2></h2>
+                </div>
+
+                <div id="item-modal-body" class="column modal-body">
+                    Item details
+                </div>
+            </div>
+        </div>
+
+
+
+    <!-- TREE -->
     <div id="tree" class="screen hide tab" >
         <div class="modal-container">
 
@@ -179,28 +228,7 @@
         </div>
     </div>
 
-    <!-- Inventory -->
-    <div id="inventory" class="screen hide tab enable-scroll" >
-        <div class="modal-container">
-            <h2 id="inventory-heading"></h2>
-            <div id="inventory-list" class="column modal-body"></div>
-        </div>
-    </div>
-
-    <!-- Item modal -->
-    <div id="item-modal" class="hide modal" >
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2></h2>
-            </div>
-
-            <div id="item-modal-body" class="column modal-body">
-                Item details
-            </div>
-        </div>
-    </div>
-
-    <!-- Shop -->
+    <!-- SHOP -->
     <div id="shop" class="screen hide" >
         <div class="modal-container">
             <div class="modal-header">
@@ -210,28 +238,6 @@
 
             <div class="column  modal-body">
                 Buy & sell items
-            </div>
-        </div>
-    </div>
-
-    <!-- Combat end screen -->
-    <div id="rewardScreen" class="modal hide" >
-        <div  class="modal-container">
-
-            <div class="modal-header">
-                <h2 id="combatEndIndicator">Victory! Choose your reward.</h2>
-            </div>
-
-            <div id="reward-container" class="modal-body"></div>
-       </div>
-    </div>
-
-    <!-- Game over -->
-    <div class="modal hide" id="gameOverScreen">
-        <div class="modal-container">
-            <div class="column  modal-body" style="margin: auto;">
-                <h1 style="font-weight: 600;">Game over!</h1>
-                <p id="gameOverScreenLog">Refresh the page to try again.</p>
             </div>
         </div>
     </div>

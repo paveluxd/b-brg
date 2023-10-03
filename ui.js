@@ -8,7 +8,7 @@ function genTabs(){
     let tab = document.createElement('button')
     tab.setAttribute('onclick', `screen('combat', this, "overlay")`)
     tab.classList.add('hide')
-    tab.innerHTML = 'X'
+    tab.innerHTML = `<img src="./img/ico/tab-hide.svg">Hide`
     tab.id = 'close-tab'
     el('tabs').append(tab)
 
@@ -289,104 +289,125 @@ function syncCharPage(){
 //Inventory
 //Move item card generation to a separate function
 function syncInventory(){
-    let content = el('inventory-list')
-    content.innerHTML = ''
+    el('inventory-list').innerHTML = ''
 
+    //Set inventory heading
+    el('inventory-heading').innerHTML = `Inventory ${playerObj.inventory.length}/${playerObj.inventorySlots}`
     
     playerObj.inventory.forEach(item => {
-        //Set inventory heading
-        el('inventory-heading').innerHTML = `Inventory ${playerObj.inventory.length}/${playerObj.inventorySlots}`
+        el('inventory-list').append(genItemCard(item))         
+    })
+}
 
-        //Creates card container
+//Gen item card
+function genItemCard(item, type){
+
+    //Creates card container
         let card = document.createElement('div')
         card.classList.add('item-card', 'body-12')
-        
-        //Creates body btn
+
+    //Top container
         let topContainer = document.createElement('div')
-        topContainer.addEventListener('click', function(){toggleModal('item-modal'), genItemModal(item.itemId)})
         topContainer.classList.add('top-container')
+            //Creates body btn
+            if(type === 'reward'){
+                topContainer.setAttribute('onclick', `toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')`)
+            }else{
+                topContainer.setAttribute('onclick', `toggleModal('item-modal'), genItemModal('${item.itemId}')`)
+            }
+
+    //Bottom container
         let bottomContainer = document.createElement('div')
         bottomContainer.classList.add('bottom-container')
 
+    //Image
+        let imgKey = item.itemName
+        if(imgKey.includes('scroll')){//Scroll
+            imgKey = 'magic scroll'
+        }else if(imgKey.includes('curse')){//Curse
+            imgKey = 'curse scroll'  
+        }
+        topContainer.innerHTML = `<img src="./img/items/${imgKey}.svg">`
 
-        //Item image
-        let img = document.createElement('img')
-        img.setAttribute('src',`./img/items/${item.itemName}.svg`)
-        topContainer.append(img)
+    //Desc
+        //Create container
+        let descSection = document.createElement('div')
+        descSection.classList.add('desc-section')
+    
+        //Add item type, only if it is non-generic
+        let itemType = ''
+        if(item.itemType !== 'generic'){
+            itemType = ` (${item.itemType})`
+        }
+
+        //Add title and type
+        descSection.innerHTML = `<h3>${upp(item.itemName)}${itemType}</h3>`
+
+        //Added actions
+        item.actions.forEach(action =>{
+            descSection.innerHTML += `<p>${upp(action.actionName)} (x${action.actionCharge}) - ${upp(action.desc)}.</p>`
+        }) 
+
+        //2.Passive stats
+        let pasiveStatContainer = document.createElement('div')
+        pasiveStatContainer.classList.add('passive-container')
+        item.passiveStats.forEach(stat =>{
+            pasiveStatContainer.innerHTML += `<img src="./img/ico/item-${stat.stat}.svg">${stat.value} <br> `
+        })
+
+        //Gen buttons
+        let btn1 = document.createElement('button')
+        let btn2 = document.createElement('button')
+
+        if(type === 'reward'){
+            //1. Pick button
+            btn1.classList.add('pick-button', 'body-12')
+            btn1.innerHTML = '<img src="./img/ico/item-pick.svg"> <p>Pick</p>'
+            btn1.setAttribute('onclick',`genReward('item','${item.itemId}')`)
 
 
-        //Desctioption
-            //Create container
-            let descSection = document.createElement('div')
-            descSection.classList.add('desc-section')
-        
-            //Add item type, only if it is non-generic
-            let itemType = ''
-            if(item.itemType !== 'generic'){
-                itemType = ` (${item.itemType})`
-            }
-
-            //Add title and type
-            descSection.innerHTML = `<h3>${upp(item.itemName)}${itemType}</h3>`
-
-            //Added actions
-            item.actions.forEach(action =>{
-                descSection.innerHTML += `<p>${upp(action.actionName)} (x${action.actionCharge}) - ${upp(action.desc)}.</p>`
-            })
-
-            topContainer.append(descSection)
-
-
-        //Add drop button
-            let dropBtn = document.createElement('button')
-            dropBtn.innerHTML = '<img src="./img/ico/item-x.svg"> <p>Drop</p>'
-            dropBtn.classList.add('drop-button', 'body-12')
-
-            //Removes the item
-            dropBtn.addEventListener('click', function(){
+            //3. View button
+            btn2.classList.add('view-button', 'body-12')
+            btn2.innerHTML = '<p>View</p> <img src="./img/ico/item-view.svg">'
+            btn2.setAttribute('onclick', `toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')`)
+        }
+        else{
+            //1.Drop button
+            btn1.classList.add('drop-button', 'body-12')
+            btn1.innerHTML = '<img src="./img/ico/item-x.svg"> <p>Drop</p>'
+            //Adds remove item event
+            btn1.addEventListener('click', function(){
                 this.remove()
                 removeItem(item.itemId)
             })
 
-
-        //Add passive stats
-            let pasiveStatContainer = document.createElement('div')
-            pasiveStatContainer.classList.add('passive-container')
-
-            //Add passives
-            item.passiveStats.forEach(stat =>{
-                //Add icon
-                let img = document.createElement('img')
-                img.setAttribute('src', `./img/ico/item-${stat.stat}.svg`)
-                pasiveStatContainer.append(img)
-                pasiveStatContainer.innerHTML += `${stat.value} <br> `
-            })
-
-
-        //Add equip button
-            let equipBtn = document.createElement('button')
-            equipBtn.innerHTML = '<p>Equip</p> <img src="./img/ico/item-equip-no.svg">'
-            equipBtn.classList.add('equip-button', 'body-12')
-
+            //3.Equip button
+            btn2.classList.add('equip-button', 'body-12')
+            btn2.innerHTML = '<p>Equip</p> <img src="./img/ico/item-equip-no.svg">'
+            btn2.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
             // Keeps equip indicator even if buttons are redrawn with syncUi()
             if(item.equipped){ 
-                equipBtn.classList.add('equipped')
-                equipBtn.innerHTML = '<p>Equip</p> <img src="./img/ico/item-equip-yes.svg">' //Update checbox icon
+                btn2.classList.add('equipped')
+                btn2.innerHTML = '<p>Equip</p> <img src="./img/ico/item-equip-yes.svg">' //Update checbox icon
             }
+        }
+        
 
-            equipBtn.addEventListener('click', function(){equipItem(item),  this.classList.toggle('equipped')})
-        
-        
-        bottomContainer.append(dropBtn, pasiveStatContainer, equipBtn)
+    //Append
+        topContainer.append(descSection)
+        bottomContainer.append(btn1, pasiveStatContainer, btn2)
         card.append(topContainer, bottomContainer)
-        content.append(card)         
-    })
+        return card
 }
 
 //Item modal
-function genItemModal(itemId){
+function genItemModal(itemId, source){
     let itemModal = el('item-modal-body')
     let itemObj = findByProperty(playerObj.inventory, 'itemId', itemId)
+
+    if(source === 'reward'){
+        itemObj = findByProperty(rewardPool, 'itemId', itemId)
+    }
 
     itemModal.innerHTML = `${itemObj.itemName} (${itemObj.itemType})<br><br>Adds actions: <br>`
 
@@ -396,8 +417,15 @@ function genItemModal(itemId){
 
     //Add drop item button
     let btn = document.createElement('button')
-    btn.innerHTML = 'Drop item'
-    btn.setAttribute('onclick',`removeItem("${itemId}"), toggleModal('item-modal')`)
+
+    if(source === 'reward'){
+        btn.innerHTML = 'Pick item'
+        btn.setAttribute('onclick',`removeItem("${itemId}"), toggleModal('item-modal')`)
+    }
+    else{
+        btn.innerHTML = 'Drop item'
+        btn.setAttribute('onclick',`removeItem("${itemId}"), toggleModal('item-modal')`)
+    }
 
     //Add close button
     let closeBtn = document.createElement('button')
