@@ -64,9 +64,9 @@ class PlayerObj {
         this.equipmentSlots = 6
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = [
-            "sword",
-            'shield',
-            'healing potion',
+            "bow",
+            'woolen boots',
+            'iron dagger',
         ]
 
         //Actions
