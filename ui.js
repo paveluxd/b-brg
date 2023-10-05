@@ -360,16 +360,15 @@ function genItemCard(item, type){
         let btn2 = document.createElement('button')
 
         if(type === 'reward'){
-            //1. Pick button
-            btn1.classList.add('pick-button', 'body-12')
-            btn1.innerHTML = '<img src="./img/ico/item-pick.svg"> <p>Pick</p>'
-            btn1.setAttribute('onclick',`genReward('item','${item.itemId}')`)
-
-
-            //3. View button
-            btn2.classList.add('view-button', 'body-12')
-            btn2.innerHTML = '<p>View</p> <img src="./img/ico/item-view.svg">'
-            btn2.setAttribute('onclick', `toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')`)
+            //1. View button
+            btn1.classList.add('view-button', 'body-12')
+            btn1.innerHTML = '<img src="./img/ico/item-view.svg"> <p>View</p>'
+            btn1.setAttribute('onclick', `toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')`)
+            
+            //3. Pick button
+            btn2.classList.add('pick-button', 'body-12')
+            btn2.innerHTML = '<p>Pick</p> <img src="./img/ico/item-pick.svg">'
+            btn2.setAttribute('onclick',`genReward('item','${item.itemId}')`)
         }
         else{
             //1.Drop button

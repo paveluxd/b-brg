@@ -72,7 +72,7 @@ let actionsRef = [
   {
     "actionName": "chaos charge",
     "desc": "adds 2 dice while in action bar",
-    "passiveStats": [{stat:'dice-mod', value:10}],
+    "passiveStats": [{stat:'dice-mod', value:2}],
     "actionMod": 2,
     "actionCharge": 1,
     "cooldown": "",

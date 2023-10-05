@@ -33,7 +33,7 @@ function initiateCombat(){
     }
 
     //Restore flat power
-    if(playerObj.power < playerObj.flatPower){
+    if(playerObj.power !== playerObj.flatPower){//see if power should stay betweeen combats, set sign to <
         playerObj.power = playerObj.flatPower
     } 
     
@@ -184,7 +184,7 @@ function turnCalc(buttonElem){
             return
         }
 
-    }else if (playerActionKey === 'a10'){// "iron dagger"
+    }else if (playerActionKey === 'a10'){// backstab "iron dagger"
 
         //Resolve action cost
         if(playerObj.roll < 5){
@@ -610,6 +610,7 @@ function combatEndCheck(){
 
         //Exit
         if(gameState.stage % gameState.bossFrequency === 0){
+            gameState.encounter++
             gameState.encounter = 'end'
         }
 
@@ -775,6 +776,10 @@ function genReward(val, quant){
                 if(elem.itemId !== undefined && elem.itemId === quant){
                     if(playerObj.inventory.length < playerObj.inventorySlots){
                         playerObj.inventory.push(elem)
+
+                        
+                        equipItem(elem)
+                        
                     }
                     else {
                         //If no inventory slots, trigger item swap screen

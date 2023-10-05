@@ -83,7 +83,7 @@ body{
 }
 
 #combat{
-    background-image: url("/img/bg/combat-1.svg");
+    background-image: url("../img/bg/combat-1.svg");
     background-color: var(--green-bg);
     flex-direction: column;
 
@@ -367,8 +367,6 @@ button:disabled{
         
         color: var(--b50);
         font-style: italic;
-        font-weight: 600;
-
         padding: 12px;
     }
     .item-card button img{
