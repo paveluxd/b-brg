@@ -33,7 +33,7 @@ class CombatState {
 class PlayerObj {
     constructor(){
         //Life
-        this.baseLife       = 20           //Lvl 1 char life
+        this.baseLife       = 20            //Lvl 1 char life
         this.flatLife       = this.baseLife //Life cap
         this.life           = this.baseLife //Current life
 
@@ -61,16 +61,17 @@ class PlayerObj {
 
         //Inventory
         this.inventorySlots = 18 
-        this.equipmentSlots = 6
+        this.equipmentSlots = 8
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = [
             "bow",
             'woolen boots',
             'iron dagger',
+            'healing potion',
         ]
 
         //Actions
-        this.actionSlots    = 6
+        this.actionSlots    = 10
         this.actions        = [] //Actions gained from items
         this.tempActions    = [] //Temporary actions
 

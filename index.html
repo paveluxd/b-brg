@@ -21,7 +21,7 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal" onclick=" toggleModal('gameStartScreen')">
+    <div id="gameStartScreen" class="modal hide" onclick=" toggleModal('gameStartScreen')">
         <div class="modal-container">
                 
                 <img src="./img/bg/start.svg" alt="">
@@ -44,12 +44,12 @@
     </div>
 
     <!-- TAB CONTAINER -->
-    <div id="tab-container" class="column"><div id="tabs" class="row"></div></div>
+    <div id="tab-container" class="column hide"><div id="tabs" class="row"></div></div>
 
 
 
     <!-- Map -->
-    <div id="map" class="screen tab ">
+    <div id="map" class="screen tab hide">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Combat -->
-    <div id="combat" class="screen hide">
+    <div id="combat" class="screen ">
 
         <!-- Game info -->
         <p id="log">stage: 1<br> turn:1</p>
@@ -167,9 +167,9 @@
         </div>
     </div>
 
-    <!-- Victory screen -->
-    <div id="rewardScreen" class="modal hide" >
-        <div  class="modal-container">
+    <!-- Reward screen -->
+    <div id="reward-screen" class="modal hide snap-scroll" >
+        <div  class="modal-container snap-scroll-item">
 
             <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
 

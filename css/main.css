@@ -41,6 +41,7 @@ body{
     font-size: 16px;
     line-height: 125%;
     color: var(--black);
+
 }
 
 
@@ -335,7 +336,7 @@ button:disabled{
 
 
 /*Items & inventory*/
-#inventory-list, #reward-container{
+#inventory-list, #reward-container, #inventory-ref-container{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -344,6 +345,7 @@ button:disabled{
 
     padding: 0px;
     gap: 2px;
+    min-width: calc(100vw - 48px);
 }
     .item-card{
         display: flex;
@@ -395,6 +397,11 @@ button:disabled{
         height: 16px;
         width: 16px;
     }
+/* Rewards */
+#reward-screen{
+    flex-direction: row;
+}
+
 
 /* Stats */
 #stats-container{
@@ -548,6 +555,19 @@ li {
 .italic  {font-style: italic;}
 .b50     {color: var(--b50);}
 .bold    {font-weight: 600;}
+.snap-scroll{
+    scroll-snap-type: x mandatory;	
+    -webkit-overflow-scrolling: touch;
+
+    overflow-x: scroll;
+    
+    max-height: 100vh;
+}
+.snap-scroll-item{
+    scroll-snap-align: start; 
+    overflow-y: scroll;
+    min-width: 100vw;
+}
 
 
 /*Transitions*/

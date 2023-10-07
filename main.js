@@ -371,7 +371,7 @@ function turnCalc(buttonElem){
 
     }
 
-    //Passive effects checks
+    //Passive effects (only player)
     playerObj.actions.forEach(action => {
         if       (action.keyId === 'a17'){ // combo "gloves"
             if(playerObj.roll === 6 && action.cooldown > 0){
@@ -393,13 +393,35 @@ function turnCalc(buttonElem){
     
 
     enemyActionLogic()
+
+    //Passive effects (both)
+    playerObj.actions.forEach(action => {
+        if (action.keyId === 'a43'){ // throns crown
+            if(combatState.dmgDoneByEnemy !== undefined){
+                combatState.dmgDoneByEnemy = combatState.dmgDoneByEnemy * 2
+            }
+            if(combatState.dmgDoneByPlayer !== undefined){
+                combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * 2
+            }
+        }
+    })
+
     damageCalc()
 
     //POST DMG CALC EFFECTS - Healing potion - heal after damage is taken.
     if (playerActionKey === 'a33'){// healing potion
+        
+        //Increases max life if overheal
+        //Move to a separate function when there will be more heal effects
+        let overhealCap = 5
+        if(playerObj.flatLife - (playerObj.life + actionMod) < overhealCap){
+            playerObj.baseLife += Math.trunc( ( (playerObj.life += actionMod) - playerObj.flatLife ) / overhealCap )
+        }
 
+        //Add healed life
         playerObj.life += actionMod
-
+        
+        //Cut if over cap
         if(playerObj.life > playerObj.flatLife){
             playerObj.life = playerObj.flatLife
         }
@@ -479,7 +501,6 @@ function damageCalc(){
             let poisonStackCount = 1
     
             //If multistrike deal dice or any other mult
-            
             if(combatState.sourceAction.keyId === 'a3'){
                 let mult = playerObj.actionSlots - playerObj.actions.length 
     
@@ -667,7 +688,7 @@ function genReward(val, quant){
         let generatedReward
 
         //Gen item per quant value in function
-        for(let i =0; i < quant; i++){ 
+        for(i = 0; i < quant; i++){ 
 
             //Pick random reward
             let reward = rarr(rewardRefPool) 
@@ -725,7 +746,26 @@ function genReward(val, quant){
             el('reward-container').append(rewardElem)
         }
 
-        toggleModal('rewardScreen')
+        //Add inventory items
+        el('reward-screen').innerHTML += 
+        `
+            <div id='' class='modal-container snap-scroll-item'>
+                <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
+                    <h2>Inventory</h2>
+                    <p class="body-14">
+                        <br> 
+                        <br>
+                    </p>
+                </div>
+
+                <div id='inventory-ref-container'></div>
+            </div>
+        `
+        playerObj.inventory.forEach(item => {
+            el('inventory-ref-container').append(genItemCard(item))         
+        })
+
+        toggleModal('reward-screen')
     }
 
     //Resolve reward
@@ -811,7 +851,6 @@ function genReward(val, quant){
 
         syncUi() //Update UI if reward was added etc
     }
-
 }
 
 

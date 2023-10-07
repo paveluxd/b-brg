@@ -3,7 +3,7 @@ let itemsRef = [
       "itemName": "chainmail",
       "passiveStats": [{stat:'life', value:6}, {stat:'def', value:1}],
       "actions": "",
-      "itemType": "body armor"
+      "itemType": "Body armor"
     },
     {
       "itemName": "water potion",
@@ -183,25 +183,25 @@ let itemsRef = [
       "itemName": "dice 4",
       "passiveStats": [{stat:'dice', value:4}, {stat:'def', value:1}],
       "actions": "",
-      "itemType": "dice"
+      "itemType": "Dice"
     },
     {
       "itemName": "dice 8",
       "passiveStats": [{stat:'dice', value:8}],
       "actions": "",
-      "itemType": "dice"
+      "itemType": "Dice"
     },
     {
       "itemName": "dice 10",
       "passiveStats": [{stat:'dice', value:10}],
       "actions": "",
-      "itemType": "dice"
+      "itemType": "Dice"
     },
     {
       "itemName": "dice 12",
       "passiveStats": [{stat:'dice', value:12}, {stat:'def', value:-1}],
       "actions": "",
-      "itemType": "dice"
+      "itemType": "Dice"
     },
     {
       "itemName": "ring of endurance",
@@ -267,24 +267,48 @@ let itemsRef = [
       "itemName": "gambison",
       "passiveStats": [{stat:'life', value:12}],
       "actions": "",
-      "itemType": "body armor"
+      "itemType": "Body armor"
     },
     {
       "itemName": "robe",
       "passiveStats": [{stat:'power', value:1}],
       "actions": "",
-      "itemType": "body armor"
+      "itemType": "Body armor"
     },
     {
       "itemName": "plate armor",
       "passiveStats": [{stat:'def', value:2}],
       "actions": "",
-      "itemType": "body armor"
+      "itemType": "Body armor"
     },
     {
       "itemName": "book of order",
       "passiveStats": "",
       "actions": ['chains', 'barrier'],
       "itemType": "Weapon"
+    },
+    {
+      "itemName": "bag",
+      "passiveStats": [{stat:'equipmentSlots', value:2}],
+      "actions": "",
+      "itemType": "Bag"
+    },
+    {
+      "itemName": "leather bag",
+      "passiveStats": [{stat:'equipmentSlots', value:4}],
+      "actions": "",
+      "itemType": "Bag"
+    },
+    {
+      "itemName": "woolem bag",
+      "passiveStats": [{stat:'equipmentSlots', value:6}, {stat:'power', value:-2}],
+      "actions": "",
+      "itemType": "Bag"
+    },
+    {
+      "itemName": "thorns crown",
+      "passiveStats": "",
+      "actions": ['rage'],
+      "itemType": ""
     }
   ]
