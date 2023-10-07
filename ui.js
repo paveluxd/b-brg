@@ -483,12 +483,12 @@ function calcEquippedItems(){
 function spriteBuilder(target){
     if(target === 'player'){
         el('player-sprite').innerHTML = `
-            <img src="../img/character/${rng(3,1)}-back.svg">
-            <img src="../img/character/${rng(3,1)}-back-arm.svg">
-            <img src="../img/character/${rng(3,1)}-legs.svg">
-            <img src="../img/character/${rng(3,1)}-torso.svg">
-            <img src="../img/character/${rng(3,1)}-front-arm.svg">
-            <img src="../img/character/${rng(3,1)}-head.svg">
+            <img src="./img/character/${rng(3,1)}-back.svg">
+            <img src="./img/character/${rng(3,1)}-back-arm.svg">
+            <img src="./img/character/${rng(3,1)}-legs.svg">
+            <img src="./img/character/${rng(3,1)}-torso.svg">
+            <img src="./img/character/${rng(3,1)}-front-arm.svg">
+            <img src="./img/character/${rng(3,1)}-head.svg">
         `
     }
     else if(target === 'enemy'){

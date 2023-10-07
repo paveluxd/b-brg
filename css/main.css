@@ -212,7 +212,7 @@ body{
 .tab-container{
     width: calc(100% - 16px);
     position: fixed; 
-    top: calc(100vh - 8px - 62px); 
+    bottom: 8px;
     z-index: 2;
 
     display: flex;
