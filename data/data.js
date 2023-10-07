@@ -7,9 +7,10 @@ let rewardPool = []
 class GameState{
     constructor(){
         this.stage = 1
-        this.enemyLifeBase = 6
-        this.bossFrequency = 5
         this.encounter = 1
+
+        // this.enemyLifeBase = 6 //N + other mods
+        this.bossFrequency = 5 //Every Nth stage
     }
 }
 
@@ -60,18 +61,24 @@ class PlayerObj {
         this.swordDmgMod    = 0
 
         //Inventory
-        this.inventorySlots = 18 
-        this.equipmentSlots = 8
+        this.inventorySlots = 20 
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = [
             "bow",
             'woolen boots',
             'iron dagger',
             'healing potion',
+            'scroll of fortification',
+            "curse of weakness",
         ]
 
+        //Slots
+        //Equipment slots
+        this.baseSlots      = 6
+        this.equipmentSlots = this.baseSlots
+
         //Actions
-        this.actionSlots    = 10
+        this.actionSlots    = this.baseSlots
         this.actions        = [] //Actions gained from items
         this.tempActions    = [] //Temporary actions
 
@@ -90,39 +97,79 @@ class PlayerObj {
 
 //
 class EnemyObj {
+    
     constructor(){
-        this.life     = 6 + gameState.enemyLifeBase
+        //Choose enemy profile
+        let profiles = ['balanced', 'tank', 'assassin', 'minion'] //'minion'
+        let randomEnemyProfile = rarr(profiles)
+        let powerMod, defMod, diceMod, imgPath, lifeMod
+        // el('enemyImg').classList.remove('boss')
+
+        
+        if(randomEnemyProfile === 'balanced'){
+            lifeMod  = 1
+            powerMod = 1
+            defMod   = 1
+            diceMod  = 1
+
+            this.profile = 'balanced'
+            imgPath  = `balanced/${rng(17,1)}`
+        }
+        else if(randomEnemyProfile === 'tank'){
+            lifeMod  = 0.5
+            powerMod = 0.25
+            defMod   = 3
+            diceMod  = 0.25
+
+            this.profile = 'tank'
+            imgPath  = `tank/${rng(1,1)}`
+        }
+        else if(randomEnemyProfile === 'assassin'){
+            lifeMod  = 0.25
+            powerMod = 3
+            defMod   = 0.25
+            diceMod  = 1
+
+            this.profile = 'assassin'
+            imgPath  = `assassin/${rng(1,1)}`
+        }
+        else if(randomEnemyProfile === 'minion'){
+            lifeMod  = 0.1
+            powerMod = 0.5
+            defMod   = 0.5
+            diceMod  = 0.5
+
+            this.profile = 'minion'
+            imgPath  = `minion/${rng(1,1)}`
+        }
+
+        //Set boss mods
+        if(gameState.stage % gameState.bossFrequency === 0){//boss
+            lifeMod  += 0.5
+            powerMod += 0.25
+            defMod   += 0.25
+            diceMod  += 0.25
+
+            this.profile = 'boss'
+            imgPath  = `boss/${rng(12,1)}`
+            // el('enemyImg').classList.add('boss')//Swaps image to boss
+        }
+
+
+        //Set stats
+        // mod(0.5) -> Get +1 every 2 stages
+        this.life    = 4 + Math.round((8   + gameState.stage) * lifeMod ) //+ rng(4)
+        this.power   = 0 + Math.round((0.2 * gameState.stage) * powerMod) 
+        this.def     = 0 + Math.round((0.2 * gameState.stage) * defMod  )
+        this.dice    = 4 + Math.round((0.2 * gameState.stage) * diceMod )
+        
+        //Misc
         this.flatLife = this.life
-
-        this.power    = Math.ceil(rng(gameState.stage * 0.1, 0)),
-        this.def      = 0 + Math.ceil(rng(gameState.stage * 0.3, 0)),
-        this.dice     = 4 + Math.round(gameState.stage * 0.2),
-
         this.level    = gameState.stage
-        this.image    = `./img/enemy/${gameState.stage}.png`
-
+        // this.image    = `./img/enemy/${imgPath}.png`
         this.poisoned = false
         this.poisonStacks = 0
-
-        el('enemyImg').classList.remove('boss')
-
-
-        //Create boss every N levels
-        if(gameState.stage % gameState.bossFrequency === 0){
-            gameState.enemyLifeBase+= 4 //Enemies +4 life after boss is killed
-
-            this.life  = Math.round(gameState.enemyLifeBase * 1.25)
-            this.flatLife= this.life
-
-            this.power = Math.ceil(rng(gameState.stage * 0.3, 0)),
-            this.def   = Math.ceil(rng(gameState.stage * 0.3, 0)),
-
-            this.dice  = 12
-            
-            this.level = gameState.stage
-            this.image = `./img/boss/${gameState.stage/gameState.bossFrequency}.png`
-            el('enemyImg').classList.add('boss')
-        }
+        this.crit = false
     }
 }
 
@@ -252,10 +299,10 @@ let eneActionRef = {
     Sleep:       {rate:1, action: 'Sleep'      ,desc: `Zzzz...`,},
     Detonate:    {rate:1, action: 'Detonate'   ,desc: `Detonate on death`},
     Recover:     {        action: 'Recover'    ,desc: `Recover`},
+    Crit:        {rate:1, action: 'Crit'       ,desc: `Prepares to crit next turn`},
 
     // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
     // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
-    // "crit":     {rate:1,   desc: `Will crit for ${Math.ceil(dmgVal * 2)} after this turn`},
     
     // "recover":  {rate:1,   desc: `Will recover lost stats`},
     // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},

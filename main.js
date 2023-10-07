@@ -10,6 +10,7 @@ function initGame(){
     syncTree()     //merge
     syncCharPage() //merge?
     genTabs()      //merge ui
+    spriteBuilder('player')//create player sprite
 }
 
 //INITITATE COMBAT
@@ -19,11 +20,11 @@ function initiateCombat(){
     
     //Generates enemy
     enemyObj = new EnemyObj                            //New enemy for every fight 
-    el('enemyImg').setAttribute('src', enemyObj.image) //Adds ene img to index
+    // el('enemyImg').setAttribute('src', enemyObj.image) //Adds ene img to index
     genEneAction()                                     //Gen before player turn and after. Do it at this stage because it references eneObj.
-    
-    //Remove temporary buffs from previous encounter
+    spriteBuilder('enemy')
 
+    //Remove temporary buffs from previous encounter
     //Restore sword dmg buff
     playerObj.swordDmgMod    = 0
 
@@ -435,9 +436,15 @@ function turnCalc(buttonElem){
 function enemyActionLogic(){
     if(enemyObj.state !== 'Skip turn' && combatState.sourceAction.actionType !== "extra-action"){
 
-        if      (enemyObj.action === 'Attack'){
+        //Check crit
+        if(enemyObj.crit === true){
+            combatState.dmgDoneByEnemy += (enemyObj.roll + enemyObj.power) * 3
+            enemyObj.crit = false
+        }
+        else if      (enemyObj.action === 'Attack'){
 
             combatState.dmgDoneByEnemy += enemyObj.roll + enemyObj.power 
+            
 
         }
         else if (enemyObj.action === 'Block'){//block
@@ -483,6 +490,9 @@ function enemyActionLogic(){
         }
         else if (enemyObj.action === 'Detonate'){
             combatState.dmgDoneByEnemy += enemyObj.flatLife                   
+        }
+        else if (enemyObj.action === 'Crit'){
+            enemyObj.crit = true
         }
         
     }
@@ -563,7 +573,7 @@ function damageCalc(){
             combatState.dmgDoneByEnemy = Math.round(combatState.dmgDoneByEnemy * (1 - combatState.sourceAction.actionMod / 100)) 
         }
 
-        if(['Attack'].indexOf(enemyObj.action) > -1){
+        if(['Attack', 'Crit'].indexOf(enemyObj.action) > -1){
 
 
             //Reduce def on low hit
@@ -650,7 +660,6 @@ function combatEndCheck(){
     }
 
     //Next turn (also end if roll reaches 0)
-    
     else if (playerObj.roll < 1 || combatState.sourceAction.actionType !== "extra-action"){
         if(combatState.turnState !== 'extra-action'){
 
@@ -747,23 +756,7 @@ function genReward(val, quant){
         }
 
         //Add inventory items
-        el('reward-screen').innerHTML += 
-        `
-            <div id='' class='modal-container snap-scroll-item'>
-                <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
-                    <h2>Inventory</h2>
-                    <p class="body-14">
-                        <br> 
-                        <br>
-                    </p>
-                </div>
-
-                <div id='inventory-ref-container'></div>
-            </div>
-        `
-        playerObj.inventory.forEach(item => {
-            el('inventory-ref-container').append(genItemCard(item))         
-        })
+        el('inventory-slide').append(el('inventory-list'))
 
         toggleModal('reward-screen')
     }
@@ -816,10 +809,11 @@ function genReward(val, quant){
                 if(elem.itemId !== undefined && elem.itemId === quant){
                     if(playerObj.inventory.length < playerObj.inventorySlots){
                         playerObj.inventory.push(elem)
-
-                        
                         equipItem(elem)
-                        
+
+                        //Move inventory back to it's page
+                        console.log(el('inventory').firstChild);
+                        el('inventory').childNodes[1].append(el('inventory-list'))  
                     }
                     else {
                         //If no inventory slots, trigger item swap screen
@@ -843,7 +837,7 @@ function genReward(val, quant){
             initiateCombat()
 
             //Hide reward modal
-            toggleModal('rewardScreen')
+            toggleModal('reward-screen')
 
             //Animates enemy sprite moving in at the start of the combat.
             runAnim(el('enemySprite'), 'enemyEntrance') 
@@ -880,7 +874,11 @@ function genEneAction(){
     }
 
     //Pick action
-    if(actionRoll < 2 && objContainsByPropValue(eneActionRef, 'rate', 4)){       //1%
+    if(enemyObj.crit === true){//crit
+        enemyAc = eneActionRef.Crit.action
+        enemyObj.action = 'Crit'
+    }
+    else if(actionRoll < 2 && objContainsByPropValue(eneActionRef, 'rate', 4)){       //1%
         for(let i = 0; i < actionKeys.length; i++){
             if(eneActionRef[actionKeys[i]].rate === 4){
                 aAction.push(eneActionRef[actionKeys[i]].action)
@@ -888,7 +886,7 @@ function genEneAction(){
         }
         enemyAc = rarr(aAction)
     }
-    if(actionRoll < 7 && objContainsByPropValue(eneActionRef, 'rate', 3)){       //5%
+    else if(actionRoll < 7 && objContainsByPropValue(eneActionRef, 'rate', 3)){  //5%
         for(let i = 0; i < actionKeys.length; i++){
             if(eneActionRef[actionKeys[i]].rate === 3){
                 aAction.push(eneActionRef[actionKeys[i]].action)
@@ -983,6 +981,7 @@ function equipItem(item){
     {
         item.equipped = true
     } 
+    //Unequip item
     else if (item.equipped === true){
         item.equipped = false
     }
@@ -1000,21 +999,53 @@ function equipItem(item){
 //Resolve action charges
 function resolveCharge(action){
     action.actionCharge--
-        if(action.actionCharge<1){
-            // let tempAction = action
 
-            removeFromArr(playerObj.actions, action)
-            removeFromArr(playerObj.tempActions, action)
+    if(action.actionCharge < 1){
 
-            //Resolve stats if passive action removed due to charge loss
-            // if(tempAction.passiveStats.length > 0){
-                //Remove action
-                resolvePlayerStats()//Loose passive stat
-            // }
+        //Remove action
+        removeFromArr(playerObj.actions, action)
+        removeFromArr(playerObj.tempActions, action)
+
+        //Resolve item on 0 charge
+        let item = findItemByAction(action)
+        //Delete id consumable
+        if(
+            item.itemName.includes('potion') ||
+            item.itemName.includes('scroll') ||
+            item.itemName.includes('curse')
+        ){
+            removeItem(item.itemId)
         }
+        //Else unequip
+        else if(item.passiveStats.length === 0){
+            equipItem(item)
+        }
+
+        
+        //Loose passive stat
+        resolvePlayerStats()  
+    }
 }
 
+function findItemByAction(action){
+    let itemWihtAction
 
+    playerObj.inventory.forEach(item => {
+
+        item.actions.forEach(itemAction => {
+
+            if(itemAction.actionId === action.actionId){
+
+                itemWihtAction = item
+
+            }
+
+        })
+
+    })
+
+    return itemWihtAction
+}
 
 //Recalc stats & adds actions from items
 function resolvePlayerStats(){
@@ -1066,6 +1097,8 @@ function resolvePlayerStats(){
     let flatDice = baseDice
     let diceDeviation = playerObj.dice - playerObj.flatDice
 
+    let flatSlots = playerObj.baseSlots
+
     //Extracts stats
     function extractPassiveStats(obj){{
         obj.passiveStats.forEach(statObj => {
@@ -1097,6 +1130,11 @@ function resolvePlayerStats(){
 
             else if(statObj.stat === 'dice-mod'){
                 flatDice += statObj.value
+            }
+
+            //Item slots
+            else if(statObj.stat === 'slots'){
+                flatSlots += statObj.value
             }
         })
     }}
@@ -1140,6 +1178,10 @@ function resolvePlayerStats(){
     //Dice
     playerObj.flatDice = flatDice
     playerObj.dice = playerObj.flatDice + diceDeviation
+
+    //Slots 
+    playerObj.equipmentSlots = flatSlots
+    playerObj.actionSlots = flatSlots
 }
 
 

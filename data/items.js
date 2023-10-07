@@ -289,19 +289,19 @@ let itemsRef = [
     },
     {
       "itemName": "bag",
-      "passiveStats": [{stat:'equipmentSlots', value:2}],
+      "passiveStats": [{stat:'slots', value:2}],
       "actions": "",
       "itemType": "Bag"
     },
     {
       "itemName": "leather bag",
-      "passiveStats": [{stat:'equipmentSlots', value:4}],
+      "passiveStats": [{stat:'slots', value:4}],
       "actions": "",
       "itemType": "Bag"
     },
     {
-      "itemName": "woolem bag",
-      "passiveStats": [{stat:'equipmentSlots', value:6}, {stat:'power', value:-2}],
+      "itemName": "woolen bag",
+      "passiveStats": [{stat:'slots', value:6}, {stat:'power', value:-2}],
       "actions": "",
       "itemType": "Bag"
     },

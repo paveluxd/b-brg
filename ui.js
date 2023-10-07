@@ -2,7 +2,7 @@
 function genTabs(){
 
     //Clear tabs
-    el('tabs').innerHTML = ''
+    el('tab-container').innerHTML = ''
 
     //Add hidden close button
     let tab = document.createElement('button')
@@ -10,7 +10,7 @@ function genTabs(){
     tab.classList.add('hide')
     tab.innerHTML = `<img src="./img/ico/tab-hide.svg">Hide`
     tab.id = 'close-tab'
-    el('tabs').append(tab)
+    el('tab-container').append(tab)
 
     let screens = [
         ['map','map-tab'], 
@@ -27,7 +27,7 @@ function genTabs(){
         tab.id = `${elem[0]}-tab`
 
 
-        el('tabs').append(tab)
+        el('tab-container').append(tab)
     })
 }
 
@@ -67,11 +67,11 @@ function syncUi(){
 
         //In combat game log at the top left corner
         el('log').innerHTML = `
-            Encounter: ${gameState.encounter} / ${gameState.bossFrequency} <br> 
-            Stage: ${gameState.stage}
-            Turn: ${combatState.turn} <br>
-            Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
-        ` 
+            Stage: ${gameState.stage} / 
+            Turn: ${combatState.turn} /
+            Enc: ${gameState.encounter}/${gameState.bossFrequency}
+            ` 
+        // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
 
         //Enemy floating number
         if(combatState.dmgTakenByEnemy > 0){//Attack
@@ -120,6 +120,12 @@ function syncUi(){
             el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc}`
         }
     }
+
+    //Modify inventroy slide heading
+    el('inventorySlideDesc').innerHTML = `
+        Inventory capacity: ${playerObj.inventory.length} / ${playerObj.inventorySlots}<br>
+        Equipped items: ${calcEquippedItems()} / ${playerObj.equipmentSlots}
+    `
 }
 
 //Action tiles
@@ -128,76 +134,9 @@ function syncActionTiles(){
     
     //Add button per player item
     playerObj.actions.forEach(action => {
-
-        // Section that contains name and desc
-        let content = document.createElement('section')  
-
-        let referenceAction = findByProperty(actionsRef, 'keyId', action.keyId);
-
-        //Create button elem
-        let button = document.createElement('button')
-        button.setAttribute('onclick', `turnCalc(this)`) // On click run next turn
-        button.setAttribute('actionId', action.actionId)       // Add a unique id
-        button.classList.add('action')
-        
-        
-        //Updates button labels based on actions
-        //Modifies 'content' section
-        button.append(content) //Add content section to button
-
-        //!!! REPACE WITH keyID
-
-        //Cooldonw management
-        let cooldownCounter = ''
-
-        //If action is on cooldown disable the button
-        if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
-            cooldownCounter = `(cd:${action.cooldown})` 
-            button.disabled = true
-        }
-
-        if     (['attack'].indexOf(referenceAction.actionName) > -1){
-            button.querySelector('section').innerHTML = `
-            <span>
-            <h3>${action.actionName} for ${playerObj.roll + playerObj.power}</h3> 
-            <p>x${action.actionCharge}</p>
-            </span>
-            <p class='desc'>${action.desc}.</p>
-            `   
-        }
-        else if(['fireball'].indexOf(referenceAction.actionName) > -1){        
-            button.querySelector('section').innerHTML = `
-            <span>
-            <h3>${upp(action.actionName)} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
-            <p>x${action.actionCharge}</p>
-            </span>
-                <p class='desc'>${upp(action.desc)}.</p>
-                `
-        }
-        else if(['block', 'Break'].indexOf(referenceAction.actionName) > -1){
-                button.querySelector('section').innerHTML = `
-                <span>
-                <h3>${upp(action.actionName)} ${playerObj.roll}</h3> 
-                <p>x${action.actionCharge}</p>
-                </span>
-                <p class='desc'>${upp(action.desc)}.</p>
-                `      
-        }
-        else{
-            button.querySelector('section').innerHTML = `
-                <span>
-                    <h3>${upp(action.actionName)}</h3> 
-                    <p>x${action.actionCharge}${cooldownCounter}</p>
-                </span>
-                <p class='desc'>${upp(action.desc)}.</p>
-            `        
-        }
-
-
-
-        el('playerActionContainer').append(button)
+        let actionCard = genActionCard(action)
+        el('playerActionContainer').append(actionCard)
     })
-
 
     //Add empty item slots
     let emptySlots = playerObj.actionSlots - playerObj.actions.length
@@ -208,6 +147,87 @@ function syncActionTiles(){
         button.classList.add('action', 'empty-slot')
         el('playerActionContainer').append(button) 
     }
+}
+
+function genActionCard(action, type){
+    // Section that contains name and desc
+    let content = document.createElement('section')  
+
+    let referenceAction = findByProperty(actionsRef, 'keyId', action.keyId);
+
+    //Create button elem
+    let button = document.createElement('button')
+    if(type !== 'card'){
+        button.setAttribute('onclick', `turnCalc(this)`) // On click run next turn
+    }
+
+    button.setAttribute('actionId', action.actionId)       // Add a unique id
+    button.classList.add('action')
+    
+    
+    //Updates button labels based on actions
+    //Modifies 'content' section
+    button.append(content) //Add content section to button
+
+    //!!! REPACE WITH keyID
+
+    //Card item image
+    let itemString = findItemByAction(action).itemName
+    if(itemString.includes('scroll')){
+        itemString = 'magic scroll'
+    }
+    else if(itemString.includes('curse')){
+        itemString = 'curse scroll'
+    }
+
+    //Cooldonw management
+    let cooldownCounter = ''
+
+    //If action is on cooldown disable the button
+    if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
+        cooldownCounter = `(cd:${action.cooldown})` 
+        button.disabled = true
+    }
+
+    if     (['attack'].indexOf(referenceAction.actionName) > -1){
+        button.querySelector('section').innerHTML = `
+        <span>
+        <h3>${action.actionName} for ${playerObj.roll + playerObj.power}</h3> 
+        <p>x${action.actionCharge}</p>
+        </span>
+        <p class='desc'>${action.desc}.</p>
+        `   
+    }
+    else if(['fireball'].indexOf(referenceAction.actionName) > -1){        
+        button.querySelector('section').innerHTML = `
+        <span>
+        <h3>${upp(action.actionName)} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
+        <p>x${action.actionCharge}</p>
+        </span>
+            <p class='desc'>${upp(action.desc)}.</p>
+            `
+    }
+    else if(['block', 'Break'].indexOf(referenceAction.actionName) > -1){
+            button.querySelector('section').innerHTML = `
+            <span>
+            <h3>${upp(action.actionName)} ${playerObj.roll}</h3> 
+            <p>x${action.actionCharge}</p>
+            </span>
+            <p class='desc'>${upp(action.desc)}.</p>
+            `      
+    }
+    else{
+        button.querySelector('section').innerHTML = `
+            <span>
+                <h3>${upp(action.actionName)}</h3> 
+                <p>x${action.actionCharge}${cooldownCounter}</p>
+            </span>
+            <p class='desc'>${upp(action.desc)}.</p>
+            <img src="../img/items/${itemString}.svg">
+     `        
+    }
+
+    return button
 }
 
 //Gen skill-tree page
@@ -236,18 +256,10 @@ function syncTree(){
 
 //Character page
 function syncCharPage(){
-    playerObj.treePoints = playerObj.lvl - playerObj.treeNodes.length -1
-
-    let cont = el('character-content')
-
-    
-
-    //Add placeholders for actions
-    // 
-    
-
+    // playerObj.treePoints = playerObj.lvl - playerObj.treeNodes.length -1
+ 
     //Add text
-    cont.innerHTML =`
+    el('character-content').innerHTML =`
         <h2>Character</h2>
 
         <div id="stat-block" class = "grey-card body-14">
@@ -262,27 +274,20 @@ function syncCharPage(){
                 <p>Stage: ${gameState.stage} / Level: ${playerObj.lvl} (exp: ${playerObj.exp})</p>
                 <p>Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
                 <p>Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
-                <p>Actions: ${playerObj.actions.length}/${playerObj.actionSlots}</p>
             </div>
         </div>
 
-        <div id="actions-list"></div>
+        <div class ="column" style="gap:8px; align-items:flex-start;">
+            <p class="body-14 italic b50">Actions ${playerObj.actions.length}/${playerObj.actionSlots}</p>
+            <div id="actions-list"></div>
+        </div>
     `
-    // <br>Passive skill points: ${playerObj.treePoints}
-    // <br>Gold: ${playerObj.gold} 
 
-
-    //Build actions array
+    //Add action cards
+    el('actions-list').innerHTML = ``
     playerObj.actions.forEach(action => {
-        el('actions-list').innerHTML += `
-        <div class ="grey-card body-14">
-            <p>
-                <span class="name">${upp(action.actionKey)}</span>    
-                - ${upp(action.desc)}.
-            </p>
-
-            <span class="charges">x${action.actionCharge}</span>
-        </div>`
+        let actionCard = genActionCard(action, 'card')
+        el('actions-list').append(actionCard)
     })
 }
 
@@ -295,7 +300,8 @@ function syncInventory(){
     el('inventory-heading').innerHTML = `Inventory ${playerObj.inventory.length}/${playerObj.inventorySlots}`
     
     playerObj.inventory.forEach(item => {
-        el('inventory-list').append(genItemCard(item))         
+        el('inventory-list').append(genItemCard(item))
+        // el('inventory-ref-container').append(genItemCard(item))       
     })
 }
 
@@ -337,11 +343,12 @@ function genItemCard(item, type){
         //Add item type, only if it is non-generic
         let itemType = ''
         if(item.itemType !== 'generic'){
-            itemType = ` (${item.itemType})`
+            itemType = `<span>${item.itemType}</span>`
         }
+        topContainer.innerHTML += itemType
 
         //Add title and type
-        descSection.innerHTML = `<h3>${upp(item.itemName)}${itemType}</h3>`
+        descSection.innerHTML = `<h3>${upp(item.itemName)}</h3>`
 
         //Added actions
         item.actions.forEach(action =>{
@@ -470,4 +477,27 @@ function calcEquippedItems(){
     })
 
     return equipped
+}
+
+//Sprite builder
+function spriteBuilder(target){
+    if(target === 'player'){
+        el('player-sprite').innerHTML = `
+            <img src="../img/character/${rng(3,1)}-back.svg">
+            <img src="../img/character/${rng(3,1)}-back-arm.svg">
+            <img src="../img/character/${rng(3,1)}-legs.svg">
+            <img src="../img/character/${rng(3,1)}-torso.svg">
+            <img src="../img/character/${rng(3,1)}-front-arm.svg">
+            <img src="../img/character/${rng(3,1)}-head.svg">
+        `
+    }else if(target === 'enemy'){
+        el('enemy-sprite').innerHTML = `
+        <img src="../img/character/${rng(3,1)}-back.svg">
+        <img src="../img/character/${rng(3,1)}-back-arm.svg">
+        <img src="../img/character/${rng(3,1)}-legs.svg">
+        <img src="../img/character/${rng(3,1)}-torso.svg">
+        <img src="../img/character/${rng(3,1)}-front-arm.svg">
+        <img src="../img/character/${rng(3,1)}-head.svg">
+    ` 
+    }
 }
