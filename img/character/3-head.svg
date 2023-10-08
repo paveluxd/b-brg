@@ -1,8 +1,8 @@
-<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M57 22.5V30.5H74V22.5H57Z" fill="black" stroke="black" stroke-width="2"/>
-<path d="M36.8303 25L91.8303 27.5L71 18L64.8303 4L58.5 18L36.8303 25Z" fill="#263464" stroke="black" stroke-width="2"/>
-<path d="M76.8303 34.5L80.8303 27.5H71.3303L67 32L61.8303 27.5H46.8303L52.0935 34.5H63L67 41.5L71.3303 34.5H76.8303Z" fill="#54609F" stroke="black" stroke-width="2"/>
-<path d="M60.6172 24.6934L57.4476 24.5826L59.0878 23.0532L60.6172 24.6934Z" stroke="black" stroke-width="2"/>
-<path d="M68.6124 24.9727L65.4427 24.8619L67.0829 23.3325L68.6124 24.9727Z" stroke="black" stroke-width="2"/>
-<path d="M76.6075 25.2522L73.4378 25.1414L75.078 23.612L76.6075 25.2522Z" stroke="black" stroke-width="2"/>
+<svg width="128" height="144" viewBox="0 0 128 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M57 22V32H74V22H57Z" fill="black"/>
+<path d="M37 25L92 27L71 18L65 4L59 18L37 25Z" fill="#263464" stroke="black" stroke-width="2"/>
+<path d="M77 35L81 28H71L67 32L62 28H47L53 35H63L67 42L71 35H77Z" fill="#54609F" stroke="black" stroke-width="2"/>
+<path d="M60.5858 25.0001L57.4142 25L59 23.4142L60.5858 25.0001Z" stroke="black" stroke-width="2"/>
+<path d="M68.5858 25.0001L65.4142 25L67 23.4142L68.5858 25.0001Z" stroke="black" stroke-width="2"/>
+<path d="M76.5858 25.0001L73.4142 25L75 23.4142L76.5858 25.0001Z" stroke="black" stroke-width="2"/>
 </svg>

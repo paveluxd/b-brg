@@ -21,7 +21,7 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal " onclick=" toggleModal('gameStartScreen')">
+    <div id="gameStartScreen" class="modal hide" onclick=" toggleModal('gameStartScreen')">
         <div class="modal-container">
                 
                 <img src="./img/bg/start.svg" alt="">
@@ -44,13 +44,13 @@
     </div>
 
     <!-- TAB CONTAINER -->
-    <div id="tab-container" class="tab-container row ">
+    <div id="tab-container" class="tab-container row hide">
     </div>
 
 
 
     <!-- Map -->
-    <div id="map" class="screen tab ">
+    <div id="map" class="screen tab hide">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
@@ -81,7 +81,7 @@
     </div>
 
     <!-- Combat -->
-    <div id="combat" class="screen hide">
+    <div id="combat" class="screen ">
 
         <!-- Game info -->
         <p id="log">stage: 1<br> turn:1</p>
@@ -89,27 +89,26 @@
         <!-- Units images -->
         <div class="column grow bg-image" style="width:100%; align-items: stretch; padding: 0 4px;">
             <div class="row" style="align-items: stretch; flex-grow: 1;">
+
                 <!-- Player -->
                 <div class="column">
                     <div class="imgcont">
-                        <p id="plDmgInd" class="floating-ind">0</p>
-    
                         <div id="player-sprite"></div>
+                        <p id="plDmgInd" class="floating-ind">0</p>
                     </div>
     
                     
                 </div>
         
                 <!-- Enemy -->
-                <div id="enemySprite" class="column" style="position: relative;">
+                <div class="column">
                     <div class="imgcont">
-                        <p id="enDmgInd" class="floating-ind">0</p>
-    
-                        <!-- <img id="enemyImg" src="../img/enemy/balanced/1.png" class="flip"> -->
-                        <div id="enemy-sprite" class="flip"></div>
-
+                        <div id="enemy-sprite" class="boss"></div>
+                        
                         <!-- UI:Enemy intent indicator -->
                         <div id="intent-indicator" class="row">
+
+                        <p id="enDmgInd" class="floating-ind">0</p>
                             <svg><polygon points="12,12 12,0 4,6"/></svg>
                             <p id="intent" class="body-14"></p>
                         </div>
