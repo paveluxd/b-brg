@@ -21,7 +21,7 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal hide" onclick=" toggleModal('gameStartScreen')">
+    <div id="gameStartScreen" class="modal " onclick=" toggleModal('gameStartScreen')">
         <div class="modal-container">
                 
                 <img src="./img/bg/start.svg" alt="">
@@ -44,13 +44,13 @@
     </div>
 
     <!-- TAB CONTAINER -->
-    <div id="tab-container" class="tab-container row hide">
+    <div id="tab-container" class="tab-container row ">
     </div>
 
 
 
     <!-- Map -->
-    <div id="map" class="screen tab hide">
+    <div id="map" class="screen tab ">
         <div class="column" style="width: 100%; gap:48px;">
             <button onclick="screen('combat'), initiateCombat()">
                 <div>
@@ -81,7 +81,7 @@
     </div>
 
     <!-- Combat -->
-    <div id="combat" class="screen ">
+    <div id="combat" class="screen hide">
 
         <!-- Game info -->
         <p id="log">stage: 1<br> turn:1</p>
@@ -214,16 +214,14 @@
 
     <!-- Character -->
     <div id="character" class="screen tab hide" >
-        <div class="modal-container tab-margin">
-
+        <div class="modal-container tab-margin scroll">
             <div id='character-content' class="column modal-body"></div>
-
         </div>
     </div>
 
     <!-- Inventory -->
     <div id="inventory" class="screen tab hide" >
-        <div class="modal-container tab-margin">
+        <div class="modal-container tab-margin scroll">
             <h2 id="inventory-heading"></h2>
             <div id="inventory-list" class="modal-body"></div>
         </div>

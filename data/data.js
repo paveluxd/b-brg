@@ -74,7 +74,7 @@ class PlayerObj {
 
         //Slots
         //Equipment slots
-        this.baseSlots      = 6
+        this.baseSlots      = 8
         this.equipmentSlots = this.baseSlots
 
         //Actions
