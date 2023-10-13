@@ -158,7 +158,7 @@ class EnemyObj {
 
         //Set stats
         // mod(0.5) -> Get +1 every 2 stages
-        this.life    = 4 + Math.round((8   + gameState.stage) * lifeMod ) //+ rng(4)
+        this.life    = 24 + Math.round((8   + gameState.stage) * lifeMod ) //+ rng(4)
         this.power   = 0 + Math.round((0.2 * gameState.stage) * powerMod) 
         this.def     = 0 + Math.round((0.2 * gameState.stage) * defMod  )
         this.dice    = 4 + Math.round((0.2 * gameState.stage) * diceMod )
@@ -379,3 +379,84 @@ let treeRef = [
 actionsRef.forEach(action => {
     action.keyId = `a${action.keyId}`
 })
+
+//Map
+let alphabet = 'aabcdefghijklmnopqrstuvwxyz'.split(''); //extra a at the start, because I don;'t know how to fix % issue with id.
+let tileTypesA = 'castle'.split(' ')
+let tileTypesD = 'lake-1 house-1 shop'.split(' ')
+
+let tileTypesB = 'dungeon'.split(' ')
+let tileTypesC = 'empty-1 empty-2 empty-3 empty-4 forest-1 forest-2'.split(' ')
+
+class MapObj{
+    constructor(){
+        this.columns = 11
+        this.rows = 11
+        this.tiles = []
+
+        let row = 1
+        let column = 0 //letters
+
+        //Generates tiles
+        for(let i = 0; i < this.rows * this.columns; i++){
+
+            if(i % this.columns  === 0){//next letter at the end of each row.
+                column++
+                row = 1
+            }
+
+            let tile = {}
+            tile.tileId = row++ + alphabet[column]
+            this.tiles.push(tile)
+
+            //% distriburion
+            let roll = rng(100)
+            if(roll > 98){
+                tile.tileType = tileTypesA[rng((tileTypesA.length - 1), 0)]
+            }else if (roll > 90){
+                tile.tileType = tileTypesD[rng((tileTypesD.length - 1), 0)]
+            }else if (roll > 85){
+                tile.tileType = tileTypesB[rng((tileTypesB.length - 1), 0)]
+            }else{
+                tile.tileType = tileTypesC[rng((tileTypesC.length - 1), 0)]
+            }
+        }
+
+        //Sets map size
+        el('map-container').setAttribute('style', `
+            min-width:${120 * this.columns}px; min-height:${120 * this.rows}px;
+            width:${120 * this.columns}px; height:${120 * this.rows}px;
+            max-width:${120 * this.columns}px; max-height:${120 * this.rows}px;
+        `)
+
+        //Adds unit
+
+    }
+}
+let map = new MapObj
+// console.table(map.tiles);
+
+
+let mapRef = [
+    {tileId:'a1', tileType:'empty'},
+    {tileId:'a2', tileType:'castle'},
+    {tileId:'a3', tileType:'forest-1'},
+    {tileId:'a4', tileType:'empty'},
+
+    {tileId:'b1', tileType:'empty'},
+    {tileId:'b2', tileType:'dungeon'},
+    {tileId:'b3', tileType:'forest-1'},
+    {tileId:'b4', tileType:'empty'},
+
+    {tileId:'c1', tileType:'empty'},
+    {tileId:'c2', tileType:'dungeon'},
+    {tileId:'c3', tileType:'forest-1'},
+    {tileId:'c4', tileType:'empty'},
+
+    {tileId:'d1', tileType:'empty'},
+    {tileId:'d2', tileType:'dungeon'},
+    {tileId:'d3', tileType:'forest-1'},
+    {tileId:'d4', tileType:'empty'},
+]
+
+mapRef = map.tiles

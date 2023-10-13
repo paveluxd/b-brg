@@ -1,0 +1,17 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M42 23L42 30M42 48L42 36M42 36L50 36L50 5M42 36L42 30M42 30L38 30L38 12.5" stroke="black" stroke-width="2"/>
+<path d="M99 89H79V103H99V89Z" fill="white"/>
+<path d="M99 103V89H79V103M99 103H79M99 103H102M79 103H74H34" stroke="black" stroke-width="2"/>
+<path d="M89 99V97" stroke="black" stroke-width="2"/>
+<path d="M84 99V97" stroke="black" stroke-width="2"/>
+<path d="M94 99V97" stroke="black" stroke-width="2"/>
+<path d="M101 83H77V94H101V83Z" fill="white"/>
+<path d="M101 83H77V94H101V83Z" fill="#9D3F3F"/>
+<path d="M101 83H77V94H101V83Z" stroke="black" stroke-width="2"/>
+<path d="M49 96H40V92H49V96Z" fill="#D9D9D9"/>
+<path d="M40 102V96M40 96H49M40 96V92M49 96V102M49 96V92M40 92H49M40 92V92C38.3431 92 37 93.3431 37 95V95M49 92V92C49 89.7909 50.7909 88 53 88H54" stroke="black" stroke-width="2"/>
+<path d="M68 96H59V92H68V96Z" fill="#D9D9D9"/>
+<path d="M59 102V96M59 96H68M59 96V92M68 96V102M68 96V92M59 92H68M59 92V92C57.3431 92 56 93.3431 56 95V95M68 92V92C68 89.7909 69.7909 88 72 88H73" stroke="black" stroke-width="2"/>
+<path d="M86 76H79V80H86V76Z" fill="#38C378"/>
+<path d="M79 84V80M79 80V76H86V80H79Z" stroke="black" stroke-width="2"/>
+</svg>

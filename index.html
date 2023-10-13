@@ -21,7 +21,7 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal " onclick=" toggleModal('gameStartScreen')">
+    <div id="gameStartScreen" class="modal hide" onclick=" toggleModal('gameStartScreen')">
         <div class="modal-container">
                 
                 <img src="./img/bg/start.svg" alt="">
@@ -51,33 +51,10 @@
 
     <!-- Map -->
     <div id="map" class="screen tab ">
-        <div class="column" style="width: 100%; gap:48px;">
-            <button onclick="screen('combat'), initiateCombat()">
-                <div>
-                    <img src="./img/ico/attack.svg" alt="">
-                    Fight
-                </div> 
-            </button> 
-            
-            <!-- <button onclick="screen('shop')">
-                <div>
-                    <img src="./img/ico/gold.svg" alt="">
-                    Camp
-                </div> 
-            </button>
-            <button onclick=" ">
-                <div>
-                    <img src="./img/ico/fish.svg" alt="">
-                    Lake
-                </div>  
-            </button>
-            <button onclick=" ">   
-                <div>
-                    <img src="./img/ico/wood.svg" alt="">
-                    Forest
-                </div>             
-            </button> -->
+        
+        <div id="map-container">
         </div>
+
     </div>
 
     <!-- Combat -->
@@ -105,10 +82,11 @@
                     <div class="imgcont">
                         <div id="enemy-sprite" class="boss"></div>
                         
+                        
+                        <p id="enDmgInd" class="floating-ind">0</p>
+                        
                         <!-- UI:Enemy intent indicator -->
                         <div id="intent-indicator" class="row">
-
-                        <p id="enDmgInd" class="floating-ind">0</p>
                             <svg><polygon points="12,12 12,0 4,6"/></svg>
                             <p id="intent" class="body-14"></p>
                         </div>
@@ -169,7 +147,7 @@
     </div>
 
     <!-- Reward screen -->
-    <div id="reward-screen" class="modal hide snap-scroll" >
+    <div id="reward-screen" class="modal hide " >
         <!-- Tabs -->
         <div class="tab-container">
             <button onclick="location.href='#reward-slide'">
@@ -183,7 +161,7 @@
         </div>
 
         <!-- Reward slide -->
-        <div  id="reward-slide" class="modal-container snap-scroll-item  tab-margin">
+        <div  id="reward-slide" class="modal-container tab-margin">
             <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
 
                 <h2 id="combatEndIndicator">Victory</h2>
@@ -197,7 +175,7 @@
         </div>
 
         <!-- Inventory slide -->
-        <div  id="inventory-slide" class="modal-container snap-scroll-item  tab-margin">
+        <div  id="inventory-slide" class="modal-container tab-margin">
             <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
                 <h2>Inventory</h2>
                 <p id="inventorySlideDesc" class="body-14">

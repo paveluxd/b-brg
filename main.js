@@ -672,7 +672,10 @@ function combatEndCheck(){
     
             playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus
             playerObj.rollBonus = 0
+            
+            runAnim(el('intent-indicator'), 'turn-slide')
             genEneAction()
+            //Enemy intent animation
     
             enemyObj.state = ''
             enemyObj.poisoned = false //remove poisoned debuff at the end of the turn

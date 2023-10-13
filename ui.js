@@ -503,3 +503,39 @@ function spriteBuilder(target){
         // <img src="./img/character/${rng(3,1)}-head.svg">
     }
 }
+
+
+//Gen map
+function genMap(){
+    let map = el('map-container')
+
+    //Add unit
+    let unit = document.createElement('div')
+    unit.id = 'map-unit'
+    unit.innerHTML = '<img src="./img/map/unit.svg">'
+    map.append(unit)
+
+    //Gen tiles
+    mapRef.forEach(tile => {
+        let tileElem = document.createElement('button')
+        tileElem.id = tile.tileId
+        tileElem.classList.add('map-tile')
+        
+        //Add event to dungeons
+        if(['dungeon'].indexOf(tile.tileType) > -1){
+            tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
+            tileElem.setAttribute('onclick', 'screen("combat"), initiateCombat()')
+        }else{
+            tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
+        }
+        
+        //50% to flip image
+        if(rng(2) === 2){
+            tileElem.firstChild.setAttribute('style', 'transform: scale(-1, 1);')
+        }
+        
+        map.append(tileElem)
+    })
+}
+
+genMap()
