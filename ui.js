@@ -26,7 +26,6 @@ function genTabs(){
         tab.innerHTML = `<img src="./img/ico/${elem[1]}.svg">${upp(elem[0])}`
         tab.id = `${elem[0]}-tab`
 
-
         el('tab-container').append(tab)
     })
 }
@@ -44,6 +43,7 @@ function screen(id, mod){
        el('tab-container').classList.remove('hide')
     }
 
+
     if(mod === 'combat-menu'){//switch visible tabs
        el('character').classList.remove('hide');//display screen with id
        el('close-tab').classList.remove('hide')
@@ -55,7 +55,7 @@ function screen(id, mod){
     }
 }
 
-//
+//Ui
 function syncUi(){
     syncActionTiles()
     syncCharPage()
@@ -69,7 +69,7 @@ function syncUi(){
         el('log').innerHTML = `
             Stage: ${gameState.stage} / 
             Turn: ${combatState.turn} /
-            Enc: ${gameState.encounter}/${gameState.bossFrequency}
+            Enc: ${gameState.encounter}/${gameState.playerLocationTile.enemyQuant}
             ` 
         // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
 
@@ -120,6 +120,12 @@ function syncUi(){
             el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc}`
         }
     }
+
+    //Modify map stat indicator
+    el('pl-food').innerHTML = playerObj.food
+    el('pl-power').innerHTML = playerObj.power
+    el('pl-life').innerHTML = playerObj.life
+    el('pl-gold').innerHTML = playerObj.gold
 
     //Modify inventroy slide heading
     el('inventorySlideDesc').innerHTML = `
@@ -274,6 +280,7 @@ function syncCharPage(){
                 <p>Stage: ${gameState.stage} / Level: ${playerObj.lvl} (exp: ${playerObj.exp})</p>
                 <p>Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
                 <p>Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
+                <p>Food: ${playerObj.food}</p>
             </div>
         </div>
 
@@ -505,37 +512,182 @@ function spriteBuilder(target){
 }
 
 
-//Gen map
+//Map
 function genMap(){
+
+    // console.table(mapRef)
     let map = el('map-container')
+    map.innerHTML = ``
+
+    //Sets map size & description (+1 due to border)
+    el('map-container').setAttribute('style', 
+    `
+        min-width:${120 * gameState.mapColumns +1}px; min-height:${120 * gameState.mapRows}px;
+        width:${120 * this.gameState.mapColumns +1}px; height:${120 * gameState.mapRows}px;
+        max-width:${120 * this.gameState.mapColumns +1}px; max-height:${120 * gameState.mapRows}px;
+    `)
 
     //Add unit
     let unit = document.createElement('div')
     unit.id = 'map-unit'
-    unit.innerHTML = '<img src="./img/map/unit.svg">'
     map.append(unit)
 
     //Gen tiles
     mapRef.forEach(tile => {
+
         let tileElem = document.createElement('button')
         tileElem.id = tile.tileId
         tileElem.classList.add('map-tile')
         
-        //Add event to dungeons
-        if(['dungeon'].indexOf(tile.tileType) > -1){
-            tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
-            tileElem.setAttribute('onclick', 'screen("combat"), initiateCombat()')
-        }else{
-            tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
+        //Tile bg image
+        tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
+
+        //Player unit image
+        if(tile.playerUnit === true){
+
+            tileElem.innerHTML += `
+                <img src="./img/map/player-unit.svg" id="player-unit" class="map-unit">
+            `
+            gameState.playerLocationTile = tile
+
         }
-        
-        //50% to flip image
-        if(rng(2) === 2){
-            tileElem.firstChild.setAttribute('style', 'transform: scale(-1, 1);')
+        //Ene unit image
+        else if(tile.enemyUnit === true){
+
+            tileElem.innerHTML += `
+                <img src="./img/map/enemy-unit-${1}.svg" class="map-unit"> 
+                <p class="unit-quant">${tile.enemyQuant}</p>
+            `
+
         }
-        
+
+        //50% flip image
+        if(tile.flip === true){
+            tileElem.firstChild.setAttribute('style', 'transform: scale(-1, 1);') 
+        }
+
+        //Events
         map.append(tileElem)
+    })
+
+    resolveMove()
+}
+
+function movePlayerUnit(elem){
+    // console.log(elem);
+
+    mapRef.forEach(tile => {
+        //add player unit to target tile
+        if(tile.playerUnit === true){ 
+            tile.playerUnit = false
+        }
+        //remove enemy unit from target tile
+        else if(tile.tileId === elem.id){ 
+            tile.playerUnit = true
+        }
+    })
+
+    //Resolve cost per movement
+    if(playerObj.food > 0){
+        playerObj.food--
+    }else if(playerObj.power > 0){
+        playerObj.power--
+    }else if(playerObj.life > 1){
+        playerObj.life--
+    }else{
+        openStateScreen('starved')
+    }
+
+    gameState.turnCounter++
+    gameState.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id) 
+    
+    resolveMove()
+    syncUi()
+}
+
+function resolveMove(){
+    //Converts id to intigers
+    let tileIdRef = []
+    gameState.playerLocationTile.tileId.split('-').forEach(val =>{
+        tileIdRef.push(parseInt(val))
+    })
+
+    mapRef.forEach(tile => {
+        // console.log(tile.tileId);
+
+        //Relocate player image
+        if(tile.playerUnit === true && tile.enemyUnit === true){
+            el(tile.tileId).append(el('player-unit'))
+            gameState.playerLocationTile = tile
+
+            //Remove existing unit
+            console.log(el(tile.tileId).childNodes[2]);
+            el(tile.tileId).childNodes[2].remove() //remove unit image
+            el(tile.tileId).childNodes[3].remove() //remove unit quantity
+            tile.enemyUnit = false
+
+        }
+        else if(tile.playerUnit === true){
+            el(tile.tileId).append(el('player-unit'))
+            gameState.playerLocationTile = tile
+        }
+
+        //Add event if adjacent
+        if(
+            tile.tileId === `${tileIdRef[0]}-${tileIdRef[1]+1}` || //+1 row
+            tile.tileId === `${tileIdRef[0]}-${tileIdRef[1]-1}` || //-1 row
+            tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]}` || //+1 col
+            tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]}` || //-1 col
+
+            tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]+1}` ||
+            tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]-1}` ||
+            tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]-1}` ||
+            tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]+1}`    
+        ){
+
+            //Combat envet
+            if(tile.enemyUnit === true){
+                el(tile.tileId).setAttribute("onmousedown", 'movePlayerUnit(this), initiateCombat()')
+            }
+            
+            //Portal event
+            else if(tile.tileType === 'portal'){
+                el(tile.tileId).setAttribute('onmousedown', 'openStateScreen("completed")')
+            }
+
+            //Movement event
+            else{
+                el(tile.tileId).setAttribute("onmousedown", 'movePlayerUnit(this)')
+            }
+        }
+
+        //Player event
+        else if(tile.tileId === `${tileIdRef[0]}-${tileIdRef[1]}`){
+            el(tile.tileId).setAttribute("onmousedown", 'screen("character")')
+        }
+
+        //Remove event from other tiles.
+        else{
+            el(tile.tileId).removeAttribute("onmousedown")
+        }
     })
 }
 
-genMap()
+//Triggers game end screen
+function openStateScreen(type){
+    if(type === 'completed'){
+        el('complete-desc').innerHTML = `
+            You reached the portal in <span class="bold">${gameState.turnCounter + 1} turns</span>,<br>
+            and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
+        `
+        screen('gameCompletedScreen')
+    }
+    else if(type === 'starved'){
+        el('end-img').setAttribute('src','./img/bg/starvation.svg')
+        el('end-desc').innerHTML = `
+            You starved to death. You lasted <span class="bold">${gameState.turnCounter} turns</span>,<br>
+            and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
+        `
+        screen('gameEndScreen')
+    }  
+}

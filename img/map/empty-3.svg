@@ -1,18 +1,4 @@
 <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_3562_18680)">
-<path opacity="0.2" d="M61.0722 18.0802L64.9359 17.0449" stroke="black" stroke-width="2"/>
-<path opacity="0.2" d="M21.7466 45.1817L23.6785 44.6641" stroke="black" stroke-width="2"/>
-</g>
-<g clip-path="url(#clip1_3562_18680)">
-<path opacity="0.2" d="M43.2469 99.9168L42.6536 103.873" stroke="black" stroke-width="2"/>
-<path opacity="0.2" d="M96.3523 69.4567L96.0557 71.4346" stroke="black" stroke-width="2"/>
-</g>
-<defs>
-<clipPath id="clip0_3562_18680">
-<rect width="72" height="72" fill="white" transform="translate(12 12)"/>
-</clipPath>
-<clipPath id="clip1_3562_18680">
-<rect width="72" height="72" fill="white" transform="matrix(1 0 0 -1 36 120)"/>
-</clipPath>
-</defs>
+<rect x="18" y="87" width="2" height="4" fill="black" fill-opacity="0.2"/>
+<rect x="32" y="93" width="2" height="4" fill="black" fill-opacity="0.2"/>
 </svg>

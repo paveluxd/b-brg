@@ -1,5 +1,5 @@
 //Misc vars -> move to game obj?
-let playerObj, enemyObj, combatState
+let playerObj, enemyObj, combatState, mapObj
 let rewardPool = []
 
 
@@ -10,7 +10,14 @@ class GameState{
         this.encounter = 1
 
         // this.enemyLifeBase = 6 //N + other mods
-        this.bossFrequency = 5 //Every Nth stage
+        this.bossFrequency = 3 //Every Nth stage
+
+        this.turnCounter = 0 //Calc turns for win stats
+        this.enemyCounter = 0
+        this.totalEnemies = 0
+
+        this.mapColumns = rng(12,8)
+        this.mapRows = 3
     }
 }
 
@@ -86,6 +93,7 @@ class PlayerObj {
 
         //Sub-stats
         this.gold           = 0
+        this.food           = 9
 
         //Progression
         this.exp            = 0
@@ -151,14 +159,12 @@ class EnemyObj {
             diceMod  += 0.25
 
             this.profile = 'boss'
-            imgPath  = `boss/${rng(12,1)}`
-            // el('enemyImg').classList.add('boss')//Swaps image to boss
         }
 
 
         //Set stats
         // mod(0.5) -> Get +1 every 2 stages
-        this.life    = 24 + Math.round((8   + gameState.stage) * lifeMod ) //+ rng(4)
+        this.life    = 8 + Math.round((8   + gameState.stage) * lifeMod ) //+ rng(4)
         this.power   = 0 + Math.round((0.2 * gameState.stage) * powerMod) 
         this.def     = 0 + Math.round((0.2 * gameState.stage) * defMod  )
         this.dice    = 4 + Math.round((0.2 * gameState.stage) * diceMod )
@@ -380,61 +386,75 @@ actionsRef.forEach(action => {
     action.keyId = `a${action.keyId}`
 })
 
-//Map
-let alphabet = 'aabcdefghijklmnopqrstuvwxyz'.split(''); //extra a at the start, because I don;'t know how to fix % issue with id.
-let tileTypesA = 'castle'.split(' ')
-let tileTypesD = 'lake-1 house-1 shop'.split(' ')
 
+//Map
+//Background image ids
+let tileTypesA = 'castle'.split(' ')
 let tileTypesB = 'dungeon'.split(' ')
-let tileTypesC = 'empty-1 empty-2 empty-3 empty-4 forest-1 forest-2'.split(' ')
+let tileTypesC = 'empty-1 empty-2 empty-3 empty-4'.split(' ')
+let tileTypesD = 'lake-1 lake-2 lake-3 house-1 grave shop mine'.split(' ')
+let forests    = 'forest-1 forest-2'.split(' ')
 
 class MapObj{
     constructor(){
-        this.columns = 11
-        this.rows = 11
+        this.columns = gameState.mapColumns
+        this.rows = gameState.mapRows
         this.tiles = []
+        let row = 1 //Offset because i know js yes
+        let column = 0
 
-        let row = 1
-        let column = 0 //letters
 
         //Generates tiles
         for(let i = 0; i < this.rows * this.columns; i++){
 
-            if(i % this.columns  === 0){//next letter at the end of each row.
+            let tile = {}
+            let roll = rng(100)
+
+            //Modify id to match rows and columns
+            if(i % this.columns === 0){
                 column++
                 row = 1
             }
+            tile.tileId = `${column}-${row++}`
+            
+            //% distriburion of tiles
 
-            let tile = {}
-            tile.tileId = row++ + alphabet[column]
-            this.tiles.push(tile)
-
-            //% distriburion
-            let roll = rng(100)
-            if(roll > 98){
+            if       (roll > 98){
                 tile.tileType = tileTypesA[rng((tileTypesA.length - 1), 0)]
             }else if (roll > 90){
                 tile.tileType = tileTypesD[rng((tileTypesD.length - 1), 0)]
             }else if (roll > 85){
                 tile.tileType = tileTypesB[rng((tileTypesB.length - 1), 0)]
-            }else{
+            }else if (roll > 75){
+                tile.tileType = forests[rng((forests.length - 1), 0)]
+            }else               {
                 tile.tileType = tileTypesC[rng((tileTypesC.length - 1), 0)]
             }
+
+
+            //Add player & enemies
+            if(i === 0){
+                tile.playerUnit = true
+            }
+            else if (1 === rng(3) ){//Add enemy units 30%
+                let eneQuant = rng(3)
+                tile.enemyUnit = true
+                tile.enemyQuant = eneQuant
+                gameState.totalEnemies += eneQuant
+            }
+
+            //Flip tiles
+            if(1 === rng(2)){
+                tile.flip = true
+            }
+
+            this.tiles.push(tile)
         }
 
-        //Sets map size
-        el('map-container').setAttribute('style', `
-            min-width:${120 * this.columns}px; min-height:${120 * this.rows}px;
-            width:${120 * this.columns}px; height:${120 * this.rows}px;
-            max-width:${120 * this.columns}px; max-height:${120 * this.rows}px;
-        `)
-
-        //Adds unit
-
+        //Set portal
+        findByProperty(this.tiles, 'tileId', `${rng(gameState.mapRows)}-${gameState.mapColumns}`).tileType= "portal"  
     }
 }
-let map = new MapObj
-// console.table(map.tiles);
 
 
 let mapRef = [
@@ -458,5 +478,3 @@ let mapRef = [
     {tileId:'d3', tileType:'forest-1'},
     {tileId:'d4', tileType:'empty'},
 ]
-
-mapRef = map.tiles

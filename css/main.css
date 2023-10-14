@@ -39,11 +39,12 @@ html{
     --green-bg:  #576557;
 
     --black:     rgb(0, 0, 0);
-    --b10:       rgb(0, 0, 0, 0.1);
-    --b20:       rgb(0, 0, 0, 0.2);
     --b50:       rgb(0, 0, 0, 0.5);
+    --b20:       rgb(0, 0, 0, 0.2);
+    --b10:       rgb(0, 0, 0, 0.1);
 
     --white:     rgb(255, 255, 255);
+    --w70:       rgb(255, 255, 255, 0.70);
     --w50:       rgb(255, 255, 255, 0.50);
     --w20:       rgb(255, 255, 255, 0.20);
     --w10:       rgb(255, 255, 255, 0.10);
@@ -55,7 +56,7 @@ html{
 
     --orange:    rgb(255, 102, 54);
     --yellow:    rgb(255,230,0);
-    --map-bg:    rgb(100, 111, 92);
+    --map-bg:    #83867D;
 }
 
 body{
@@ -144,34 +145,45 @@ body{
         overflow: scroll;
     }
 
-    #gameStartScreen, #gameEndScreen{
-        z-index: 5;
+    .state-screen{
+        z-index: 5 !important;
     }
-
-    #gameStartScreen .modal-container, #gameEndScreen .modal-container{
+    .state-screen .modal-container, .state-screen .modal-container{
         gap: 0px;
         text-align: center;
         align-items: center;
         justify-content: center; 
     }
-    #gameStartScreen .modal-container img, #gameEndScreen .modal-container img{
+    .state-screen .modal-container img, .state-screenn .modal-container img{
         height: 224px;
         width: 226px;
     }
-    #gameStartScreen .modal-container .italic, #gameEndScreen .modal-container .italic{
+    .state-screen .modal-container .italic, .state-screen .modal-container .italic{
         width: 100%;
         padding: 52px;
         position: fixed;
         bottom: 0;
     }
 
+
 /* Map */
     #map{
         background-color: var(--map-bg);
+        padding: 9px;
+        flex-direction: column;
+    }
+    #map, #map *{
+        touch-action:pan-x pan-y !important;
+        overscroll-behavior-y: none;
+        overscroll-behavior-x: none;
     }
     #map-container{
         display: flex;
         flex-wrap: wrap;
+        margin: auto;
+
+        border-right: 1px dashed var(--b20) !important;
+        border-top: 1px dashed var(--b20) !important;
     }
     .map-tile{
         width: 120px;
@@ -181,11 +193,68 @@ body{
         border-left: 1px dashed var(--b20) !important;
         border-bottom: 1px dashed var(--b20) !important;
         background-color: var(--w0);
+
+        position: relative;
+
+
     }
-    #map-unit{
+    .map-tile:hover{
+        background-color: var(--w0);
+    }
+    .map-tile:active{
+        background-color: var(--w0);
+        border: none;
+    }
+    .map-unit{
         position: absolute;
         z-index: 1;
+        bottom: 4px;
+        right: 4px;
     }
+    #player-unit{
+        /* top: 4px;
+        left: 4px; */
+    }
+    #stat-indicator{
+        position: fixed;
+        bottom: 65px;
+        right: 8px;
+
+        justify-content: center;
+
+        display: flex;
+        gap: 12px;
+        padding: 6px 12px 10px 12px;
+        background-color: var(--b50);
+        border-radius: 4px 4px 0 0;
+        color: white;
+        z-index: 1;
+
+        width: calc(100% - 16px);
+        max-width: calc(360px - 16px);
+    }
+    #stat-indicator div{
+        display: flex;  
+        align-items: center;
+        gap: 2px;
+    }
+    .unit-quant{
+        position: absolute;
+        color: white !important;
+        z-index: 2;
+        font-size: 10px;
+        text-align: center;
+        
+        opacity: 1;
+        bottom: 26px;
+        right: 10px;
+    }
+    #map-desc{
+        font-size: 12px;
+        width: 100%;
+        color: var(--w70);
+    }
+
 
 /*Skill tree*/
     #skill-tree{
@@ -246,7 +315,7 @@ body{
         padding: 24px 24px 24px 24px;
     }
     .tab-margin{
-        padding-bottom: 96px;       
+        padding-bottom: 96px !important;       
     }
     .modal-slide{
         animation-name: modal-slide;
@@ -699,6 +768,10 @@ body{
     /* Rewards */
     #reward-screen{
         flex-direction: row;
+        overflow: scroll;
+    }
+    #reward-slide, #inventory-slide{
+        min-width: 100vw;
     }
 
 

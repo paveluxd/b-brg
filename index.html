@@ -21,7 +21,7 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal hide" onclick=" toggleModal('gameStartScreen')">
+    <div id="gameStartScreen" class="modal state-screen " onclick=" toggleModal('gameStartScreen')">
         <div class="modal-container">
                 
                 <img src="./img/bg/start.svg" alt="">
@@ -33,12 +33,23 @@
     </div>
 
     <!-- Game over -->
-    <div id="gameEndScreen" class="modal hide"  onclick="">
+    <div id="gameEndScreen" class="modal hide state-screen"  onclick="window.location.reload()">
         <div class="modal-container">
                 
-            <img src="./img/bg/end.svg" alt="">
-            <p class="body-14">You reached <span class="bold">stage 5</span> out of 12<br>and lost the encounter.</p>
-            <p class="body-14 italic b50">Tap to start</p>
+            <img id="end-img" src="./img/bg/end.svg" alt="">
+            <p id="end-desc" class="body-14">You reached <span class="bold">stage 5</span> out of 12<br>and lost the encounter.</p>
+            <p class="body-14 italic b50">Tap to restart</p>
+        
+        </div>
+    </div>
+
+    <!-- Game completed-->
+    <div id="gameCompletedScreen" class="modal hide state-screen"  onclick="window.location.reload()">
+        <div class="modal-container">
+                
+            <img src="./img/bg/victory.svg" alt="">
+            <p id ='complete-desc' class="body-14"></p>
+            <p class="body-14 italic b50">Tap to restart</p>
         
         </div>
     </div>
@@ -50,11 +61,30 @@
 
 
     <!-- Map -->
-    <div id="map" class="screen tab ">
-        
-        <div id="map-container">
-        </div>
+    <div id="map" class="screen tab tab-margin">
+        <!-- Food and other stats-->
+        <div id="stat-indicator">
+            <p id="map-desc" class='italic'>Reach portal to win</p>
 
+            <div>
+                <img src='./img/ico/fish.svg'>
+                <p id='pl-food' class="mono-m">${playerObj.food}</p>
+            </div>
+            <div>
+                <img src='./img/ico/power.svg'>
+                <p id='pl-power' class="mono-m">${playerObj.power}</p>
+            </div>
+            <div>
+                <img src='./img/ico/hp-bb-red.svg'>
+                <p id='pl-life' class="mono-m">${playerObj.life}</p>
+            </div>
+            <div>
+                <img src='./img/ico/gold.svg'>
+                <p id='pl-gold' class="mono-m">${playerObj.gold}</p>
+            </div>
+        </div>
+        
+        <div id="map-container" class=""></div>
     </div>
 
     <!-- Combat -->
@@ -191,7 +221,7 @@
 
 
     <!-- Character -->
-    <div id="character" class="screen tab hide" >
+    <div id="character" class="screen tab hide" onclick="screen('map')">
         <div class="modal-container tab-margin scroll">
             <div id='character-content' class="column modal-body"></div>
         </div>
