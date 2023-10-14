@@ -513,7 +513,7 @@ function initiateCombat(){
         
         //Damage inflicted by player
         //Melee attack (a7) / bow attack (a5) / ice shards (a3) / knife (a6)
-        // if (['a7', 'a5', 'aa3', 'a6'].indexOf(combatState.sourceAction.keyId) > -1){
+        // if (['a7', 'a5', 'a3', 'a6'].indexOf(combatState.sourceAction.keyId) > -1){
         if(combatState.dmgDoneByPlayer > 0){//calculate all skills that deal damage?
 
             //Apply poison on hit

@@ -500,7 +500,7 @@ function spriteBuilder(target){
     }
     else if(target === 'enemy'){
         el('enemy-sprite').innerHTML = `
-            <img src="./img/enemy/boss/1.svg">
+            <img src="./img/enemy/boss/${rng(3,1)}.svg">
         ` 
         // <img src="./img/character/${rng(3,1)}-back.svg">
         // <img src="./img/character/${rng(3,1)}-back-arm.svg">
@@ -542,6 +542,7 @@ function genMap(){
         //Tile bg image
         tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
 
+        console.log(tile.enemyQuant);
         //Player unit image
         if(tile.playerUnit === true){
 
@@ -552,13 +553,18 @@ function genMap(){
 
         }
         //Ene unit image
-        else if(tile.enemyUnit === true){
+        else if(tile.enemyUnit === true && tile.enemyQuant === 1){
 
             tileElem.innerHTML += `
-                <img src="./img/map/enemy-unit-${1}.svg" class="map-unit"> 
+                <img src="./img/map/enemy-unit-${rng(3)}.svg" class="map-unit"> 
                 <p class="unit-quant">${tile.enemyQuant}</p>
             `
 
+        } else if(tile.enemyUnit === true){
+            tileElem.innerHTML += `
+            <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
+            <p class="unit-quant">${tile.enemyQuant}</p>
+        `
         }
 
         //50% flip image

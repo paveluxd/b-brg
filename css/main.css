@@ -169,7 +169,7 @@ body{
 /* Map */
     #map{
         background-color: var(--map-bg);
-        padding: 9px;
+        padding: 32px;
         flex-direction: column;
     }
     #map, #map *{
@@ -218,7 +218,7 @@ body{
     #stat-indicator{
         position: fixed;
         bottom: 65px;
-        right: 8px;
+        left: 8px;
 
         justify-content: center;
 
@@ -230,8 +230,9 @@ body{
         color: white;
         z-index: 1;
 
+        max-width: 400px;
         width: calc(100% - 16px);
-        max-width: calc(360px - 16px);
+        
     }
     #stat-indicator div{
         display: flex;  
@@ -334,6 +335,7 @@ body{
 
 /* Tabs */
     .tab-container{
+        max-width: 400px;
         width: calc(100% - 16px);
         position: fixed; 
         bottom: 8px;
