@@ -41,7 +41,7 @@ class CombatState {
 class PlayerObj {
     constructor(){
         //Life
-        this.baseLife       = 20            //Lvl 1 char life
+        this.baseLife       = 28            //Lvl 1 char life
         this.flatLife       = this.baseLife //Life cap
         this.life           = this.baseLife //Current life
 
@@ -72,16 +72,13 @@ class PlayerObj {
         this.inventory      = [] //Items gained as rewards
         this.startingItems  = [
             "bow",
-            'woolen boots',
-            'iron dagger',
+            'tower shield',
             'healing potion',
-            'scroll of fortification',
-            "curse of weakness",
         ]
 
         //Slots
         //Equipment slots
-        this.baseSlots      = 8
+        this.baseSlots      = 6
         this.equipmentSlots = this.baseSlots
 
         //Actions
@@ -153,10 +150,10 @@ class EnemyObj {
 
         //Set boss mods
         if(gameState.stage % gameState.bossFrequency === 0){//boss
-            lifeMod  += 0.5
-            powerMod += 0.25
-            defMod   += 0.25
-            diceMod  += 0.25
+            // lifeMod  += 0.5
+            // powerMod += 0.25
+            // defMod   += 0.25
+            // diceMod  += 0.25
 
             this.profile = 'boss'
         }
@@ -164,7 +161,7 @@ class EnemyObj {
 
         //Set stats
         // mod(0.5) -> Get +1 every 2 stages
-        this.life    = 8 + Math.round((8   + gameState.stage) * lifeMod ) //+ rng(4)
+        this.life    = 8 + Math.round((4   + gameState.stage) * lifeMod ) //+ rng(4)
         this.power   = 0 + Math.round((0.2 * gameState.stage) * powerMod) 
         this.def     = 0 + Math.round((0.2 * gameState.stage) * defMod  )
         this.dice    = 4 + Math.round((0.2 * gameState.stage) * diceMod )
@@ -305,7 +302,7 @@ let eneActionRef = {
     Sleep:       {rate:1, action: 'Sleep'      ,desc: `Zzzz...`,},
     Detonate:    {rate:1, action: 'Detonate'   ,desc: `Detonate on death`},
     Recover:     {        action: 'Recover'    ,desc: `Recover`},
-    Crit:        {rate:1, action: 'Crit'       ,desc: `Prepares to crit next turn`},
+    // Crit:        {rate:1, action: 'Crit'       ,desc: `Prepares to crit next turn`},
 
     // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
     // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},

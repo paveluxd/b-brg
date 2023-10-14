@@ -581,6 +581,7 @@ body{
             position: absolute;
             opacity: 0;
             font-size: 20px;
+            z-index: 1;
         }
         @keyframes dmgnum {
             0% {

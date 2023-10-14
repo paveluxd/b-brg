@@ -450,15 +450,12 @@ function initiateCombat(){
         if(enemyObj.state !== 'Skip turn' && combatState.sourceAction.actionType !== "extra-action"){
 
             //Check crit
-            if(enemyObj.crit === true){
-                combatState.dmgDoneByEnemy += (enemyObj.roll + enemyObj.power) * 3
-                enemyObj.crit = false
-            }
-            else if      (enemyObj.action === 'Attack'){
-
+            // if(enemyObj.crit === true){
+            //     combatState.dmgDoneByEnemy += (enemyObj.roll + enemyObj.power) * 3
+            //     enemyObj.crit = false
+            // }
+            if      (enemyObj.action === 'Attack'){
                 combatState.dmgDoneByEnemy += enemyObj.roll + enemyObj.power 
-                
-
             }
             else if (enemyObj.action === 'Block'){//block
                 combatState.dmgDoneByPlayer -= enemyObj.roll
@@ -670,7 +667,7 @@ function initiateCombat(){
             }
             
             //Reward
-            genReward('gen', 40) //Number of rewards to give
+            genReward('gen', 3) //Number of rewards to give
 
             gameState.stage++
             playerObj.exp++                                   //Add 1 exp

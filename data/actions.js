@@ -44,7 +44,7 @@ let actionsRef = [
     "desc": "deal dmg equal to your dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 40,
+    "actionCharge": 30,
     "cooldown": "",
     "keyId": 5,
     "actionType": ""
@@ -324,7 +324,7 @@ let actionsRef = [
     "desc": "restore 12 life",
     "passiveStats": "",
     "actionMod": 12,
-    "actionCharge": 1,
+    "actionCharge": 2,
     "cooldown": "",
     "keyId": 33,
     "actionType": ""
