@@ -1216,3 +1216,4 @@ function addTreeNode(node){
 
 //Start the game
 initGame()
+initiateCombat()
