@@ -643,7 +643,8 @@ function initiateCombat(){
 
         //Defeat (also loose if 0 actions)
         if(playerObj.life < 1 || playerObj.actions.length < 1){
-            toggleModal('gameEndScreen')
+            
+            openStateScreen('game-end')
         }
 
         //Victory
@@ -667,11 +668,16 @@ function initiateCombat(){
             }
             
             //Reward
-            genReward('gen', 3) //Number of rewards to give
+            //Check if it is the last enocounter
+            if(gameState.encounter === 'end'){
+                genReward('gen', 2 + gameState.playerLocationTile.enemyQuant) //Number of rewards to give
+            }else{ //run next encounter
+                initiateCombat()
+                runAnim(el('enemy-sprite'), 'enemyEntrance') 
+            }
 
             gameState.stage++
             playerObj.exp++                                   //Add 1 exp
-            
             playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl'
         }
 
@@ -703,6 +709,7 @@ function initiateCombat(){
         syncUi()
     }
         
+
     //REWARD
     function genReward(val, quant){
         
@@ -777,6 +784,13 @@ function initiateCombat(){
             //Add inventory items
             el('inventory-slide').append(el('inventory-list'))
 
+            //Give food per killed enemy
+            el('reward-desc').innerHTML = `
+                You defeated the enemy.<br>
+                You get +${gameState.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, and one of these rewadrs:
+            `
+            playerObj.food += (gameState.playerLocationTile.enemyQuant)
+
             toggleModal('reward-screen')
         }
 
@@ -831,7 +845,6 @@ function initiateCombat(){
                             equipItem(elem)
 
                             //Move inventory back to it's page
-                            console.log(el('inventory').firstChild);
                             el('inventory').childNodes[1].append(el('inventory-list'))  
                         }
                         else {
@@ -846,6 +859,10 @@ function initiateCombat(){
 
             //End of encounter
             if(gameState.encounter === 'end'){
+                if(gameState.playerLocationTile.tileType === 'portal'){
+                    el(tile.tileId).setAttribute('onmousedown', 'openStateScreen("completed")')
+                    return
+                }
                 playerObj.tempActions = []
                 resolvePlayerStats()
                 screen('map')
@@ -1216,4 +1233,4 @@ function addTreeNode(node){
 
 //Start the game
 initGame()
-initiateCombat()
+// initiateCombat() //For testing combat

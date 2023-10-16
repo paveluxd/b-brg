@@ -37,6 +37,11 @@ html{
     --green:     rgb(0, 240, 96);
     --green50:   rgba(0, 240, 96,0.5);
     --green-bg:  #576557;
+    --map-bg:    #83867D;
+    --orange:    rgb(255, 102, 54);
+    --yellow:    rgb(255,230,0);
+    --grey:      rgb(126, 126, 126);
+    --light-bg:  rgb(227, 236, 241);
 
     --black:     rgb(0, 0, 0);
     --b50:       rgb(0, 0, 0, 0.5);
@@ -49,14 +54,6 @@ html{
     --w20:       rgb(255, 255, 255, 0.20);
     --w10:       rgb(255, 255, 255, 0.10);
     --w0:        rgb(255, 255, 255,0);
-
-    --grey:      rgb(126, 126, 126);
-    --border:    rgba(0,0,0,0.2);
-    --light-bg:  rgb(227, 236, 241);
-
-    --orange:    rgb(255, 102, 54);
-    --yellow:    rgb(255,230,0);
-    --map-bg:    #83867D;
 }
 
 body{
@@ -490,9 +487,8 @@ body{
     #combat{
         background-color: rgb(84, 84, 84);
         flex-direction: column;
-
+        overflow-y: hidden;
         align-items: center;
-        /* padding: 8px; */
         position: relative;
     }
     .bg-image{

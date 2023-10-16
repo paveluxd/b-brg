@@ -499,9 +499,9 @@ function spriteBuilder(target){
         `
     }
     else if(target === 'enemy'){
-        if(rng(4) === 5){
+        if(rng(4) === 4){
             el('enemy-sprite').innerHTML = `
-                <img src="./img/enemy/boss/${rng(2,1)}.svg">
+                <img src="./img/enemy/boss/${rng(3,1)}.svg">
             ` 
         }
         else{
@@ -510,7 +510,7 @@ function spriteBuilder(target){
                 <img src="./img/enemy/balanced/${rng(2,1)}-legs.svg">
                 <img src="./img/enemy/balanced/${rng(2,1)}-torso.svg">
                 <img src="./img/enemy/balanced/${rng(3,1)}-front-arm.svg">
-                <img src="./img/enemy/balanced/${rng(4,1)}-head.svg">
+                <img src="./img/enemy/balanced/${rng(5,1)}-head.svg">
             ` 
         }
     }
@@ -648,12 +648,12 @@ function resolveMove(){
             tile.tileId === `${tileIdRef[0]}-${tileIdRef[1]+1}` || //+1 row
             tile.tileId === `${tileIdRef[0]}-${tileIdRef[1]-1}` || //-1 row
             tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]}` || //+1 col
-            tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]}` || //-1 col
+            tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]}`    //-1 col
 
-            tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]+1}` ||
-            tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]-1}` ||
-            tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]-1}` ||
-            tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]+1}`    
+            // tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]+1}` ||
+            // tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]-1}` ||
+            // tile.tileId === `${tileIdRef[0]+1}-${tileIdRef[1]-1}` ||
+            // tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]+1}`    
         ){
 
             //Combat envet
@@ -700,5 +700,12 @@ function openStateScreen(type){
             and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
         `
         screen('gameEndScreen')
-    }  
+    }
+    else if(type === 'game-end'){
+        el('end-desc').innerHTML = `
+            You have been defeated. You lasted <span class="bold">${gameState.turnCounter} turns</span>,<br>
+            and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
+        `
+        screen('gameEndScreen')
+    }    
 }

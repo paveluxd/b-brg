@@ -61,10 +61,10 @@
 
 
     <!-- Map -->
-    <div id="map" class="screen tab tab-margin hide">
+    <div id="map" class="screen tab tab-margin ">
         <!-- Food and other stats-->
         <div id="stat-indicator">
-            <p id="map-desc" class='italic'>Reach portal to win</p>
+            <p id="map-desc" class='italic'> </p>
 
             <div>
                 <img src='./img/ico/fish.svg'>
@@ -88,7 +88,7 @@
     </div>
 
     <!-- Combat -->
-    <div id="combat" class="screen ">
+    <div id="combat" class="screen hide">
 
         <!-- Game info -->
         <p id="log">stage: 1<br> turn:1</p>
@@ -177,7 +177,7 @@
     </div>
 
     <!-- Reward screen -->
-    <div id="reward-screen" class="modal hide " >
+    <div id="reward-screen" class="modal hide" >
         <!-- Tabs -->
         <div class="tab-container">
             <button onclick="location.href='#reward-slide'">
@@ -195,10 +195,7 @@
             <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
 
                 <h2 id="combatEndIndicator">Victory</h2>
-                <p class="body-14">
-                    You defeated the enemy.<br> 
-                    Pick one reward:
-                </p>
+                <p id="reward-desc" class="body-14"></p>
             </div>
 
             <div id="reward-container" class="modal-body"></div>

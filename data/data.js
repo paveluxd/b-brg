@@ -16,8 +16,11 @@ class GameState{
         this.enemyCounter = 0
         this.totalEnemies = 0
 
-        this.mapColumns = rng(12,8)
+        this.mapColumns = rng(8,4)
         this.mapRows = 3
+        this.portalDefencers = 3
+        this.enemyPartyCap = 2
+        this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
     }
 }
 
@@ -46,7 +49,7 @@ class PlayerObj {
         this.life           = this.baseLife //Current life
 
         //Power
-        this.basePower      = 0
+        this.basePower      = 11
         this.flatPower      = this.basePower
         this.power          = this.basePower
 
@@ -90,7 +93,7 @@ class PlayerObj {
 
         //Sub-stats
         this.gold           = 0
-        this.food           = 9
+        this.food           = 3
 
         //Progression
         this.exp            = 0
@@ -430,15 +433,16 @@ class MapObj{
 
 
             //Add player & enemies
-            if(i === 0){
+            if(i === 0){ //Add player to the 1st tile
                 tile.playerUnit = true
             }
-            else if (1 === rng(3) ){//Add enemy units 30%
-                let eneQuant = rng(3)
+            else if (1 === rng(gameState.enemySpawnFrequency) ){ //Add enemy units 30%
+                let eneQuant = rng(gameState.enemyPartyCap)
                 tile.enemyUnit = true
                 tile.enemyQuant = eneQuant
-                gameState.totalEnemies += eneQuant
+                gameState.totalEnemies += eneQuant //Counts total enemies
             }
+            
 
             //Flip tiles
             if(1 === rng(2)){
@@ -448,8 +452,13 @@ class MapObj{
             this.tiles.push(tile)
         }
 
-        //Set portal
-        findByProperty(this.tiles, 'tileId', `${rng(gameState.mapRows)}-${gameState.mapColumns}`).tileType= "portal"  
+        //Set portal & portal encounter
+        let portalTile = findByProperty(this.tiles, 'tileId', `${rng(gameState.mapRows)}-${gameState.mapColumns}`)
+        portalTile.tileType = "portal"
+        portalTile.enemyUnit = true 
+        portalTile.enemyQuant = gameState.portalDefencers 
+        gameState.totalEnemies += gameState.portalDefencers  //Counts total enemies
+
     }
 }
 
