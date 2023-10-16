@@ -1,8 +1,11 @@
 //INITITATE GAME
-function initGame(){
+function initGame(mapColumns){
     gameState = new GameState
     playerObj = new PlayerObj
 
+    if(mapColumns !== undefined){
+        gameState.mapColumns = mapColumns
+    }
     mapObj = new MapObj
     mapRef = mapObj.tiles
 
@@ -789,7 +792,7 @@ function initiateCombat(){
                 You defeated the enemy.<br>
                 You get +${gameState.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, and one of these rewadrs:
             `
-            playerObj.food += (gameState.playerLocationTile.enemyQuant)
+            playerObj.food += 2 + (gameState.playerLocationTile.enemyQuant)
 
             toggleModal('reward-screen')
         }

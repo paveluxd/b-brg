@@ -16,7 +16,7 @@ class GameState{
         this.enemyCounter = 0
         this.totalEnemies = 0
 
-        this.mapColumns = rng(8,4)
+        this.mapColumns = rng(12,12)
         this.mapRows = 3
         this.portalDefencers = 3
         this.enemyPartyCap = 2
@@ -49,7 +49,7 @@ class PlayerObj {
         this.life           = this.baseLife //Current life
 
         //Power
-        this.basePower      = 11
+        this.basePower      = 0
         this.flatPower      = this.basePower
         this.power          = this.basePower
 
@@ -105,7 +105,6 @@ class PlayerObj {
 
 //
 class EnemyObj {
-    
     constructor(){
         //Choose enemy profile
         let profiles = ['balanced', 'tank', 'assassin', 'minion'] //'minion'
@@ -152,26 +151,33 @@ class EnemyObj {
         }
 
         //Set boss mods
-        if(gameState.stage % gameState.bossFrequency === 0){//boss
-            // lifeMod  += 0.5
-            // powerMod += 0.25
-            // defMod   += 0.25
-            // diceMod  += 0.25
+        // if(gameState.stage % gameState.bossFrequency === 0){//boss
+        //     // lifeMod  += 0.5
+        //     // powerMod += 0.25
+        //     // defMod   += 0.25
+        //     // diceMod  += 0.25
 
-            this.profile = 'boss'
-        }
+        //     this.profile = 'boss'
+        // }
 
 
         //Set stats
+        //Get column value to scale mobs
+        let tileIdRef = []
+        gameState.playerLocationTile.tileId.split('-').forEach(val =>{
+            tileIdRef.push(parseInt(val))
+        })
+        let tileRow = tileIdRef[1]
+
         // mod(0.5) -> Get +1 every 2 stages
-        this.life    = 8 + Math.round((4   + gameState.stage) * lifeMod ) //+ rng(4)
-        this.power   = 0 + Math.round((0.2 * gameState.stage) * powerMod) 
-        this.def     = 0 + Math.round((0.2 * gameState.stage) * defMod  )
-        this.dice    = 4 + Math.round((0.2 * gameState.stage) * diceMod )
+        this.life    = 6 + Math.round((4   + tileRow) * lifeMod ) //+ rng(4)
+        this.power   = 0 + Math.round((0.2 * tileRow) * powerMod) 
+        this.def     = 0 + Math.round((0.2 * tileRow) * defMod  )
+        this.dice    = 4 + Math.round((0.2 * tileRow) * diceMod )
         
         //Misc
         this.flatLife = this.life
-        this.level    = gameState.stage
+        this.level    = tileRow
         // this.image    = `./img/enemy/${imgPath}.png`
         this.poisoned = false
         this.poisonStacks = 0
