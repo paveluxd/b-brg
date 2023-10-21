@@ -21,7 +21,7 @@
 
 <body>
     <!-- Start game -->
-    <div id="gameStartScreen" class="modal state-screen hide" onclick=" toggleModal('gameStartScreen')">
+    <div id="gameStartScreen" class="modal state-screen " onclick=" toggleModal('gameStartScreen')">
         <div class="modal-container">
                 
                 <img src="./img/bg/start.svg" alt="">
@@ -61,7 +61,7 @@
 
 
     <!-- Map -->
-    <div id="map" class="screen tab tab-margin hide">
+    <div id="map" class="screen tab tab-margin ">
         <!-- Food and other stats-->
         <div id="stat-indicator">
             <p id="map-desc" class='italic'> </p>
@@ -88,7 +88,7 @@
     </div>
 
     <!-- Combat -->
-    <div id="combat" class="screen ">
+    <div id="combat" class="screen hide ">
 
         <!-- Game info -->
         <p id="log">stage: 1<br> turn:1</p>
@@ -127,52 +127,53 @@
     
         
         <!-- UI: Actions -->
-        <div id="stats-container">
-            <!-- Actions container -->
-            <div id="stats" onclick="screen('character', 'combat-menu')">
-                <!-- Player stat section --> 
-                <div class="stat-group">
-                        <div class="stat">
-                            <img src="./img/ico/dice-bb.svg" alt="">
-                            <div id="p-dice"></div>
-                        </div>
-                        <div class="stat sm">
-                            <img src="./img/ico/power-bb-w.svg" alt="">
-                            <p id="p-power"></p>
-                        </div>
-                        <div class="stat life">
-                            <img src="./img/ico/hp-bb-red.svg" alt="">
-                            <div id="p-life"></div>
-                        </div>
-                        <div class="stat sm">
-                            <img src="./img/ico/shield-bb-w.svg" alt="">
-                            <p id="p-def"></p>
-                        </div>
-                </div>
-        
-                <!-- Enemy stat section -->
-                <div class="stat-group">
-                        <div class="stat">
-                            <img src="./img/ico/dice-bb.svg" alt="">
-                            <div id="dice"></div>
-                        </div>
-                        <div class="stat sm">
-                            <img src="./img/ico/power-bb-w.svg" alt="">
-                            <p id="power"></p>
-                        </div>
-                        <div class="stat life">
-                            <img src="./img/ico/hp-bb-red.svg" alt="">
-                            <div id="life"></div>
-                        </div>
-                        <div class="stat sm">
-                            <img src="./img/ico/shield-bb-w.svg" alt="">
-                            <p id="def"></p>
-                        </div>
-        
-                </div>
+        <!-- Actions container -->
+        <div id="stats" onclick="screen('character', 'combat-menu')">
+            <!-- Player stat section --> 
+            <div class="stat-group">
+                    <div class="stat">
+                        <img src="./img/ico/dice.svg" alt="">
+                        <div id="p-dice"></div>
+                    </div>
+                    <div class="stat life">
+                        <img src="./img/ico/hp-bb-red.svg" alt="">
+                        <div id="p-life"></div>
+                    </div>
+                    <div class="stat sm">
+                        <img src="./img/ico/power-bb-w.svg" alt="">
+                        <p id="p-power"></p>
+                    </div>
+                    <div class="stat sm">
+                        <img src="./img/ico/shield-bb-w.svg" alt="">
+                        <p id="p-def"></p>
+                    </div>
             </div>
-        
-            <div id="playerActionContainer" class="actions-container"></div>
+    
+            <!-- Enemy stat section -->
+            <div class="stat-group">
+                    <div class="stat">
+                        <img src="./img/ico/dice.svg" alt="">
+                        <div id="dice"></div>
+                    </div>
+                    <div class="stat life">
+                        <img src="./img/ico/hp-bb-red.svg" alt="">
+                        <div id="life"></div>
+                    </div>
+                    <div class="stat sm">
+                        <img src="./img/ico/power-bb-w.svg" alt="">
+                        <p id="power"></p>
+                    </div>
+                    <div class="stat sm">
+                        <img src="./img/ico/shield-bb-w.svg" alt="">
+                        <p id="def"></p>
+                        
+                    </div>
+    
+            </div>
+        </div>
+
+        <div id="playerActionContainer" class="actions-container scrollx">
+            <div id="cards-row"></div>
         </div>
     </div>
 

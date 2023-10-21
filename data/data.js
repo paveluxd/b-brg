@@ -78,15 +78,12 @@ class PlayerObj {
         this.startingItems  = [
             "bow",
             'tower shield',
-            'healing potion',
-            'curse of wounds',
-            'knife',
-            'chain'
+            'healing potion'
         ]
 
         //Slots
         //Equipment slots
-        this.baseSlots      = 6
+        this.baseSlots      = 12
         this.equipmentSlots = this.baseSlots
 
         //Actions
@@ -194,7 +191,6 @@ class EnemyObj {
         this.acctionMod = ''
     }
 }
-
 class EnemyActionObj {
     constructor(key){
 
@@ -207,9 +203,9 @@ class EnemyActionObj {
         this.key = key
 
         //Damage
-              if(key == 'attack'){
+        if      (key == 'attack'){
 
-            this.rate = 2
+            this.rate = 1
             this.actionVal = enemyObj.roll + enemyObj.power 
             this.desc = `${ico('attack')}${this.actionVal} dmg`
 
@@ -221,7 +217,7 @@ class EnemyActionObj {
 
         }else if(key == 'block'){
 
-            this.rate = 1
+            this.rate = 2
             this.actionVal = -enemyObj.roll
             this.desc = `${ico("block")} Block for ${-1 * this.actionVal}`
 
@@ -237,7 +233,7 @@ class EnemyActionObj {
 
         }else if(key == 'charge'){
 
-            this.rate = 1
+            this.rate = 3
             this.actionVal = rng(3)
             this.desc = `Charges an attack (${this.actionVal} turns)`
 
@@ -248,7 +244,7 @@ class EnemyActionObj {
 
         }
         
-        //Stat modification
+        //Buff
          else if(key == 'fortify'){//+ def
 
             this.rate = 2
@@ -299,14 +295,45 @@ class EnemyActionObj {
             }
 
             this.stat = 'life'
-            this.actionVal = enemyObj.roll
-            this.desc = `${ico('life-buff')} +${enemyObj.roll * 2}`
+            this.actionVal = enemyObj.roll * 2
+            this.desc = `${ico('life-buff')} +${this.actionVal}`
 
         }
-        
+
+        //Curse
+         else if(key == 'wound'){//- def
+
+            this.rate = 2
+            this.stat = 'def'
+            this.actionVal = Math.ceil((enemyObj.roll) * 0.25)
+            this.desc = `${ico('curse-def')} -${this.actionVal}`
+
+        }else if(key == 'weaken'){//- power
+
+            this.rate = 2
+            this.stat = 'power'
+            this.actionVal = Math.round((enemyObj.roll + gameState.stage) *0.25)
+            this.desc = `${ico('curse-power')} -${this.actionVal}`
+
+        }else if(key == 'slow'){   //- dice
+
+            this.rate = 5
+            this.stat = 'dice'
+            this.actionVal = rng(2)
+            this.desc = `${ico('curse-dice')} -${this.actionVal}`
+
+        }else if(key == 'drain'){//- life
+
+            this.rate = 3
+            this.stat = 'life'
+            this.actionVal = enemyObj.roll * 2
+            this.desc = `${ico('curse-life')} -${this.actionVal}`
+
+        }
+
         //Misc
         else if(key == 'sleep'){
-            this.rate = 1
+            this.rate = 2
             this.desc = `Zzz...`
         }
          

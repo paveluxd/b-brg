@@ -378,10 +378,11 @@
             enemyObj.roll = rng(enemyObj.dice)         
 
             //Generate action refs with proper calculation for this roll
-            let actionSet = 'attack, final strike, combo, charge, block, fortify, empower, rush, recover, sleep'.split(', ')
+            let actionSet = `attack, final strike, combo, charge, block, fortify, empower, rush, recover, wound, weaken, slow, drain, sleep`.split(', ')
             enemyObj.actionRef = []
             actionSet.forEach(key => {enemyObj.actionRef.push(new EnemyActionObj(key))})
-            
+            console.log(enemyObj.actionRef);
+
             //Pick action
             let actionRoll = rng(100)           //Roll for action chance
 
@@ -396,28 +397,32 @@
                     enemyObj.action = new EnemyActionObj('charged strike')
                 }
 
-            }
-            else if(actionRoll < 2){           //R5: 1%
+            }else if(actionRoll < 2){           //R5: 1%
+
                 enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 5))
-            }
-            else if(actionRoll < 7){           //R4: 5%
+
+            }else if(actionRoll < 7){           //R4: 5%
+
                 enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 4))
-            }
-            else if(actionRoll < 17){          //R3: 10%
+
+            }else if(actionRoll < 17){          //R3: 10%
+
                 enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 3))
-            }
-            else if(actionRoll < 47){          //R2: 30% 
+
+            }else if(actionRoll < 47){          //R2: 30% 
+
                 enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 2))
-            } 
-            else{                              //R1: 54%
+
+            }else{                              //R1: 54%
+
                 enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 1))
+
             }
             
             //Resolve undefined actions due to lack of rate.
             if(enemyObj.action === undefined) {
                 enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 1))
             }
-
         }
     //3.REWARD
         function genReward(val, quant){
@@ -875,6 +880,8 @@
             combatState.dmgDoneByEnemy += enemyObj.action.actionVal
         }else if('recover, rush, empower, fortify'.slice(', ').indexOf(enemyObj.action.key) > -1){              
             enemyObj[enemyObj.action.stat] += enemyObj.action.actionVal
+        }else if('wound, weaken, slow, drain'.slice(', ').indexOf(enemyObj.action.key) > -1){              
+            playerObj[enemyObj.action.stat] -= enemyObj.action.actionVal
         }
         
         //Records previous action for ui updates.
@@ -1160,4 +1167,4 @@
 
 //GAME START
     initGame()
-    initiateCombat() //Disable if not testing combat
+    // initiateCombat() //Disable if not testing combat

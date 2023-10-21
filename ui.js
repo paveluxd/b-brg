@@ -102,13 +102,13 @@ function syncUi(){
         //Player stats
         el('p-life').innerHTML = `${playerObj.life}`
         el('p-def').innerHTML = `${playerObj.def}`
-        el('p-dice').innerHTML = `${playerObj.roll}<span style="color: var(--green50);">/${playerObj.dice}</span>`
+        el('p-dice').innerHTML = `${playerObj.roll}<span>/${playerObj.dice}</span>`
         el('p-power').innerHTML = `${playerObj.power}`        
 
         //Enemy stats
         el('life').innerHTML = `${enemyObj.life}`
         el('def').innerHTML = `${enemyObj.def}`
-        el('dice').innerHTML = `${enemyObj.roll}<span style="color: var(--green50);">/${enemyObj.dice}</span>`
+        el('dice').innerHTML = `${enemyObj.roll}<span>/${enemyObj.dice}</span>`
         el('power').innerHTML = `${enemyObj.power}`        
 
         //Enemy intent indicator
@@ -131,25 +131,27 @@ function syncUi(){
 
 //Action tiles
 function syncActionTiles(){
-    el('playerActionContainer').innerHTML = ''
+    el('cards-row').innerHTML = ''
+
+    //Set #cards-row width to display cards in two rows.
+    el('cards-row').setAttribute('style',`width:${149 * (Math.floor(playerObj.actions.length/2) + 1)}px;`)
     
     //Add button per player item
     playerObj.actions.forEach(action => {
         let actionCard = genActionCard(action)
-        el('playerActionContainer').append(actionCard)
+        el('cards-row').append(actionCard)
     })
 
     //Add empty item slots
     let emptySlots = playerObj.actionSlots - playerObj.actions.length
-    for (let i =0; i < emptySlots; i++){
-        let button = document.createElement('button')
-        button.innerHTML = `[ ]`
-        button.disabled = true
-        button.classList.add('action', 'empty-slot')
-        el('playerActionContainer').append(button) 
-    }
+    let button = document.createElement('button')
+    button.innerHTML = `[ ]x${emptySlots}`
+    button.disabled = true
+    button.classList.add('action', 'empty-slot')
+    el('cards-row').append(button)    
 }
 
+//Function that creates a single action button
 function genActionCard(action, type){
     // Section that contains name and desc
     let content = document.createElement('section')  
