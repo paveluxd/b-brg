@@ -55,6 +55,7 @@ function screen(id, mod){
     }
 }
 
+
 //Ui
 function syncUi(){
     syncActionTiles()
@@ -67,27 +68,28 @@ function syncUi(){
 
         //In combat game log at the top left corner
         el('log').innerHTML = `
-            Stage: ${gameState.stage} / 
             Turn: ${combatState.turn} /
-            Enc: ${gameState.encounter}/${gameState.playerLocationTile.enemyQuant}
+            Enemies to defeat: ${gameState.encounter}/${gameState.playerLocationTile.enemyQuant}
             ` 
         // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
 
         //Enemy floating number
+        //combatState.enemyAction -> Previous action
+
         if(combatState.dmgTakenByEnemy > 0){//Attack
             floatText('en',`-${combatState.dmgTakenByEnemy} life`)
-        }else if(combatState.enemyAction[0] === 'Fortify'){
-            floatText('en',`+${combatState.enemyAction[1]} def`)
-        }else if(combatState.enemyAction[0] === 'Empower'){
-            floatText('en',`+${combatState.enemyAction[1]} power`)
-        }else if(combatState.enemyAction[0] === 'Rush'){
-            floatText('en',`+${combatState.enemyAction[1]} dice`)
-        }else if(combatState.enemyAction[0] === 'Sleep'){
+        }else if(enemyObj.action.key === 'fortify'){
+            floatText('en',`+${enemyObj.action.stat} def`)
+        }else if(enemyObj.action.key === 'empower'){
+            floatText('en',`+${enemyObj.action.stat} power`)
+        }else if(enemyObj.action.key === 'rush'){
+            floatText('en',`+${enemyObj.action.stat} dice`)
+        }else if(enemyObj.action.key === 'sleep'){
             floatText('en',`Zzzzz`)
-        }else if(combatState.enemyAction[0] === 'Block'){
-            floatText('en',`Blocked ${combatState.enemyAction[1]}`)
-        }else if(combatState.enemyAction[0] === 'Recover'){
-            floatText('en',`Recovered ${combatState.enemyAction[1]} ${combatState.enemyAction[2]}`)
+        }else if(enemyObj.action.key === 'block'){
+            floatText('en',`Blocked ${enemyObj.action.stat}`)
+        }else if(enemyObj.action.key === 'recover'){
+            floatText('en',`Recovered ${enemyObj.action.stat} ${enemyObj.action.actionVal}`)
         }
 
         combatState.enemyAction = []
@@ -110,15 +112,7 @@ function syncUi(){
         el('power').innerHTML = `${enemyObj.power}`        
 
         //Enemy intent indicator
-        if      (enemyObj.action === 'Attack'){
-            el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc} for ${enemyObj.roll + enemyObj.power}`
-        }else if(enemyObj.action === 'Block'){
-            el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc} ${enemyObj.roll} damage`
-        }else if(enemyObj.action === 'Detonate'){
-            el('intent').innerHTML = `Will ${eneActionRef[enemyObj.action].desc} for ${enemyObj.flatLife} damage`
-        }else{
-            el('intent').innerHTML = `${eneActionRef[enemyObj.action].desc}`
-        }
+        el('intent').innerHTML = `${enemyObj.action.desc}`
     }
 
     //Modify map stat indicator
@@ -133,6 +127,7 @@ function syncUi(){
         Equipped items: ${calcEquippedItems()} / ${playerObj.equipmentSlots}
     `
 }
+
 
 //Action tiles
 function syncActionTiles(){
@@ -230,11 +225,12 @@ function genActionCard(action, type){
             </span>
             <p class='desc'>${upp(action.desc)}.</p>
             <img src="./img/items/${itemString}.svg">
-     `        
+         `        
     }
 
     return button
 }
+
 
 //Gen skill-tree page
 function syncTree(){
@@ -260,6 +256,7 @@ function syncTree(){
     })
 }
 
+
 //Character page
 function syncCharPage(){
     // playerObj.treePoints = playerObj.lvl - playerObj.treeNodes.length -1
@@ -270,25 +267,33 @@ function syncCharPage(){
 
         <div id="stat-block" class = "grey-card body-14">
             <div>
-                <p>Life: ${playerObj.life} / ${playerObj.flatLife}</p>
-                <p>Dice: d${playerObj.flatDice}</p>
-                <p>Power: ${playerObj.power}</p>
-                <p>Def: ${playerObj.def}</p>
+                <p><img src="./img/ico/hp-bb-red.svg"> 
+                    Life: ${playerObj.life} / ${playerObj.flatLife}</p>
+                <p><img src="./img/ico/dice.svg"> 
+                    Dice: d${playerObj.flatDice}</p>
+                <p><img src="./img/ico/item-power.svg"> 
+                    Power: ${playerObj.power}</p>
+                <p><img src="./img/ico/item-def.svg"> 
+                    Def: ${playerObj.def}</p>
             </div>
 
             <div>
-                <p>Stage: ${gameState.stage} / Level: ${playerObj.lvl} (exp: ${playerObj.exp})</p>
-                <p>Inventroy: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
-                <p>Equipped: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
-                <p>Food: ${playerObj.food}</p>
+            <p><img src="./img/ico/placeholder.svg"> 
+            Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
+            <p><img src="./img/ico/item-slots.svg"> 
+            Equi. slots: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
+            <p><img src="./img/ico/fish.svg"> 
+            Food: ${playerObj.food}</p>
             </div>
-        </div>
-
-        <div class ="column" style="gap:8px; align-items:flex-start;">
-            <p class="body-14 italic b50">Actions ${playerObj.actions.length}/${playerObj.actionSlots}</p>
+            </div>
+            
+            <div class ="column" style="gap:8px; align-items:flex-start;">
+            <p class="body-14 italic b50">Combat actions from equipment</p>
             <div id="actions-list"></div>
-        </div>
-    `
+            </div>
+            `
+            // <p><img src="./img/ico/placeholder.svg"> 
+            //     Level: ${playerObj.lvl} (exp: ${playerObj.exp})</p>
 
     //Add action cards
     el('actions-list').innerHTML = ``
@@ -296,7 +301,15 @@ function syncCharPage(){
         let actionCard = genActionCard(action, 'card')
         el('actions-list').append(actionCard)
     })
+
+    for(i=0; i < playerObj.equipmentSlots - playerObj.actions.length; i++){
+        let actionCard = document.createElement('button')
+        actionCard.innerHTML = '<section><span>[ ]</span></section>'
+        actionCard.classList.add('action')
+        el('actions-list').append(actionCard)
+    }
 }
+
 
 //Inventory
 //Move item card generation to a separate function
@@ -448,6 +461,7 @@ function genItemModal(itemId, source){
     itemModal.append(btn, closeBtn)
 }
 
+
 //Animation
 function floatText(target, string){
 
@@ -460,19 +474,17 @@ function floatText(target, string){
         runAnim(el('plDmgInd'), 'float-num')
     }
 
-
     //if positive -> text green etc
     if(string[0] === '-'){
         el('enDmgInd').setAttribute('style', 'color:red;')
         el('plDmgInd').setAttribute('style', 'color:red;')
-
     }
     else{
         el('enDmgInd').setAttribute('style', 'color:white;')
         el('plDmgInd').setAttribute('style', 'color:white;')
-
     }
 }
+
 
 //Calc equipped items
 function calcEquippedItems(){
@@ -485,6 +497,7 @@ function calcEquippedItems(){
 
     return equipped
 }
+
 
 //Sprite builder
 function spriteBuilder(target){
@@ -547,7 +560,6 @@ function genMap(){
         //Tile bg image
         tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
 
-        console.log(tile.enemyQuant);
         //Player unit image
         if(tile.playerUnit === true){
 
@@ -609,8 +621,35 @@ function movePlayerUnit(elem){
         openStateScreen('starved')
     }
 
+     
+
+    //Readjust the viewport
+    //Get current tile column
+    let startIdRef = []
+    gameState.playerLocationTile.tileId.split('-').forEach(val =>{
+        startIdRef.push(parseInt(val))
+    })
+
+    //Get target tile column
+    let targetIdRef = []
+    findByProperty(mapRef, 'tileId', elem.id).tileId.split('-').forEach(val =>{
+        targetIdRef.push(parseInt(val))
+    })
+
+    //If diff, adjust the map
+    //Move to the right
+    if(startIdRef[1] < targetIdRef[1]){
+        el(`${startIdRef[0]}-${startIdRef[1]+2}`).scrollIntoView()
+        console.log(1);
+    }
+    //Move to the left
+    else if(startIdRef[1] > targetIdRef[1] && startIdRef[1] > 2){{//Ignore if 1st row
+        el(`${startIdRef[0]}-${startIdRef[1]-2}`).scrollIntoView()
+        console.log(2);
+    }}
+
     gameState.turnCounter++
-    gameState.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id) 
+    gameState.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id)
     
     resolveMove()
     syncUi()
@@ -629,19 +668,21 @@ function resolveMove(){
         //Relocate player image
         if(tile.playerUnit === true && tile.enemyUnit === true){
             el(tile.tileId).append(el('player-unit'))
-            gameState.playerLocationTile = tile
 
             //Remove existing unit
-            console.log(el(tile.tileId).childNodes[2]);
             el(tile.tileId).childNodes[2].remove() //remove unit image
             el(tile.tileId).childNodes[3].remove() //remove unit quantity
             tile.enemyUnit = false
-
+            
+            gameState.playerLocationTile = tile
         }
         else if(tile.playerUnit === true){
             el(tile.tileId).append(el('player-unit'))
+
             gameState.playerLocationTile = tile
         }
+
+
 
         //Add event if adjacent
         if(
@@ -683,6 +724,7 @@ function resolveMove(){
         }
     })
 }
+
 
 //Triggers game end screen
 function openStateScreen(type){

@@ -21,6 +21,8 @@ class GameState{
         this.portalDefencers = 3
         this.enemyPartyCap = 2
         this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
+
+        this.flatFoodReward = 1
     }
 }
 
@@ -77,6 +79,9 @@ class PlayerObj {
             "bow",
             'tower shield',
             'healing potion',
+            'curse of wounds',
+            'knife',
+            'chain'
         ]
 
         //Slots
@@ -113,7 +118,7 @@ class EnemyObj {
         // el('enemyImg').classList.remove('boss')
 
         
-        if(randomEnemyProfile === 'balanced'){
+        if      (randomEnemyProfile == 'balanced'){
             lifeMod  = 1
             powerMod = 1
             defMod   = 1
@@ -121,8 +126,7 @@ class EnemyObj {
 
             this.profile = 'balanced'
             imgPath  = `balanced/${rng(17,1)}`
-        }
-        else if(randomEnemyProfile === 'tank'){
+        }else if(randomEnemyProfile == 'tank'){
             lifeMod  = 0.5
             powerMod = 0.25
             defMod   = 3
@@ -130,8 +134,7 @@ class EnemyObj {
 
             this.profile = 'tank'
             imgPath  = `tank/${rng(1,1)}`
-        }
-        else if(randomEnemyProfile === 'assassin'){
+        }else if(randomEnemyProfile == 'assassin'){
             lifeMod  = 0.25
             powerMod = 3
             defMod   = 0.25
@@ -139,8 +142,7 @@ class EnemyObj {
 
             this.profile = 'assassin'
             imgPath  = `assassin/${rng(1,1)}`
-        }
-        else if(randomEnemyProfile === 'minion'){
+        }else if(randomEnemyProfile == 'minion'){
             lifeMod  = 0.1
             powerMod = 0.5
             defMod   = 0.5
@@ -167,23 +169,166 @@ class EnemyObj {
         gameState.playerLocationTile.tileId.split('-').forEach(val =>{
             tileIdRef.push(parseInt(val))
         })
-        let tileRow = tileIdRef[1]
+        let tileColumn = tileIdRef[1]
 
         // mod(0.5) -> Get +1 every 2 stages
-        this.life    = 6 + Math.round((4   + tileRow) * lifeMod ) //+ rng(4)
-        this.power   = 0 + Math.round((0.2 * tileRow) * powerMod) 
-        this.def     = 0 + Math.round((0.2 * tileRow) * defMod  )
-        this.dice    = 4 + Math.round((0.2 * tileRow) * diceMod )
+        this.life    = 6 + Math.round((4   + tileColumn) * lifeMod ) //+ rng(4)
+        this.power   = 0 + Math.round((0.2 * tileColumn) * powerMod) 
+        this.def     = 0 + Math.round((0.2 * tileColumn) * defMod)
+        this.dice    = 4 + Math.round((0.2 * tileColumn) * diceMod)
+        
+        this.flatLife = this.life
+        this.flatPower = this.power
+        this.flatDef = this.def
+        this.flatDice = this.dice
         
         //Misc
-        this.flatLife = this.life
-        this.level    = tileRow
+        this.roll = 0
+        this.level    = tileColumn
         // this.image    = `./img/enemy/${imgPath}.png`
         this.poisoned = false
         this.poisonStacks = 0
         this.crit = false
+
+        this.actionRef = []
+        this.acctionMod = ''
     }
 }
+
+class EnemyActionObj {
+    constructor(key){
+
+        //Gen icon path
+        function ico(icoKey){
+            let path = `<img src="./img/ico/${icoKey}.svg">`
+            return path
+        }
+
+        this.key = key
+
+        //Damage
+              if(key == 'attack'){
+
+            this.rate = 2
+            this.actionVal = enemyObj.roll + enemyObj.power 
+            this.desc = `${ico('attack')}${this.actionVal} dmg`
+
+        }else if(key == 'combo'){
+
+            this.rate = 2
+            this.actionVal = 1 + enemyObj.power 
+            this.desc = `${ico('combo')}${this.actionVal} dmg (x3)`
+
+        }else if(key == 'block'){
+
+            this.rate = 1
+            this.actionVal = -enemyObj.roll
+            this.desc = `${ico("block")} Block for ${-1 * this.actionVal}`
+
+        }else if(key == 'final strike'){
+
+            //Enable if low life
+            if(enemyObj.life < 3){
+                this.rate = 1
+            }
+
+            this.actionVal = enemyObj.flatLife
+            this.desc = `${ico('skull') + this.actionVal} dmg on death`
+
+        }else if(key == 'charge'){
+
+            this.rate = 1
+            this.actionVal = rng(3)
+            this.desc = `Charges an attack (${this.actionVal} turns)`
+
+        }else if(key == 'charged strike'){
+
+            this.actionVal = enemyObj.dice * 2
+            this.desc = `Charged strike ${this.actionVal} dmg`
+
+        }
+        
+        //Stat modification
+         else if(key == 'fortify'){//+ def
+
+            this.rate = 2
+            this.stat = 'def'
+            this.actionVal = Math.ceil((enemyObj.roll) * 0.25)
+
+            //Enable recovery if def is negative.
+            if(enemyObj.def < 0){
+                this.rate = 1
+                this.actionVal = enemyObj.flatDef - enemyObj.def
+            }
+
+            this.desc = `${ico('def-buff')} +${this.actionVal}`
+
+        }else if(key == 'empower'){//+ power
+
+            this.rate = 2
+            this.stat = 'power'
+            this.actionVal = Math.round((enemyObj.roll + gameState.stage) *0.25)
+
+            //Enable recovery if def is negative.
+            if(enemyObj.power < 0){
+                this.rate = 1
+                this.actionVal = enemyObj.flatPower - enemyObj.power
+            }
+
+            this.desc = `${ico('power-buff')} +${this.actionVal}`
+
+        }else if(key == 'rush'){   //+ dice
+
+            this.rate = 2
+            this.stat = 'dice'
+            this.actionVal = Math.round(1 + (gameState.stage) *0.2)
+
+            //Enable recovery if def is negative.
+            if(enemyObj.dice < enemyObj.flatDice){
+                this.rate = 1
+                this.actionVal = enemyObj.flatDice - enemyObj.dice
+            }
+
+            this.desc = `${ico('dice-buff')} +${this.actionVal}`
+
+        }else if(key == 'recover'){//+ life
+
+            //Enable if life lost
+            if(enemyObj.flatLife > enemyObj.life){
+                this.rate = 2
+            }
+
+            this.stat = 'life'
+            this.actionVal = enemyObj.roll
+            this.desc = `${ico('life-buff')} +${enemyObj.roll * 2}`
+
+        }
+        
+        //Misc
+        else if(key == 'sleep'){
+            this.rate = 1
+            this.desc = `Zzz...`
+        }
+         
+
+        //     // Crit:        {rate:1, action: 'Crit'       ,desc: `Prepares to crit next turn`},
+        //     // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
+        //     // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
+        //     // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
+        //     // "buff":     {rate:1,   desc: `Will use random buff spell`},
+        //     // "debuff":   {rate:1,   desc: `Will use random debuff spell`},
+        //     // "recruits": {rate:1,   desc: `Will call reinforcements`},
+
+        //     // "spell":    {rate:1,   desc: `Will cast a <random spell>`},
+        //     // "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
+        //     // "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
+        //     // "theft":    {rate:1,   desc: `Will steal random item`},   
+        //     // "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
+        //     // "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
+        //     // "escape":   {rate:1,   desc: `Will escape`},  
+    }
+}
+
 
 //Classes
 class ItemObj {
@@ -298,41 +443,6 @@ let rewardRef = [
     // {rewardType:'Bag'     ,freq: 1, desc: 'Gain an additional actions slot'},
     // {rewardType:'Gold'    ,freq: 1, desc: 'Gold rewad'},
 ]
-
-//Ene actions
-let eneActionRef = {
-    Attack:      {        action: 'Attack'     ,desc: `Attack`},
-    Block:       {rate:1, action: 'Block'      ,desc: `Block`},
-    Multistrike: {rate:2, action: 'Multistrike',desc: `Multistrike`},
-    Fortify:     {rate:3, action: 'Fortify'    ,desc: `Armor up!`},
-    Empower:     {rate:2, action: 'Empower'    ,desc: `More POWER!`},
-    Rush:        {rate:2, action: 'Rush'       ,desc: `Larger dice!`},
-
-    Sleep:       {rate:1, action: 'Sleep'      ,desc: `Zzzz...`,},
-    Detonate:    {rate:1, action: 'Detonate'   ,desc: `Detonate on death`},
-    Recover:     {        action: 'Recover'    ,desc: `Recover`},
-    // Crit:        {rate:1, action: 'Crit'       ,desc: `Prepares to crit next turn`},
-
-    // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
-    // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
-    
-    // "recover":  {rate:1,   desc: `Will recover lost stats`},
-    // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
-    // "buff":     {rate:1,   desc: `Will use random buff spell`},
-    // "debuff":   {rate:1,   desc: `Will use random debuff spell`},
-    
-
-    // "recruits": {rate:1,   desc: `Will call reinforcements`},
-    
-    // "spell":    {rate:1,   desc: `Will cast a <random spell>`},
-    // "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
-    // "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
-    // "theft":    {rate:1,   desc: `Will steal random item`},   
-    // "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
-    // "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
-    // "escape":   {rate:1,   desc: `Will escape`},
-    //"crit":
-}
 
 //Tree -> Nodes
 let treeRef = [

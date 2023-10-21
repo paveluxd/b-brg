@@ -29,6 +29,7 @@ html{
 
     /*Prevent page reload on pull*/
     overscroll-behavior: none;
+
     
 }
 
@@ -42,6 +43,7 @@ html{
     --yellow:    rgb(255,230,0);
     --grey:      rgb(126, 126, 126);
     --light-bg:  rgb(227, 236, 241);
+    --intent:    rgb(165, 164, 142);
 
     --black:     rgb(0, 0, 0);
     --b50:       rgb(0, 0, 0, 0.5);
@@ -208,10 +210,6 @@ body{
         bottom: 4px;
         right: 4px;
     }
-    #player-unit{
-        /* top: 4px;
-        left: 4px; */
-    }
     #stat-indicator{
         position: fixed;
         bottom: 65px;
@@ -230,11 +228,11 @@ body{
         max-width: 400px;
         width: calc(100% - 16px);
         
-    }
-    #stat-indicator div{
-        display: flex;  
-        align-items: center;
-        gap: 2px;
+        & div{
+            display: flex;  
+            align-items: center;
+            gap: 2px;
+        } 
     }
     .unit-quant{
         position: absolute;
@@ -278,6 +276,8 @@ body{
     #stat-block div{
         display: flex;
         flex-direction: column;
+        gap: 8px;
+        width: 100%;
     }
 
 
@@ -346,13 +346,14 @@ body{
         margin: 0 8px;
 
         background-color: var(--black);
-    }
-    .tab-container button {
-        height: auto;
-        flex: 1 0 0px;
-        border: none;
-        background-color: var(--black);
-        color: var(--w50);
+
+        & button{
+            height: auto;
+            flex: 1 0 0px;
+            border: none;
+            background-color: var(--black);
+            color: var(--w50);
+        }
     }
     .tab-container button:active, .tab-container button:hover{
         background-color: var(--w0);
@@ -419,35 +420,36 @@ body{
 
         position: relative;
         overflow: hidden;
-    }
-    .action div{
-        display: flex;
-        justify-content: space-between;
-    }
-    .action span{
-        display: flex;
-        justify-content: space-between;
-        padding: 6px 8px 0px 8px;
-    }
-    .action span p {
-        color: var(--grey); 
-    }
-    .action h3{
-        font-weight: 600;
-    }
-    .action .desc{
-        height: 32px;
-        padding: 0 8px 8px 8px;
-        overflow: hidden;
-        position: relative;
-        z-index: 1;
-    }
-    .action img{
-        position: absolute;
-        right: -12px;
-        bottom: -12px;
-        opacity: 0.2;
-        z-index: 0;
+    
+        & div{
+            display: flex;
+            justify-content: space-between;
+        }
+        & span{
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 8px 0px 8px;
+        }
+        & span p {
+            color: var(--grey); 
+        }
+        & h3{
+            font-weight: 600;
+        }
+        & .desc{
+            height: 32px;
+            padding: 0 8px 8px 8px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        & img{
+            position: absolute;
+            right: -12px;
+            bottom: -12px;
+            opacity: 0.2;
+            z-index: 0;
+        }
     }
     /* Hides scroll bar */
     .actions-container::-webkit-scrollbar {
@@ -477,9 +479,11 @@ body{
         display: flex;
         flex-direction: column;
         gap: 2px;
+        width: 100%;
     }
     #actions-list button{
         width: 100%;
+        pointer-events: none;
     }
 
 
@@ -534,23 +538,22 @@ body{
             position: absolute;
         }
 
-        /* #player-sprite img:nth-child(1),
+        #player-sprite img:nth-child(1),
         #player-sprite img:nth-child(5),
-        #player-sprite img:nth-child(2) */
+        #player-sprite img:nth-child(2),
 
-        /* #enemy-sprite img:nth-child(1),
-        #enemy-sprite img:nth-child(5),
-        #enemy-sprite img:nth-child(2) */
-        /* {
-            animation: player-char-idle 0.5s steps(12) infinite alternate;
-        } */
+        #enemy-sprite img:nth-child(1),
+        #enemy-sprite img:nth-child(4)
+        {
+            animation: player-char-idle 0.8s steps(2) infinite alternate;
+        }
         @keyframes player-char-idle {
             0% {
-                top: 0px;
+                transform: translateY(0px);
             }
 
             100%{
-                top: 1px
+                transform: translateY(2px);
             }
         }
 
@@ -603,18 +606,35 @@ body{
             bottom: -40px;
             z-index: 3;
 
-        }
-        #intent-indicator p{
-            text-wrap: nowrap;
-            background-color: var(--yellow);
-            padding: 4px 8px;
-        }
-        #intent-indicator svg{
-            fill: var(--yellow);
-            width: 12px;
-            height: 12px;
-            position: absolute;
-            left: -11px;
+            & div{
+                text-wrap: nowrap;
+                background-color: var(--black);
+                padding: 4px 8px;
+                display: flex;
+                justify-content: center;
+                gap: 2px;
+                border-radius: 0px;
+
+                color: white;
+    
+                & img{
+                    /* filter:  */
+                    /* invert(42%)  */
+                    /* sepia(93%)  */
+                    /* saturate(1352%)  */
+                    /* hue-rotate(87deg)  */
+                    /* brightness(0%)  */
+                    /* contrast(119%); */
+                }
+            }
+
+            & svg{
+                fill: var(--black);
+                width: 12px;
+                height: 12px;
+                position: absolute;
+                top: -11px;
+            }
         }
         .turn-slide{
             animation-name: turn-slide;

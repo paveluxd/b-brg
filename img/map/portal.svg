@@ -4,8 +4,14 @@
 <ellipse cx="60" cy="58.5" rx="5" ry="7.5" fill="#8BA6DC" stroke="black" stroke-width="2"/>
 <g clip-path="url(#clip0_3563_18852)">
 <path opacity="0.2" d="M73.0722 30.0802L76.9359 29.0449" stroke="black" stroke-width="2"/>
-<path opacity="0.2" d="M33.7466 57.1817L35.6785 56.6641" stroke="black" stroke-width="2"/>
+<path opacity="0.2" d="M33.7466 57.1818L35.6785 56.6642" stroke="black" stroke-width="2"/>
 </g>
+<path d="M110 59L108 61L110 63L101 63L101 61H94V57L101 57V59L110 59Z" fill="#E22E2E"/>
+<path d="M94 72V61M94 61V57L101 57V59M94 61H101M101 59L110 59L108 61L110 63L101 63L101 61M101 59L101 61" stroke="black" stroke-width="2"/>
+<path d="M40 26L38 28L40 30L31 30L31 28H24V24L31 24V26L40 26Z" fill="#E22E2E"/>
+<path d="M24 39V28M24 28V24L31 24V26M24 28H31M31 26L40 26L38 28L40 30L31 30L31 28M31 26L31 28" stroke="black" stroke-width="2"/>
+<path d="M54 93L52 95L54 97L45 97L45 95H38V91L45 91V93L54 93Z" fill="#E22E2E"/>
+<path d="M38 106V95M38 95V91L45 91V93M38 95H45M45 93L54 93L52 95L54 97L45 97L45 95M45 93L45 95" stroke="black" stroke-width="2"/>
 <defs>
 <clipPath id="clip0_3563_18852">
 <rect width="72" height="72" fill="white" transform="translate(24 24)"/>
