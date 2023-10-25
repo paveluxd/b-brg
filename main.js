@@ -6,8 +6,8 @@
         if(mapColumns !== undefined){
             gameState.mapColumns = mapColumns
         }
-        mapObj = new MapObj
-        mapRef = mapObj.tiles
+        gameState.mapObj = new MapObj
+        mapRef = gameState.mapObj.tiles
 
         //Resolve ititial items
         playerObj.startingItems.forEach(key => {addItem(key)})
@@ -185,7 +185,7 @@
             if(combatState.dmgDoneByPlayer > 0){//calculate all skills that deal damage?
 
                 //Apply poison on hit
-                if(enemyObj.poisoned === true){
+                if(enemyObj.poisoned){
                     let poisonStackCount = 1
             
                     //If multistrike deal dice or any other mult
@@ -209,7 +209,7 @@
 
 
                 //Resolve def
-                if(playerObj.piercing === false){//Ignore def if piercing state
+                if(!playerObj.piercing){//Ignore def if piercing state
                     
                     //Reduce def on low hit
                     if(enemyObj.def >= combatState.dmgDoneByPlayer && enemyObj.def > 0){
@@ -330,11 +330,13 @@
                     gameState.encounter++ 
                 }
                 
-                //Reward
-                //Check if it is the last enocounter
+                //If final encounter, show rewards
                 if(gameState.encounter === 'end'){
-                    genReward('gen', 2 + gameState.playerLocationTile.enemyQuant) //Number of rewards to give
-                }else{ //run next encounter
+                    //Generate rewards modal
+                    genRewards(gameState.flatItemReward + gameState.playerLocationTile.enemyQuant) //Number of rewards to give
+                }
+                //Next encounter
+                else{
                     initiateCombat()
                     runAnim(el('enemy-sprite'), 'enemyEntrance') 
                 }
@@ -381,7 +383,7 @@
             let actionSet = `attack, final strike, combo, charge, block, fortify, empower, rush, recover, wound, weaken, slow, drain, sleep`.split(', ')
             enemyObj.actionRef = []
             actionSet.forEach(key => {enemyObj.actionRef.push(new EnemyActionObj(key))})
-            console.log(enemyObj.actionRef);
+
 
             //Pick action
             let actionRoll = rng(100)           //Roll for action chance
@@ -425,177 +427,28 @@
             }
         }
     //3.REWARD
-        function genReward(val, quant){
+        function genRewards(quant){
             
-            //Clear modal body
+            //Clear
             el('reward-container').innerHTML = `` 
+            
+            //Gen item list
+            genOfferedItemList(quant, 'reward')
 
+            //Move inventory list to 2nd slide of reward screen
+            el('inventory-slide').append(el('inventory-list'))
 
-            //Pick from reward pool
-            if(val === 'gen'){ 
-                let rewardRefPool = cloneArr(rewardRef) //Copy rewards ref array to avoid duplicates when generating random rewards
-                let generatedReward
+            //Give food per killed enemy
+            el('reward-desc').innerHTML = `
+                You defeated the enemy.<br>
+                You get +${gameState.flatFoodReward + gameState.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, and one of these rewadrs:
+            `
+            playerObj.food += gameState.flatFoodReward + (gameState.playerLocationTile.enemyQuant)
 
-                //Gen item per quant value in function
-                for(i = 0; i < quant; i++){ 
-
-                    //Pick random reward
-                    let reward = rarr(rewardRefPool) 
-
-                    //If reward is not item, remove it from array so it can't be picked again.
-                    if(['Item', 'Action'].indexOf(reward.rewardType) < -1){ 
-                        removeFromArr(rewardRefPool, reward)
-                    }
-
-                    //Add item
-                    if(reward.rewardType === 'Item'){
-                        let item = rarr(itemsRef) 
-                        generatedReward =  new ItemObj(item.itemName)
-                        rewardPool.push(generatedReward)
-                    }
-
-                    else if(reward.rewardType == 'Action'){//Add temp action
-                        generatedReward =  new ActionObj(rarr(Object.keys(actionsRef)))
-                        rewardPool.push(generatedReward)
-                    }
-
-                    else{//not item
-                        rewardPool.push(reward)
-                    }
-
-                    //Create buttons
-                    let button = document.createElement('button')
-                    let img
-                    let rewardElem
-                    
-                    //Item reward
-                    if(reward.rewardType === 'Item'){
-                        rewardElem = genItemCard(generatedReward, 'reward')
-                    }
-
-                    //Action reward
-                    else if(reward.rewardType == 'Action'){
-                        button.innerHTML = `
-                        <h3>${generatedReward.actionName} x ${generatedReward.actionCharge} (temp. action)</h3> 
-                        (requires an empty action slot).`
-                        
-                        button.setAttribute('onclick', 
-                            `genReward('${reward.rewardType}', 
-                            '${generatedReward.actionId}'
-                        )`) //'quant' value in function will be id for items
-                    }
-                    
-                    //Misc rewards
-                    else{
-                        button.innerHTML = `${reward.desc}`
-                        button.setAttribute('onclick', `genReward('${reward.rewardType}')`)
-                    }
-
-                    button.append(img)
-                    el('reward-container').append(rewardElem)
-                }
-
-                //Add inventory items
-                el('inventory-slide').append(el('inventory-list'))
-
-                //Give food per killed enemy
-                el('reward-desc').innerHTML = `
-                    You defeated the enemy.<br>
-                    You get +${gameState.flatFoodReward + gameState.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, and one of these rewadrs:
-                `
-                playerObj.food += gameState.flatFoodReward + (gameState.playerLocationTile.enemyQuant)
-
-                toggleModal('reward-screen')
-            }
-
-            //Resolve reward
-            else {
-                if     (val == 'Heal'){
-                    playerObj.life += Math.floor(playerObj.flatLife/ 2)
-                    if(playerObj.life > playerObj.flatLife){playerObj.life = playerObj.flatLife}
-                }
-                else if(val == 'Repair'){
-                    playerObj.actions[rng(playerObj.actions.length) -1].actionCharge += Math.floor(5 + (gameState.stage * 0.25))
-                }
-                else if(val == 'Bag'){
-                    playerObj.actionSlots++
-                }
-                else if(val == 'Enhance'){
-                    playerObj.flatDef++
-                }
-                else if(val == 'Train'){
-                    playerObj.flatLife+= Math.floor(4 + (gameState.stage * 0.5))
-                }
-                else if(val == 'Power'){
-                    playerObj.flatPower++
-                }
-                else if(val == 'Gold'){
-                    playerObj.gold += rng(gameState.stage, 1)
-                }
-                else if(val == 'Action'){//Get action
-                    
-                    rewardPool.forEach(elem => {
-                        if(elem.actionId !== undefined && elem.actionId === quant){
-
-                            //If there are empty action slots -> add action.
-                            if(playerObj.actions.length < playerObj.actionSlots){
-                                //Add temporary action
-                                playerObj.tempActions.push(elem)
-
-                                resolvePlayerStats() // test if this works fine
-                            }
-                            else {
-                                //Trigger item swap
-                            }
-                        }
-                    })
-                }
-                else {//Get item
-                    
-                    rewardPool.forEach(elem => {
-                        if(elem.itemId !== undefined && elem.itemId === quant){
-                            if(playerObj.inventory.length < playerObj.inventorySlots){
-                                playerObj.inventory.push(elem)
-                                equipItem(elem)
-
-                                //Move inventory back to it's page
-                                el('inventory').childNodes[1].append(el('inventory-list'))  
-                            }
-                            else {
-                                //If no inventory slots, trigger item swap screen
-                            }
-                        }
-                    })
-                    
-                }
-
-                rewardPool = []
-
-                //End of encounter
-                if(gameState.encounter === 'end'){
-                    if(gameState.playerLocationTile.tileType === 'portal'){
-                        el(tile.tileId).setAttribute('onmousedown', 'openStateScreen("completed")')
-                        return
-                    }
-                    playerObj.tempActions = []
-                    resolvePlayerStats()
-                    screen('map')
-                }
-
-                //Next encounter
-                else{
-                    initiateCombat()
-
-                    //Hide reward modal
-                    // toggleModal('reward-screen')
-
-                    //Animates enemy sprite moving in at the start of the combat.
-                    runAnim(el('enemy-sprite'), 'enemyEntrance') 
-                }
-
-                syncUi() //Update UI if reward was added etc
-            }
+            toggleModal('reward-screen')         
         }
+
+        
 
 
 //ACTION LOGIC
@@ -632,7 +485,7 @@
                 combatState.dmgDoneByPlayer += (actionMod + playerObj.power) * mult
             }
             else{
-                alert('Not enough power to pay for action cost.')
+                showAlert('Not enough power to pay for action cost.')
                 return
             }
 
@@ -646,7 +499,7 @@
 
             //Resolve action cost
             if(playerObj.roll < 3){
-                alert('Action requires roll greater than 2.')
+                showAlert('Action requires roll greater than 2.')
                 return
             } else {
                 playerObj.roll -= 3
@@ -678,7 +531,7 @@
 
             }
             else{
-                alert('Not enough power to pay for action cost.')
+                showAlert('Not enough power to pay for action cost.')
                 return
             }
 
@@ -686,12 +539,12 @@
 
             //Resolve action cost
             if(playerObj.roll < 5){
-                alert('Action requires roll greater than 5.')
+                showAlert('Action requires roll greater than 5.')
                 return
             }
             
             // else if(playerObj.roll < 5 && playerObj.actions.length === 1){
-            //     alert('You had no resources to perform your only action, your turn was skipped.');
+            //     showAlert('You had no resources to perform your only action, your turn was skipped.');
             // } 
             
             else{
@@ -715,7 +568,7 @@
 
             }
             else{
-                alert('Not enough power to pay for action cost.')
+                showAlert('Not enough power to pay for action cost.')
                 return
             }
 
@@ -736,7 +589,7 @@
 
             }
             else{
-                alert('Not enough power to pay for action cost.')
+                showAlert('Not enough power to pay for action cost.')
                 return
             }
             
@@ -790,7 +643,7 @@
                 enemyObj.state = 'Skip turn'
             }
             else{
-                alert('Action requires roll 1.')
+                showAlert('Action requires roll 1.')
                 return
             }
 
@@ -801,7 +654,7 @@
                 enemyObj.state = 'Skip turn'
             }
             else{
-                alert('Not enough power to pay for action cost.')
+                showAlert('Not enough power to pay for action cost.')
                 return
             }
 
@@ -834,7 +687,7 @@
 
             }
             else{
-                alert('Not enough power to pay for action cost.')
+                showAlert('Not enough power to pay for action cost.')
                 return
             }
 
@@ -846,7 +699,7 @@
                 
             }
             else{
-                alert('This action requires roll greater than 8.')
+                showAlert('This action requires roll greater than 8.')
                 return
             }
 
@@ -889,81 +742,7 @@
     }
 
 
-//ITEM & ACTION MANAGEMENT
-    //Add item
-    function addItem(key, iLvl){
-
-        //Check if there are slots in the inventory.
-        if(playerObj.inventory.length < playerObj.inventorySlots){
-
-            //Create new item obj
-            let newItem = new ItemObj(key, iLvl)
-
-            //If empty equippment slots, equip item automatically.
-            if(playerObj.equipmentSlots > calcEquippedItems()){
-                newItem.equipped = true
-            }
-
-            //Add item to the inventory.
-            playerObj.inventory.push(newItem)
-
-            //Resolve stats and actions added by item?
-            // resolvePlayerStats()
-        }
-
-        else{
-            alert('Inventory is full.')
-        }
-    }
-    //Remove item
-    function removeItem(itemId){
-        let item = findByProperty(playerObj.inventory, 'itemId', itemId)
-        
-        //Remove item actions
-        item.actions.forEach(action => {
-            removeFromArr(playerObj.actions, action)
-        })
-
-        //Remove from inventory
-        removeFromArr(playerObj.inventory, item)
-
-        syncUi()
-    }
-    //Equip/Unequip
-    function equipItem(item){
-
-        //Get item types to prevent staking
-        let itemTypes = []
-        playerObj.inventory.forEach(item => {
-            if(item.equipped){
-                itemTypes.push(item.itemType)
-            }
-        })
-        itemTypes = itemTypes.filter(elem => elem !== 'generic') //Removes generic items
-
-        //Equip
-        if(
-            item.equipped === false &&                         //check if equipped
-            playerObj.equipmentSlots > calcEquippedItems() &&  //check if there are slots
-            itemTypes.includes(item.itemType) === false        //check if unique type
-        )
-        {
-            item.equipped = true
-        } 
-        //Unequip item
-        else if (item.equipped === true){
-            item.equipped = false
-        }
-        else if(itemTypes.includes(item.itemType)){
-            alert("Can't equip two items of the same type.")
-        }
-        else {
-            alert('No equippment slots.')
-        }
-
-        resolvePlayerStats()//Adjust this to recalc all items
-        syncUi()
-    }
+//ACTIONS
     //Resolve action charges
     function resolveCharge(action){
         action.actionCharge--
@@ -986,33 +765,13 @@
             }
             //Else unequip
             else if(item.passiveStats.length === 0){
-                equipItem(item)
+                equipItem(item.itemId)
             }
 
             
             //Loose passive stat
             resolvePlayerStats()  
         }
-    }
-    //Utility: find item by action 
-    function findItemByAction(action){
-        let itemWihtAction
-
-        playerObj.inventory.forEach(item => {
-
-            item.actions.forEach(itemAction => {
-
-                if(itemAction.actionId === action.actionId){
-
-                    itemWihtAction = item
-
-                }
-
-            })
-
-        })
-
-        return itemWihtAction
     }
     //Resolve stats
     //Recalc stats & adds actions from items
@@ -1152,6 +911,285 @@
         playerObj.actionSlots = flatSlots
     }
 
+
+//Dealing with offered items
+    //Gen list
+    function genOfferedItemList(quant, event) {
+
+        playerObj.offeredItemsArr = []
+        if(quant == undefined){quant = gameState.flatItemReward}//Resolve undefined quant
+
+        //Gen item per quant value in function
+        for(i = 0; i < quant; i++){ 
+
+            let generatedReward =  new ItemObj()
+
+            //Add item to reward pool, to find them after item card is selected from html
+            playerObj.offeredItemsArr.push(generatedReward)
+            
+            //Add html cards per item
+            if(event == 'reward'){
+                //Gen item html card elem
+                let rewardElem = genItemCard(generatedReward, 'reward')
+
+                //Add card to container
+                el('reward-container').append(rewardElem)
+            }
+            else if(event == 'merchant'){
+                //Gen item html card elem
+                let rewardElem = genItemCard(generatedReward, 'item-to-buy')
+
+                //Add card to container
+                el('merchant-container').append(rewardElem)
+            }
+        }
+    }
+    //Resolve
+    function resolveChoosingOfferedItem(itemId, event){   
+
+        //Find item with matching id
+        playerObj.offeredItemsArr.forEach(targetItem => {
+
+            if(targetItem.itemId == undefined || targetItem.itemId != itemId) return false
+
+            //If no slots return
+            if(playerObj.inventory.length == playerObj.inventorySlots){ 
+                showAlert('No inventory slots.') 
+                return
+            }
+
+            if(event == 'reward'){
+                //Add item to players inventory & auto-equip
+                playerObj.inventory.push(targetItem)
+                equipItem(targetItem.itemId)
+    
+                //Move inventory list back to it's page
+                el('inventory').childNodes[1].append(el('inventory-list'))
+                
+                //screen() is ran from the button.
+            }
+            else if(event == 'purchase'){
+                if(resolvePayment(targetItem.cost) == false) return
+                
+                //Destroy item card
+                el(itemId).remove()
+
+                showAlert(`${upp(targetItem.itemName)} purchased for ${targetItem.cost} and added to the inventory.`)
+
+                playerObj.inventory.push(targetItem)
+
+                equipItem(targetItem.itemId)
+            }
+
+        })
+    }
+
+//ITEMS
+    //Add item (to player inventory based on arguments).
+    function addItem(key, iLvl){
+
+        //Check if there are slots in the inventory.
+        if(playerObj.inventory.length < playerObj.inventorySlots){
+
+            //Create new item obj
+            let newItem = new ItemObj(key, iLvl)
+
+            //If empty equippment slots, equip item automatically.
+            if(playerObj.equipmentSlots > calcEquippedItems()){
+                newItem.equipped = true
+            }
+
+            //Add item to the inventory.
+            playerObj.inventory.push(newItem)
+
+            //Resolve stats and actions added by item?
+            // resolvePlayerStats()
+        }
+
+        else{
+            showAlert('Inventory is full.')
+        }
+    }
+    //Equip/unequip item.
+    function equipItem(itemId){
+
+        //Find item by id
+        let item = findItemById(itemId)
+
+        //Get item types to prevent staking
+        let itemTypes = []
+        playerObj.inventory.forEach(invItem => {
+            if(!invItem.equipped || invItem.itemType == 'generic') return false
+            itemTypes.push(invItem.itemType)
+        })
+
+
+        //Equip
+        if(
+            !item.equipped &&                         //check if equipped
+            playerObj.equipmentSlots > calcEquippedItems() &&  //check if there are slots
+            !itemTypes.includes(item.itemType)        //check if unique type
+        )
+        {
+            item.equipped = true
+        } 
+        //Unequip item
+        else if (item.equipped == true){
+            item.equipped = false
+        }
+        else if(itemTypes.includes(item.itemType)){
+            showAlert("Can't equip two items of the same type.")
+        }
+        else {
+            showAlert('No equippment slots.')
+        }
+
+        resolvePlayerStats()//Adjust this to recalc all items
+        syncUi()
+    }
+    //Remove/drop item (inventory).
+    function removeItem(itemId){
+        let item = findByProperty(playerObj.inventory, 'itemId', itemId)
+        
+        //Remove item actions
+        item.actions.forEach(action => {
+            removeFromArr(playerObj.actions, action)
+        })
+
+        //Remove from inventory
+        removeFromArr(playerObj.inventory, item)
+
+        syncUi()
+    }
+    //Sell item (merchant).
+    function sellItem(itemId){
+        let item = findItemById(itemId)
+        
+        playerObj.coins += item.cost
+        
+        removeItem(itemId)
+
+        showAlert(`${upp(item.itemName)} sold for ${item.cost} coins.`)
+    }
+    //Enhance item (blacksmith).
+    function modifyItem(itemId, type){
+        //Find item
+        let targetItem = findItemById(itemId)
+
+        if(type == 'enhance'){
+            if(resolvePayment(calcCost('enhance', itemId)) == false) return
+
+            //Item enchance logic
+                 //Add passive mod
+                let addedStat = rarr([{stat:'life',value:6}, {stat:'power',value:1}, {stat:'def',value:2}])
+
+                //If no mods add.
+                if(targetItem.passiveStats.length < 1){
+                    targetItem.passiveStats.push(addedStat)
+                }
+                //Check if matching stat exists -> increase stat
+                else{
+                    let matchingStat
+
+                    targetItem.passiveStats.forEach(statObj =>{
+                        if(addedStat.stat != statObj.stat) return false
+                
+                        matchingStat = true
+                        statObj.value += addedStat.value  
+                    })
+
+                    //Else add stat
+                    if(!matchingStat){
+                        targetItem.passiveStats.push(addedStat)
+                    }
+                }
+
+                //Increase ench quant to increase cost per enhant of the same item.
+                targetItem.enhancementQuantity++
+
+            resolvePlayerStats()//Recalculates passive stats
+            showAlert('Item enhancement.')
+        }
+        else if(type == 'repair'){
+            //Find 1st action
+            let action = targetItem.actions[0]
+
+            //If no actions return
+            if(action == undefined) return showAlert("This item can't be repaired.")
+
+            //If can't pay return
+            if(resolvePayment(calcCost('repair', itemId)) == false) return
+
+            //Add 50% of max charges
+            action.actionCharge += Math.ceil(action.flatActionCharge / 2)
+
+            //Increase ench quant to increase cost per enhant of the same item.
+            targetItem.repairQuantity++
+
+            //item repair logic
+            showAlert('Item repaired.')
+        }
+
+        syncUi()
+    }
+    //Move function for purchasing and item here.
+
+    //Util: resolve payment.
+    function resolvePayment(cost){
+        if(playerObj.coins < cost){
+            showAlert(`You can't afford this. You need <img src="./img/ico/coin.svg"> ${cost - playerObj.coins} more.`)
+            return false
+        }
+        else{
+            playerObj.coins -= cost
+            showAlert(`You paid <img src="./img/ico/coin.svg"> ${cost} coins.`)
+        }
+    }
+    //Util: find item by action.
+    function findItemByAction(action){
+        let itemWihtAction
+
+        playerObj.inventory.forEach(item => {
+
+            item.actions.forEach(itemAction => {
+
+                if(itemAction.actionId === action.actionId){
+
+                    itemWihtAction = item
+
+                }
+
+            })
+
+        })
+
+        return itemWihtAction
+    }
+    //Util: find item by id.
+    function findItemById(itemId, sourceArr){
+        let targetItem
+
+        if(sourceArr == undefined){
+            sourceArr = playerObj.inventory
+        }
+
+        sourceArr.forEach(item => {
+            if(item.itemId != itemId) return false
+            targetItem = item
+        })
+
+        if(targetItem == undefined){
+            playerObj.offeredItemsArr
+
+            sourceArr.forEach(item => {
+                if(item.itemId != itemId) return false
+                targetItem = item
+            })
+        }
+
+        return targetItem
+    }
+    
 
 //TREE
 //Spend tree points

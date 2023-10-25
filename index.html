@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Baryon Gate</title>
+    <title>Gates of Morr</title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/main.css">
 
@@ -20,52 +20,26 @@
 </head>
 
 <body>
-    <!-- Start game -->
-    <div id="gameStartScreen" class="modal state-screen " onclick=" toggleModal('gameStartScreen')">
+    <!-- State game -->
+    <div id="state-screen" class="modal state-screen hide" onclick="screen('map')">
         <div class="modal-container">
-                
-                <img src="./img/bg/start.svg" alt="">
-                <p class="body-14">Mini dungeon crawler game<br>in the browser.</p>
-                
-                <p class="body-14 italic b50">Tap to start</p>
-            
+            <img src="./img/bg/start.svg" class="illustration">
+            <p class="body-14">Mini dungeon crawler game<br>in the browser.</p>
+            <p class="body-14 italic b50">Tap to start</p>
         </div>
     </div>
 
-    <!-- Game over -->
-    <div id="gameEndScreen" class="modal hide state-screen"  onclick="window.location.reload()">
-        <div class="modal-container">
-                
-            <img id="end-img" src="./img/bg/end.svg" alt="">
-            <p id="end-desc" class="body-14">You reached <span class="bold">stage 5</span> out of 12<br>and lost the encounter.</p>
-            <p class="body-14 italic b50">Tap to restart</p>
-        
-        </div>
-    </div>
-
-    <!-- Game completed-->
-    <div id="gameCompletedScreen" class="modal hide state-screen"  onclick="window.location.reload()">
-        <div class="modal-container">
-                
-            <img src="./img/bg/victory.svg" alt="">
-            <p id ='complete-desc' class="body-14"></p>
-            <p class="body-14 italic b50">Tap to restart</p>
-        
-        </div>
-    </div>
-
-    <!-- TAB CONTAINER -->
-    <div id="tab-container" class="tab-container row ">
-    </div>
-
-
-
+    
+    
     <!-- Map -->
     <div id="map" class="screen tab tab-margin ">
         <!-- Food and other stats-->
         <div id="stat-indicator">
+            <!-- TAB CONTAINER -->
+            <div id="tab-container" class="tab-container row ">
+            </div>
             <p id="map-desc" class='italic'> </p>
-
+    
             <div>
                 <img src='./img/ico/fish.svg'>
                 <p id='pl-food' class="mono-m">${playerObj.food}</p>
@@ -79,8 +53,8 @@
                 <p id='pl-life' class="mono-m">${playerObj.life}</p>
             </div>
             <div>
-                <img src='./img/ico/gold.svg'>
-                <p id='pl-gold' class="mono-m">${playerObj.gold}</p>
+                <img src='./img/ico/coin.svg'>
+                <p id='pl-gold' class="mono-m">${playerObj.coins}</p>
             </div>
         </div>
         
@@ -178,7 +152,7 @@
     </div>
 
     <!-- Reward screen -->
-    <div id="reward-screen" class="modal hide" >
+    <div id="reward-screen" class="modal tab-screen-container hide" >
         <!-- Tabs -->
         <div class="tab-container">
             <button onclick="location.href='#reward-slide'">
@@ -192,18 +166,15 @@
         </div>
 
         <!-- Reward slide -->
-        <div  id="reward-slide" class="modal-container tab-margin scroll">
-            <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
-
-                <h2 id="combatEndIndicator">Victory</h2>
-                <p id="reward-desc" class="body-14"></p>
-            </div>
-
-            <div id="reward-container" class="modal-body"></div>
+        <div  id="reward-slide" class="modal-container tab-margin scroll tab-screen">
+            <h2 id="combatEndIndicator">Victory</h2>
+            <p id="reward-desc" class="body-14"></p>
+        
+            <div id="reward-container" class="modal-body column"></div>
         </div>
 
         <!-- Inventory slide -->
-        <div  id="inventory-slide" class="modal-container tab-margin scroll">
+        <div  id="inventory-slide" class="modal-container  scroll tab-screen">
             <div class="column" style="gap: 12px; width: 100%; align-items: flex-start;">
                 <h2>Inventory</h2>
                 <p id="inventorySlideDesc" class="body-14">
@@ -212,11 +183,9 @@
                 </p>
             </div>
 
-            <div id="inventory-ref-container" class="modal-body"></div>
+            <div id="inventory-ref-container" class="modal-body column"></div>
         </div>
     </div>
-
-
 
     <!-- Character -->
     <div id="character" class="screen tab hide" onclick="screen('map')">
@@ -229,21 +198,96 @@
     <div id="inventory" class="screen tab hide" >
         <div class="modal-container tab-margin scroll">
             <h2 id="inventory-heading"></h2>
-            <div id="inventory-list" class="modal-body"></div>
+            <div id="inventory-list" class="modal-body column"></div>
         </div>
     </div>
-        <!-- Item modal -->
-        <div id="item-modal" class="hide modal" >
-            <div class="modal-container tab-margin">
-                <div class="modal-header">
-                    <h2></h2>
-                </div>
 
-                <div id="item-modal-body" class="column modal-body"></div>
+    <!-- Item modal -->
+    <div id="item-modal" class="hide modal" >
+        <div class="modal-container tab-margin">
+            <div class="modal-header">
+                <h2></h2>
             </div>
+
+            <div id="item-modal-body" class="column modal-body"></div>
+        </div>
+    </div>
+
+    <!-- MERCHANT -->
+    <div id="merchant" class="screen tab-screen-container hide">
+        <!-- Tabs -->
+        <div class="tab-container">
+            <button onclick="screen('map')">
+                <img src="./img/ico/tab-hide.svg">
+                Leave
+            </button>
+            <button onclick="location.href='#buy-slide'">
+                <img src="./img/ico/tab-reward.svg">
+                Buy
+            </button>
+            <button onclick="location.href='#sell-slide'">
+                <img src="./img/ico/inventory-tab.svg">
+                Sell
+            </button>
         </div>
 
 
+        <div id="buy-slide" class="modal-container tab-margin scroll tab-screen">
+            
+            <h2>Merchant</h2>            
+            <div id='merchant-container' class="column  modal-body"></div>
+
+        </div>
+
+        <div id="sell-slide" class="modal-container tab-margin scroll tab-screen">
+            <h2>Sell</h2>
+            <div id='items-to-sell' class="column  modal-body"></div>
+        </div>
+    </div>
+
+    <!-- BLACKSMITH -->
+    <div id="blacksmith" class="screen tab-screen-container hide">
+        <!-- Tabs -->
+        <div class="tab-container">
+            <button onclick="screen('map')">
+                <img src="./img/ico/tab-hide.svg">
+                Leave
+            </button>
+            <button onclick="location.href='#enhance-slide'">
+                <img src="./img/ico/placeholder.svg">
+                Enhance
+            </button>
+            <button onclick="location.href='#repair-slide'">
+                <img src="./img/ico/placeholder.svg">
+                Repair
+            </button>
+        </div>
+
+
+        <div id="enhance-slide" class="modal-container tab-margin scroll tab-screen">
+            <h2>Enhance items</h2>           
+            <div id='items-to-enhance' class="column modal-body"></div>
+        </div>
+
+        <div id="repair-slide" class="modal-container tab-margin scroll tab-screen">
+            <h2>Repair items</h2>
+            <div id='items-to-repair' class="column modal-body"></div>
+        </div>
+    </div>
+
+    <!-- EVENT SCREEN-->
+    <div id="event-screen" class="screen state-screen hide" onclick="screen('map')">
+        <div class="modal-container">
+            <img id="event-cover" src="" class="illustration">
+            <p id="event-desc" class="body-14"></p>
+            <p class="body-14 italic b50">Tap to continue</p>
+        </div>
+    </div>
+
+    <!-- ALERT -->
+    <div id="alert" class="hide" onclick="this.classList.add('hide')">
+        <p id="alert-note">Message.</p>
+    </div>
 
     <!-- TREE -->
     <div id="tree" class="screen hide tab" >
@@ -252,20 +296,6 @@
             <div class="modal-header">Tree</div>
             <div id="skill-tree" class="modal-body"></div>
 
-        </div>
-    </div>
-
-    <!-- SHOP -->
-    <div id="shop" class="screen hide" >
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2>Shop</h2>
-                <button onclick=" screen('map', this)">Close shop</button>
-            </div>
-
-            <div class="column  modal-body">
-                Buy & sell items
-            </div>
         </div>
     </div>
 </body>

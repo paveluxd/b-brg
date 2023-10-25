@@ -79,16 +79,15 @@ body{
         flex-grow: 1;
         min-height: 100%;
     }
-
     .row {
         display: flex;
         align-items: center;
         justify-content: center;
     }
-
     .column {
         display: flex;
         flex-direction: column;
+
         align-items: center;
         justify-content: center;
     }
@@ -158,7 +157,7 @@ body{
         align-items: center;
         justify-content: center; 
     }
-    .state-screen .modal-container img, .state-screenn .modal-container img{
+    .illustration{
         height: 224px;
         width: 226px;
     }
@@ -199,8 +198,6 @@ body{
         background-color: var(--w0);
 
         position: relative;
-
-
     }
     .map-tile:hover{
         background-color: var(--w0);
@@ -224,11 +221,11 @@ body{
 
         display: flex;
         gap: 12px;
-        padding: 6px 12px 10px 12px;
+        padding: 2px 12px 6px 12px;
         background-color: var(--b50);
         border-radius: 4px 4px 0 0;
         color: white;
-        z-index: 1;
+        z-index: 2;
 
         max-width: 400px;
         width: calc(100% - 16px);
@@ -289,7 +286,6 @@ body{
 
 /* Modal */
     .modal{
-
         display: flex;
         justify-content: stretch;
         align-items: stretch;
@@ -299,27 +295,30 @@ body{
 
         width: 100vw;
         height: 100vh;
+
     }
-
     .modal-container{
-
-        /* max-height: 800px; */
         max-width: 800px;
         height: 100%;
         width: 100%;
-        overflow: auto;
 
-        background-color: white;
+        overflow: auto;
+        position: relative;
+
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        gap: 24px;
+        
 
-        position: relative;
-        padding: 24px 24px 24px 24px;
+        background-color: white;
+        padding-top: 24px;
+
+        & p, h2{
+            margin: 0px 24px 12px 24px;
+        }
     }
     .tab-margin{
-        padding-bottom: 96px !important;       
+        padding-bottom: 120px !important;       
     }
     .modal-slide{
         animation-name: modal-slide;
@@ -331,8 +330,15 @@ body{
         justify-content: space-between;
         padding: 16px 16px;
     }
-    .modal-body{
-        padding: 0 8px 24px 8px;
+
+/* Modal with multiple tab pages that slide */
+    .tab-screen-container{
+        flex-direction: row;
+        overflow: scroll;
+
+        .tab-screen{
+            min-width: 100vw;
+        }
     }
 
 
@@ -463,26 +469,14 @@ body{
         background-color: rgb(179, 179, 179);
         border: none;
     }
-    /* Hides scroll bar */
-    /* .actions-container::-webkit-scrollbar {
-        display: none;
-    } */
     .actions-container{
         display: flex;
-        /* flex-wrap: wrap; */
         flex-direction: row;
-
-        gap: 2px;
         padding: 0 8px 0 8px;
         height: 160px;
         width: 100%;
         overflow: scroll;
 
-        /* //Hide bar */
-        /* -ms-overflow-style: none;   */
-        /* IE and Edge */
-        /* scrollbar-width: none;   */
-        /* Firefox */
     }
     #cards-row{
         display: flex;
@@ -500,7 +494,6 @@ body{
     #actions-list{
         display: flex;
         flex-direction: column;
-        gap: 2px;
         width: 100%;
     }
     #actions-list button{
@@ -550,18 +543,13 @@ body{
             display: flex;
             width: 100%;
             height: 100%;
-            /* border: 1px solid red; */
+
             align-items: flex-end;
             justify-content: center;
-        }
 
-        #enemy-sprite {
-            z-index: 1;
-            position: relative;
-        }
-
-        #player-sprite img, #enemy-sprite img{
-            position: absolute;
+            & img {
+                position: absolute;
+            }
         }
 
         #player-sprite img:nth-child(1),
@@ -727,31 +715,23 @@ body{
 
 
 /*Items & inventory*/
-    #inventory-list, #reward-container, #inventory-ref-container{
-
+    .item-card{
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: stretch;
-        justify-content: stretch;
+        flex-direction: column;
 
-        padding: 0px;
-        gap: 2px;
-        min-width: calc(100vw - 48px);
-    }
-        .item-card{
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            
-            border-radius: 4px;
-            background-color: var(--b10);
+        width: 100%;
+        background-color: var(--b10);
+        margin-bottom: 1px;
+
+        & p {
+            /*Removes margin from modal <p>*/
+            margin: 0px;
         }
-        .item-card img{
+        & img{
             height: 52px;
             width: 52px;
         }
-        .item-card button{
+        & button{
             border: none;
             background-color: var(--w0);
             
@@ -759,88 +739,100 @@ body{
             flex-direction: row;
             gap: 4px;
             
-            color: var(--b50);
+            color: var(--black);
             font-style: italic;
             padding: 12px;
         }
-        .item-card button img{
+        & button img{
             height: 24px;
             width: 24px;
         }
-        .desc-section{
-            padding: 8px 8px 0 0;
+    }
+    .desc-section{
+        padding: 8px 8px 0 0;   
+    }
+    .top-container, .bottom-container{
+        display: flex;
+        min-height: 52px;
+        position: relative;
 
-        }
-        .top-container span{
+        & span {
             background-color: var(--black);
             color: white;
             position: absolute;
             padding: 2px 6px;
-            border-radius: 0 4px 0 4px;
+            border-radius: 0 0 0 4px;
             right: 0;
             top: 0;
         }
-        .top-container, .bottom-container{
-            display: flex;
-            min-height: 52px;
-            position: relative;
-        }
-
+    }
     .bottom-container{
         justify-content: space-between;
-    }
-    .passive-container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .passive-container img{
-        height: 16px;
-        width: 16px;
-    }
 
-    /* Rewards */
-    #reward-screen{
-        flex-direction: row;
-        overflow: scroll;
-    }
-    #reward-slide, #inventory-slide{
-        min-width: 100vw;
+        .passive-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .passive-container img{
+            height: 16px;
+            width: 16px;
+        }
     }
 
 
 /* Utility */
-.hide    {display: none !important;}
-.flip    {transform: scaleX(-1);}
-.grow    {flex-grow: 1;}
-.italic  {font-style: italic;}
-.b50     {color: var(--b50);}
-.bold    {font-weight: 600;}
-.snap-scroll{
-    scroll-snap-type: x mandatory;	
-    -webkit-overflow-scrolling: touch;
+    .hide    {display: none !important;}
+    .flip    {transform: scaleX(-1);}
+    .grow    {flex-grow: 1;}
+    .italic  {font-style: italic;}
+    .b50     {color: var(--b50);}
+    .bold    {font-weight: 600;}
+    .snap-scroll{
+        scroll-snap-type: x mandatory;	
+        -webkit-overflow-scrolling: touch;
 
-    overflow-x: scroll;
-    
-    max-height: 100vh;
-    left: 0px;
-}
-.snap-scroll-item{
-    scroll-snap-align: start; 
-    overflow-y: scroll;
-    min-width: 100vw;
-}
+        overflow-x: scroll;
+        
+        max-height: 100vh;
+        left: 0px;
+    }
+    .snap-scroll-item{
+        scroll-snap-align: start; 
+        overflow-y: scroll;
+        min-width: 100vw;
+    }
+
+    #alert{
+        position: absolute;
+        bottom: 86px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: calc(100% - 16px);
+        min-height: 62px;
+        
+        margin: 8px;
+        padding: 0 0 0 16px;
+        
+        border-radius: 4px;
+        z-index: 4;
+
+        background-color: var(--black);
+        color: var(--w70);
+        font-size: 14px;
+    }
 
 
 /* Keyframes */
-
-
-@keyframes modal-slide {
-    0% {
-        bottom: -600px;
+    @keyframes modal-slide {
+        0% {
+            bottom: -600px;
+        }
+    
+        100% {
+            bottom: 0px;
+        }
     }
-  
-    100% {
-        bottom: 0px;
-    }
-}
