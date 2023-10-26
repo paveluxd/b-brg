@@ -30,16 +30,17 @@
     </div>
 
     
+    <!-- TAB CONTAINER -->
+    <div id="tab-container" class="tab-container row ">
+    </div>
+
     
     <!-- Map -->
     <div id="map" class="screen tab tab-margin ">
         <!-- Food and other stats-->
         <div id="stat-indicator">
-            <!-- TAB CONTAINER -->
-            <div id="tab-container" class="tab-container row ">
-            </div>
             <p id="map-desc" class='italic'> </p>
-    
+        
             <div>
                 <img src='./img/ico/fish.svg'>
                 <p id='pl-food' class="mono-m">${playerObj.food}</p>
@@ -54,7 +55,7 @@
             </div>
             <div>
                 <img src='./img/ico/coin.svg'>
-                <p id='pl-gold' class="mono-m">${playerObj.coins}</p>
+                <p id='pl-coins' class="mono-m">${playerObj.coins}</p>
             </div>
         </div>
         
@@ -307,5 +308,6 @@
 <script src="./data/data.js"></script>
 
 <script src="ui.js"></script>
+<script src="map.js"></script>
 <script src="main.js"></script>
 </html>

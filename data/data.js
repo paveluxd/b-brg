@@ -11,12 +11,12 @@ let playerObj, enemyObj, combatState
             
             //Map config
             this.mapObj                  //Map tiles data
-            this.mapColumns = rng(5,4)   //Columns
-            this.mapRows = rng(5,4)          //Rows
+            this.mapColumns = rng(3,3)   //Columns
+            this.mapRows = rng(6,6)          //Rows
             
-            this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
-            this.enemyPartyCap = 2
-            this.portalDefencers = 3
+            this.enemySpawnFrequency = 1 //1 is 100%, 2 is 50%
+            this.enemyPartyCap = 1
+            this.portalDefencers = 1
 
             //Stats for end game screen
             this.turnCounter = 0 //Calc turns for win stats
@@ -24,12 +24,12 @@ let playerObj, enemyObj, combatState
             this.totalEnemies = this.portalDefencers
             
             //Merchant config
-            this.merchantQuant = 22
+            this.merchantQuant = 9
             
             //Combat config
             this.bossFrequency = 3 //Every Nth stage
             this.flatItemReward = 2 //Base rewards
-            this.flatFoodReward = 1 //Food per round +1 per enemy      
+            this.flatFoodReward = 1 //Food per round +1 per enemy 
         }
     }
 
@@ -53,74 +53,80 @@ let playerObj, enemyObj, combatState
     class PlayerObj {
         constructor(){
             //Life
-            this.baseLife       = 100           //Lvl 1 char life
-            this.flatLife       = this.baseLife //Life cap
-            this.life           = this.baseLife //Current life
-
+                this.baseLife       = 100           //Lvl 1 char life
+                this.flatLife       = this.baseLife //Life cap
+                this.life           = this.baseLife //Current life
             //Power
-            this.basePower      = 1
-            this.flatPower      = this.basePower
-            this.power          = this.basePower
-
+                this.basePower      = 0
+                this.flatPower      = this.basePower
+                this.power          = this.basePower
             //Def
-            this.baseDef        = 0
-            this.flatDef        = this.baseDef
-            this.def            = this.baseDef
-
+                this.baseDef        = 0
+                this.flatDef        = this.baseDef
+                this.def            = this.baseDef
             //Dice
-            this.baseDice       = 6 //needed as ref in case flat dice is modified by item
-            this.flatDice       = this.baseDice
-            this.dice           = this.baseDice
-
-            this.roll           = 0
-            this.rollBonus      = 0
-
+                this.baseDice       = 6 //needed as ref in case flat dice is modified by item
+                this.flatDice       = this.baseDice
+                this.dice           = this.baseDice
+                this.roll           = 0
+                this.rollBonus      = 0
             //Temporary buffs
-            this.piercing       = false
-            this.swordDmgMod    = 0
+                this.piercing       = false
+                this.swordDmgMod    = 0
 
             //Inventory
-            this.inventorySlots = 20 
-            this.inventory      = [] //Items gained as rewards
-            this.startingItems  = [
-                "bow",
-                'tower shield',
-                'healing potion',
-                'ring of power'
-            ]
+                this.inventorySlots = 20 
+                this.inventory      = [] //Items gained as rewards
+                this.startingItems  = [
+                    'bow',
+                    'shield',
+                    'boots',
+                    'sword',
+                    'healing potion'
 
-            //Slots
+                    // 'healing potion',
+                    // 'ring of power',
+                    // 'chainmail'
+                ]
             //Equipment slots
-            this.baseSlots      = 10
-            this.equipmentSlots = this.baseSlots
-
+                this.baseSlots      = 10
+                this.equipmentSlots = this.baseSlots
             //Actions
-            this.actionSlots    = this.baseSlots
-            this.actions        = [] //Actions gained from items
-            this.tempActions    = [] //Temporary actions
+                this.actionSlots    = this.baseSlots
+                this.actions        = [] //Actions gained from items
+                this.tempActions    = [] //Temporary actions
 
             // this.draftActions   = [] //Draft actions gained from items
 
             //Sub-stats
-            this.coins          = rng(36,12)
-            this.food           = rng(6,2)
-
+                this.coins          = rng(0,0)
+                this.food           = rng(100,100)
             //Progression
-            this.exp            = 0
-            this.lvl            = 1
-            this.treeNodes      = []
-            this.treePoints     = 0
-
+                this.exp            = 0
+                this.lvl            = 1
+                this.treeNodes      = []
+                this.treePoints     = 0
             //Misc
-            this.offeredItemsArr     = [] //Stores rewards
+                this.offeredItemsArr     = [] //Stores rewards
         }
     }
 
 //Enemy
     class EnemyObj {
         constructor(){
+            this.level = 1 //tileIdRef[1] prev. value.
+            this.roll = 0
+            
+            //Misc
+            this.poisoned = false
+            this.poisonStacks = 0
+            this.crit = false
+
+            this.actionRef = []
+            this.acctionMod = ''
+
             //Choose enemy profile
-            let profiles = ['balanced', 'tank', 'assassin', 'minion'] //'minion'
+            let profiles = 'balanced'.split(', ') //, tank, assassin, minion
             let randomEnemyProfile = rarr(profiles)
             let powerMod, defMod, diceMod, imgPath, lifeMod
             // el('enemyImg').classList.remove('boss')
@@ -177,29 +183,17 @@ let playerObj, enemyObj, combatState
             gameState.playerLocationTile.tileId.split('-').forEach(val =>{
                 tileIdRef.push(parseInt(val))
             })
-            let tileColumn = tileIdRef[1]
 
             // mod(0.5) -> Get +1 every 2 stages
-            this.life    = 6 + Math.round((4   + tileColumn) * lifeMod ) //+ rng(4)
-            this.power   = 0 + Math.round((0.2 * tileColumn) * powerMod) 
-            this.def     = 0 + Math.round((0.2 * tileColumn) * defMod)
-            this.dice    = 4 + Math.round((0.2 * tileColumn) * diceMod)
+            this.life    = 0 + Math.round((8   + this.level) * lifeMod )
+            this.power   = 0 + Math.round((0.2 * this.level) * powerMod) 
+            this.def     = 0 + Math.round((0.2 * this.level) * defMod)
+            this.dice    = 4 + Math.round((0.2 * this.level) * diceMod)
             
             this.flatLife = this.life
             this.flatPower = this.power
             this.flatDef = this.def
-            this.flatDice = this.dice
-            
-            //Misc
-            this.roll = 0
-            this.level    = tileColumn
-            // this.image    = `./img/enemy/${imgPath}.png`
-            this.poisoned = false
-            this.poisonStacks = 0
-            this.crit = false
-
-            this.actionRef = []
-            this.acctionMod = ''
+            this.flatDice = this.dice 
         }
     }
     class EnemyActionObj {
@@ -220,7 +214,7 @@ let playerObj, enemyObj, combatState
                 this.actionVal = enemyObj.roll + enemyObj.power 
                 this.desc = `${ico('attack')}${this.actionVal} dmg`
 
-            }else if(key == 'combo'){
+            }else if(key == 'combo'){       //multistrike
 
                 this.rate = 2
                 this.actionVal = 1 + enemyObj.power 
@@ -228,11 +222,11 @@ let playerObj, enemyObj, combatState
 
             }else if(key == 'block'){
 
-                this.rate = 2
-                this.actionVal = -enemyObj.roll
-                this.desc = `${ico("block")} Block for ${-1 * this.actionVal}`
+                this.rate = 1
+                this.actionVal = enemyObj.roll
+                this.desc = `${ico("block")} Block for ${this.actionVal}`
 
-            }else if(key == 'final strike'){
+            }else if(key == 'final strike'){//on death
 
                 //Enable if low life
                 if(enemyObj.life < 3){
@@ -242,7 +236,7 @@ let playerObj, enemyObj, combatState
                 this.actionVal = enemyObj.flatLife
                 this.desc = `${ico('skull') + this.actionVal} dmg on death`
 
-            }else if(key == 'charge'){
+            }else if(key == 'charge'){      //charge crit
 
                 this.rate = 3
                 this.actionVal = rng(3)
@@ -256,7 +250,7 @@ let playerObj, enemyObj, combatState
             }
             
             //Buff
-            else if(key == 'fortify'){//+ def
+            else if (key == 'fortify'){//+ def
 
                 this.rate = 2
                 this.stat = 'def'
@@ -312,14 +306,14 @@ let playerObj, enemyObj, combatState
             }
 
             //Curse
-            else if(key == 'wound'){//- def
+            else if (key == 'wound'){  //- def
 
                 this.rate = 2
                 this.stat = 'def'
                 this.actionVal = Math.ceil((enemyObj.roll) * 0.25)
                 this.desc = `${ico('curse-def')} -${this.actionVal}`
 
-            }else if(key == 'weaken'){//- power
+            }else if(key == 'weaken'){ //- power
 
                 this.rate = 2
                 this.stat = 'power'
@@ -333,7 +327,7 @@ let playerObj, enemyObj, combatState
                 this.actionVal = rng(2)
                 this.desc = `${ico('curse-dice')} -${this.actionVal}`
 
-            }else if(key == 'drain'){//- life
+            }else if(key == 'drain'){  //- life
 
                 this.rate = 3
                 this.stat = 'life'
@@ -343,13 +337,12 @@ let playerObj, enemyObj, combatState
             }
 
             //Misc
-            else if(key == 'sleep'){
+            else if (key == 'sleep'){
                 this.rate = 2
                 this.desc = `Zzz...`
             }
             
-
-            //     // Crit:        {rate:1, action: 'Crit'       ,desc: `Prepares to crit next turn`},
+            //Debuff player item
             //     // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
             //     // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
             //     // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
@@ -384,7 +377,6 @@ let playerObj, enemyObj, combatState
             //Finds item data in csv itensRef
             let itemData = findByProperty(itemsRef, 'itemName', itemName)
             
-            
             //Set iLvl to stage val
             if(iLvl === undefined && gameState !== undefined){
                 iLvl = gameState.stage
@@ -395,7 +387,7 @@ let playerObj, enemyObj, combatState
             //Gen variable properties
             let props = [
                 {key:'itemName'    ,val: upp(itemName)},
-                {key:'itemType'    ,val: 'generic'},
+                {key:'itemSlot'    ,val: 'generic'},
                 {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
                 {key:'equipped'    ,val: false},
                 {key:'passiveStats',val: []},
@@ -505,6 +497,37 @@ let playerObj, enemyObj, combatState
         action.keyId = `a${action.keyId}`
     })
 
+    //Converts passiveStat to objects
+    function convertStringsToArr(arr){
+        arr.forEach(item => {
+            //Convert passiveStat to arr
+            //Check if there are passive stats
+            if(item.passiveStats.length > 1){
+                let passivesArr = item.passiveStats.split(', ')
+                item.passiveStats = []
+        
+                passivesArr.forEach(stat =>{
+                    statArr = stat.split(':')
+                    item.passiveStats.push({'stat':statArr[0], 'value': parseInt(statArr[1])})
+                })
+                // console.log(item);
+            }
+    
+            //Conver actions to arr
+            if(item.actions == undefined) return false
+
+            if(item.actions == ''){
+                item.actions = []
+            }
+            else{
+                item.actions = item.actions.split(', ')
+            }
+        })
+    }
+    //Convert passiveStat, actions property to objects.
+    convertStringsToArr(itemsRef)
+    convertStringsToArr(actionsRef) 
+
 
 //Tree -> Nodes
     let treeRef = [
@@ -558,113 +581,3 @@ let playerObj, enemyObj, combatState
         //Ideas
         //All fireballs that you draft have +5 charge.
     ]
-
-
-//MAP
-//Background image ids
-    let tileTypesA = 'forest-1'.split(', ') //castle
-    let tileTypesB = 'chest-1'.split(', ') //dungeon, chest-1
-    let tileTypesC = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
-    let tileTypesD = 'lake-1, lake-2, lake-3, grave'.split(', ') //house-1, mine
-    let forests    = 'forest-1, forest-2'.split(', ')
-
-    class MapObj{
-        constructor(){
-            this.xAxis = gameState.mapColumns
-            this.yAxis = gameState.mapRows
-
-            this.tiles = []
-
-            let yAxis = 0 
-            let xAxis = 1 //Offset because i know js yes
-
-
-            //Generates tiles
-            for(let i = 0; i < this.yAxis * this.xAxis; i++){
-
-                let tile = {}
-                let roll = rng(100)
-
-                //Modify id to match rows and columns
-                if(i % this.xAxis === 0){
-                    xAxis = 1
-                    yAxis++
-                }
-                tile.tileId = `${xAxis++}-${yAxis}`
-
-                //% distriburion of tilesType
-                if       (roll > 98){
-                    tile.tileType = tileTypesA[rng((tileTypesA.length - 1), 0)]
-                }else if (roll > 90){
-                    tile.tileType = tileTypesD[rng((tileTypesD.length - 1), 0)]
-                }else if (roll > 85){
-                    tile.tileType = tileTypesB[rng((tileTypesB.length - 1), 0)]
-                }else if (roll > 75){
-                    tile.tileType = forests[rng((forests.length - 1), 0)]
-                }else               {
-                    tile.tileType = tileTypesC[rng((tileTypesC.length - 1), 0)]
-                }
-
-                //Add player & enemies
-                if (1 === rng(gameState.enemySpawnFrequency)){ //Add enemy units 30%
-                    let eneQuant = rng(gameState.enemyPartyCap)
-                    tile.enemyUnit = true
-                    tile.enemyQuant = eneQuant
-                    gameState.totalEnemies += eneQuant //Counts total enemies
-                }
-                
-                //Flip tiles
-                if(1 === rng(2)){
-                    tile.flip = true
-                }
-
-                this.tiles.push(tile)
-            }
-
-
-            //Set required map tiles
-                let overrides = [
-                    //Mandatory tiles
-                    {tileId:'1-1', playerUnit: true, enemyUnit: false}, //Player
-                    {tileId:`${rng(gameState.mapColumns, gameState.mapColumns - 0)}-${rng(gameState.mapRows)}`, tileType: 'portal', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-                    {             tileType: 'merchant'}, //Add at least on emerchant tile, has to be the last one to avoid overriding by top items.
-                    {tileId:'1-2', tileType: 'blacksmith', enemyUnit: false},
-
-                    //For testing
-                    {tileId:'2-1',tileType: 'lake-1', enemyUnit: false, enemyQuant: 2},
-                    {tileId:'2-2',tileType: 'chest-1',enemyUnit: false, enemyQuant: 2},
-                ]
-
-                overrides.forEach(reqTile => {
-                
-                    //Find tile by id
-                    let tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
-                    // console.log(reqTile, tile);
-
-                    //If tiles overlap, pick new random id.
-                    //Inf loop will check for new random id
-                    if(tile == undefined || tile.required){
-                        while(true){
-                            reqTile.tileId = `${rng(gameState.mapColumns)}-${rng(gameState.mapRows)}`
-                            tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
-
-                            if(!tile.required){
-                                break;
-                            }
-                        }
-                    }
-
-                    //Add required tile for loop above
-                    tile.required = true
-
-                    //Set properties
-                    //Gets all props and checks for defined ones.
-                    //***Add this for all other class object overrides.
-                    Object.getOwnPropertyNames(reqTile).forEach(property =>{
-                        if(reqTile[property] != undefined){
-                            tile[property] = reqTile[property]
-                        }
-                    })
-                })
-        }
-    }

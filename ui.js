@@ -2,16 +2,18 @@
     function syncUi(){
         syncActionTiles()
         syncCharPage()
-        // syncTree()
         syncItemCards()
+        // syncTree()
 
-        //Log stats at the top
+        //Combat screen: Log stats at the top
         if(typeof combatState !== 'undefined'){
 
-            //In combat game log at the top left corner
+            //Top left log
             el('log').innerHTML = `
-                Turn: ${combatState.turn} /
-                Enemies to defeat: ${gameState.encounter}/${gameState.playerLocationTile.enemyQuant}
+                Enc: ${gameState.encounter}/${gameState.playerLocationTile.enemyQuant}<br>
+                Tur: ${combatState.turn}<br>
+                Ene: lvl ${enemyObj.level} ${enemyObj.profile}<br>
+                Loc: ${gameState.playerLocationTile.tileId}
                 ` 
             // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
 
@@ -58,10 +60,9 @@
         }
 
         //Modify map stat indicator
-        el('pl-food').innerHTML = playerObj.food
-        el('pl-power').innerHTML = playerObj.power
-        el('pl-life').innerHTML = playerObj.life
-        el('pl-gold').innerHTML = playerObj.coins
+        ['food', 'power','life','coins'].forEach(stat => {
+            el(`pl-${stat}`).innerHTML = playerObj[stat]
+        })
 
         //Modify inventroy slide heading.
         el('inventorySlideDesc').innerHTML = `
@@ -126,279 +127,6 @@
         el(id).classList.remove('hide');//display screen with id
         }
     }
-
-
-//MAP
-    //Adds images and builds the map elem
-    function genMap(){
-
-        // console.table(mapRef)
-        let map = el('map-container')
-        map.innerHTML = ``
-
-        //Sets map size & description (+1 due to border)
-        el('map-container').setAttribute('style', 
-        `
-            min-width:${120 * gameState.mapColumns +1}px; min-height:${120 * gameState.mapRows}px;
-            width:${120 * this.gameState.mapColumns +1}px; height:${120 * gameState.mapRows}px;
-            max-width:${120 * this.gameState.mapColumns +1}px; max-height:${120 * gameState.mapRows}px;
-        `)
-
-        //Add unit
-        let unit = document.createElement('div')
-        unit.id = 'map-unit'
-        map.append(unit)
-
-        //Gen tiles
-        mapRef.forEach(tile => {
-
-            let tileElem = document.createElement('button')
-            tileElem.id = tile.tileId
-            tileElem.classList.add('map-tile')
-            
-            //Tile bg image
-            tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
-
-            //Player unit image
-            if(tile.playerUnit){
-
-                tileElem.innerHTML += `
-                    <img src="./img/map/player-unit.svg" id="player-unit" class="map-unit">
-                `
-                gameState.playerLocationTile = tile
-
-            }
-
-            //Ene unit image
-            else if(tile.enemyUnit && tile.enemyQuant === 1){
-
-                tileElem.innerHTML += `
-                    <img src="./img/map/enemy-unit-${rng(3)}.svg" class="map-unit"> 
-                    <p class="unit-quant">${tile.enemyQuant}</p>
-                `
-
-            } else if(tile.enemyUnit){
-                tileElem.innerHTML += `
-                <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
-                <p class="unit-quant">${tile.enemyQuant}</p>
-            `
-            }
-
-            //50% flip image
-            if(tile.flip){
-                tileElem.firstChild.setAttribute('style', 'transform: scale(-1, 1);') 
-            }
-
-            //Events
-            map.append(tileElem)
-        })
-        resolveMove()
-    }
-    function movePlayerUnit(elem){
-
-        mapRef.forEach(tile => {
-            //add player unit to target tile
-            if(tile.playerUnit){ 
-                tile.playerUnit = false
-            }
-            //remove enemy unit from target tile
-            else if(tile.tileId === elem.id){ 
-                tile.playerUnit = true
-            }
-        })
-
-        //Resolve cost per movement
-            if(playerObj.food > 0){
-                playerObj.food--
-            }else if(playerObj.power > 0){
-                playerObj.power--
-            }else if(playerObj.life > 1){
-                playerObj.life--
-            }else{
-                openStateScreen('starved')
-            }
-
-        
-
-        //Readjust the viewport
-        //Get current tile column
-            let startIdRef = []
-            gameState.playerLocationTile.tileId.split('-').forEach(val =>{
-                startIdRef.push(parseInt(val))
-            })
-
-        //Get target tile column
-            let targetIdRef = []
-            findByProperty(mapRef, 'tileId', elem.id).tileId.split('-').forEach(val =>{
-                targetIdRef.push(parseInt(val))
-            })
-
-        //If diff, adjust the map
-            //Move to the right.
-            //2nd check is to deal with edge of the map case.
-            if(startIdRef[1] < targetIdRef[1] && startIdRef[1] > gameState.contains){
-                el(`${startIdRef[0]}-${startIdRef[1]+2}`).scrollIntoView()
-            }
-            //Move to the left
-            else if(startIdRef[1] > targetIdRef[1] && startIdRef[1] > 2){{//Ignore if 1st row
-                el(`${startIdRef[0]}-${startIdRef[1]-2}`).scrollIntoView()
-            }}
-
-        gameState.turnCounter++
-        gameState.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id)
-        
-        resolveMove()
-        syncUi() 
-    }
-    //Adds movement events to tiles.
-    function resolveMove(){
-        //Converts id to intigers
-        let tileIdRef = []
-        gameState.playerLocationTile.tileId.split('-').forEach(val =>{
-            tileIdRef.push(parseInt(val))
-        })
-
-        //Adds movement events to map tiles
-        mapRef.forEach(tile => {
-            // console.log(tile.tileId);
-
-            //Relocate player image
-            if(tile.playerUnit && tile.enemyUnit){
-                el(tile.tileId).append(el('player-unit'))
-
-                //Remove existing unit
-                el(tile.tileId).childNodes[2].remove() //remove unit image
-                el(tile.tileId).childNodes[3].remove() //remove unit quantity
-                tile.enemyUnit = false
-                
-                gameState.playerLocationTile = tile
-            }
-            else if(tile.playerUnit){
-                el(tile.tileId).append(el('player-unit'))
-
-                gameState.playerLocationTile = tile
-            }
-
-            //Add event if adjacent
-            if(
-                tile.tileId == gameState.playerLocationTile.tileId || //Player tile
-
-                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]+1}` || //+1 row
-                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]-1}` || //-1 row
-                tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]}` || //+1 col
-                tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]}`    //-1 col
-
-                // tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]+1}` ||
-                // tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]-1}` ||
-                // tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]-1}` ||
-                // tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]+1}`    
-            ){
-
-                //Clear all events
-                el(tile.tileId).removeAttribute("onmousedown")
-
-                //Combat envet
-                if(tile.enemyUnit && tile.tileId != gameState.playerLocationTile.tileId){
-                    el(tile.tileId).setAttribute("onmousedown", 'initiateCombat()')
-                }
-                //Portal event
-                else if(tile.tileType.startsWith('portal')){
-                    el(tile.tileId).setAttribute('onmousedown', 'openStateScreen("completed")')
-                }
-                //POI event
-                else if(!tile.tileType.startsWith('empty') || !tile.tileType.startsWith('forest')){
-                    if(tile == gameState.playerLocationTile){
-                        el(tile.tileId).setAttribute('onmousedown', 'mapEvent()')
-                    }
-                }
-                
-                //Move event
-                if(tile.tileId != gameState.playerLocationTile.tileId){
-                    
-                    el(tile.tileId).setAttribute("onmousedown", `movePlayerUnit(this), ${el(tile.tileId).getAttribute('onmousedown')}`)
-                }
-            }
-
-            //Remove event from other tiles.
-            else{
-                el(tile.tileId).removeAttribute("onmousedown")
-            }
-        })
-    }
-        //Merchant event.
-        function merchantMapEvent(){
-            
-        }
-        //Generic event.
-        function mapEvent(){
-            
-            let eventType = gameState.playerLocationTile.tileType
-
-            if(eventType.startsWith('lake')){
-                if(gameState.playerLocationTile.visited != true){
-                    let numberOfFish = rng(parseInt(gameState.playerLocationTile.tileId[0]) + parseInt(gameState.playerLocationTile.tileId[2]))
-                    playerObj.food += numberOfFish
-                    el('event-cover').setAttribute('src','./img/bg/lake.svg')
-                    el('event-desc').innerHTML =`You found ${numberOfFish} <img src="./img/ico/fish.svg">`
-
-                    syncUi()
-                }else{
-                    el('event-cover').setAttribute('src','./img/bg/lake.svg')
-                    el('event-desc').innerHTML =`You spent few hours trying to catch more fish, but it seems that there is no more left.`
-                }
-                screen('event-screen')
-            }
-            else if(eventType.startsWith('chest')){
-                if(gameState.playerLocationTile.visited != true){
-                    let val = rng(parseInt(gameState.playerLocationTile.tileId[0]) + parseInt(gameState.playerLocationTile.tileId[2]) + 12, 6)
-                    playerObj.coins += val
-                    el('event-cover').setAttribute('src','./img/bg/chest.svg')
-                    el('event-desc').innerHTML =`You found ${val} <img src="./img/ico/coin.svg">`
-                    syncUi()
-                }else{
-                    el('event-cover').setAttribute('src','./img/bg/chest.svg')
-                    el('event-desc').innerHTML =`The chest is empty."`
-                }
-
-                screen('event-screen')
-            }
-            else if(eventType.startsWith('merchant')){
-                //Generate shop.
-                el('merchant-container').innerHTML = ``
-                genOfferedItemList(gameState.merchantQuant, 'merchant')
-
-                //Regen item cards for 'sell' page.
-                el('items-to-sell').innerHTML = ``
-                playerObj.inventory.forEach(item => {
-                    el('items-to-sell').append(genItemCard(item, 'item-to-sell'))
-                })
-
-                //Open merchant screen.
-                screen('merchant')
-            }
-            else if(eventType.startsWith('blacksmith')){
-                //Generate items-to-enhance.
-                el('items-to-enhance').innerHTML = ``
-                playerObj.inventory.forEach(item => {
-                    el('items-to-enhance').append(genItemCard(item, 'item-to-enhance'))
-                })
-
-                //Generate items-to-repair
-                el('items-to-repair').innerHTML = ``
-                playerObj.inventory.forEach(item => {
-                    el('items-to-repair').append(genItemCard(item, 'item-to-repair'))
-                })
-
-                //Open merchant screen
-                screen('blacksmith')
-            }
-            else{
-                showAlert(`You look around.<br>There is nothing to see here.`)
-            }
-
-            //Check if visited.
-            gameState.playerLocationTile.visited = true
-        }
 
 
 //CHARACTER
@@ -502,8 +230,8 @@
             else if(imgKey.includes('curse') ){imgKey = 'curse scroll'} //curse
 
             //Item type
-            let itemType = ``
-            if(item.itemType !== 'generic'){itemType = `<span>${item.itemType}</span>`}
+            let itemSlot = ``
+            if(item.itemSlot !== 'generic'){itemSlot = `<span>${item.itemSlot}</span>`}
 
             //Added actions
             let actionSet = ``
@@ -584,7 +312,7 @@
             card.innerHTML =`<div class="" id="${cardId}">
                                 <div class="top-container" ${clickAttr}>
                                     <img src="./img/items/${imgKey}.svg">
-                                    ${itemType}
+                                    ${itemSlot}
                                     <div class="desc-section">
                                         <h3>${upp(item.itemName)}</h3>
                                         ${actionSet}
@@ -610,7 +338,7 @@
             itemObj = findByProperty(playerObj.offeredItemsArr, 'itemId', itemId)
         }
 
-        itemModal.innerHTML = `${itemObj.itemName} (${itemObj.itemType})<br><br>Adds actions: <br>`
+        itemModal.innerHTML = `${itemObj.itemName} (${itemObj.itemSlot})<br><br>Adds actions: <br>`
 
         itemObj.actions.forEach(action => {
             itemModal.innerHTML += `<br> ${action.actionName} (x${action.actionCharge}): ${upp(action.desc)}.<br>`
@@ -692,112 +420,95 @@
             }
         }
     }
+    //ACTIONS
+        //Gen action set
+        function syncActionTiles(){
+            el('cards-row').innerHTML = ''
 
+            //Set #cards-row width to display cards in two rows.
+            el('cards-row').setAttribute('style',`width:${149 * (Math.floor(playerObj.actions.length/2) + 1)}px;`)
+            
+            //Add button per player item
+            playerObj.actions.forEach(action => {
+                let actionCard = genActionCard(action)
+                el('cards-row').append(actionCard)
+            })
 
-//ACTIONS
-    //Action tiles
-    function syncActionTiles(){
-        el('cards-row').innerHTML = ''
-
-        //Set #cards-row width to display cards in two rows.
-        el('cards-row').setAttribute('style',`width:${149 * (Math.floor(playerObj.actions.length/2) + 1)}px;`)
-        
-        //Add button per player item
-        playerObj.actions.forEach(action => {
-            let actionCard = genActionCard(action)
-            el('cards-row').append(actionCard)
-        })
-
-        //Add empty item slots
-        let emptySlots = playerObj.actionSlots - playerObj.actions.length
-        let button = document.createElement('button')
-        button.innerHTML = `[ ]x${emptySlots}`
-        button.disabled = true
-        button.classList.add('action', 'empty-slot')
-        el('cards-row').append(button)    
-    }
-
-    //Function that creates a single action button
-    function genActionCard(action, type){
-        // Section that contains name and desc
-        let content = document.createElement('section')  
-
-        let referenceAction = findByProperty(actionsRef, 'keyId', action.keyId);
-
-        //Create button elem
-        let button = document.createElement('button')
-        if(type !== 'card'){
-            button.setAttribute('onclick', `turnCalc(this)`) // On click run next turn
+            //Add empty item slots
+                let emptySlots = playerObj.actionSlots - playerObj.actions.length
+                let button = document.createElement('button')
+                button.innerHTML = `[ ]x${emptySlots}`
+                button.disabled = true
+                button.classList.add('action', 'empty-slot')
+                el('cards-row').append(button)    
         }
 
-        button.setAttribute('actionId', action.actionId)       // Add a unique id
-        button.classList.add('action')
-        
-        
-        //Updates button labels based on actions
-        //Modifies 'content' section
-        button.append(content) //Add content section to button
+        //Gen action card
+        function genActionCard(action, type){
 
-        //!!! REPACE WITH keyID
+            //Section that contains name and desc.
+            let content = document.createElement('section')  
 
-        //Card item image
-        let itemString = findItemByAction(action).itemName
-        if(itemString.includes('scroll')){
-            itemString = 'magic scroll'
-        }
-        else if(itemString.includes('curse')){
-            itemString = 'curse scroll'
-        }
+            //Find action in actionsRef
+            let referenceAction = findByProperty(actionsRef, 'keyId', action.keyId);
 
-        //Cooldonw management
-        let cooldownCounter = ''
+            //Create button elem.
+            let button = document.createElement('button')
+            if(type !== 'card'){
+                button.setAttribute('onclick', `turnCalc(this)`) // On click run next turn
+            }
 
-        //If action is on cooldown disable the button
-        if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
-            cooldownCounter = `(cd:${action.cooldown})` 
-            button.disabled = true
-        }
+            //Add a unique id.
+            button.setAttribute('actionId', action.actionId)       
+            button.classList.add('action')
+            
+            
+            //Updates button labels based on actions
+            //Modifies 'content' section
+            button.append(content) //Add content section to button
 
-        if     (['attack'].indexOf(referenceAction.actionName) > -1){
-            button.querySelector('section').innerHTML = `
-            <span>
-            <h3>${action.actionName} for ${playerObj.roll + playerObj.power}</h3> 
-            <p>x${action.actionCharge}</p>
-            </span>
-            <p class='desc'>${action.desc}.</p>
-            `   
-        }
-        else if(['fireball'].indexOf(referenceAction.actionName) > -1){        
-            button.querySelector('section').innerHTML = `
-            <span>
-            <h3>${upp(action.actionName)} for ${playerObj.roll * (playerObj.actionSlots - playerObj.actions.length)}</h3> 
-            <p>x${action.actionCharge}</p>
-            </span>
-                <p class='desc'>${upp(action.desc)}.</p>
-                `
-        }
-        else if(['block', 'Break'].indexOf(referenceAction.actionName) > -1){
-                button.querySelector('section').innerHTML = `
-                <span>
-                <h3>${upp(action.actionName)} ${playerObj.roll}</h3> 
-                <p>x${action.actionCharge}</p>
-                </span>
-                <p class='desc'>${upp(action.desc)}.</p>
-                `      
-        }
-        else{
+            //!!! REPACE WITH keyID
+
+            //Card item image
+            let itemString = findItemByAction(action).itemName
+            if(itemString.includes('scroll')){
+                itemString = 'magic scroll'
+            }
+            else if(itemString.includes('curse')){
+                itemString = 'curse scroll'
+            }
+
+            //Cooldonw management.
+            let cooldownCounter = ''
+
+            //If action is on cooldown disable the button.
+            if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
+                cooldownCounter = `(cd:${action.cooldown})` 
+                button.disabled = true
+            }
+
+            let heading = `${upp(action.actionName)}`
+
+            if(['block'].indexOf(referenceAction.actionName) > -1){
+                heading = `${upp(action.actionName)} ${playerObj.roll}`
+            }
+            else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
+                heading = `${upp(action.actionName)} for ${playerObj.roll + playerObj.power}`
+            }
+            else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
+                heading = `${upp(action.actionName)} for ${3 + playerObj.power}(+${playerObj.swordDmgMod})`
+            }
+
             button.querySelector('section').innerHTML = `
                 <span>
-                    <h3>${upp(action.actionName)}</h3> 
+                    <h3>${heading}</h3> 
                     <p>x${action.actionCharge}${cooldownCounter}</p>
                 </span>
                 <p class='desc'>${upp(action.desc)}.</p>
                 <img src="./img/items/${itemString}.svg">
-            `        
+            `
+            return button
         }
-
-        return button
-    }
 
 
 //MISC

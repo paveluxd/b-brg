@@ -127,8 +127,8 @@ function preventBrowserHistorySwipeGestures() {
       if (ev.touches.length === 1) {
         const touch = ev.touches[0];
         if (
-          touch.clientX < window.innerWidth * 0.1 ||
-          touch.clientX > window.innerWidth * 0.9
+          touch.clientX < window.innerWidth * 0.05 ||
+          touch.clientX > window.innerWidth * 0.95
         ) {
           ev.preventDefault();
         }

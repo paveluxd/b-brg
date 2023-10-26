@@ -10,6 +10,16 @@ let actionsRef = [
     "actionType": ""
   },
   {
+    "actionName": "attack",
+    "desc": "deal 3 dmg",
+    "passiveStats": "",
+    "actionMod": 3,
+    "actionCharge": 1000,
+    "cooldown": "",
+    "keyId": 45,
+    "actionType": ""
+  },
+  {
     "actionName": "hammer attack",
     "desc": "deal 3 dmg. Deal 6 instead if your roll is greater than 4",
     "passiveStats": "",
@@ -44,7 +54,7 @@ let actionsRef = [
     "desc": "deal dmg equal to your dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 30,
+    "actionCharge": 1000,
     "cooldown": "",
     "keyId": 5,
     "actionType": ""
@@ -61,7 +71,7 @@ let actionsRef = [
   },
   {
     "actionName": "sword attack",
-    "desc": "deal 3 dmg, +1 sword dmg during this encounter",
+    "desc": "deal 3 dmg. Temporary +1 dmg if dice roll is 5 or 6",
     "passiveStats": "",
     "actionMod": 3,
     "actionCharge": 40,
@@ -140,7 +150,7 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "block",
+    "actionName": "quick block",
     "desc": "reduce incoming dmg by (12 - dice)",
     "passiveStats": "",
     "actionMod": 12,
@@ -171,10 +181,10 @@ let actionsRef = [
   },
   {
     "actionName": "dash",
-    "desc": "keep half of your roll for the next turn",
+    "desc": "keep half of your dice roll for the next turn",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 16,
+    "actionCharge": 1000,
     "cooldown": "",
     "keyId": 18,
     "actionType": ""
@@ -262,7 +272,7 @@ let actionsRef = [
   {
     "actionName": "life charge",
     "desc": "adds 10 max life while in action bar",
-    "passiveStats": [{stat:'life', value:10}],
+    "passiveStats": "life:10",
     "actionMod": "",
     "actionCharge": 1,
     "cooldown": "",
@@ -272,7 +282,7 @@ let actionsRef = [
   {
     "actionName": "endurance charge",
     "desc": "adds 25% life while in action bar",
-    "passiveStats": [{stat:'life%', value:25}],
+    "passiveStats": "life%:25",
     "actionMod": 25,
     "actionCharge": 1,
     "cooldown": "",
@@ -282,7 +292,7 @@ let actionsRef = [
   {
     "actionName": "order charge",
     "desc": "reduces dice by 2 while in action bar",
-    "passiveStats": [{stat:'dice-mod', value:-2}],
+    "passiveStats": "dice-mod:-2",
     "actionMod": 2,
     "actionCharge": 1,
     "cooldown": "",
@@ -292,7 +302,7 @@ let actionsRef = [
   {
     "actionName": "chaos charge",
     "desc": "adds 2 dice while in action bar",
-    "passiveStats": [{stat:'dice-mod', value:2}],
+    "passiveStats": "dice-mod:2",
     "actionMod": 2,
     "actionCharge": 1,
     "cooldown": "",
@@ -302,7 +312,7 @@ let actionsRef = [
   {
     "actionName": "defence charge",
     "desc": "adds 2 def while in action bar",
-    "passiveStats": [{stat:'def', value:2}],
+    "passiveStats": "def:2",
     "actionMod": 2,
     "actionCharge": 1,
     "cooldown": "",
@@ -312,7 +322,7 @@ let actionsRef = [
   {
     "actionName": "power charge",
     "desc": "adds 1 power while in action bar",
-    "passiveStats": [{stat:'power', value:1}],
+    "passiveStats": "power:1",
     "actionMod": 1,
     "actionCharge": 1,
     "cooldown": "",
@@ -321,10 +331,10 @@ let actionsRef = [
   },
   {
     "actionName": "healing potion",
-    "desc": "restore 12 life",
+    "desc": "restore half of the missing life",
     "passiveStats": "",
-    "actionMod": 12,
-    "actionCharge": 2,
+    "actionMod": 50,
+    "actionCharge": 3,
     "cooldown": "",
     "keyId": 33,
     "actionType": ""
@@ -410,23 +420,33 @@ let actionsRef = [
     "actionType": "extra-action"
   },
   {
-    "actionName": "deflect",
+    "actionName": "block",
     "desc": "reduce incoming dmg by dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 6,
+    "actionCharge": 1000,
     "cooldown": "",
     "keyId": 42,
     "actionType": ""
   },
   {
     "actionName": "rage",
-    "desc": "Increase all damage by 200% (passive)",
+    "desc": "you do and take 200% dmg (passive)",
     "passiveStats": "",
     "actionMod": 200,
     "actionCharge": 1,
     "cooldown": "",
     "keyId": 43,
     "actionType": "passive"
+  },
+  {
+    "actionName": "restoration",
+    "desc": "restore reduced dice. Set negative power and def to 0. Gain 1 life per restored point",
+    "passiveStats": "",
+    "actionMod": 0,
+    "actionCharge": 6,
+    "cooldown": "",
+    "keyId": 44,
+    "actionType": ""
   }
 ]
