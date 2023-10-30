@@ -313,15 +313,16 @@
             }
 
             //Update equip state for inventory item
-            if(['item-to-enhance', 'item-to-repair'].indexOf(type) > -1 == false){
-                if(item.equipped){ 
-                    btn2 = `<button class="equip-button body-12 equipped" onclick="equipItem('${item.itemId}'), this.classList.toggle('equipped')">
-                                <p>Equip</p> <img src="./img/ico/item-equip-yes.svg">
-                            </button>`
-                }
-            }
+            // if(['item-to-enhance', 'item-to-repair'].indexOf(type) > -1 == false){
+            //     if(item.equipped){ 
+            //         btn2 = `<button class="equip-button body-12 equipped" onclick="equipItem('${item.itemId}'), this.classList.toggle('equipped')">
+            //                     <p>Equip</p> <img src="./img/ico/item-equip-yes.svg">
+            //                 </button>`
+            //     }
+            // }
 
             card.id = cardId //has to be here, if declared aboce, it will bind html elemnts with the same id (inventory and market)
+            console.log(cardId);
             card.innerHTML =`
                                 <div class="top-container" ${clickAttr}>
                                    
