@@ -1,45 +1,5 @@
 let actionsRef = [
   {
-    "actionName": "inferno",
-    "desc": "deal dmg equal to your power per evey coin. Loose all coins",
-    "passiveStats": "",
-    "actionMod": "",
-    "actionCharge": 40,
-    "cooldown": "",
-    "keyId": 53,
-    "actionType": ""
-  },
-  {
-    "actionName": "transmute",
-    "desc": "gain 1 coin per dice roll. Requires dice roll 1 or 2",
-    "passiveStats": "",
-    "actionMod": "",
-    "actionCharge": 40,
-    "cooldown": "",
-    "keyId": 52,
-    "actionType": ""
-  },
-  {
-    "actionName": "swap",
-    "desc": "swap dice rolls (extra action)",
-    "passiveStats": "",
-    "actionMod": "",
-    "actionCharge": 40,
-    "cooldown": "",
-    "keyId": 51,
-    "actionType": "extra-action"
-  },
-  {
-    "actionName": "overload",
-    "desc": "deal 100% more damage if your dice roll is greater than dice",
-    "passiveStats": "",
-    "actionMod": 100,
-    "actionCharge": 40,
-    "cooldown": "",
-    "keyId": 50,
-    "actionType": "passive"
-  },
-  {
     "actionName": "mace attack",
     "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
     "passiveStats": "",
@@ -481,22 +441,12 @@ let actionsRef = [
   },
   {
     "actionName": "wooden mace attack",
-    "desc": "deal 3 dmg",
+    "desc": "deal 3 dmg.",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 100,
     "cooldown": "",
     "keyId": 45,
-    "actionType": ""
-  },
-  {
-    "actionName": "interrupt",
-    "desc": "prevent enemy action, Can’t affect actions that deal damage",
-    "passiveStats": "",
-    "actionMod": "",
-    "actionCharge": "",
-    "cooldown": "",
-    "keyId": 46,
     "actionType": ""
   },
   {
@@ -538,5 +488,45 @@ let actionsRef = [
     "cooldown": 1,
     "keyId": 50,
     "actionType": "extra-action"
+  },
+  {
+    "actionName": "overload",
+    "desc": "deal 100% more damage if your dice roll is greater than dice",
+    "passiveStats": "",
+    "actionMod": 100,
+    "actionCharge": 20,
+    "cooldown": "",
+    "keyId": 51,
+    "actionType": "passive"
+  },
+  {
+    "actionName": "swap",
+    "desc": "swap dice rolls (extra action)",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 12,
+    "cooldown": "",
+    "keyId": 52,
+    "actionType": "extra-action"
+  },
+  {
+    "actionName": "transmute",
+    "desc": "gain 1 coin per dice roll. Requires dice roll 1 or 2",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 40,
+    "cooldown": "",
+    "keyId": 53,
+    "actionType": ""
+  },
+  {
+    "actionName": "inferno",
+    "desc": "deal dmg equal to your power per every coin. Loose all coins",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 3,
+    "cooldown": "",
+    "keyId": 54,
+    "actionType": ""
   }
 ]

@@ -14,9 +14,9 @@ let playerObj, enemyObj, combatState
             this.mapColumns = rng(6,6)   //Columns
             this.mapRows = rng(6,6)          //Rows
             
-            this.enemySpawnFrequency = 5 //1 is 100%, 2 is 50%
-            this.enemyPartyCap = 1
-            this.portalDefencers = 1
+            this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
+            this.enemyPartyCap = 2
+            this.portalDefencers = 4
 
             //Stats for end game screen
             this.turnCounter = 0 //Calc turns for win stats
@@ -25,12 +25,13 @@ let playerObj, enemyObj, combatState
             this.totalCombatTurns = 0
             
             //Merchant config
-            this.merchantQuant = 9
+            this.merchantQuant = 6
             
             //Combat config
             this.bossFrequency = 3 //Every Nth stage
             this.flatItemReward = 2 //Base rewards
-            this.flatFoodReward = 1 //Food per round +1 per enemy 
+            this.flatFoodReward = 1 //Food per round +1 per enemy
+            this.flatCoinsReward = 6 
         }
     }
 
@@ -55,7 +56,7 @@ let playerObj, enemyObj, combatState
     class PlayerObj {
         constructor(){
             //Life
-                this.baseLife       = 100           //Lvl 1 char life
+                this.baseLife       = 32            //Lvl 1 char life
                 this.flatLife       = this.baseLife //Life cap
                 this.life           = this.baseLife //Current life
             //Power
@@ -81,14 +82,11 @@ let playerObj, enemyObj, combatState
                 this.inventorySlots = 20 
                 this.inventory      = [] //Items gained as rewards
                 this.startingItems  = [
-                    'wooden staff',
-                    'hook',
-                    'scroll of inferno',
-                    'alchemists key',
-                    // 'chainmail'
+                    'bow',
+                    'shield',
                 ]
             //Equipment slots
-                this.baseSlots      = 6
+                this.baseSlots      = 4
                 this.equipmentSlots = this.baseSlots
             //Actions
                 this.actionSlots    = this.baseSlots
@@ -98,8 +96,8 @@ let playerObj, enemyObj, combatState
             // this.draftActions   = [] //Draft actions gained from items
 
             //Sub-stats
-                this.coins          = rng(0,0)
-                this.food           = rng(100,100)
+                this.coins          = rng(12,6)
+                this.food           = rng(5,1)
             //Progression
                 this.exp            = 0
                 this.lvl            = 1

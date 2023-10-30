@@ -1,10 +1,10 @@
 //MAP
 //Background image ids
 let tileTypesA = 'empty-1'.split(', ') //castle
-let tileTypesB = 'empty-1'.split(', ') //dungeon, chest-1
+let tileTypesB = 'monument-1, monument-2, chest-1'.split(', ') //dungeon, 
 let tileTypesC = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
-let tileTypesD = 'grave'.split(', ') //house-1, mine, lake-1, lake-2, lake-3, 
-let forests    = 'forest-1, forest-2'.split(', ')
+let tileTypesD = 'grave, house-1, mine, lake-1, lake-2, lake-3'.split(', ') //
+let forests    = 'forest-1, forest-2, forest-3'.split(', ')
 
 class MapObj{
     constructor(){
@@ -65,9 +65,9 @@ class MapObj{
         let overrides = [
             //Mandatory tiles
             {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
-            {tileId:`${gameState.mapColumns}-1`, tileType: 'portal', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-            {tileId:`2-${gameState.mapRows}`, tileType: 'merchant', enemyUnit: false},
-            {tileType: 'blacksmith',enemyUnit: false},
+            {tileId:`${gameState.mapColumns}-1`, tileType: 'gate-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
+            {tileType: 'merchant'},
+            {tileType: 'blacksmith'},
 
             //For testing
             // {tileId:'2-1',tileType: 'lake-1', enemyQuant: 2},
@@ -360,8 +360,8 @@ class MapObj{
             el('merchant-container').innerHTML = ``
 
             //Swap for testing
-            genOfferedItemList("all", 'merchant')
-            // genOfferedItemList(gameState.merchantQuant, 'merchant')
+            // genOfferedItemList("all", 'merchant')
+            genOfferedItemList(gameState.merchantQuant, 'merchant')
 
             //Regen item cards for 'sell' page.
             el('items-to-sell').innerHTML = ``

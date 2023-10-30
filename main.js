@@ -715,12 +715,16 @@
             //Move inventory list to 2nd slide of reward screen
             el('inventory-slide').append(el('inventory-list'))
 
-            //Give food per killed enemy
+            //Give food & gold per killed enemy
+
+            let coinsReward = rng(gameState.flatCoinsReward)
+            
             el('reward-desc').innerHTML = `
                 You defeated the enemy.<br>
-                You get +${gameState.flatFoodReward + gameState.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, and one of these rewadrs:
+                You get +${gameState.flatFoodReward + gameState.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, ${coinsReward} coins , and one of these rewadrs:
             `
             playerObj.food += gameState.flatFoodReward + (gameState.playerLocationTile.enemyQuant)
+            playerObj.coins += coinsReward
 
             toggleModal('reward-screen')         
         }
