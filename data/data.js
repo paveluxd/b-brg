@@ -465,7 +465,7 @@ let playerObj, enemyObj, combatState
             //Resolves extra props
             props.forEach(property => {
 
-                console.log(property)
+                // console.log(property)
 
                 //Find action by actionName
                 let actionData = findByProperty(actionsRef, 'actionName', actionKey)
