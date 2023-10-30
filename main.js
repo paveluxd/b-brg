@@ -391,7 +391,7 @@
                 combatState.sourceAction.cooldown = 0
      
             }
-             else if(playerActionKey =='a51'){// hook/swap
+             else if(playerActionKey =='a52'){// hook/swap
             
                 let rollRef = playerObj.roll
                 playerObj.roll = enemyObj.roll
@@ -401,7 +401,7 @@
     
                 //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
                 recalcEneAction()
-            }else if(playerActionKey =='a52'){// "transmute" "alchemists playerActionKey"
+            }else if(playerActionKey =='a53'){// "transmute" "alchemists playerActionKey"
                 
                 if(playerObj.roll != 1 && playerObj.roll != 2) return showAlert('Transmute requires roll 1 or 2.')
     
@@ -409,7 +409,7 @@
                 
                 combatState.logMsg.push(`transmute: added ${playerObj.roll} coins`)
     
-            }else if(playerActionKey =='a53'){// "inferno" "scroll of inferno"
+            }else if(playerActionKey =='a54'){// "inferno" "scroll of inferno"
     
                 combatState.dmgDoneByPlayer += playerObj.power * playerObj.coins
     
@@ -438,7 +438,7 @@
                         ombatState.logMsg.push(`Critical hit (passive).`)
 
                     }
-                }else if(action.keyId === 'a50'){ // overload 'exoskeleton'
+                }else if(action.keyId === 'a51'){ // overload 'exoskeleton'
                     if(playerObj.roll > playerObj.dice){
 
                         combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * (action.actionMod / 100 + 1)
@@ -718,7 +718,7 @@
             //Give food & gold per killed enemy
 
             let coinsReward = rng(gameState.flatCoinsReward)
-            
+
             el('reward-desc').innerHTML = `
                 You defeated the enemy.<br>
                 You get +${gameState.flatFoodReward + gameState.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, ${coinsReward} coins , and one of these rewadrs:

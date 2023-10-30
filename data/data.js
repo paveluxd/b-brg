@@ -15,8 +15,8 @@ let playerObj, enemyObj, combatState
             this.mapRows = rng(6,6)          //Rows
             
             this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
-            this.enemyPartyCap = 2
-            this.portalDefencers = 4
+            this.enemyPartyCap = 1
+            this.portalDefencers = 1
 
             //Stats for end game screen
             this.turnCounter = 0 //Calc turns for win stats
@@ -56,7 +56,7 @@ let playerObj, enemyObj, combatState
     class PlayerObj {
         constructor(){
             //Life
-                this.baseLife       = 32            //Lvl 1 char life
+                this.baseLife       = 32           //Lvl 1 char life
                 this.flatLife       = this.baseLife //Life cap
                 this.life           = this.baseLife //Current life
             //Power

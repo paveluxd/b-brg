@@ -66,7 +66,7 @@ class MapObj{
             //Mandatory tiles
             {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
             {tileId:`${gameState.mapColumns}-1`, tileType: 'gate-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-            {tileType: 'merchant'},
+            {tileId:`2-${gameState.mapRows}`, tileType: 'merchant'},
             {tileType: 'blacksmith'},
 
             //For testing
@@ -350,7 +350,7 @@ class MapObj{
                 syncUi()
             }else{
                 el('event-cover').setAttribute('src','./img/bg/chest.svg')
-                el('event-desc').innerHTML =`The chest is empty."`
+                el('event-desc').innerHTML =`The chest is empty.`
             }
 
             screen('event-screen')
