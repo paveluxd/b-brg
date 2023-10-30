@@ -65,7 +65,7 @@ class MapObj{
         let overrides = [
             //Mandatory tiles
             {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
-            {tileId:`${gameState.mapColumns}-1`, tileType: 'gate-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
+            {tileId:`${gameState.mapColumns}-1`, tileType: 'portal-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
             {tileId:`2-${gameState.mapRows}`, tileType: 'merchant'},
             {tileType: 'blacksmith'},
 
