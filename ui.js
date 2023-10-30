@@ -270,31 +270,31 @@
                         </button>`
 
             if(type === 'reward'){
-                btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
-                            <img src="./img/ico/item-view.svg"> <p>View</p>
-                        </button>`
+                // btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
+                //             <img src="./img/ico/item-view.svg"> <p>View</p>
+                //         </button>`
 
                 btn2 = `<button class="equip-button body-12" onclick="resolveChoosingOfferedItem('${item.itemId}', 'reward'), screen('map')">
                             <p>Pick</p> <img src="./img/ico/item-pick.svg">
                         </button>`
             }
             else if(type == 'item-to-buy'){
-                btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
-                            <img src="./img/ico/item-view.svg"> <p>View</p>
-                        </button>`
+                // btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
+                //             <img src="./img/ico/item-view.svg"> <p>View</p>
+                //         </button>`
 
                 btn2 = `<button class="equip-button body-12" onclick="resolveChoosingOfferedItem('${item.itemId}', 'purchase')">
                             <p>Buy for ${item.cost}</p> <img src="./img/ico/coin.svg">
                         </button>`
             }
             else if(type == 'item-to-sell'){
-                btn1 = `<button class="drop-button body-12" onclick="sellItem('${item.itemId}')">
+                btn2 = `<button class="drop-button body-12" onclick="sellItem('${item.itemId}')">
                             <p>Sell for ${item.cost}</p> <img src="./img/ico/coin.svg">
                         </button>`
 
-                btn2 = `<button class="equip-button body-12" onclick="equipItem('${item.itemId}'),  this.classList.toggle('equipped')">
-                            <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
-                        </button>`
+                // btn1 = `<button class="equip-button body-12" onclick="equipItem('${item.itemId}'),  this.classList.toggle('equipped')">
+                //             <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
+                //         </button>`
                 cardId += '-to-sell'//Adjust id to avoid conflicts
             }
             else if(type == 'item-to-enhance'){
@@ -306,8 +306,6 @@
                 cardId += '-to-enhance'//Adjust id to avoid conflicts
             }
             else if(type == 'item-to-repair'){
-                btn1 = ``
-
                 btn2 = `<button class="equip-button body-12" onclick="modifyItem('${item.itemId}', 'repair')">
                             <p>Repair for ${calcCost('repair', item.itemId)}</p> <img src="./img/ico/coin.svg">
                         </button>`
