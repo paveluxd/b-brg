@@ -86,7 +86,7 @@ let playerObj, enemyObj, combatState
                     'shield',
                 ]
             //Equipment slots
-                this.baseSlots      = 4
+                this.baseSlots      = 6
                 this.equipmentSlots = this.baseSlots
             //Actions
                 this.actionSlots    = this.baseSlots
