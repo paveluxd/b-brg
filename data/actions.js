@@ -1,7 +1,47 @@
 let actionsRef = [
   {
+    "actionName": "inferno",
+    "desc": "deal dmg equal to your power per evey coin. Loose all coins",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 40,
+    "cooldown": "",
+    "keyId": 53,
+    "actionType": ""
+  },
+  {
+    "actionName": "transmute",
+    "desc": "gain 1 coin per dice roll. Requires dice roll 1 or 2",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 40,
+    "cooldown": "",
+    "keyId": 52,
+    "actionType": ""
+  },
+  {
+    "actionName": "swap",
+    "desc": "swap dice rolls (extra action)",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 40,
+    "cooldown": "",
+    "keyId": 51,
+    "actionType": "extra-action"
+  },
+  {
+    "actionName": "overload",
+    "desc": "deal 100% more damage if your dice roll is greater than dice",
+    "passiveStats": "",
+    "actionMod": 100,
+    "actionCharge": 40,
+    "cooldown": "",
+    "keyId": 50,
+    "actionType": "passive"
+  },
+  {
     "actionName": "mace attack",
-    "desc": "deal 3 dmg. Gain 1 def if your roll is 4",
+    "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
     "passiveStats": "",
     "actionMod": 3,
     "actionCharge": 40,
@@ -10,18 +50,8 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "attack",
-    "desc": "deal 3 dmg",
-    "passiveStats": "",
-    "actionMod": 3,
-    "actionCharge": 1000,
-    "cooldown": "",
-    "keyId": 45,
-    "actionType": ""
-  },
-  {
-    "actionName": "hammer attack",
-    "desc": "deal 3 dmg. Deal 6 instead if your roll is greater than 4",
+    "actionName": "armor break",
+    "desc": "reduce enemy def per point of your def that exceeds the highest dice roll",
     "passiveStats": "",
     "actionMod": 3,
     "actionCharge": 40,
@@ -44,24 +74,24 @@ let actionsRef = [
     "desc": "deal 1 dmg twice",
     "passiveStats": "",
     "actionMod": 1,
-    "actionCharge": 40,
+    "actionCharge": 60,
     "cooldown": "",
     "keyId": 4,
     "actionType": ""
   },
   {
     "actionName": "bow attack",
-    "desc": "deal dmg equal to your dice roll value",
+    "desc": "deal dmg equal to your dice dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 1000,
+    "actionCharge": 60,
     "cooldown": "",
     "keyId": 5,
     "actionType": ""
   },
   {
-    "actionName": "knife attack",
-    "desc": "deal 1 dmg (cost 3 roll, extra action)",
+    "actionName": "cut",
+    "desc": "deal 1 dmg (cost 3 dice roll, extra action)",
     "passiveStats": "",
     "actionMod": 1,
     "actionCharge": 24,
@@ -74,7 +104,7 @@ let actionsRef = [
     "desc": "deal 3 dmg. Temporary +1 dmg if dice roll is 5 or 6",
     "passiveStats": "",
     "actionMod": 3,
-    "actionCharge": 40,
+    "actionCharge": 60,
     "cooldown": "",
     "keyId": 7,
     "actionType": ""
@@ -101,7 +131,7 @@ let actionsRef = [
   },
   {
     "actionName": "backstab",
-    "desc": "deal 2 dmg, gain 1 power (cost 5 roll, extra action)",
+    "desc": "deal 2 dmg, gain 1 power (cost 5 dice roll, extra action)",
     "passiveStats": "",
     "actionMod": 2,
     "actionCharge": 12,
@@ -141,7 +171,7 @@ let actionsRef = [
   },
   {
     "actionName": "pyroblast",
-    "desc": "deal dmg equal to power × roll (cost 1 power)",
+    "desc": "deal dmg equal to power × dice roll (cost 1 power)",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 3,
@@ -180,11 +210,11 @@ let actionsRef = [
     "actionType": "passive"
   },
   {
-    "actionName": "dash",
+    "actionName": "preparation",
     "desc": "keep half of your dice roll for the next turn",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 1000,
+    "actionCharge": 16,
     "cooldown": "",
     "keyId": 18,
     "actionType": ""
@@ -211,7 +241,7 @@ let actionsRef = [
   },
   {
     "actionName": "weaken",
-    "desc": "reduce target power by 2",
+    "desc": "reduce targets power by 2",
     "passiveStats": "",
     "actionMod": 2,
     "actionCharge": 3,
@@ -221,7 +251,7 @@ let actionsRef = [
   },
   {
     "actionName": "wound",
-    "desc": "reduce target def by 4",
+    "desc": "reduce targets def by 4",
     "passiveStats": "",
     "actionMod": 4,
     "actionCharge": 3,
@@ -231,7 +261,7 @@ let actionsRef = [
   },
   {
     "actionName": "curse of chain",
-    "desc": "reduce target dice by 1",
+    "desc": "reduce targets dice by 1",
     "passiveStats": "",
     "actionMod": 1,
     "actionCharge": 3,
@@ -241,7 +271,7 @@ let actionsRef = [
   },
   {
     "actionName": "slow",
-    "desc": "reduce target roll by 4 (extra action)",
+    "desc": "reduce targets dice roll by 4 (extra action)",
     "passiveStats": "",
     "actionMod": 4,
     "actionCharge": 3,
@@ -251,7 +281,7 @@ let actionsRef = [
   },
   {
     "actionName": "stun",
-    "desc": "stun target, requires roll 1",
+    "desc": "stun target, requires dice roll 1",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 12,
@@ -351,7 +381,7 @@ let actionsRef = [
   },
   {
     "actionName": "dodge",
-    "desc": "gain roll × 10% chance to evade dmg this turn",
+    "desc": "gain dice roll × 10% chance to evade dmg this turn",
     "passiveStats": "",
     "actionMod": 10,
     "actionCharge": 12,
@@ -361,7 +391,7 @@ let actionsRef = [
   },
   {
     "actionName": "critical hit",
-    "desc": "next attack deals 2x dmg, requires roll greater than 8 (passive)",
+    "desc": "next attack deals 2x dmg, requires dice roll greater than 8 (passive)",
     "passiveStats": "",
     "actionMod": 200,
     "actionCharge": 12,
@@ -381,7 +411,7 @@ let actionsRef = [
   },
   {
     "actionName": "static",
-    "desc": "gain 2 power, requires roll greater than 8",
+    "desc": "gain 2 power, requires dice roll greater than 8",
     "passiveStats": "",
     "actionMod": 2,
     "actionCharge": 12,
@@ -391,7 +421,7 @@ let actionsRef = [
   },
   {
     "actionName": "sprint",
-    "desc": "gain 2 roll during this turn (extra action)",
+    "desc": "gain 2 dice roll during this turn (extra action)",
     "passiveStats": "",
     "actionMod": 2,
     "actionCharge": 3,
@@ -410,21 +440,21 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "poison",
-    "desc": "your hits apply poison during this turn",
+    "actionName": "weapon poison",
+    "desc": "next time you deal dmg, all hits during that turn poison",
     "passiveStats": "",
-    "actionMod": 3,
+    "actionMod": "",
     "actionCharge": 3,
     "cooldown": "",
     "keyId": 41,
-    "actionType": "extra-action"
+    "actionType": ""
   },
   {
     "actionName": "block",
     "desc": "reduce incoming dmg by dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 1000,
+    "actionCharge": 6,
     "cooldown": "",
     "keyId": 42,
     "actionType": ""
@@ -448,5 +478,65 @@ let actionsRef = [
     "cooldown": "",
     "keyId": 44,
     "actionType": ""
+  },
+  {
+    "actionName": "wooden mace attack",
+    "desc": "deal 3 dmg",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 100,
+    "cooldown": "",
+    "keyId": 45,
+    "actionType": ""
+  },
+  {
+    "actionName": "interrupt",
+    "desc": "prevent enemy action, Can’t affect actions that deal damage",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": "",
+    "cooldown": "",
+    "keyId": 46,
+    "actionType": ""
+  },
+  {
+    "actionName": "smoke bomb",
+    "desc": "stun target. Ineffective against attacks",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 6,
+    "cooldown": 2,
+    "keyId": 47,
+    "actionType": ""
+  },
+  {
+    "actionName": "focus",
+    "desc": "gain 1 power per 4 dice roll",
+    "passiveStats": "",
+    "actionMod": 1,
+    "actionCharge": 60,
+    "cooldown": 2,
+    "keyId": 48,
+    "actionType": ""
+  },
+  {
+    "actionName": "zealotry",
+    "desc": "reduce def by dice roll to gain that much power",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 12,
+    "cooldown": 2,
+    "keyId": 49,
+    "actionType": ""
+  },
+  {
+    "actionName": "defensive stance",
+    "desc": "once per turn, reduce dice roll by 1 (extra action)",
+    "passiveStats": "",
+    "actionMod": 1,
+    "actionCharge": 60,
+    "cooldown": 1,
+    "keyId": 50,
+    "actionType": "extra-action"
   }
 ]

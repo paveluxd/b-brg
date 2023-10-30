@@ -11,10 +11,10 @@ let playerObj, enemyObj, combatState
             
             //Map config
             this.mapObj                  //Map tiles data
-            this.mapColumns = rng(3,3)   //Columns
+            this.mapColumns = rng(6,6)   //Columns
             this.mapRows = rng(6,6)          //Rows
             
-            this.enemySpawnFrequency = 1 //1 is 100%, 2 is 50%
+            this.enemySpawnFrequency = 5 //1 is 100%, 2 is 50%
             this.enemyPartyCap = 1
             this.portalDefencers = 1
 
@@ -22,6 +22,7 @@ let playerObj, enemyObj, combatState
             this.turnCounter = 0 //Calc turns for win stats
             this.enemyCounter = 0
             this.totalEnemies = this.portalDefencers
+            this.totalCombatTurns = 0
             
             //Merchant config
             this.merchantQuant = 9
@@ -46,6 +47,7 @@ let playerObj, enemyObj, combatState
 
             this.enemyAction = []
             this.playerAction = []
+            this.logMsg = [] //combat log messages
         }
     }
 
@@ -73,23 +75,20 @@ let playerObj, enemyObj, combatState
             //Temporary buffs
                 this.piercing       = false
                 this.swordDmgMod    = 0
+                this.poisonBuff     = false
 
             //Inventory
                 this.inventorySlots = 20 
                 this.inventory      = [] //Items gained as rewards
                 this.startingItems  = [
-                    'bow',
-                    'shield',
-                    'boots',
-                    'sword',
-                    'healing potion'
-
-                    // 'healing potion',
-                    // 'ring of power',
+                    'wooden staff',
+                    'hook',
+                    'scroll of inferno',
+                    'alchemists key',
                     // 'chainmail'
                 ]
             //Equipment slots
-                this.baseSlots      = 10
+                this.baseSlots      = 6
                 this.equipmentSlots = this.baseSlots
             //Actions
                 this.actionSlots    = this.baseSlots
@@ -118,7 +117,6 @@ let playerObj, enemyObj, combatState
             this.roll = 0
             
             //Misc
-            this.poisoned = false
             this.poisonStacks = 0
             this.crit = false
 
@@ -469,7 +467,7 @@ let playerObj, enemyObj, combatState
             //Resolves extra props
             props.forEach(property => {
 
-                // console.log(property)
+                console.log(property)
 
                 //Find action by actionName
                 let actionData = findByProperty(actionsRef, 'actionName', actionKey)
@@ -486,6 +484,8 @@ let playerObj, enemyObj, combatState
                     this.actionCharge = 1 
                 } 
             })
+
+            // this.actionCharge = 100 //for testing
 
             //Static props
             this.flatActionCharge = this.actionCharge

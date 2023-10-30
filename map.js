@@ -60,14 +60,14 @@ class MapObj{
         }
 
 
-        //Set required map tiles
+        //MANDATORY TILES
         //Map position is set in last main.js
         let overrides = [
             //Mandatory tiles
             {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
             {tileId:`${gameState.mapColumns}-1`, tileType: 'portal', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-            // {tileType: 'merchant'},
-            // {tileType: 'blacksmith'},
+            {tileId:`2-${gameState.mapRows}`, tileType: 'merchant', enemyUnit: false},
+            {tileType: 'blacksmith',enemyUnit: false},
 
             //For testing
             // {tileId:'2-1',tileType: 'lake-1', enemyQuant: 2},
@@ -358,7 +358,10 @@ class MapObj{
         else if(eventType.startsWith('merchant')){
             //Generate shop.
             el('merchant-container').innerHTML = ``
-            genOfferedItemList(gameState.merchantQuant, 'merchant')
+
+            //Swap for testing
+            genOfferedItemList("all", 'merchant')
+            // genOfferedItemList(gameState.merchantQuant, 'merchant')
 
             //Regen item cards for 'sell' page.
             el('items-to-sell').innerHTML = ``

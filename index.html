@@ -32,12 +32,7 @@
     
     <!-- TAB CONTAINER -->
     <div id="tab-container" class="tab-container row ">
-    </div>
-
-    
-    <!-- Map -->
-    <div id="map" class="screen tab tab-margin ">
-        <!-- Food and other stats-->
+        <!-- stats-->
         <div id="stat-indicator">
             <p id="map-desc" class='italic'> </p>
         
@@ -58,6 +53,12 @@
                 <p id='pl-coins' class="mono-m">${playerObj.coins}</p>
             </div>
         </div>
+    </div>
+
+
+    
+    <!-- Map -->
+    <div id="map" class="screen tab tab-margin ">
         
         <div id="map-container" class=""></div>
     </div>
@@ -106,39 +107,27 @@
         <div id="stats" onclick="screen('character', 'combat-menu')">
             <!-- Player stat section --> 
             <div class="stat-group">
-                    <div class="stat">
-                        <img src="./img/ico/dice.svg" alt="">
-                        <div id="p-dice"></div>
-                    </div>
-                    <div class="stat life">
-                        <img src="./img/ico/hp-bb-red.svg" alt="">
-                        <div id="p-life"></div>
-                    </div>
-                    <div class="stat sm">
-                        <img src="./img/ico/power-bb-w.svg" alt="">
-                        <p id="p-power"></p>
-                    </div>
-                    <div class="stat sm">
-                        <img src="./img/ico/shield-bb-w.svg" alt="">
-                        <p id="p-def"></p>
-                    </div>
+                <div id="p-dice" class="stat"></div>
+                <div id="p-life" class="stat life"></div>
+                <div id="p-power" class="stat sm"></div>
+                <div id="p-def" class="stat sm"></div>
             </div>
     
             <!-- Enemy stat section -->
             <div class="stat-group">
-                    <div class="stat">
+                    <div id="dice" class="stat">
                         <img src="./img/ico/dice.svg" alt="">
                         <div id="dice"></div>
                     </div>
-                    <div class="stat life">
+                    <div id="life" class="stat life">
                         <img src="./img/ico/hp-bb-red.svg" alt="">
                         <div id="life"></div>
                     </div>
-                    <div class="stat sm">
+                    <div id="power" class="stat sm">
                         <img src="./img/ico/power-bb-w.svg" alt="">
                         <p id="power"></p>
                     </div>
-                    <div class="stat sm">
+                    <div id="def" class="stat sm">
                         <img src="./img/ico/shield-bb-w.svg" alt="">
                         <p id="def"></p>
                         
@@ -171,7 +160,7 @@
             <h2 id="combatEndIndicator">Victory</h2>
             <p id="reward-desc" class="body-14"></p>
         
-            <div id="reward-container" class="modal-body column"></div>
+            <div id="reward-container" class="modal-body"></div>
         </div>
 
         <!-- Inventory slide -->
@@ -199,7 +188,7 @@
     <div id="inventory" class="screen tab hide" >
         <div class="modal-container tab-margin scroll">
             <h2 id="inventory-heading"></h2>
-            <div id="inventory-list" class="modal-body column"></div>
+            <div id="inventory-list" class="modal-body "></div>
         </div>
     </div>
 
@@ -236,13 +225,13 @@
         <div id="buy-slide" class="modal-container tab-margin scroll tab-screen">
             
             <h2>Merchant</h2>            
-            <div id='merchant-container' class="column  modal-body"></div>
+            <div id='merchant-container' class="modal-body"></div>
 
         </div>
 
         <div id="sell-slide" class="modal-container tab-margin scroll tab-screen">
             <h2>Sell</h2>
-            <div id='items-to-sell' class="column  modal-body"></div>
+            <div id='items-to-sell' class="modal-body"></div>
         </div>
     </div>
 
@@ -251,15 +240,15 @@
         <!-- Tabs -->
         <div class="tab-container">
             <button onclick="screen('map')">
-                <img src="./img/ico/tab-hide.svg">
+                <img src="./img/ico/leave.svg">
                 Leave
             </button>
             <button onclick="location.href='#enhance-slide'">
-                <img src="./img/ico/placeholder.svg">
+                <img src="./img/ico/enhance.svg">
                 Enhance
             </button>
             <button onclick="location.href='#repair-slide'">
-                <img src="./img/ico/placeholder.svg">
+                <img src="./img/ico/repair.svg">
                 Repair
             </button>
         </div>
@@ -267,12 +256,12 @@
 
         <div id="enhance-slide" class="modal-container tab-margin scroll tab-screen">
             <h2>Enhance items</h2>           
-            <div id='items-to-enhance' class="column modal-body"></div>
+            <div id='items-to-enhance' class="modal-body"></div>
         </div>
 
         <div id="repair-slide" class="modal-container tab-margin scroll tab-screen">
             <h2>Repair items</h2>
-            <div id='items-to-repair' class="column modal-body"></div>
+            <div id='items-to-repair' class="modal-body"></div>
         </div>
     </div>
 

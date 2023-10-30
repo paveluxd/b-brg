@@ -1,44 +1,8 @@
 let itemsRef = [
   {
-    "itemName": "water potion",
+    "itemName": "wooden staff",
     "passiveStats": "",
-    "actions": "water potion",
-    "itemSlot": "",
-    "itemType": "potion",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "poison potion",
-    "passiveStats": "",
-    "actions": "poison",
-    "itemSlot": "",
-    "itemType": "potion",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "healing potion",
-    "passiveStats": "",
-    "actions": "healing potion",
-    "itemSlot": "",
-    "itemType": "potion",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "iron dagger",
-    "passiveStats": "",
-    "actions": "backstab",
-    "itemSlot": "",
-    "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "axe",
-    "passiveStats": "",
-    "actions": "axe attack",
+    "actions": "focus",
     "itemSlot": "",
     "itemType": "weapon",
     "itemRarity": "",
@@ -47,8 +11,8 @@ let itemsRef = [
   {
     "itemName": "hammer",
     "passiveStats": "",
-    "actions": "hammer attack",
-    "itemSlot": "main-hand",
+    "actions": "armor break",
+    "itemSlot": "",
     "itemType": "weapon",
     "itemRarity": "",
     "cost": ""
@@ -63,19 +27,10 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "wooden mace",
+    "itemName": "dagger",
     "passiveStats": "",
-    "actions": "attack",
-    "itemSlot": "main-hand",
-    "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "knife",
-    "passiveStats": "",
-    "actions": "knife attack",
-    "itemSlot": "off-hand",
+    "actions": "cut",
+    "itemSlot": "",
     "itemType": "weapon",
     "itemRarity": "",
     "cost": ""
@@ -84,7 +39,7 @@ let itemsRef = [
     "itemName": "dagger pair",
     "passiveStats": "",
     "actions": "dagger attack",
-    "itemSlot": "main-hand",
+    "itemSlot": "",
     "itemType": "weapon",
     "itemRarity": "",
     "cost": ""
@@ -93,7 +48,7 @@ let itemsRef = [
     "itemName": "sword",
     "passiveStats": "",
     "actions": "sword attack",
-    "itemSlot": "main-hand",
+    "itemSlot": "",
     "itemType": "weapon",
     "itemRarity": "",
     "cost": ""
@@ -102,8 +57,44 @@ let itemsRef = [
     "itemName": "bow",
     "passiveStats": "",
     "actions": "bow attack",
-    "itemSlot": "main-hand",
+    "itemSlot": "",
     "itemType": "weapon",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "hook",
+    "passiveStats": "",
+    "actions": "swap",
+    "itemSlot": "",
+    "itemType": "equipment",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "exoskeleton",
+    "passiveStats": "",
+    "actions": "overload",
+    "itemSlot": "",
+    "itemType": "equipment",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "gonfalon",
+    "passiveStats": "",
+    "actions": "defensive stance",
+    "itemSlot": "",
+    "itemType": "off-hand",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "iron cross",
+    "passiveStats": "",
+    "actions": "zealotry",
+    "itemSlot": "",
+    "itemType": "off-hand",
     "itemRarity": "",
     "cost": ""
   },
@@ -111,7 +102,7 @@ let itemsRef = [
     "itemName": "spiked shield",
     "passiveStats": "",
     "actions": "bash",
-    "itemSlot": "off-hand",
+    "itemSlot": "",
     "itemType": "off-hand",
     "itemRarity": "",
     "cost": ""
@@ -120,87 +111,15 @@ let itemsRef = [
     "itemName": "shield",
     "passiveStats": "",
     "actions": "block",
-    "itemSlot": "off-hand",
+    "itemSlot": "",
     "itemType": "off-hand",
     "itemRarity": "",
     "cost": ""
   },
   {
-    "itemName": "chain",
+    "itemName": "scroll of inferno",
     "passiveStats": "",
-    "actions": "stun",
-    "itemSlot": "off-hand",
-    "itemType": "off-hand",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "tower shield",
-    "passiveStats": "",
-    "actions": "quick block",
-    "itemSlot": "off-hand",
-    "itemType": "off-hand",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "scroll of restoration",
-    "passiveStats": "",
-    "actions": "restoration",
-    "itemSlot": "",
-    "itemType": "scroll",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "curse of chains",
-    "passiveStats": "",
-    "actions": "curse of chain",
-    "itemSlot": "",
-    "itemType": "scroll",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "curse of wounds",
-    "passiveStats": "",
-    "actions": "wound",
-    "itemSlot": "",
-    "itemType": "scroll",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "scroll of repetition",
-    "passiveStats": "",
-    "actions": "charge",
-    "itemSlot": "",
-    "itemType": "scroll",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "curse of slowness",
-    "passiveStats": "",
-    "actions": "slow",
-    "itemSlot": "",
-    "itemType": "scroll",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "curse of weakness",
-    "passiveStats": "",
-    "actions": "weaken",
-    "itemSlot": "",
-    "itemType": "scroll",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "scroll of fortification",
-    "passiveStats": "",
-    "actions": "fortify",
+    "actions": "inferno",
     "itemSlot": "",
     "itemType": "scroll",
     "itemRarity": "",
@@ -216,92 +135,11 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "ring of endurance",
-    "passiveStats": "",
-    "actions": "endurance charge",
-    "itemSlot": "",
-    "itemType": "ring",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "ring of power",
-    "passiveStats": "",
-    "actions": "power charge",
-    "itemSlot": "",
-    "itemType": "ring",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "ring of protection",
-    "passiveStats": "",
-    "actions": "defence charge",
-    "itemSlot": "",
-    "itemType": "ring",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
     "itemName": "ring of twilight",
     "passiveStats": "",
     "actions": "order charge, chaos charge",
     "itemSlot": "",
     "itemType": "ring",
-    "itemRarity": "unique",
-    "cost": ""
-  },
-  {
-    "itemName": "ring of order",
-    "passiveStats": "",
-    "actions": "order charge",
-    "itemSlot": "",
-    "itemType": "ring",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "ring of chaos",
-    "passiveStats": "",
-    "actions": "chaos charge",
-    "itemSlot": "",
-    "itemType": "ring",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "ring of life",
-    "passiveStats": "",
-    "actions": "life charge",
-    "itemSlot": "",
-    "itemType": "ring",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "dice 10",
-    "passiveStats": "dice:10",
-    "actions": "",
-    "itemSlot": "dice",
-    "itemType": "dice",
-    "itemRarity": "rare",
-    "cost": ""
-  },
-  {
-    "itemName": "dice 4",
-    "passiveStats": "dice:4, def:1",
-    "actions": "",
-    "itemSlot": "dice",
-    "itemType": "dice",
-    "itemRarity": "unique",
-    "cost": ""
-  },
-  {
-    "itemName": "dice 12",
-    "passiveStats": "dice:12, def:-1",
-    "actions": "",
-    "itemSlot": "dice",
-    "itemType": "dice",
     "itemRarity": "unique",
     "cost": ""
   },
@@ -351,24 +189,6 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "woolen bag",
-    "passiveStats": "slots:7, power:-2",
-    "actions": "",
-    "itemSlot": "bag",
-    "itemType": "bag",
-    "itemRarity": "unique",
-    "cost": ""
-  },
-  {
-    "itemName": "leather bag",
-    "passiveStats": "slots:5, def:-1",
-    "actions": "",
-    "itemSlot": "bag",
-    "itemType": "bag",
-    "itemRarity": "rare",
-    "cost": ""
-  },
-  {
     "itemName": "bag",
     "passiveStats": "slots:3",
     "actions": "",
@@ -378,65 +198,29 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "book of order",
-    "passiveStats": "power:1",
-    "actions": "chains, barrier",
-    "itemSlot": "off-hand",
-    "itemType": "book",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
     "itemName": "book of fire",
-    "passiveStats": "power:1",
+    "passiveStats": "",
     "actions": "fireball, pyroblast",
-    "itemSlot": "off-hand",
+    "itemSlot": "",
     "itemType": "book",
     "itemRarity": "",
     "cost": ""
   },
   {
     "itemName": "book of lightning",
-    "passiveStats": "power:2",
+    "passiveStats": "",
     "actions": "lightning",
-    "itemSlot": "off-hand",
+    "itemSlot": "",
     "itemType": "book",
     "itemRarity": "",
     "cost": ""
   },
   {
     "itemName": "book of ice",
-    "passiveStats": "power:1",
+    "passiveStats": "",
     "actions": "lance, shards",
-    "itemSlot": "off-hand",
+    "itemSlot": "",
     "itemType": "book",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "woolen gloves",
-    "passiveStats": "",
-    "actions": "critical hit",
-    "itemSlot": "",
-    "itemType": "gloves",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "leather gloves",
-    "passiveStats": "",
-    "actions": "precision",
-    "itemSlot": "",
-    "itemType": "gloves",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "gloves",
-    "passiveStats": "",
-    "actions": "combo",
-    "itemSlot": "",
-    "itemType": "gloves",
     "itemRarity": "",
     "cost": ""
   },
@@ -461,14 +245,14 @@ let itemsRef = [
   {
     "itemName": "boots",
     "passiveStats": "",
-    "actions": "dash",
+    "actions": "preparation",
     "itemSlot": "",
     "itemType": "boots",
     "itemRarity": "",
     "cost": ""
   },
   {
-    "itemName": "leather cape",
+    "itemName": "cape",
     "passiveStats": "",
     "actions": "dodge",
     "itemSlot": "",
@@ -477,11 +261,65 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "cape",
+    "itemName": "helmet",
     "passiveStats": "",
     "actions": "static",
     "itemSlot": "",
     "itemType": "cape",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "smoke bomb",
+    "passiveStats": "",
+    "actions": "smoke bomb",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "scroll of restoration",
+    "passiveStats": "",
+    "actions": "restoration",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "poison potion",
+    "passiveStats": "",
+    "actions": "weapon poison",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "curse of weakness",
+    "passiveStats": "",
+    "actions": "weaken",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "healing potion",
+    "passiveStats": "",
+    "actions": "healing potion",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "alchemists key",
+    "passiveStats": "",
+    "actions": "transmute",
+    "itemSlot": "",
+    "itemType": "jewelry",
     "itemRarity": "",
     "cost": ""
   }

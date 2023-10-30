@@ -44,16 +44,16 @@
             }
 
             //Player stats
-            el('p-life').innerHTML = `${playerObj.life}`
-            el('p-def').innerHTML = `${playerObj.def}`
-            el('p-dice').innerHTML = `${playerObj.roll}<span>/${playerObj.dice}</span>`
-            el('p-power').innerHTML = `${playerObj.power}`        
+            el('p-life').innerHTML  =`<img src="./img/ico/life.svg"><p>${playerObj.life}</p>`
+            el('p-def').innerHTML   =`<img src="./img/ico/def.svg"><p>${playerObj.def}</p>`
+            el('p-dice').innerHTML  =`<img src="./img/ico/dice.svg"><p>${playerObj.roll}<span>/${playerObj.dice}</span></p>`
+            el('p-power').innerHTML =`<img src="./img/ico/power.svg"><p>${playerObj.power}</p>`        
 
             //Enemy stats
-            el('life').innerHTML = `${enemyObj.life}`
-            el('def').innerHTML = `${enemyObj.def}`
-            el('dice').innerHTML = `${enemyObj.roll}<span>/${enemyObj.dice}</span>`
-            el('power').innerHTML = `${enemyObj.power}`        
+            el('life').innerHTML    =`<img src="./img/ico/life.svg"><p>${enemyObj.life}</p>`
+            el('def').innerHTML     =`<img src="./img/ico/def.svg"><p>${enemyObj.def}</p>`
+            el('dice').innerHTML    =`<img src="./img/ico/dice.svg"><p>${enemyObj.roll}<span>/${enemyObj.dice}</span></p>`
+            el('power').innerHTML   =`<img src="./img/ico/power.svg"><p>${enemyObj.power}</p>`        
 
             //Enemy intent indicator
             el('intent').innerHTML = `${enemyObj.action.desc}`
@@ -75,7 +75,28 @@
     function genTabs(){
 
         //Clear tabs
-        el('tab-container').innerHTML = ''
+        el('tab-container').innerHTML = `
+            <div id="stat-indicator">
+                <p id="map-desc" class='italic'></p>
+            
+                <div>
+                    <img src='./img/ico/fish.svg'>
+                    <p id='pl-food' class="mono-m">${playerObj.food}</p>
+                </div>
+                <div>
+                    <img src='./img/ico/power.svg'>
+                    <p id='pl-power' class="mono-m">${playerObj.power}</p>
+                </div>
+                <div>
+                    <img src='./img/ico/hp-bb-red.svg'>
+                    <p id='pl-life' class="mono-m">${playerObj.life}</p>
+                </div>
+                <div>
+                    <img src='./img/ico/coin.svg'>
+                    <p id='pl-coins' class="mono-m">${playerObj.coins}</p>
+                </div>
+            </div>
+        `
 
         //Add hidden close button
         let tab = document.createElement('button')
@@ -139,31 +160,25 @@
 
             <div id="stat-block" class = "grey-card body-14">
                 <div>
-                    <p><img src="./img/ico/hp-bb-red.svg"> 
-                        Life: ${playerObj.life} / ${playerObj.flatLife}</p>
-                    <p><img src="./img/ico/dice.svg"> 
-                        Dice: d${playerObj.flatDice}</p>
-                    <p><img src="./img/ico/item-power.svg"> 
-                        Power: ${playerObj.power}</p>
-                    <p><img src="./img/ico/item-def.svg"> 
-                        Def: ${playerObj.def}</p>
+                    <p><img src="./img/ico/hp-bb-red.svg">Life: ${playerObj.life} / ${playerObj.flatLife}</p>
+                    <p><img src="./img/ico/dice.svg">Dice: d${playerObj.flatDice}</p>
+                    <p><img src="./img/ico/item-power.svg">Power: ${playerObj.power}</p>
+                    <p><img src="./img/ico/item-def.svg">Def: ${playerObj.def}</p>
                 </div>
 
                 <div>
-                <p><img src="./img/ico/placeholder.svg"> 
-                Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
-                <p><img src="./img/ico/item-slots.svg"> 
-                Equi. slots: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
-                <p><img src="./img/ico/fish.svg"> 
-                Food: ${playerObj.food}</p>
+                    <p><img src="./img/ico/placeholder.svg">Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
+                    <p><img src="./img/ico/item-slots.svg">Equi. slots: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
+                    <p><img src="./img/ico/fish.svg">Food: ${playerObj.food}</p>
+                    <p><img src="./img/ico/coin-sm.svg">Coins: ${playerObj.coins}</p>
                 </div>
-                </div>
+            </div>
                 
-                <div class ="column" style="gap:8px; align-items:flex-start;">
+            <div class ="column" style="gap:8px; align-items:flex-start;">
                 <p class="body-14 italic b50">Combat actions from equipment</p>
                 <div id="actions-list"></div>
-                </div>
-                `
+            </div>
+        `
                 // <p><img src="./img/ico/placeholder.svg"> 
                 //     Level: ${playerObj.lvl} (exp: ${playerObj.exp})</p>
 
@@ -231,7 +246,7 @@
 
             //Item type
             let itemSlot = ``
-            if(item.itemSlot !== 'generic'){itemSlot = `<span>${item.itemSlot}</span>`}
+            if(item.itemSlot !== 'generic'){itemSlot = ` (${item.itemSlot})`}
 
             //Added actions
             let actionSet = ``
@@ -242,7 +257,7 @@
             //Passive stats
             let passiveSet = ``
             item.passiveStats.forEach(stat =>{
-                passiveSet += `<img src="./img/ico/item-${stat.stat}.svg"> ${stat.value}`
+                passiveSet += `<div><img src="./img/ico/${stat.stat}.svg"> ${stat.value}</div>`
             })
 
             //Btns
@@ -309,22 +324,22 @@
             }
 
             card.id = cardId //has to be here, if declared aboce, it will bind html elemnts with the same id (inventory and market)
-            card.innerHTML =`<div class="" id="${cardId}">
+            card.innerHTML =`
                                 <div class="top-container" ${clickAttr}>
-                                    <img src="./img/items/${imgKey}.svg">
-                                    ${itemSlot}
-                                    <div class="desc-section">
-                                        <h3>${upp(item.itemName)}</h3>
-                                        ${actionSet}
-                                    </div>
-                                </div>
+                                   
+                                    
+                                    <h3>${upp(item.itemName)}${itemSlot}</h3>
+                                    ${actionSet}
+                                
 
-                                <div class="bottom-container">
-                                    ${btn1}
                                     <div class="passive-container">${passiveSet}</div>
-                                    ${btn2}
                                 </div>
-                            </div>`
+                                
+                                <div class="bottom-container">
+                                    <img src="./img/items/${imgKey}.svg">
+                                    
+                                    ${btn2}
+                                </div>`
 
             return card
     }
@@ -435,12 +450,12 @@
             })
 
             //Add empty item slots
-                let emptySlots = playerObj.actionSlots - playerObj.actions.length
-                let button = document.createElement('button')
-                button.innerHTML = `[ ]x${emptySlots}`
-                button.disabled = true
-                button.classList.add('action', 'empty-slot')
-                el('cards-row').append(button)    
+                // let emptySlots = playerObj.actionSlots - playerObj.actions.length
+                // let button = document.createElement('button')
+                // button.innerHTML = `[ ]x${emptySlots}`
+                // button.disabled = true
+                // button.classList.add('action', 'empty-slot')
+                // el('cards-row').append(button)    
         }
 
         //Gen action card
@@ -479,7 +494,7 @@
             }
 
             //Cooldonw management.
-            let cooldownCounter = ''
+            let cooldownCounter = ``
 
             //If action is on cooldown disable the button.
             if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
@@ -487,16 +502,17 @@
                 button.disabled = true
             }
 
+
             let heading = `${upp(action.actionName)}`
 
-            if(['block'].indexOf(referenceAction.actionName) > -1){
+            if      (['block'].indexOf(referenceAction.actionName) > -1){
                 heading = `${upp(action.actionName)} ${playerObj.roll}`
-            }
-            else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
+            }else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
                 heading = `${upp(action.actionName)} for ${playerObj.roll + playerObj.power}`
-            }
-            else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
+            }else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
                 heading = `${upp(action.actionName)} for ${3 + playerObj.power}(+${playerObj.swordDmgMod})`
+            }else if(['inferno'].indexOf(referenceAction.actionName) > -1){
+                heading = `${upp(action.actionName)} (${playerObj.power * playerObj.coins} dmg)`
             }
 
             button.querySelector('section').innerHTML = `
