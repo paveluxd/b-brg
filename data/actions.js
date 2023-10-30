@@ -414,7 +414,7 @@ let actionsRef = [
     "desc": "reduce incoming dmg by dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 6,
+    "actionCharge": 32,
     "cooldown": "",
     "keyId": 42,
     "actionType": ""
