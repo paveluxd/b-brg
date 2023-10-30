@@ -533,7 +533,7 @@
                 <div class="modal-container"> 
                     <img id="end-img" src="./img/bg/victory.svg" alt="" class="illustration">
                     <p id="end-desc" class="body-14">
-                        You suceeded. You played for <span class="bold">${gameState.turnCounter} turns</span>,<br>
+                        You succeeded. You played for <span class="bold">${gameState.turnCounter} turns</span>,<br>
                         and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
                     </p>
                     <p class="body-14 italic b50">Tap to restart</p>
