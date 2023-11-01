@@ -1,9 +1,9 @@
 //MAP
 //Background image ids
 let tileTypesA = 'empty-1'.split(', ') //castle
-let tileTypesB = 'monument-1, monument-2, chest-1'.split(', ') //dungeon, 
+let tileTypesB = 'monument-1, chest-1'.split(', ') //dungeon, 
 let tileTypesC = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
-let tileTypesD = 'grave, house-1, lake-1, lake-2, lake-3'.split(', ') //mine
+let tileTypesD = 'grave, house-1, lake-1, lake-2, lake-3, monument-2'.split(', ') //mine
 let forests    = 'forest-1, forest-2, forest-3'.split(', ')
 
 class MapObj{
