@@ -1,9 +1,9 @@
 //MAP
 //Background image ids
-let tileTypesA = 'empty-1'.split(', ') //castle
-let tileTypesB = 'monument-1, chest-1'.split(', ') //dungeon, 
-let tileTypesC = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
-let tileTypesD = 'grave, house-1, lake-1, lake-2, lake-3, monument-2'.split(', ') //mine
+let tileSetUnique = 'empty-1'.split(', ') //castle
+let tileSetRare = 'grave, house-1, lake-1, lake-2, lake-3, monument-2'.split(', ') //mine
+let tileSetCommon = 'monument-1, chest-1'.split(', ') //dungeon, 
+let tileSetBase = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
 let forests    = 'forest-1, forest-2, forest-3'.split(', ')
 
 class MapObj{
@@ -32,15 +32,15 @@ class MapObj{
 
             //% distriburion of tilesType
             if       (roll > 98){
-                tile.tileType = tileTypesA[rng((tileTypesA.length - 1), 0)]
+                tile.tileType = tileSetUnique[rng((tileSetUnique.length - 1), 0)]
             }else if (roll > 90){
-                tile.tileType = tileTypesD[rng((tileTypesD.length - 1), 0)]
+                tile.tileType = tileSetRare[rng((tileSetRare.length - 1), 0)]
             }else if (roll > 85){
-                tile.tileType = tileTypesB[rng((tileTypesB.length - 1), 0)]
+                tile.tileType = tileSetCommon[rng((tileSetCommon.length - 1), 0)]
             }else if (roll > 75){
                 tile.tileType = forests[rng((forests.length - 1), 0)]
             }else               {
-                tile.tileType = tileTypesC[rng((tileTypesC.length - 1), 0)]
+                tile.tileType = tileSetBase[rng((tileSetBase.length - 1), 0)]
             }
 
             //Add player & enemies
