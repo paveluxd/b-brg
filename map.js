@@ -56,10 +56,8 @@ class MapObj{
                 tile.flip = true
             }
 
-            //Add event id to event tiles
-            if(tile.tileType.startsWith('monument')){
-                tile.loreEvent = rng(eventRef.length)
-            }
+            //LORE: Add event id to event tiles
+            if(tile.tileType.startsWith('monument')){tile.loreEvent = rng(eventRef.length)}
 
             this.tiles.push(tile)
         }
@@ -401,7 +399,7 @@ class MapObj{
         //Lore
         else if(eventType.startsWith('monument')){
             
-            let event = eventRef[gameState.playerLocationTile.loreEvent - 1]
+            let event = eventRef[gameState.playerLocationTile.loreEvent]
 
             if(event.img != undefined){
                 el('event-cover').setAttribute('src',`./img/lore/${event.img}.svg`)
@@ -424,10 +422,17 @@ class MapObj{
 
     let eventRef =[
         {
-            'eventId': 1,
+            'eventId': 0,
             'eventDesc': `
                 You notice a monolith, but it is heavily damaged. 
                 Something was depicted on it, but it's very hard to decipher.
+            `
+        },
+        {
+            'eventId': 1,
+            'eventDesc': `
+                You notice a large dark monolith in the middle of the area.
+                You approach it and see an engraved image...
             `
         },
         {
@@ -437,16 +442,9 @@ class MapObj{
                 You approach it and see an engraved image...
             `
         },
-        {
-            'eventId': 3,
-            'eventDesc': `
-                You notice a large dark monolith in the middle of the area.
-                You approach it and see an engraved image...
-            `
-        },
         //Monolith
         {
-            'eventId': 4,
+            'eventId': 3,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
@@ -454,7 +452,7 @@ class MapObj{
             `
         },
         {
-            'eventId': 5,
+            'eventId': 4,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
@@ -463,7 +461,7 @@ class MapObj{
             `
         },
         {
-            'eventId': 6,
+            'eventId': 5,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
@@ -471,7 +469,7 @@ class MapObj{
             `
         },
         {
-            'eventId': 7,
+            'eventId': 6,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
@@ -479,7 +477,7 @@ class MapObj{
             `
         },
         {
-            'eventId': 8,
+            'eventId': 7,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
@@ -487,7 +485,7 @@ class MapObj{
             `
         },
         {
-            'eventId': 9,
+            'eventId': 8,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
