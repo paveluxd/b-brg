@@ -71,7 +71,7 @@ class MapObj{
             //Mandatory tiles
             {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
             {tileId:`${gameState.mapColumns}-1`, tileType: 'portal-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-            // {tileId:`2-${gameState.mapRows}`, tileType: 'monument-1'},
+            // {tileId:`2-${gameState.mapRows}`, tileType: 'monument-1', loreEvent: 6,},
             {tileType: 'blacksmith'},
             {tileType: 'merchant'},
 
@@ -401,11 +401,16 @@ class MapObj{
         //Lore
         else if(eventType.startsWith('monument')){
             
-            let event = rng(eventRef.length)
+            let event = eventRef[gameState.playerLocationTile.loreEvent - 1]
 
-            el('event-cover').setAttribute('src',`./img/lore/event-${event}.svg`)
-            el('event-desc').innerHTML =`${eventRef[event - 1].eventDesc}`
+            if(event.img != undefined){
+                el('event-cover').setAttribute('src',`./img/lore/${event.img}.svg`)
+            }
+            else{
+                el('event-cover').setAttribute('src',`./img/lore/event-${event.eventId}.svg`)
+            }
 
+            el('event-desc').innerHTML =`${event.eventDesc}`
             screen('event-screen')
 
         }
@@ -429,12 +434,64 @@ class MapObj{
             'eventId': 2,
             'eventDesc': `
                 You notice a large dark monolith in the middle of the area.
-                You approach it and see an image carved in the middle of the vertical plate.
+                You approach it and see an engraved image...
             `
         },
-        
-        // {
-        //     'eventId': 3,
-        //     'eventDesc': 'some story bit 3'
-        // }
+        {
+            'eventId': 3,
+            'eventDesc': `
+                You notice a large dark monolith in the middle of the area.
+                You approach it and see an engraved image...
+            `
+        },
+        //Monolith
+        {
+            'eventId': 4,
+            'img': 'event-text',
+            'eventDesc': `
+                You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
+                <h3>"This palce is not a place of honour..."</h3>
+            `
+        },
+        {
+            'eventId': 5,
+            'img': 'event-text',
+            'eventDesc': `
+                You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
+                <h3>"No highly esteemed deed is commemorated here. Nothing valued...</h3>
+
+            `
+        },
+        {
+            'eventId': 6,
+            'img': 'event-text',
+            'eventDesc': `
+                You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
+                <h3>"Nothing valued is here. What is here..."</h3>
+            `
+        },
+        {
+            'eventId': 7,
+            'img': 'event-text',
+            'eventDesc': `
+                You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
+                <h3>"What is here is dangerous and repulsive to us. This message..."</h3>
+            `
+        },
+        {
+            'eventId': 8,
+            'img': 'event-text',
+            'eventDesc': `
+                You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
+                <h3>"This message is a warning..."</h3>
+            `
+        },
+        {
+            'eventId': 9,
+            'img': 'event-text',
+            'eventDesc': `
+                You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
+                <h3>"...warning about danger..."</h3>
+            `
+        },
     ]
