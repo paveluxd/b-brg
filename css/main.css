@@ -189,7 +189,7 @@ body{
 /* Map */
     #map{
         background-color: var(--map-bg);
-        padding: 32px;
+        padding: 112px 112px 162px 112px;
         flex-direction: column;
 
         min-width: 100vw;
