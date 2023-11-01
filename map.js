@@ -1,7 +1,7 @@
 //MAP
 //Background image ids
 let tileTypesA = 'empty-1'.split(', ') //castle
-let tileTypesB = 'monument-1, monument-2, chest-1'.split(', ') //dungeon, 
+let tileTypesB = 'monument-1, monument-2, chest-1, casino'.split(', ') //dungeon, 
 let tileTypesC = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
 let tileTypesD = 'grave, house-1, lake-1, lake-2, lake-3'.split(', ') //mine
 let forests    = 'forest-1, forest-2, forest-3'.split(', ')
@@ -69,9 +69,10 @@ class MapObj{
             //Mandatory tiles
             {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
             {tileId:`${gameState.mapColumns}-1`, tileType: 'portal-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-            // {tileId:`2-${gameState.mapRows}`, tileType: 'monument-1', loreEvent: 6,},
+            // {tileId:`2-${gameState.mapRows}`, tileType: 'casino', enemyUnit: false},
             {tileType: 'blacksmith'},
             {tileType: 'merchant'},
+            {tileType: 'casino'},
 
             //For testing
             // {tileId:'2-1',tileType: 'lake-1', enemyQuant: 2},
@@ -325,9 +326,57 @@ class MapObj{
         })
     }
 
-    //Merchant event.
-    function merchantMapEvent(){
-        
+    //Casino event
+    function runCasino(bet){
+
+        //Open casino
+        if(bet == undefined){
+            //Update player coins indicator
+            el('casino-coins').innerHTML = `Your coins: ${playerObj.coins}<img src='./img/ico/coin.svg'>`
+
+            screen('casino-screen')
+        }
+        else{
+
+            //Check if player has enough coins
+            if(playerObj.coins < bet) return showAlert(`Not enough coins to make a bet.`)
+            playerObj.coins -= bet
+    
+            let cardQuant = 3
+            let cardsValues = ['card-1','card-2','card-3','card-4','card-5']
+            let rollResult = []
+    
+            for(i = 0; i < cardQuant; i++){
+                let cardRoll = rarr(cardsValues) //Picks one of 
+                rollResult.push(cardRoll) //Get random card value
+                el(`card-${i}`).setAttribute('src',`./img/map/${cardRoll}.svg`)
+            }
+
+            //Update 
+    
+            //Get highest duplicate value
+            let maxDuplicates = countDuplicatesInArr(rollResult, 'maxValue')
+    
+            //If at least two cards are the same give player 2x
+            if(maxDuplicates > 2){
+                el('casino-outcome').innerHTML = `You win ${bet * 2} coins.`
+                playerObj.coins += bet * 3
+            }
+            //If 3 same give player 3x
+            else if(maxDuplicates > 1){
+                el('casino-outcome').innerHTML = `You win ${bet} coins.`
+                playerObj.coins += bet * 2
+            }
+            //Else player looses
+            else {
+                el('casino-outcome').innerHTML = `You lost.`
+            }
+
+            //Update player coins indicator
+            el('casino-coins').innerHTML = `Your coins: ${playerObj.coins}<img src='./img/ico/coin.svg'>`
+        }
+
+
     }
 
     //Generic event.
@@ -410,6 +459,11 @@ class MapObj{
 
             el('event-desc').innerHTML =`${event.eventDesc}`
             screen('event-screen')
+
+        }
+        else if(eventType.startsWith('casino')){
+
+            runCasino()
 
         }
         else{

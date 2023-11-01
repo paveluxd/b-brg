@@ -16,7 +16,7 @@
     <!-- //Grenze -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -271,6 +271,35 @@
             <img id="event-cover" src="" class="illustration">
             <p id="event-desc" class="body-14"></p>
             <p class="body-14 italic b50">Tap to continue</p>
+        </div>
+    </div>
+
+    <!-- CASINO-->
+    <div id="casino-screen" class="screen state-screen hide">
+        <!-- Tabs -->
+        <div class="tab-container">
+            <button onclick="screen('map'), syncUi()">
+                <img src="./img/ico/leave.svg">
+                Leave
+            </button>
+            <button onclick="runCasino(3)">
+                <img src="./img/ico/coin.svg">
+                Bet 3
+            </button>
+            <button onclick="runCasino(6)">
+                <img src="./img/ico/coin.svg">
+                Bet 6
+            </button>
+        </div>
+
+        <div class="modal-container">
+            <p id="casino-coins"></p>
+            <div class="casino-card-container">
+                <img id="card-0" class="casino-card" alt="" src="./img/map/card-cover.svg">
+                <img id="card-1" class="casino-card" alt="" src="./img/map/card-cover.svg">
+                <img id="card-2" class="casino-card" alt="" src="./img/map/card-cover.svg">
+            </div>
+            <p id="casino-outcome">Welcome to casino!</p>
         </div>
     </div>
 

@@ -66,6 +66,8 @@
     --w10:       rgb(255, 255, 255, 0.10);
     --w0:        rgb(255, 255, 255,0);
 
+    --shadow: 2px 2px 4px var(--b20);
+
     --screen-ref-width: 320px;
     --item-card-max-width: 320px;
     --action-card-max-width: 172px;
@@ -268,6 +270,42 @@ body{
                 transform: translateY(2px);
             }
         }
+
+    /* Casino */
+    #casino-screen .modal-container{
+        gap: 32px;
+        padding-bottom: 112px;
+        background-color: #2b2b2b;
+    }
+    .casino-card-container{
+        display: flex;
+        width: 360px;
+        height: 160px;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        gap: 4px;
+    }
+    .casino-card{
+        width: 112px;
+        height: 160px;
+    }
+    #card-0{
+        transform:rotate(-8deg);
+    }
+    #card-2{
+
+        transform:rotate(12deg);
+    }
+    #casino-coins, #casino-outcome{
+        color: rgb(220, 191, 105);
+        font-family: 'Grenze', sans-serif;
+        font-weight: 400;
+        font-size: 28px;
+    }
+    #casino-outcome{
+        color: rgb(163, 163, 163);
+    }
 
 /*Character screen*/
     #character-content {
@@ -884,7 +922,7 @@ body{
         padding: 0 0 0 16px;
         
         border-radius: 4px;
-        z-index: 4;
+        z-index: 10;
 
         background-color: var(--black);
         color: var(--w70);

@@ -14,10 +14,7 @@ let playerObj, enemyObj, combatState
             this.mapColumns = rng(6,6)   //Columns
             this.mapRows = rng(6,6)          //Rows
             
-            this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
-            this.enemyPartyCap = 2
-            this.portalDefencers = 4
-
+            
             //Stats for end game screen
             this.turnCounter = 0 //Calc turns for win stats
             this.enemyCounter = 0
@@ -26,8 +23,15 @@ let playerObj, enemyObj, combatState
             
             //Merchant config
             this.merchantQuant = 6
+
+            //Casino bets
+            //TBA
             
             //Combat config
+            this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
+            this.enemyPartyCap = 2
+            this.portalDefencers = 4
+
             this.bossFrequency = 3 //Every Nth stage
             this.flatItemReward = 2 //Base rewards
             this.flatFoodReward = 1 //Food per round +1 per enemy

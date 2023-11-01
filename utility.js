@@ -112,6 +112,28 @@ function csvJSON(csv){
     return JSON.stringify(result); //JSON
 }
 
+function countDuplicatesInArr(arr, type){
+    const counts = {};
+
+    arr.forEach((x) => {
+        counts[x] = (counts[x] || 0) + 1;
+    });
+
+    if(type == 'maxValue'){
+        let arr = Object.values(counts);
+        let max = Math.max(...arr);
+        return max
+    }
+    else if(type == 'minValue'){ 
+        let arr = Object.values(counts);
+        return Math.min(...arr);
+    }
+    else{
+        return counts //Returns object {a: 1, b: 2}
+    }
+
+}
+
 
 // Prevents the mobile browser behaviour that moves to the next or previous page
 // in your browser's history when you swipe in from the edge of the screen.
