@@ -495,8 +495,8 @@
             let cooldownCounter = ``
 
             //If action is on cooldown disable the button.
-            if(typeof action.cooldown !== 'undefined' && action.cooldown < referenceAction.cooldown){
-                cooldownCounter = `(cd:${action.cooldown})` 
+            if(typeof action.cooldown != 'undefined' && action.cooldown < referenceAction.cooldown){
+                cooldownCounter = `<p class='cooldown-indicator'>Recharge: ${referenceAction.cooldown - action.cooldown} turn(s)</p>` 
                 button.disabled = true
             }
 
@@ -516,7 +516,8 @@
             button.querySelector('section').innerHTML = `
                 <span>
                     <h3>${heading}</h3> 
-                    <p>x${action.actionCharge}${cooldownCounter}</p>
+                    <p>x${action.actionCharge}</p>
+                    ${cooldownCounter}
                 </span>
                 <p class='desc'>${upp(action.desc)}.</p>
                 <img src="./img/items/${itemString}.svg">

@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "wizards head",
+    "passiveStats": "",
+    "actions": "fear",
+    "itemSlot": "",
+    "itemType": "",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
     "itemName": "wooden staff",
     "passiveStats": "",
     "actions": "focus",

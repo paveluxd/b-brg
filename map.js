@@ -3,7 +3,7 @@
 let tileTypesA = 'empty-1'.split(', ') //castle
 let tileTypesB = 'monument-1, monument-2, chest-1'.split(', ') //dungeon, 
 let tileTypesC = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
-let tileTypesD = 'grave, house-1, mine, lake-1, lake-2, lake-3'.split(', ') //
+let tileTypesD = 'grave, house-1, lake-1, lake-2, lake-3'.split(', ') //mine
 let forests    = 'forest-1, forest-2, forest-3'.split(', ')
 
 class MapObj{
@@ -56,6 +56,11 @@ class MapObj{
                 tile.flip = true
             }
 
+            //Add event id to event tiles
+            if(tile.tileType.startsWith('monument')){
+                tile.loreEvent = rng(eventRef.length)
+            }
+
             this.tiles.push(tile)
         }
 
@@ -66,8 +71,9 @@ class MapObj{
             //Mandatory tiles
             {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
             {tileId:`${gameState.mapColumns}-1`, tileType: 'portal-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-            {tileId:`2-${gameState.mapRows}`, tileType: 'merchant'},
+            // {tileId:`2-${gameState.mapRows}`, tileType: 'monument-1'},
             {tileType: 'blacksmith'},
+            {tileType: 'merchant'},
 
             //For testing
             // {tileId:'2-1',tileType: 'lake-1', enemyQuant: 2},
@@ -144,7 +150,11 @@ class MapObj{
             if(tile.playerUnit){
 
                 tileElem.innerHTML += `
-                    <img src="./img/map/player-unit.svg" id="player-unit" class="map-unit">
+                    <div id="player-unit" class="map-unit">
+                        <img src="./img/map/player-unit-flag.svg" id="player-unit-flag">
+                        <img src="./img/map/player-unit-body.svg" id="player-unit-body">
+                        <img src="./img/map/player-unit-arms.svg" id="player-unit-arms">
+                    </div>
                 `
                 gameState.playerLocationTile = tile
 
@@ -388,6 +398,17 @@ class MapObj{
             //Open merchant screen
             screen('blacksmith')
         }
+        //Lore
+        else if(eventType.startsWith('monument')){
+            
+            let event = rng(eventRef.length)
+
+            el('event-cover').setAttribute('src',`./img/lore/event-${event}.svg`)
+            el('event-desc').innerHTML =`${eventRef[event - 1].eventDesc}`
+
+            screen('event-screen')
+
+        }
         else{
             showAlert(`You look around.<br>There is nothing to see here.`)
         }
@@ -395,3 +416,25 @@ class MapObj{
         //Check if visited.
         gameState.playerLocationTile.visited = true
     }
+
+    let eventRef =[
+        {
+            'eventId': 1,
+            'eventDesc': `
+                You notice a monolith, but it is heavily damaged. 
+                Something was depicted on it, but it's very hard to decipher.
+            `
+        },
+        {
+            'eventId': 2,
+            'eventDesc': `
+                You notice a large dark monolith in the middle of the area.
+                You approach it and see an image carved in the middle of the vertical plate.
+            `
+        },
+        
+        // {
+        //     'eventId': 3,
+        //     'eventDesc': 'some story bit 3'
+        // }
+    ]

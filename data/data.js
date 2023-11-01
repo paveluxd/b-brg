@@ -4,7 +4,7 @@ let playerObj, enemyObj, combatState
 
 
 //Game
-    class GameState{
+    class GameState {
         constructor(){
             this.stage = 1
             this.encounter = 1
@@ -117,6 +117,7 @@ let playerObj, enemyObj, combatState
             //Misc
             this.poisonStacks = 0
             this.crit = false
+            this.state = '' //Used for stun, fear etc.
 
             this.actionRef = []
             this.acctionMod = ''

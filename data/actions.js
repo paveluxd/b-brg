@@ -1,5 +1,15 @@
 let actionsRef = [
   {
+    "actionName": "fear",
+    "desc": "force enemy to block during the next turn (cooldown 2-4 turns)",
+    "passiveStats": "",
+    "actionMod": '',
+    "actionCharge": 12,
+    "cooldown": 4,
+    "keyId": 55,
+    "actionType": ""
+  },
+  {
     "actionName": "mace attack",
     "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
     "passiveStats": "",

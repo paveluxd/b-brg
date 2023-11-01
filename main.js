@@ -354,8 +354,9 @@
     
                 combatState.dmgDoneByEnemy -= playerObj.roll //- playerObj.power
     
-            }else if(playerActionKey =='a44'){// restoration
-                let restoredPoints
+            }else if(playerActionKey =='a44'){// "restoration" "scroll of restoration"
+
+                let restoredPoints = 0
     
                 if(playerObj.def < 0){
                     restoredPoints += playerObj.def
@@ -369,8 +370,10 @@
                     restoredPoints += playerObj.dice - playerObj.flatDice
                     playerObj.dice = playerObj.flatDice
                 }
+
                 if(restoredPoints == undefined) return false
                 playerObj.life += (-1 * restoredPoints)
+                combatState.logMsg.push(`restoration: restored ${-1 * restoredPoints} life`)
     
             }else if(playerActionKey =='a45'){// wooden mace attack
     
@@ -417,6 +420,16 @@
     
                 playerObj.coins = 0
     
+            }else if(playerActionKey =='a55'){// "fear" "wizards head"
+
+                enemyObj.state = 'fear'
+                combatState.sourceAction.cooldown = 0
+                
+                //Set variable cooldown.  
+                let referenceActionObj = findByProperty(actionsRef, 'keyId', combatState.sourceAction.keyId) //Find action reference
+                referenceActionObj.cooldown = rng(4,2)
+                combatState.logMsg.push(`fear: enamy will block during the next turn (fear reacharge:${referenceActionObj.cooldown})`)
+
             }
 
 
@@ -680,9 +693,9 @@
                     }
                 }
 
-                //Increase turn cooldowns
+                //COODLOWN: Increase turn cooldowns
                 playerObj.actions.forEach(action => {
-                    if(typeof action.cooldown !== 'undefined' && action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown){
+                    if(typeof action.cooldown != 'undefined' && action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown){
                         action.cooldown++
                     }
                 })
@@ -771,29 +784,29 @@
         let actionKeys = [
             'attack', 
             // 'final strike', 
-            // 'combo', 
+            'combo', 
             // 'charge', 
             'block', 
-            // 'fortify', 
+            'fortify', 
             // 'empower', 
             // 'rush', 
             // 'recover', 
             // 'wound', 
             // 'weaken', 
             // 'slow', 
-            // 'drain', 
+            'drain', 
             // 'sleep'
         ]
 
         
-        //Generates all enemy actions
+        //Generates all enemy actions.
         enemyObj.actionRef = []
         actionKeys.forEach(key => {enemyObj.actionRef.push(new EnemyActionObj(key))})
 
         //Pick action
-        let actionRoll = rng(100)           //Roll for action chance
+        let actionRoll = rng(100)           //Roll for action chance.
 
-        //Prevent action selection if enemy is charging an attack
+        //Prevent action selection if enemy is charging an attack.
         if(enemyObj.action != undefined && enemyObj.action.key == 'charge'){
             
             enemyObj.action.actionVal--
@@ -825,13 +838,22 @@
             enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 1))
 
         }
+
+        //Log: next enemy action.
+        // console.log(enemyObj.action);
+
+        //Resolve fear.
+        if(enemyObj.state == 'fear'){
+            enemyObj.action = new EnemyActionObj('block')
+            enemyObj.state = ''
+        }
         
         //Resolve undefined actions due to lack of rate.
         if(enemyObj.action === undefined) {
             enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 1))
         }
     }
-    //Recalculate current action
+    //Recalculate current action.
     function recalcEneAction(){
         enemyObj.action = new EnemyActionObj(enemyObj.action.key)
         combatState.logMsg.push(`enemy action recalculated`)
