@@ -531,48 +531,59 @@
 //MISC
     //Game state screen
     function openStateScreen(type){
+        //Victory
         if     (type == 'completed'){
             el('state-screen').innerHTML = `
                 <div class="modal-container"> 
                     <img id="end-img" src="./img/bg/victory.svg" alt="" class="illustration">
-                    <p id="end-desc" class="body-14">
-                        You succeeded. You played for <span class="bold">${gameState.turnCounter} turns</span>,<br>
-                        and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
-                    </p>
+
+                    <ul>
+                        <li>Reached stage ${gameState.stage}.</li>
+                        <li>Survived ${gameState.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gameState.enemyCounter}/${gameState.totalEnemies} enemies.</li>
+                    </ul>
+
                     <p class="body-14 italic b50">Tap to restart</p>
+
                 </div>`
             
             el('state-screen').setAttribute('onclick', "initGame(), screen('map')")
         }
+        //Starvation
         else if(type == 'starved'){
             el('state-screen').innerHTML = `
                 <div class="modal-container"> 
 
                     <img id="end-img" src="./img/bg/starvation.svg" alt="" class="illustration">
-
-                    <p id="end-desc" class="body-14">
-                        You starved to death. You lasted <span class="bold">${gameState.turnCounter} turns</span>,<br>
-                        and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
-                    </p>
+                    
+                    <ul>
+                        <li>Reached stage ${gameState.stage}.</li>
+                        <li>Survived ${gameState.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gameState.enemyCounter}/${gameState.totalEnemies} enemies.</li>
+                    </ul>
 
                     <p class="body-14 italic b50">Tap to restart</p>
-
                 </div>`
             
-            el('state-screen').setAttribute('onclick', "initGame(), screen('map')")
+            el('state-screen').setAttribute('onclick', "location.reload()")
         }
+        //Combat death
         else if(type == 'game-end'){
             el('state-screen').innerHTML = `
                 <div class="modal-container"> 
+
                     <img id="end-img" src="./img/bg/end.svg" alt="" class="illustration">
-                    <p id="end-desc" class="body-14">
-                        You have been defeated. You lasted <span class="bold">${gameState.turnCounter} turns</span>,<br>
-                        and defeated <span class="bold">${gameState.enemyCounter}/${gameState.totalEnemies} enemies</span>.
-                    </p>
+
+                    <ul>
+                        <li>Reached stage ${gameState.stage}.</li>
+                        <li>Survived ${gameState.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gameState.enemyCounter}/${gameState.totalEnemies} enemies.</li>
+                    </ul>
+
                     <p class="body-14 italic b50">Tap to restart</p>
                 </div>`
             
-            el('state-screen').setAttribute('onclick', "initGame(), screen('map')")
+            el('state-screen').setAttribute('onclick', "location.reload()")
         }  
 
         screen('state-screen')    

@@ -1,6 +1,6 @@
 let config = {
     //Player stats
-    baseLife: 32, //32
+    baseLife: 2, //32
     basePower: 0,
     baseDef: 0,
 

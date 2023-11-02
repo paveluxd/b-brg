@@ -15,7 +15,7 @@ let playerObj, enemyObj, combatState
             //Stats for end game screen
             this.turnCounter = 0 //Calc turns for win stats
             this.enemyCounter = 0
-            this.totalEnemies = this.portalDefenders
+            this.totalEnemies = config.portalDefenders + this.stage
             this.totalCombatTurns = 0
             
             //Merchant config

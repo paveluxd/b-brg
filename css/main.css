@@ -153,6 +153,13 @@ body{
         font-size: 12px;
         line-height: 16px;
     }
+    li{
+        text-align: left;
+        list-style-type: square;
+        font-size: 14px;
+        margin-bottom: 2px;
+        padding-left: 0px;
+    }
 
 
 /* Screens */
