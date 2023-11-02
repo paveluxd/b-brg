@@ -152,7 +152,7 @@ let playerObj, enemyObj, combatState
                 lifeMod  = 0.5
                 powerMod = 2
                 defMod   = 0.5
-                diceMod  = 2
+                diceMod  = 1
 
                 this.profile = 'assassin'
                 imgPath  = `assassin/${rng(1,1)}`
