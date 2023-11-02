@@ -130,7 +130,7 @@ let playerObj, enemyObj, combatState
             // el('enemyImg').classList.remove('boss')
 
             
-            if      (randomEnemyProfile == 'balanced'){
+            if     (randomEnemyProfile == 'balanced'){
                 lifeMod  = 1
                 powerMod = 1
                 defMod   = 1

@@ -543,7 +543,7 @@
                         <li>Defeated ${gameState.enemyCounter}/${gameState.totalEnemies} enemies.</li>
                     </ul>
 
-                    <p class="body-14 italic b50">Tap to restart</p>
+                    <p class="body-14 italic b50">Tap to continue</p>
 
                 </div>`
             
