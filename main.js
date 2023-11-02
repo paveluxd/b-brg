@@ -14,6 +14,7 @@
         if(mapY !== undefined){
             config.mapY = mapY
         }
+        
         gameState.mapObj = new MapObj
         mapRef = gameState.mapObj.tiles
         
@@ -24,11 +25,8 @@
         // syncTree()     //merge
         syncCharPage() //merge?
         genTabs()      //merge ui
-        
         spriteBuilder('player')//create player sprite
-
         genMap() //map
-        // console.log(el('map'));
 
         //Increase stage to scale enemies
         gameState.stage++ 
