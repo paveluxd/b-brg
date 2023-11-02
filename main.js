@@ -4,7 +4,10 @@
         //Create initial game and player objects
         if(typeof gameState == 'undefined'){
             gameState = new GameState
+
             playerObj = new PlayerObj
+            //Resolve ititial items
+            playerObj.startingItems.forEach(key => {addItem(key)})
         }
 
         
@@ -16,11 +19,9 @@
         
         
 
-        //Resolve ititial items
-        playerObj.startingItems.forEach(key => {addItem(key)})
 
         //Gen remaining UI
-        syncTree()     //merge
+        // syncTree()     //merge
         syncCharPage() //merge?
         genTabs()      //merge ui
         
