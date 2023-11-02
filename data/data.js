@@ -85,6 +85,7 @@ let playerObj, enemyObj, combatState
                 this.startingItems  = [
                     'bow',
                     'shield',
+                    'healing potion'
                 ]
             //Equipment slots
                 this.baseSlots      = 6
