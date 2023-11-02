@@ -138,23 +138,26 @@ let playerObj, enemyObj, combatState
 
                 this.profile = 'balanced'
                 imgPath  = `balanced/${rng(17,1)}`
-            }else if(randomEnemyProfile == 'tank'){
-                lifeMod  = 0.5
-                powerMod = 0.25
+            }
+            else if(randomEnemyProfile == 'tank'){
+                lifeMod  = 1
+                powerMod = 0.5
                 defMod   = 3
-                diceMod  = 0.25
+                diceMod  = 0.5
 
                 this.profile = 'tank'
                 imgPath  = `tank/${rng(1,1)}`
-            }else if(randomEnemyProfile == 'assassin'){
-                lifeMod  = 0.25
-                powerMod = 3
-                defMod   = 0.25
-                diceMod  = 1
+            }
+            else if(randomEnemyProfile == 'assassin'){
+                lifeMod  = 0.5
+                powerMod = 2
+                defMod   = 0.5
+                diceMod  = 2
 
                 this.profile = 'assassin'
                 imgPath  = `assassin/${rng(1,1)}`
-            }else if(randomEnemyProfile == 'minion'){
+            }
+            else if(randomEnemyProfile == 'minion'){
                 lifeMod  = 0.1
                 powerMod = 0.5
                 defMod   = 0.5
