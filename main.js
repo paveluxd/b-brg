@@ -1,13 +1,20 @@
 //INITITATE GAME
-    function initGame(mapColumns){
-        gameState = new GameState
-        playerObj = new PlayerObj
+    function initGame(mapY, stage){
 
-        if(mapColumns !== undefined){
-            gameState.mapColumns = mapColumns
+        //Create initial game and player objects
+        if(typeof gameState == 'undefined'){
+            gameState = new GameState
+            playerObj = new PlayerObj
+        }
+
+        
+        if(mapY !== undefined){
+            config.mapY = mapY
         }
         gameState.mapObj = new MapObj
         mapRef = gameState.mapObj.tiles
+        
+        
 
         //Resolve ititial items
         playerObj.startingItems.forEach(key => {addItem(key)})
@@ -22,8 +29,9 @@
         genMap() //map
         // console.log(el('map'));
 
+        //Increase stage to scale enemies
+        gameState.stage++ 
         
-
         resolvePlayerStats()
         syncUi()
     }
@@ -648,7 +656,6 @@
                     runAnim(el('enemy-sprite'), 'enemyEntrance') 
                 }
 
-                gameState.stage++
                 playerObj.exp++                                   //Add 1 exp
                 playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl'
             }

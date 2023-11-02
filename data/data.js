@@ -6,19 +6,16 @@ let playerObj, enemyObj, combatState
 //Game
     class GameState {
         constructor(){
-            this.stage = 1
+            this.stage = 0 //Keep at 0, it is increased during generation.
             this.encounter = 1
             
-            //Map config
-            this.mapObj                  //Map tiles data
-            this.mapColumns = rng(6,6)   //Columns
-            this.mapRows = rng(6,6)          //Rows
-            
+            //Map data obj
+            this.mapObj                                   
             
             //Stats for end game screen
             this.turnCounter = 0 //Calc turns for win stats
             this.enemyCounter = 0
-            this.totalEnemies = this.portalDefencers
+            this.totalEnemies = this.portalDefenders
             this.totalCombatTurns = 0
             
             //Merchant config
@@ -26,13 +23,13 @@ let playerObj, enemyObj, combatState
 
             //Casino bets
             //TBA
-            
+
             //Combat config
             this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
             this.enemyPartyCap = 2
-            this.portalDefencers = 4
+            this.portalDefenders = 4
 
-            this.bossFrequency = 3 //Every Nth stage
+            this.bossFrequency = 3 //Every Nth stage legacy
             this.flatItemReward = 2 //Base rewards
             this.flatFoodReward = 1 //Food per round +1 per enemy
             this.flatCoinsReward = 6 
@@ -60,15 +57,15 @@ let playerObj, enemyObj, combatState
     class PlayerObj {
         constructor(){
             //Life
-                this.baseLife       = 32           //Lvl 1 char life
-                this.flatLife       = this.baseLife //Life cap
-                this.life           = this.baseLife //Current life
+                this.baseLife       = config.baseLife //Lvl 1 char life
+                this.flatLife       = this.baseLife   //Life cap
+                this.life           = this.baseLife   //Current life
             //Power
-                this.basePower      = 0
+                this.basePower      = config.basePower
                 this.flatPower      = this.basePower
                 this.power          = this.basePower
             //Def
-                this.baseDef        = 0
+                this.baseDef        = config.baseDef
                 this.flatDef        = this.baseDef
                 this.def            = this.baseDef
             //Dice
@@ -115,7 +112,7 @@ let playerObj, enemyObj, combatState
 //Enemy
     class EnemyObj {
         constructor(){
-            this.level = 1 //tileIdRef[1] prev. value.
+            this.level = gameState.stage //tileIdRef[1] prev. value.
             this.roll = 0
             
             //Misc
@@ -127,7 +124,7 @@ let playerObj, enemyObj, combatState
             this.acctionMod = ''
 
             //Choose enemy profile
-            let profiles = 'balanced'.split(', ') //, tank, assassin, minion
+            let profiles = 'balanced, tank, assassin'.split(', ') //, tank, assassin, minion
             let randomEnemyProfile = rarr(profiles)
             let powerMod, defMod, diceMod, imgPath, lifeMod
             // el('enemyImg').classList.remove('boss')

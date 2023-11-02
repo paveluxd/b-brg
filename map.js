@@ -8,14 +8,16 @@ let forests    = 'forest-1, forest-2, forest-3'.split(', ')
 
 class MapObj{
     constructor(){
-        this.xAxis = gameState.mapColumns
-        this.yAxis = gameState.mapRows
+        //Set map dimensions
+        this.xAxis = config.mapX + gameState.stage
+        this.yAxis = config.mapY + gameState.stage
 
+        //Ref array for all tile objects
         this.tiles = []
 
+        //Vards for tile ID generation
         let yAxis = 0 
         let xAxis = 1 //Offset because i know js yes
-
 
         //Generates tiles
         for(let i = 0; i < this.yAxis * this.xAxis; i++){
@@ -62,20 +64,16 @@ class MapObj{
             this.tiles.push(tile)
         }
 
-
         //MANDATORY TILES
         //Map position is set in last main.js
         let overrides = [
             //Mandatory tiles
-            {tileId:`1-${gameState.mapRows}`, playerUnit: true, enemyUnit: false}, //Player
-            {tileId:`${gameState.mapColumns}-1`, tileType: 'portal-1', enemyUnit: true, enemyQuant: gameState.portalDefencers},
-            // {tileId:`2-${gameState.mapRows}`, tileType: 'casino', enemyUnit: false},
-            {tileType: 'blacksmith'},
-            {tileType: 'merchant'},
-            {tileType: 'casino'},
-
-            //For testing
-            // {tileId:'2-1',tileType: 'lake-1', enemyQuant: 2},
+            {tileId:`1-${this.yAxis}`, playerUnit: true, enemyUnit: false}, //Player
+            {tileId:`${this.xAxis}-1`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gameState.stage},
+            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
+            // {tileType: 'blacksmith'},
+            // {tileType: 'merchant'},
+            // {tileType: 'casino'},
         ]
 
         overrides.forEach(reqTile => {
@@ -88,7 +86,7 @@ class MapObj{
             //Inf loop will check for new random id
             if(tile == undefined || tile.required){
                 while(true){
-                    reqTile.tileId = `${rng(gameState.mapColumns)}-${rng(gameState.mapRows)}`
+                    reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
                     tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
 
                     if(!tile.required){
@@ -125,9 +123,9 @@ class MapObj{
         //Sets map size & description (+1 due to border)
         el('map-container').setAttribute('style', 
         `
-            min-width:${120 * gameState.mapColumns +1}px; min-height:${120 * gameState.mapRows}px;
-            width:${120 * this.gameState.mapColumns +1}px; height:${120 * gameState.mapRows}px;
-            max-width:${120 * this.gameState.mapColumns +1}px; max-height:${120 * gameState.mapRows}px;
+            min-width:${120 * gameState.mapObj.xAxis +1}px; min-height:${120 * gameState.mapObj.yAxis}px;
+                width:${120 * gameState.mapObj.xAxis +1}px;     height:${120 * gameState.mapObj.yAxis}px;
+            max-width:${120 * gameState.mapObj.xAxis +1}px; max-height:${120 * gameState.mapObj.yAxis}px;
         `)
 
         //Add unit

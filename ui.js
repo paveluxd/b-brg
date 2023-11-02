@@ -64,6 +64,8 @@
             el(`pl-${stat}`).innerHTML = playerObj[stat]
         })
 
+        el('map-desc').innerHTML = `Stage:${gameState.stage}`
+
         //Modify inventroy slide heading.
         el('inventorySlideDesc').innerHTML = `
             Inventory capacity: ${playerObj.inventory.length} / ${playerObj.inventorySlots}<br>
