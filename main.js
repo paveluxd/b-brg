@@ -799,7 +799,7 @@
             'wound', 
             'weaken', 
             // 'slow', 
-            'drain', 
+            // 'drain', 
             'sleep'
         ]
 
