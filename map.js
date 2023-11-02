@@ -224,22 +224,22 @@ class MapObj{
             })
 
         //PAN MAP
-            //Right
-            if(startIdRef[0] < targetIdRef[0]){
-                el('map').scrollBy(120,0)
-            }
-            // Left
-            else if(startIdRef[0] > targetIdRef[0]){
-                el('map').scrollBy(-120,0)
-            }
-            //Bottom
-            else if(startIdRef[1] < targetIdRef[1]){
-                el('map').scrollBy(0,120)
-            }
-            //Top
-            else if(startIdRef[1] > targetIdRef[1]){
-                el('map').scrollBy(0,-120)
-            }
+            // //Right
+            // if(startIdRef[0] < targetIdRef[0]){
+            //     el('map').scrollBy(120,0)
+            // }
+            // // Left
+            // else if(startIdRef[0] > targetIdRef[0]){
+            //     el('map').scrollBy(-120,0)
+            // }
+            // //Bottom
+            // else if(startIdRef[1] < targetIdRef[1]){
+            //     el('map').scrollBy(0,120)
+            // }
+            // //Top
+            // else if(startIdRef[1] > targetIdRef[1]){
+            //     el('map').scrollBy(0,-120)
+            // }
 
         gameState.turnCounter++
         gameState.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id)
@@ -312,7 +312,6 @@ class MapObj{
                 
                 //Move event
                 if(tile.tileId != gameState.playerLocationTile.tileId){
-                    
                     el(tile.tileId).setAttribute("onmousedown", `movePlayerUnit(this), ${el(tile.tileId).getAttribute('onmousedown')}`)
                 }
             }

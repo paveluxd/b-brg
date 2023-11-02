@@ -332,7 +332,7 @@ let playerObj, enemyObj, combatState
 
                 this.rate = 3
                 this.stat = 'life'
-                this.actionVal = enemyObj.roll * 2
+                this.actionVal = Math.round(enemyObj.roll * 1.5)
                 this.desc = `${ico('curse-life')} -${this.actionVal}`
 
             }

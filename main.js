@@ -14,7 +14,7 @@
         if(mapY !== undefined){
             config.mapY = mapY
         }
-        
+
         gameState.mapObj = new MapObj
         mapRef = gameState.mapObj.tiles
         
@@ -758,11 +758,10 @@
 
         //Resolve actions.
         if      ('attack, combo, final strike, charged strike'.slice(', ').indexOf(enemyObj.action.key) > -1){
-            // console.log(combatState.dmgDoneByEnemy + ` inc dmg`);
-            combatState.dmgDoneByEnemy += enemyObj.action.actionVal
-            // console.log(combatState.dmgDoneByEnemy);
 
-        }else if ('block'.slice(', ').indexOf(enemyObj.action.key) > -1){
+            combatState.dmgDoneByEnemy += enemyObj.action.actionVal
+
+        }else if('block'.slice(', ').indexOf(enemyObj.action.key) > -1){
 
             combatState.dmgDoneByPlayer -= enemyObj.action.actionVal
 
@@ -789,19 +788,19 @@
         //Generate action refs with proper calculation for this roll
         let actionKeys = [
             'attack', 
-            // 'final strike', 
+            'final strike', 
             'combo', 
             // 'charge', 
             'block', 
             'fortify', 
-            // 'empower', 
+            'empower', 
             // 'rush', 
-            // 'recover', 
-            // 'wound', 
-            // 'weaken', 
+            'recover', 
+            'wound', 
+            'weaken', 
             // 'slow', 
             'drain', 
-            // 'sleep'
+            'sleep'
         ]
 
         
