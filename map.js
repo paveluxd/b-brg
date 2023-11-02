@@ -68,8 +68,8 @@ class MapObj{
         //Map position is set in last main.js
         let overrides = [
             //Mandatory tiles
-            {tileId:`1-${this.yAxis}`, playerUnit: true, enemyUnit: false}, //Player
-            {tileId:`${this.xAxis}-1`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gameState.stage},
+            {tileId:`1-1`, playerUnit: true, enemyUnit: false}, //Player
+            {tileId:`${this.xAxis}-${this.yAxis}`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gameState.stage},
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
             // {tileType: 'merchant'},

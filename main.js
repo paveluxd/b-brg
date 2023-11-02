@@ -31,7 +31,7 @@
 
         //Increase stage to scale enemies
         gameState.stage++ 
-        
+
         resolvePlayerStats()
         syncUi()
     }
@@ -1349,4 +1349,4 @@
     initGame()
     // initiateCombat() //Disable if not testing combat
 
-    el('map').scrollTo(0, 9999); // Sets map position to view unit.
+    // el('map').scrollTo(0, 9999); // Sets map position to view unit.
