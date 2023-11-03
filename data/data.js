@@ -85,7 +85,7 @@ let playerObj, enemyObj, combatState
                 this.startingItems  = [
                     'bow',
                     'shield',
-                    'healing potion'
+                    'healing potion',
                 ]
             //Equipment slots
                 this.baseSlots      = 6
@@ -141,9 +141,9 @@ let playerObj, enemyObj, combatState
                 imgPath  = `balanced/${rng(17,1)}`
             }
             else if(randomEnemyProfile == 'tank'){
-                lifeMod  = 1
+                lifeMod  = 1.5
                 powerMod = 0.5
-                defMod   = 3
+                defMod   = 3.5
                 diceMod  = 0.5
 
                 this.profile = 'tank'
@@ -246,7 +246,7 @@ let playerObj, enemyObj, combatState
 
             }else if(key == 'charged strike'){
 
-                this.actionVal = enemyObj.dice * 2
+                this.actionVal = (enemyObj.dice * 2) + enemyObj.power
                 this.desc = `Charged strike ${this.actionVal} dmg`
 
             }
@@ -268,7 +268,7 @@ let playerObj, enemyObj, combatState
 
             }else if(key == 'empower'){//+ power
 
-                this.rate = 2
+                this.rate = 3
                 this.stat = 'power'
                 this.actionVal = Math.round((enemyObj.roll + gameState.stage) *0.25)
 
@@ -282,7 +282,7 @@ let playerObj, enemyObj, combatState
 
             }else if(key == 'rush'){   //+ dice
 
-                this.rate = 2
+                this.rate = 3
                 this.stat = 'dice'
                 this.actionVal = Math.round(1 + (gameState.stage) *0.2)
 
@@ -310,7 +310,7 @@ let playerObj, enemyObj, combatState
             //Curse
             else if (key == 'wound'){  //- def
 
-                this.rate = 2
+                this.rate = 3
                 this.stat = 'def'
                 this.actionVal = Math.ceil((enemyObj.roll) * 0.25)
                 this.desc = `${ico('curse-def')} -${this.actionVal}`
@@ -331,7 +331,7 @@ let playerObj, enemyObj, combatState
 
             }else if(key == 'drain'){  //- life
 
-                this.rate = 3
+                this.rate = 4
                 this.stat = 'life'
                 this.actionVal = Math.round(enemyObj.roll * 1.5)
                 this.desc = `${ico('curse-life')} -${this.actionVal}`
@@ -340,7 +340,7 @@ let playerObj, enemyObj, combatState
 
             //Misc
             else if (key == 'sleep'){
-                this.rate = 2
+                this.rate = 3
                 this.desc = `Zzz...`
             }
             

@@ -1,14 +1,5 @@
 let itemsRef = [
   {
-    "itemName": "wizards head",
-    "passiveStats": "",
-    "actions": "fear",
-    "itemSlot": "",
-    "itemType": "",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
     "itemName": "wooden staff",
     "passiveStats": "",
     "actions": "focus",
@@ -86,6 +77,15 @@ let itemsRef = [
     "actions": "overload",
     "itemSlot": "",
     "itemType": "equipment",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "wizards skull",
+    "passiveStats": "",
+    "actions": "fear",
+    "itemSlot": "",
+    "itemType": "off-hand",
     "itemRarity": "",
     "cost": ""
   },
@@ -198,11 +198,38 @@ let itemsRef = [
     "cost": ""
   },
   {
+    "itemName": "woolen bag",
+    "passiveStats": "slots:7, def:-2",
+    "actions": "",
+    "itemSlot": "bag",
+    "itemType": "bag",
+    "itemRarity": "unique",
+    "cost": ""
+  },
+  {
+    "itemName": "leather bag",
+    "passiveStats": "slots:5, def:-1",
+    "actions": "",
+    "itemSlot": "bag",
+    "itemType": "bag",
+    "itemRarity": "rare",
+    "cost": ""
+  },
+  {
     "itemName": "bag",
     "passiveStats": "slots:3",
     "actions": "",
     "itemSlot": "bag",
     "itemType": "bag",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "book of order",
+    "passiveStats": "power:1",
+    "actions": "heal, barrier",
+    "itemSlot": "",
+    "itemType": "book",
     "itemRarity": "",
     "cost": ""
   },
@@ -225,7 +252,7 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "book of ice",
+    "itemName": "book of moon",
     "passiveStats": "",
     "actions": "lance, shards",
     "itemSlot": "",
@@ -320,6 +347,24 @@ let itemsRef = [
     "actions": "healing potion",
     "itemSlot": "",
     "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "scroll of fortification",
+    "passiveStats": "",
+    "actions": "fortify",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "sigil of light",
+    "passiveStats": "",
+    "actions": "faith",
+    "itemSlot": "",
+    "itemType": "jewelry",
     "itemRarity": "",
     "cost": ""
   },

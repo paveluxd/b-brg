@@ -1,15 +1,5 @@
 let actionsRef = [
   {
-    "actionName": "fear",
-    "desc": "force enemy to block during the next turn (cooldown 2-4 turns)",
-    "passiveStats": "",
-    "actionMod": '',
-    "actionCharge": 12,
-    "cooldown": 4,
-    "keyId": 55,
-    "actionType": ""
-  },
-  {
     "actionName": "mace attack",
     "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
     "passiveStats": "",
@@ -154,7 +144,7 @@ let actionsRef = [
     "desc": "reduce incoming dmg by (12 - dice)",
     "passiveStats": "",
     "actionMod": 12,
-    "actionCharge": 32,
+    "actionCharge": 12,
     "cooldown": "",
     "keyId": 15,
     "actionType": ""
@@ -164,14 +154,14 @@ let actionsRef = [
     "desc": "reduce incoming dmg by 75% (cooldown 3 turns)",
     "passiveStats": "",
     "actionMod": 75,
-    "actionCharge": 3,
+    "actionCharge": 12,
     "cooldown": 3,
     "keyId": 16,
     "actionType": ""
   },
   {
     "actionName": "combo",
-    "desc": "if you rolled 6, perform two actions this turn (passive)",
+    "desc": "if you rolled 6, perform two actions this turn",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 3,
@@ -361,7 +351,7 @@ let actionsRef = [
   },
   {
     "actionName": "critical hit",
-    "desc": "next attack deals 2x dmg, requires dice roll greater than 8 (passive)",
+    "desc": "next attack deals 2x dmg, requires dice roll greater than 8",
     "passiveStats": "",
     "actionMod": 200,
     "actionCharge": 12,
@@ -424,14 +414,14 @@ let actionsRef = [
     "desc": "reduce incoming dmg by dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 32,
+    "actionCharge": 30,
     "cooldown": "",
     "keyId": 42,
     "actionType": ""
   },
   {
     "actionName": "rage",
-    "desc": "you do and take 200% dmg (passive)",
+    "desc": "you do and take 200% dmg",
     "passiveStats": "",
     "actionMod": 200,
     "actionCharge": 1,
@@ -537,6 +527,36 @@ let actionsRef = [
     "actionCharge": 3,
     "cooldown": "",
     "keyId": 54,
+    "actionType": ""
+  },
+  {
+    "actionName": "fear",
+    "desc": "force enemy to block during the next turn (cooldown 2-4 turns)",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 12,
+    "cooldown": 4,
+    "keyId": 55,
+    "actionType": "variable cooldown"
+  },
+  {
+    "actionName": "faith",
+    "desc": "gain 2 max life every time your healing exceeds max life",
+    "passiveStats": "",
+    "actionMod": 2,
+    "actionCharge": "",
+    "cooldown": "",
+    "keyId": 56,
+    "actionType": "passive"
+  },
+  {
+    "actionName": "heal",
+    "desc": "restore life equal to 3 (+ power, + def) (cost 1 power)",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 12,
+    "cooldown": "",
+    "keyId": 57,
     "actionType": ""
   }
 ]

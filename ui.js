@@ -253,7 +253,12 @@
             //Added actions
             let actionSet = ``
             item.actions.forEach(action =>{
-                actionSet += `<p>${upp(action.actionName)} (x${action.actionCharge}) - ${upp(action.desc)}.</p>`
+                if(action.actionType == 'passive'){
+                    actionSet += `<p>${upp(action.desc)} (passive).</p>`
+                }
+                else {
+                    actionSet += `<p>${upp(action.actionName)} (x${action.actionCharge}) - ${upp(action.desc)}.</p>`
+                }
             }) 
 
             //Passive stats

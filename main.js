@@ -85,6 +85,7 @@
             combatState.dmgTakenByPlayer = 0
             combatState.dmgDoneByEnemy = 0
             combatState.dmgTakenByEnemy = 0
+            combatState.lifeRestoredByPlayer = 0
 
             //Combat log.
             combatState.logMsg = [``]
@@ -304,6 +305,11 @@
                 resolveCharge(combatState.sourceAction)
                 resolvePlayerStats()
     
+            }else if(playerActionKey =='a33'){// healing potion
+                
+                combatState.lifeRestoredByPlayer += Math.round((playerObj.flatLife - playerObj.life) / 100 * actionMod)
+                combatState.logMsg.push(`Heling potion: +${combatState.lifeRestoredByPlayer}  life.`)  
+                 
             }else if(playerActionKey =='a34'){// (def+) fortification
     
                 playerObj.def += actionMod
@@ -317,7 +323,8 @@
                     combatState.dmgDoneByEnemy = -99999 // write something custom later
                 }
     
-            }else if(playerActionKey =='a37'){// buff next attack with piercing "leather gloves"
+            }
+             else if(playerActionKey =='a37'){// buff next attack with piercing "leather gloves"
     
                 if(playerObj.power > 0){
     
@@ -331,8 +338,7 @@
                     return
                 }
     
-            }
-             else if(playerActionKey =='a38'){// static "cape"
+            }else if(playerActionKey =='a38'){// static "cape"
     
                 if(playerObj.roll > 8){
     
@@ -395,13 +401,13 @@
                 playerObj.power += playerObj.roll
                 playerObj.def -= playerObj.roll
     
-            }else if(playerActionKey =='a50'){// defensive stance
+            }
+             else if(playerActionKey =='a50'){// defensive stance
             
                 playerObj.roll--
                 combatState.sourceAction.cooldown = 0
      
-            }
-             else if(playerActionKey =='a52'){// hook/swap
+            }else if(playerActionKey =='a52'){// hook/swap
             
                 let rollRef = playerObj.roll
                 playerObj.roll = enemyObj.roll
@@ -437,12 +443,22 @@
                 referenceActionObj.cooldown = rng(4,2)
                 combatState.logMsg.push(`fear: enamy will block during the next turn (fear reacharge:${referenceActionObj.cooldown})`)
 
+            }else if(playerActionKey =='a57'){// "heal" "book of order"
+
+                if(playerObj.power < 0) return showAlert('Not enough power to pay for action cost.')
+
+                combatState.lifeRestoredByPlayer += 3 + playerObj.power + playerObj.def
+                
+                combatState.logMsg.push(`heal: +:${combatState.lifeRestoredByPlayer} life, -1 power.`)
+                playerObj.power -= 1 //Cost
             }
+
+            
 
 
             //Player passive effects.
             playerObj.actions.forEach(action => {
-                if      (action.keyId === 'a17'){ // combo "gloves"
+                if      (action.keyId == 'a17'){ // combo "gloves"
                     if(playerObj.roll === 6 && action.cooldown > 0){
 
                         combatState.turnState = 'extra-action'
@@ -450,7 +466,7 @@
                         ombatState.logMsg.push(`Combo extra action (passive).`)
 
                     }
-                }else if(action.keyId === 'a36'){ // critical hit "woolen gloves"
+                }else if(action.keyId == 'a36'){ // critical hit "woolen gloves"
                     if(playerObj.roll > 8 && action.cooldown > 0){
 
                         combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * (action.actionMod/100)
@@ -458,13 +474,20 @@
                         ombatState.logMsg.push(`Critical hit (passive).`)
 
                     }
-                }else if(action.keyId === 'a51'){ // overload 'exoskeleton'
+                }else if(action.keyId == 'a51'){ // overload 'exoskeleton'
                     if(playerObj.roll > playerObj.dice){
 
                         combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * (action.actionMod / 100 + 1)
                         combatState.logMsg.push(`Overload activated (passive).`)
 
                     }
+                }else if(action.keyId == 'a56'){ // sigil of light
+                    console.log(playerObj.life, combatState.lifeRestoredByPlayer, playerObj.flatLife);
+                    if(playerObj.life + combatState.lifeRestoredByPlayer <= playerObj.flatLife) return console.log(2);
+
+                    playerObj.flatLife += action.actionMod
+                    console.log(1);
+                    combatState.logMsg.push(`Faith: +${action.actionMod} max life (passive).`)  
                 }
             })
             
@@ -484,19 +507,14 @@
             })
 
             //Manages dmg calc.
-            damageCalc()
+            combatCalc()
 
-            //POST DMG CALC EFFECTS - Healing potion - heal after damage is taken.
-            if (playerActionKey === 'a33'){// healing potion
-                
-                playerObj.life += Math.round((playerObj.flatLife - playerObj.life) / 100 * actionMod)
-                 
-            }
+            
 
             combatEndCheck()
         }
         //Damage calculation.
-        function damageCalc(){    
+        function combatCalc(){    
 
             //PLAYER DMG
             if(combatState.dmgDoneByPlayer > 0){
@@ -611,6 +629,11 @@
                     //Trigger player damage indicator
                     combatState.dmgTakenByPlayer = combatState.dmgDoneByEnemy
                 }
+            }
+
+            //Player healing
+            if(combatState.lifeRestoredByPlayer > 0){
+                playerObj.life += combatState.lifeRestoredByPlayer
             }
         }
 
@@ -794,12 +817,12 @@
             'block', 
             'fortify', 
             'empower', 
-            // 'rush', 
+            'rush', 
             'recover', 
             'wound', 
             'weaken', 
             // 'slow', 
-            // 'drain', 
+            'drain', 
             'sleep'
         ]
 
@@ -830,15 +853,15 @@
 
             enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 4))
 
-        }else if(actionRoll < 17){          //R3: 10%
+        }else if(actionRoll < 25){          //R3: 18%
 
             enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 3))
 
-        }else if(actionRoll < 47){          //R2: 30% 
+        }else if(actionRoll < 55){          //R2: 30% 
 
             enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 2))
 
-        }else{                              //R1: 54%
+        }else{                              //R1: 45%
 
             enemyObj.action = rarr(enemyObj.actionRef.filter(action => action.rate == 1))
 
@@ -912,9 +935,12 @@
 
                 //Add all actions from equipped item.
                 item.actions.forEach(action => {
-                    if(playerObj.actionSlots > playerObj.actions.length && action.actionCharge > 0){
-                        playerObj.actions.push(action)
-                    }
+                    if(playerObj.actionSlots < playerObj.actions.length) return
+                    if(action.actionCharge < 1) return
+                    if(action.actionType == 'passive') return
+
+                    //Add action to player actions
+                    playerObj.actions.push(action)  
                 })
             }
         })
