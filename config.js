@@ -20,8 +20,6 @@ let config = {
         mapY: 2,
         portalDefenders: 1,
         mandatoryTiles: [
-            //Mandatory tiles
-
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
             // {tileType: 'merchant'},

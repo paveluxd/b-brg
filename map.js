@@ -110,8 +110,6 @@ class MapObj{
     }
 }
 
-
-
 //MAP UI
     //Adds images and builds the map elem
     function genMap(){
