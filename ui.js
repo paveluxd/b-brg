@@ -160,20 +160,46 @@
         el('character-content').innerHTML =`
             <h2>Character</h2>
 
-            <div id="stat-block" class = "grey-card body-14">
-                <div>
-                    <p><img src="./img/ico/hp-bb-red.svg">Life: ${playerObj.life} / ${playerObj.flatLife}</p>
-                    <p><img src="./img/ico/dice.svg">Dice: d${playerObj.flatDice}</p>
-                    <p><img src="./img/ico/item-power.svg">Power: ${playerObj.power}</p>
-                    <p><img src="./img/ico/item-def.svg">Def: ${playerObj.def}</p>
-                </div>
+            <div id="stat-block" class = "body-14">
+                    <div class='stat'>
+                        <img src="./img/ico/life.svg">
+                        <p>Life: ${playerObj.life} / ${playerObj.flatLife}</p>
+                    </div>
 
-                <div>
-                    <p><img src="./img/ico/placeholder.svg">Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
-                    <p><img src="./img/ico/item-slots.svg">Equi. slots: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
-                    <p><img src="./img/ico/fish.svg">Food: ${playerObj.food}</p>
-                    <p><img src="./img/ico/coin-sm.svg">Coins: ${playerObj.coins}</p>
-                </div>
+                    <div class='stat'>
+                        <img src="./img/ico/placeholder.svg">
+                        <p>Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
+                    </div>
+
+                    <div class='stat'>
+                        <img src="./img/ico/dice.svg">
+                        <p>Dice: d${playerObj.flatDice}</p>
+                    </div>
+
+                    <div class='stat'>
+                        <img src="./img/ico/slots.svg">
+                        <p>Equipment: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
+                    </div>
+
+                    <div class='stat'>
+                        <img src="./img/ico/power.svg">
+                        <p>Power: ${playerObj.power}</p>
+                    </div>
+
+                    <div class='stat'>
+                        <img src="./img/ico/fish.svg">
+                        <p>Food: ${playerObj.food}</p>
+                    </div>
+
+                    <div class='stat'>
+                        <img src="./img/ico/def.svg">
+                        <p>Def: ${playerObj.def}</p>
+                    </div>
+
+                    <div class='stat'>
+                        <img src="./img/ico/coin-sm.svg">
+                        <p>Coins: ${playerObj.coins}</p>
+                    </div>            
             </div>
                 
             <div class ="column" style="gap:8px; align-items:flex-start;">
@@ -181,8 +207,6 @@
                 <div id="actions-list"></div>
             </div>
         `
-                // <p><img src="./img/ico/placeholder.svg"> 
-                //     Level: ${playerObj.lvl} (exp: ${playerObj.exp})</p>
 
         //Add action cards
         el('actions-list').innerHTML = ``
@@ -190,13 +214,6 @@
             let actionCard = genActionCard(action, 'card')
             el('actions-list').append(actionCard)
         })
-
-        for(i=0; i < playerObj.equipmentSlots - playerObj.actions.length; i++){
-            let actionCard = document.createElement('button')
-            actionCard.innerHTML = '<section><span>[ ]</span></section>'
-            actionCard.classList.add('action')
-            el('actions-list').append(actionCard)
-        }
     }
 
 
@@ -474,7 +491,7 @@
 
             //Create button elem.
             let button = document.createElement('button')
-            if(type !== 'card'){
+            if(type != 'card'){
                 button.setAttribute('onclick', `turnCalc(this)`) // On click run next turn
             }
 
@@ -510,14 +527,16 @@
 
             let heading = `${upp(action.actionName)}`
 
-            if      (['block'].indexOf(referenceAction.actionName) > -1){
-                heading = `${upp(action.actionName)} ${playerObj.roll}`
-            }else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
-                heading = `${upp(action.actionName)} for ${playerObj.roll + playerObj.power}`
-            }else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
-                heading = `${upp(action.actionName)} for ${3 + playerObj.power}(+${playerObj.swordDmgMod})`
-            }else if(['inferno'].indexOf(referenceAction.actionName) > -1){
-                heading = `${upp(action.actionName)} (${playerObj.power * playerObj.coins} dmg)`
+            if(type != 'card'){//Remove numbers if generated for character page.
+                if      (['block'].indexOf(referenceAction.actionName) > -1){
+                    heading = `${upp(action.actionName)} ${playerObj.roll}`
+                }else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
+                    heading = `${upp(action.actionName)} for ${playerObj.roll + playerObj.power}`
+                }else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
+                    heading = `${upp(action.actionName)} for ${3 + playerObj.power}(+${playerObj.swordDmgMod})`
+                }else if(['inferno'].indexOf(referenceAction.actionName) > -1){
+                    heading = `${upp(action.actionName)} (${playerObj.power * playerObj.coins} dmg)`
+                }
             }
 
             button.querySelector('section').innerHTML = `

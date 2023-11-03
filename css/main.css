@@ -108,6 +108,16 @@ body{
         align-items: center;
         justify-content: center;
     }
+    .stat {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+
+        & img {
+            width: 16px;
+            height: 16px;
+        }
+    }
 
 
 /* Overrides */
@@ -318,22 +328,37 @@ body{
     #character-content {
         align-items: flex-start;
         gap: 24px;
-        padding: 0px;
+        padding: 0 24px 24px 24px;
         align-items: stretch;
     }
-    .grey-card{
+    #stat-block{
         background-color: var(--b10);
         border-radius: 4px;
-        padding: 12px;
+
+        padding: 8px 8px 0px 8px;
+
         display: flex;
-        gap: 12px;
-        position:relative
+        flex-wrap: wrap;
+
+        & div{
+            width: 50%;
+            margin-bottom: 8px;
+        }
     }
-    #stat-block div{
+    #actions-list{
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        /* flex-wrap: wrap; */
         width: 100%;
+        gap: 2px;
+    }
+    #actions-list button{
+        width: 100%;
+        height: 72px;
+        pointer-events: none;
+        box-shadow: none;
+        background-color: var(--b10);
+        border-radius: 4px;
     }
 
 
@@ -364,10 +389,6 @@ body{
 
         background-color: white;
         padding-top: 24px;
-
-        & p, h2{
-            margin: 0px 24px 12px 24px;
-        }
     }
     .tab-margin{
         padding-bottom: 120px !important;       
@@ -583,16 +604,6 @@ body{
     .empty-slot{
         font-family: 'JetBrains mono', sans-serif;
         color: var(--green50) !important;
-    }
-    /* Character page */
-    #actions-list{
-        display: flex;
-        flex-wrap: wrap;
-        width: 100%;
-    }
-    #actions-list button{
-        width: 120px;
-        pointer-events: none;
     }
 
 

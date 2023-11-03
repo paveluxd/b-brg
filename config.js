@@ -1,17 +1,28 @@
 let config = {
-    //Player stats
-    baseLife: 32, //32
-    basePower: 0,
-    baseDef: 0,
+    //Player
+        life: 32, //32
+        power: 0,
+        def:   0,
+        dice:  6,
+        inventory: 20,
+        slots:6,
+        startingItems: [
+            'bow',
+            'shield',
+            'healing potion',
+        ],
+
+        coins: rng(12,6),
+        food:  rng(5,1),
 
     //Map
-    mapX: 2,
-    mapY: 2,
-    portalDefenders: 1,
+        mapX: 2,
+        mapY: 2,
+        portalDefenders: 1,
 
-    bossFrequency: 3, //Every Nth stage
+        bossFrequency: 3, //Every Nth stage
 
-    flatItemReward: 2, //Base rewards
-    flatFoodReward: 1, //Food per round +1 per enemy
-    flatCoinsReward: 6, 
+        flatItemReward: 2, //Base rewards
+        flatFoodReward: 1, //Food per round +1 per enemy
+        flatCoinsReward: 6, 
 }

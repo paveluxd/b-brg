@@ -57,19 +57,19 @@ let playerObj, enemyObj, combatState
     class PlayerObj {
         constructor(){
             //Life
-                this.baseLife       = config.baseLife //Lvl 1 char life
+                this.baseLife       = config.life //Lvl 1 char life
                 this.flatLife       = this.baseLife   //Life cap
                 this.life           = this.baseLife   //Current life
             //Power
-                this.basePower      = config.basePower
+                this.basePower      = config.power
                 this.flatPower      = this.basePower
                 this.power          = this.basePower
             //Def
-                this.baseDef        = config.baseDef
+                this.baseDef        = config.def
                 this.flatDef        = this.baseDef
                 this.def            = this.baseDef
             //Dice
-                this.baseDice       = 6 //needed as ref in case flat dice is modified by item
+                this.baseDice       = config.dice //needed as ref in case flat dice is modified by item
                 this.flatDice       = this.baseDice
                 this.dice           = this.baseDice
                 this.roll           = 0
@@ -80,15 +80,12 @@ let playerObj, enemyObj, combatState
                 this.poisonBuff     = false
 
             //Inventory
-                this.inventorySlots = 20 
+                this.inventorySlots = config.inventory
                 this.inventory      = [] //Items gained as rewards
-                this.startingItems  = [
-                    'bow',
-                    'shield',
-                    'healing potion',
-                ]
+                this.startingItems  = config.startingItems
+                    
             //Equipment slots
-                this.baseSlots      = 6
+                this.baseSlots      = config.slots
                 this.equipmentSlots = this.baseSlots
             //Actions
                 this.actionSlots    = this.baseSlots
@@ -98,8 +95,8 @@ let playerObj, enemyObj, combatState
             // this.draftActions   = [] //Draft actions gained from items
 
             //Sub-stats
-                this.coins          = rng(12,6)
-                this.food           = rng(5,1)
+                this.coins          = config.coins
+                this.food           = config.food
             //Progression
                 this.exp            = 0
                 this.lvl            = 1

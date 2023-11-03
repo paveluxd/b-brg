@@ -81,7 +81,7 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "wizards skull",
+    "itemName": "wizards head",
     "passiveStats": "",
     "actions": "fear",
     "itemSlot": "",
