@@ -633,7 +633,16 @@
 
             //Player healing
             if(combatState.lifeRestoredByPlayer > 0){
-                playerObj.life += combatState.lifeRestoredByPlayer
+                restoreLife(combatState.lifeRestoredByPlayer)
+            }
+        }
+
+        function restoreLife(val){
+            playerObj.life += val
+
+            //Prevent overhealing
+            if(playerObj.life > playerObj.flatLife){
+                playerObj.life = playerObj.flatLife
             }
         }
 
@@ -653,7 +662,7 @@
                 gameState.enemyCounter++
 
                 //Exit
-                if(gameState.encounter === gameState.playerLocationTile.enemyQuant){
+                if(gameState.encounter == gameState.playerLocationTile.enemyQuant){
                     gameState.encounter = 'end'
 
                     if(gameState.playerLocationTile.tileType === 'portal'){
@@ -668,7 +677,7 @@
                 }
                 
                 //If final encounter, show rewards
-                if(gameState.encounter === 'end'){
+                if(gameState.encounter == 'end'){
                     //Generate rewards modal
                     genRewards(gameState.flatItemReward + gameState.playerLocationTile.enemyQuant) //Number of rewards to give
                 }
@@ -744,7 +753,7 @@
 
             syncUi()
         }
-        
+
     //3.REWARD
         function genRewards(quant){
             

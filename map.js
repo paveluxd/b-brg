@@ -67,14 +67,14 @@ class MapObj{
         //MANDATORY TILES
         //Map position is set in last main.js
         let overrides = [
-            //Mandatory tiles
             {tileId:`1-1`, playerUnit: true, enemyUnit: false}, //Player
             {tileId:`${this.xAxis}-${this.yAxis}`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gameState.stage},
-            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
-            // {tileType: 'blacksmith'},
-            // {tileType: 'merchant'},
-            // {tileType: 'house'},
         ]
+
+        //Adds mandatory tiles from config
+        config.mandatoryTiles.forEach(tile => {
+            overrides.push(tile)
+        })
 
         overrides.forEach(reqTile => {
         
@@ -462,6 +462,44 @@ class MapObj{
 
             runCasino()
 
+        }
+        else if(eventType.startsWith('house')){
+
+            let roll = rng(5)
+
+            if(gameState.playerLocationTile.visited == true || roll == 5){
+                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-desc').innerHTML =`There is nothing in here.`
+            }
+            else if(roll == 4){
+                let item = new ItemObj()
+                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-desc').innerHTML =`You approach a house, it is empty. You look around and find <b>${item.itemName}</b>.`
+
+                //Add item to the inventory.
+                playerObj.inventory.push(item)
+            }
+            else if(roll == 3){
+                let heal = rng(Math.round(playerObj.life/3))
+                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-desc').innerHTML =`You approach a house, it is empty and find a <b>medical kit (+${heal}<img src='./img/ico/life.svg'>)</b>.`
+                
+                restoreLife(heal)
+            }
+            else {
+                let dmg = rng(Math.round(playerObj.life/2))
+                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-desc').innerHTML =`You enter an empty house, and step into a <b>spike trap hole (-${dmg} <img src='./img/ico/life.svg'>)</b>.`
+
+                playerObj.life -= dmg
+
+                if(playerObj.life < 1){
+                    el('event-screen').setAttribute('onclick','openStateScreen("game-end")')
+                }
+            }
+
+            screen('event-screen')
+            syncUi()
         }
         else{
             showAlert(`You look around.<br>There is nothing to see here.`)
