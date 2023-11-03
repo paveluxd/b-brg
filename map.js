@@ -73,7 +73,7 @@ class MapObj{
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
             // {tileType: 'merchant'},
-            {tileType: 'casino'},
+            // {tileType: 'house'},
         ]
 
         overrides.forEach(reqTile => {
