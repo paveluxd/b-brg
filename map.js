@@ -1,8 +1,8 @@
 //MAP
 //Background image ids
-let tileSetUnique = 'casino, merchant, blacksmith'.split(', ') //castle
-let tileSetRare   = 'grave, house-1, lake-2, lake-3, monument-2, monument-1'.split(', ') //mine
-let tileSetCommon = 'chest-1, lake-1'.split(', ') //dungeon, 
+let tileSetUnique = 'casino, merchant, blacksmith, , monument-1, monument-2'.split(', ') //castle
+let tileSetRare   = 'grave, house-1, lake-3'.split(', ') //mine
+let tileSetCommon = 'chest-1, lake-1, lake-2,'.split(', ') //dungeon, 
 let tileSetBase   = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
 let forests       = 'forest-1, forest-2, forest-3'.split(', ')
 
@@ -33,7 +33,7 @@ class MapObj{
             tile.tileId = `${xAxis++}-${yAxis}`
 
             //% distriburion of tilesType
-            if       (roll > 96){
+            if       (roll > 95){
                 tile.tileType = tileSetUnique[rng((tileSetUnique.length - 1), 0)]
             }else if (roll > 84){
                 tile.tileType = tileSetRare[rng((tileSetRare.length - 1), 0)]

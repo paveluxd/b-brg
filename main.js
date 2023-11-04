@@ -506,11 +506,7 @@
                 }
             })
 
-            //Manages dmg calc.
-            combatCalc()
-
-            
-
+            combatCalc() //Dmg and heal calc.
             combatEndCheck()
         }
         //Damage calculation.
