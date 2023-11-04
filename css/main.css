@@ -361,6 +361,32 @@ body{
         background-color: var(--b10);
         border-radius: 4px;
     }
+    .social-container{
+        display: flex;
+        gap: 4px;
+        margin-top: 8px;
+
+        & a {
+            min-height: 48px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 14px;
+        }
+        & .x-social{
+            background-color: var(--b10);
+            color: black;
+            padding: 8px 28px 8px 28px;
+        }
+        
+        & .discord{
+            background-color: #3366FF;
+            color: white;
+            padding: 8px 16px 8px 8px;
+        }
+    }
 
 
 /* Modal */

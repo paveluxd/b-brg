@@ -157,55 +157,46 @@
         // playerObj.treePoints = playerObj.lvl - playerObj.treeNodes.length -1
     
         //Add text
-        el('character-content').innerHTML =`
-            <h2>Character</h2>
-
-            <div id="stat-block" class = "body-14">
-                    <div class='stat'>
-                        <img src="./img/ico/life.svg">
-                        <p>Life: ${playerObj.life} / ${playerObj.flatLife}</p>
-                    </div>
-
-                    <div class='stat'>
-                        <img src="./img/ico/placeholder.svg">
-                        <p>Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
-                    </div>
-
-                    <div class='stat'>
-                        <img src="./img/ico/dice.svg">
-                        <p>Dice: d${playerObj.flatDice}</p>
-                    </div>
-
-                    <div class='stat'>
-                        <img src="./img/ico/slots.svg">
-                        <p>Equipment: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
-                    </div>
-
-                    <div class='stat'>
-                        <img src="./img/ico/power.svg">
-                        <p>Power: ${playerObj.power}</p>
-                    </div>
-
-                    <div class='stat'>
-                        <img src="./img/ico/fish.svg">
-                        <p>Food: ${playerObj.food}</p>
-                    </div>
-
-                    <div class='stat'>
-                        <img src="./img/ico/def.svg">
-                        <p>Def: ${playerObj.def}</p>
-                    </div>
-
-                    <div class='stat'>
-                        <img src="./img/ico/coin-sm.svg">
-                        <p>Coins: ${playerObj.coins}</p>
-                    </div>            
+        el('stat-block').innerHTML =`
+            <div class='stat'>
+                <img src="./img/ico/life.svg">
+                <p>Life: ${playerObj.life} / ${playerObj.flatLife}</p>
             </div>
-                
-            <div class ="column" style="gap:8px; align-items:flex-start;">
-                <p class="body-14 italic b50">Combat actions from equipment</p>
-                <div id="actions-list"></div>
+
+            <div class='stat'>
+                <img src="./img/ico/placeholder.svg">
+                <p>Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
             </div>
+
+            <div class='stat'>
+                <img src="./img/ico/dice.svg">
+                <p>Dice: d${playerObj.flatDice}</p>
+            </div>
+
+            <div class='stat'>
+                <img src="./img/ico/slots.svg">
+                <p>Equipment: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
+            </div>
+
+            <div class='stat'>
+                <img src="./img/ico/power.svg">
+                <p>Power: ${playerObj.power}</p>
+            </div>
+
+            <div class='stat'>
+                <img src="./img/ico/fish.svg">
+                <p>Food: ${playerObj.food}</p>
+            </div>
+
+            <div class='stat'>
+                <img src="./img/ico/def.svg">
+                <p>Def: ${playerObj.def}</p>
+            </div>
+
+            <div class='stat'>
+                <img src="./img/ico/coin-sm.svg">
+                <p>Coins: ${playerObj.coins}</p>
+            </div>              
         `
 
         //Add action cards

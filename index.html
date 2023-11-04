@@ -26,7 +26,10 @@
     <div id="state-screen" class="modal state-screen " onclick="screen('map')">
         <div class="modal-container">
             <img src="./img/bg/start.svg" class="illustration">
-            <p class="body-14">Mini dungeon crawler game<br>in the browser.</p>
+            <p class="body-14">
+                Mini roguelike for the web<br>
+                <b>Early access</b> play tester demo.
+            </p>
             <p class="body-14 italic b50">Tap to start</p>
         </div>
     </div>
@@ -181,7 +184,26 @@
     <!-- Character -->
     <div id="character" class="screen tab hide" onclick="screen('map')">
         <div class="modal-container tab-margin scroll">
-            <div id='character-content' class="column modal-body"></div>
+            <div id='character-content' class="column modal-body">
+                <h2>Character</h2>
+
+                <div id="stat-block" class = "body-14"></div>
+
+                <div class ="columnl" style="gap:8px; align-items:flex-start;">
+                    <p class="body-14 italic b50">Support the game</p>
+                    <div class="social-container">
+                        <a class="discord"  href="https://discord.gg/AT8KdVbcVT" target="_blank"><img src="./img/ico/discord.svg" alt="">Join game community</a>
+                        <a class="x-social" href="https://twitter.com/pavelmorr" target="_blank"><img src="./img/ico/x-social.svg" alt=""></a>
+                    </div>
+                </div>
+
+                <div class ="column" style="gap:8px; align-items:flex-start;">
+                    <p class="body-14 italic b50">Combat actions from equipment</p>
+                    <div id="actions-list"></div>
+                </div>
+
+            </div>
+
         </div>
     </div>
 
