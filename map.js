@@ -2,7 +2,7 @@
 //Background image ids
 let tileSetUnique = 'casino, merchant, blacksmith, , monument-1, monument-2'.split(', ') //castle
 let tileSetRare   = 'grave, house-1, lake-3'.split(', ') //mine
-let tileSetCommon = 'chest-1, lake-1, lake-2,'.split(', ') //dungeon, 
+let tileSetCommon = 'chest-1, lake-1, lake-2'.split(', ') //dungeon, 
 let tileSetBase   = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
 let forests       = 'forest-1, forest-2, forest-3'.split(', ')
 
