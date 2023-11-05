@@ -1393,6 +1393,6 @@
 
 //GAME START
     initGame()
-    initiateCombat() //Disable if not testing combat
+    // initiateCombat() //Disable if not testing combat
 
     // el('map').scrollTo(0, 9999); // Sets map position to view unit.
