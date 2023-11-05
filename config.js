@@ -33,4 +33,7 @@ let config = {
         flatItemReward: 2, //Base rewards
         flatFoodReward: 1, //Food per round +1 per enemy
         flatCoinsReward: 6, 
+
+        //Merchant
+        merchantQuant: 8
 }

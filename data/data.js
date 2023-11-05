@@ -19,7 +19,7 @@ let playerObj, enemyObj, combatState
             this.totalCombatTurns = 0
             
             //Merchant config
-            this.merchantQuant = 6
+            this.merchantQuant = config.merchantQuant
 
             //Casino bets
             //TBA
