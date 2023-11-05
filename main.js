@@ -815,20 +815,20 @@
 
         //Generate action refs with proper calculation for this roll
         let actionKeys = [
-            // 'attack', 
+            'attack', 
             // 'final strike', 
-            // 'combo', 
+            'combo', 
             // 'charge', 
             'block', 
-            // 'fortify', 
-            // 'empower', 
+            'fortify', 
+            'empower', 
             // 'rush', 
-            // 'recover', 
-            // 'wound', 
+            'recover', 
+            'wound', 
             // 'weaken', 
             // 'slow', 
-            // 'drain', 
-            // 'sleep'
+            'drain', 
+            'sleep'
         ]
 
         
