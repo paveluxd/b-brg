@@ -8,7 +8,7 @@ let config = {
         slots:6,
         startingItems: [
             'bow',
-            'dice 4',
+            'shield',
             'healing potion'
         ],
 

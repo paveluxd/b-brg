@@ -541,7 +541,7 @@ let actionsRef = [
   },
   {
     "actionName": "power surge",
-    "desc": "on dice roll 8, gain 1 power",
+    "desc": "gain 1 power on a die roll of 8",
     "passiveStats": "",
     "actionMod": 1,
     "actionCharge": "",
