@@ -153,6 +153,15 @@ let itemsRef = [
     "cost": ""
   },
   {
+    "itemName": "dice 4",
+    "passiveStats": "dice:4, def:1",
+    "actions": "",
+    "itemSlot": "dice",
+    "itemType": "dice",
+    "itemRarity": "unique",
+    "cost": ""
+  },
+  {
     "itemName": "dice 8",
     "passiveStats": "dice:8",
     "actions": "",
@@ -173,7 +182,7 @@ let itemsRef = [
   {
     "itemName": "robe",
     "passiveStats": "power:1",
-    "actions": "",
+    "actions": "power surge",
     "itemSlot": "body",
     "itemType": "body armor",
     "itemRarity": "",
@@ -324,6 +333,15 @@ let itemsRef = [
     "cost": ""
   },
   {
+    "itemName": "water potion",
+    "passiveStats": "",
+    "actions": "water potion",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
     "itemName": "poison potion",
     "passiveStats": "",
     "actions": "weapon poison",
@@ -374,6 +392,15 @@ let itemsRef = [
     "actions": "transmute",
     "itemSlot": "",
     "itemType": "jewelry",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
+    "itemName": "pauldron",
+    "passiveStats": "",
+    "actions": "armor up",
+    "itemSlot": "",
+    "itemType": "shoulder",
     "itemRarity": "",
     "cost": ""
   }

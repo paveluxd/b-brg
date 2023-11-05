@@ -8,8 +8,10 @@ let config = {
         slots:6,
         startingItems: [
             'bow',
-            'shield',
+            'dice 4',
             'healing potion',
+            'pauldron',
+            'leather boots'
         ],
 
         coins: rng(12,6),

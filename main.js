@@ -9,8 +9,8 @@
             //Resolve ititial items
             playerObj.startingItems.forEach(key => {addItem(key)})
         }
-
-        
+   
+        //Wtf is this?
         if(mapY !== undefined){
             config.mapY = mapY
         }
@@ -18,9 +18,6 @@
         gameState.mapObj = new MapObj
         mapRef = gameState.mapObj.tiles
         
-        
-
-
         //Gen remaining UI
         // syncTree()     //merge
         syncCharPage() //merge?
@@ -39,17 +36,17 @@
     function initiateCombat(){
 
         //1.Create cinbat object.
-        combatState = new CombatState
+            combatState = new CombatState
 
         //2.Reset variables for new encounter.
-        if(typeof gameState.encounter !== 'number'){
-            gameState.encounter = 1
-        }  
+            if(typeof gameState.encounter !== 'number'){
+                gameState.encounter = 1
+            }  
 
         //3.Generates enemy
-        enemyObj = new EnemyObj //New enemy per fight 
-        genEneAction()          //Gen before player turn and after. Do it at this stage because it references enemyObj.
-        spriteBuilder('enemy')
+            enemyObj = new EnemyObj //New enemy per fight 
+            genEneAction()          //Gen before player turn and after. Do it at this stage because it references enemyObj.
+            spriteBuilder('enemy')
 
         //4.Set stats before combat
             //Restore sword dmg buff
@@ -69,13 +66,15 @@
             resolvePlayerStats()
 
         //5.Roll player dice. Roll after stats if dice will be changed.
-        playerObj.roll = rng(playerObj.dice)
+            playerObj.roll = rng(playerObj.dice)
+            //PASSIVE: post roll passives.
+            resolvePostRollPassives()
 
         //6.syncUI() will generate action cards that will trigger turnCalc().
-        syncUi()
+            syncUi()
 
         //7.Open combat screen
-        screen("combat")
+            screen("combat")
     }
     //1.TURN CALC
         function turnCalc(buttonElem){
@@ -245,7 +244,9 @@
     
             }else if(playerActionKey =='a19'){// reroll
     
-                playerObj.roll = rng(playerObj.dice) 
+                playerObj.roll = rng(playerObj.dice)
+                //PASSIVE: post roll passives.
+                resolvePostRollPassives()
     
             }else if(playerActionKey =="a20"){// "scroll of repetition"
     
@@ -453,10 +454,7 @@
                 playerObj.power -= 1 //Cost
             }
 
-            
-
-
-            //Player passive effects.
+            //PASSIVES post-action: Player passive effects.
             playerObj.actions.forEach(action => {
                 if      (action.keyId == 'a17'){ // combo "gloves"
                     if(playerObj.roll === 6 && action.cooldown > 0){
@@ -482,11 +480,8 @@
 
                     }
                 }else if(action.keyId == 'a56'){ // sigil of light
-                    console.log(playerObj.life, combatState.lifeRestoredByPlayer, playerObj.flatLife);
-                    if(playerObj.life + combatState.lifeRestoredByPlayer <= playerObj.flatLife) return console.log(2);
-
+                    if(playerObj.life + combatState.lifeRestoredByPlayer <= playerObj.flatLife) return
                     playerObj.flatLife += action.actionMod
-                    console.log(1);
                     combatState.logMsg.push(`Faith: +${action.actionMod} max life (passive).`)  
                 }
             })
@@ -734,7 +729,12 @@
                     }
                 })
         
-                playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus // Roll player dice.
+                //Player turn roll.
+                playerObj.roll = rng(playerObj.dice) + playerObj.rollBonus 
+
+                //PASSIVE: post roll passives.
+                resolvePostRollPassives()
+
                 playerObj.rollBonus = 0                                    // Remove any roll bonuses.
                 runAnim(el('intent-indicator'), 'turn-slide')              // Enemy intent animation.
                 genEneAction()                                             // Gen enemy action.
@@ -815,20 +815,20 @@
 
         //Generate action refs with proper calculation for this roll
         let actionKeys = [
-            'attack', 
-            'final strike', 
-            'combo', 
+            // 'attack', 
+            // 'final strike', 
+            // 'combo', 
             // 'charge', 
             'block', 
-            'fortify', 
-            'empower', 
-            'rush', 
-            'recover', 
-            'wound', 
-            'weaken', 
+            // 'fortify', 
+            // 'empower', 
+            // 'rush', 
+            // 'recover', 
+            // 'wound', 
+            // 'weaken', 
             // 'slow', 
-            'drain', 
-            'sleep'
+            // 'drain', 
+            // 'sleep'
         ]
 
         
@@ -942,7 +942,6 @@
                 item.actions.forEach(action => {
                     if(playerObj.actionSlots < playerObj.actions.length) return
                     if(action.actionCharge < 1) return
-                    if(action.actionType == 'passive') return
 
                     //Add action to player actions
                     playerObj.actions.push(action)  
@@ -1063,6 +1062,25 @@
         //Slots 
         playerObj.equipmentSlots = flatSlots
         playerObj.actionSlots = flatSlots
+    }
+    //Resolve post-roll passives
+    function resolvePostRollPassives(){
+        playerObj.actions.forEach(action => {
+            if     (action.keyId == 'a58'){ // power surge
+                if(playerObj.roll == 8){
+                    playerObj.power += action.actionMod
+                    combatState.logMsg.push(`Power surge: +1 power (passive).`)
+                    el('p-power').innerHTML = playerObj.power
+                }
+            }
+            else if(action.keyId == 'a59'){ // armor up
+                if(playerObj.roll == 4){
+                    playerObj.def += action.actionMod
+                    combatState.logMsg.push(`Armor up: +1 def (passive).`)
+                    el('p-def').innerHTML = playerObj.def
+                }
+            }
+        })
     }
 
 

@@ -202,6 +202,7 @@
         //Add action cards
         el('actions-list').innerHTML = ``
         playerObj.actions.forEach(action => {
+            if(action.actionType == 'passive') return //Skip passives
             let actionCard = genActionCard(action, 'card')
             el('actions-list').append(actionCard)
         })
@@ -458,6 +459,7 @@
             
             //Add button per player item
             playerObj.actions.forEach(action => {
+                if(action.actionType == 'passive') return //Skip passives
                 let actionCard = genActionCard(action)
                 el('cards-row').append(actionCard)
             })

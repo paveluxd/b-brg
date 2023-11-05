@@ -140,16 +140,6 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "quick block",
-    "desc": "reduce incoming dmg by (12 - dice)",
-    "passiveStats": "",
-    "actionMod": 12,
-    "actionCharge": 12,
-    "cooldown": "",
-    "keyId": 15,
-    "actionType": ""
-  },
-  {
     "actionName": "barrier",
     "desc": "reduce incoming dmg by 75% (cooldown 3 turns)",
     "passiveStats": "",
@@ -164,7 +154,7 @@ let actionsRef = [
     "desc": "if you rolled 6, perform two actions this turn",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 3,
+    "actionCharge": "",
     "cooldown": 1,
     "keyId": 17,
     "actionType": "passive"
@@ -250,11 +240,11 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "chains",
+    "actionName": "shock",
     "desc": "stun the target (cost 1 power)",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 3,
+    "actionCharge": 16,
     "cooldown": "",
     "keyId": 26,
     "actionType": ""
@@ -354,7 +344,7 @@ let actionsRef = [
     "desc": "next attack deals 2x dmg, requires dice roll greater than 8",
     "passiveStats": "",
     "actionMod": 200,
-    "actionCharge": 12,
+    "actionCharge": "",
     "cooldown": 1,
     "keyId": 36,
     "actionType": "passive"
@@ -391,9 +381,9 @@ let actionsRef = [
   },
   {
     "actionName": "water potion",
-    "desc": "gain 1 power until the end of encounter",
+    "desc": "gain 3 power until the end of encounter",
     "passiveStats": "",
-    "actionMod": 1,
+    "actionMod": 3,
     "actionCharge": 3,
     "cooldown": "",
     "keyId": 40,
@@ -424,7 +414,7 @@ let actionsRef = [
     "desc": "you do and take 200% dmg",
     "passiveStats": "",
     "actionMod": 200,
-    "actionCharge": 1,
+    "actionCharge": "",
     "cooldown": "",
     "keyId": 43,
     "actionType": "passive"
@@ -437,16 +427,6 @@ let actionsRef = [
     "actionCharge": 6,
     "cooldown": "",
     "keyId": 44,
-    "actionType": ""
-  },
-  {
-    "actionName": "wooden mace attack",
-    "desc": "deal 3 dmg.",
-    "passiveStats": "",
-    "actionMod": "",
-    "actionCharge": 100,
-    "cooldown": "",
-    "keyId": 45,
     "actionType": ""
   },
   {
@@ -494,7 +474,7 @@ let actionsRef = [
     "desc": "deal 100% more damage if your dice roll is greater than dice",
     "passiveStats": "",
     "actionMod": 100,
-    "actionCharge": 20,
+    "actionCharge": "",
     "cooldown": "",
     "keyId": 51,
     "actionType": "passive"
@@ -543,20 +523,40 @@ let actionsRef = [
     "actionName": "faith",
     "desc": "gain 2 max life every time your healing exceeds max life",
     "passiveStats": "",
-    "actionMod": 2,
-    "actionCharge": "",
+    "actionMod": "",
+    "actionCharge": 2,
     "cooldown": "",
     "keyId": 56,
     "actionType": "passive"
   },
   {
     "actionName": "heal",
-    "desc": "restore life equal to 3 (+ power, + def) (cost 1 power)",
+    "desc": "restore life equal to power + def (cost 1 power)",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 12,
     "cooldown": "",
     "keyId": 57,
     "actionType": ""
+  },
+  {
+    "actionName": "power surge",
+    "desc": "on dice roll 8, gain 1 power",
+    "passiveStats": "",
+    "actionMod": 1,
+    "actionCharge": "",
+    "cooldown": "",
+    "keyId": 58,
+    "actionType": "passive"
+  },
+  {
+    "actionName": "armor up",
+    "desc": "gain 1 def on a die roll of 4",
+    "passiveStats": "",
+    "actionMod": 1,
+    "actionCharge": "",
+    "cooldown": "",
+    "keyId": 59,
+    "actionType": "passive"
   }
 ]
