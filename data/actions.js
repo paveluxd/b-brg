@@ -11,10 +11,10 @@ let actionsRef = [
   },
   {
     "actionName": "armor break",
-    "desc": "reduce enemy def per point of your def that exceeds the highest dice roll",
+    "desc": "reduce enemy def by your def value, loose 1 def",
     "passiveStats": "",
     "actionMod": 3,
-    "actionCharge": 40,
+    "actionCharge": 16,
     "cooldown": "",
     "keyId": 2,
     "actionType": ""
@@ -421,10 +421,10 @@ let actionsRef = [
   },
   {
     "actionName": "restoration",
-    "desc": "restore reduced dice. Set negative power and def to 0. Gain 1 life per restored point",
+    "desc": "reset dice, power and def. Heal 1 per restored point",
     "passiveStats": "",
     "actionMod": 0,
-    "actionCharge": 6,
+    "actionCharge": 12,
     "cooldown": "",
     "keyId": 44,
     "actionType": ""

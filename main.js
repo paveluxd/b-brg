@@ -111,17 +111,16 @@
     
                 combatState.logMsg.push(`Mace: deals ${actionMod + playerObj.power} dmg.`)
     
-            }else if(playerActionKey =='a2' ){// hammer
+            }else if(playerActionKey =='a2' ){// 'armor break' 'hammer'
+
+                let defReduction = playerObj.def
+                if(defReduction < 1){
+                    defReduction = 0
+                }
     
-                let largestRoll = playerObj.roll
-                if(enemyObj.roll > playerObj.roll){largestRoll = enemyObj.roll}
-    
-                let defReuctionValue =  playerObj.def - largestRoll
-    
-                if(defReuctionValue < 0) return combatState.logMsg.push(`hammer attack reduced enemy def by 0`)
-    
-                enemyObj.def -= defReuctionValue
-                combatState.logMsg.push(`Hammer attack reduced enemy def by ${defReuctionValue}.`)
+                enemyObj.def -= defReduction
+                playerObj.def -= 1
+                combatState.logMsg.push(`Hammer attack: reduced enemy def by ${defReduction}.`)
     
             }else if(playerActionKey =='a3' ){// ice shards "book of magic" 
     
@@ -1394,6 +1393,6 @@
 
 //GAME START
     initGame()
-    initiateCombat() //Disable if not testing combat
+    // initiateCombat() //Disable if not testing combat
 
     // el('map').scrollTo(0, 9999); // Sets map position to view unit.

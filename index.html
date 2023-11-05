@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <title>Gates Of Morr</title>
     <link rel="stylesheet" href="./css/reset.css">
@@ -78,7 +78,7 @@
     <div id="combat" class="screen hide ">
 
         <!-- Game info -->
-        <p id="log">stage: 1<br> turn:1</p>
+        <p id="log"></p>
 
         <!-- Units images -->
         <div class="column grow bg-image" style="width:100%; align-items: stretch; padding: 0 4px;">
@@ -116,38 +116,50 @@
         <!-- UI: Actions -->
         <!-- Actions container -->
         <div id="stats" onclick="screen('character', 'combat-menu')">
+
             <!-- Player stat section --> 
             <div class="stat-group">
-                <div id="p-dice" class="stat"></div>
-                <div id="p-life" class="stat life"></div>
-                <div id="p-power" class="stat sm"></div>
-                <div id="p-def" class="stat sm"></div>
+                <div class="stat">
+                    <img src="./img/ico/dice.svg">
+                    <div id="p-dice"></div>
+                </div>
+                <div class="stat">
+                    <img src="./img/ico/life.svg">
+                    <div id="p-life"></div>
+                    <!-- <div id="p-life-change" class="floater stat-float">-12</div> -->
+                </div>
+                <div class="stat">
+                    <img src="./img/ico/power.svg">
+                    <div id="p-power"></div>
+                </div>
+                <div class="stat">
+                    <img src="./img/ico/def.svg">
+                    <div id="p-def"></div>
+                </div>
             </div>
     
             <!-- Enemy stat section -->
             <div class="stat-group">
-                    <div id="dice" class="stat">
-                        <img src="./img/ico/dice.svg" alt="">
-                        <div id="dice"></div>
-                    </div>
-                    <div id="life" class="stat life">
-                        <img src="./img/ico/hp-bb-red.svg" alt="">
-                        <div id="life"></div>
-                    </div>
-                    <div id="power" class="stat sm">
-                        <img src="./img/ico/power-bb-w.svg" alt="">
-                        <p id="power"></p>
-                    </div>
-                    <div id="def" class="stat sm">
-                        <img src="./img/ico/shield-bb-w.svg" alt="">
-                        <p id="def"></p>
-                        
-                    </div>
-    
+                <div class="stat">
+                    <img src="./img/ico/dice.svg" alt="">
+                    <div id="dice"></div>
+                </div>
+                <div class="stat">
+                    <img src="./img/ico/hp-bb-red.svg" alt="">
+                    <div id="life"></div>
+                </div>
+                <div class="stat">
+                    <img src="./img/ico/power-bb-w.svg" alt="">
+                    <div id="power"></div>
+                </div>
+                <div class="stat">
+                    <img src="./img/ico/shield-bb-w.svg" alt="">
+                    <div id="def"></div>
+                </div>
             </div>
         </div>
 
-        <div id="playerActionContainer" class="actions-container scrollx">
+        <div id="playerActionContainer" class="actions-container scroll">
             <div id="cards-row"></div>
         </div>
     </div>
