@@ -9,9 +9,7 @@ let config = {
         startingItems: [
             'bow',
             'dice 4',
-            'healing potion',
-            'pauldron',
-            'leather boots'
+            'healing potion'
         ],
 
         coins: rng(12,6),
