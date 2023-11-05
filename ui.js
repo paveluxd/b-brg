@@ -11,11 +11,11 @@
             //Top left log
             el('log').innerHTML = `
                 Enc: ${gameState.encounter}/${gameState.playerLocationTile.enemyQuant}<br>
-                Tur: ${combatState.turn}<br>
                 Ene: lvl ${enemyObj.level} ${enemyObj.profile}<br>
-                Loc: ${gameState.playerLocationTile.tileId}
                 ` 
-            // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
+                // Loc: ${gameState.playerLocationTile.tileId}
+                // Tur: ${combatState.turn}<br>
+                // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
 
             //Enemy floating number
             //combatState.enemyAction -> Previous action
@@ -44,16 +44,16 @@
             }
 
             //Player stats
-            el('p-life').innerHTML  =`<img src="./img/ico/life.svg"><p>${playerObj.life}</p>`
-            el('p-def').innerHTML   =`<img src="./img/ico/def.svg"><p>${playerObj.def}</p>`
-            el('p-dice').innerHTML  =`<img src="./img/ico/dice.svg"><p>${playerObj.roll}<span>/${playerObj.dice}</span></p>`
-            el('p-power').innerHTML =`<img src="./img/ico/power.svg"><p>${playerObj.power}</p>`        
+            el('p-life').innerHTML  =`${playerObj.life}`
+            el('p-def').innerHTML   =`${playerObj.def}`
+            el('p-dice').innerHTML  =`${playerObj.roll}<span>/${playerObj.dice}</span>`
+            el('p-power').innerHTML =`${playerObj.power}`        
 
             //Enemy stats
-            el('life').innerHTML    =`<img src="./img/ico/life.svg"><p>${enemyObj.life}</p>`
-            el('def').innerHTML     =`<img src="./img/ico/def.svg"><p>${enemyObj.def}</p>`
-            el('dice').innerHTML    =`<img src="./img/ico/dice.svg"><p>${enemyObj.roll}<span>/${enemyObj.dice}</span></p>`
-            el('power').innerHTML   =`<img src="./img/ico/power.svg"><p>${enemyObj.power}</p>`        
+            el('life').innerHTML    =`${enemyObj.life}`
+            el('def').innerHTML     =`${enemyObj.def}`
+            el('dice').innerHTML    =`${enemyObj.roll}<span>/${enemyObj.dice}</span>`
+            el('power').innerHTML   =`${enemyObj.power}`        
 
             //Enemy intent indicator
             el('intent').innerHTML = `${enemyObj.action.desc}`
@@ -393,8 +393,6 @@
         itemModal.append(btn, closeBtn)
     }
 
-    
-
 
 //COMBAT
     //Animation
@@ -455,7 +453,7 @@
             el('cards-row').innerHTML = ''
 
             //Set #cards-row width to display cards in two rows.
-            el('cards-row').setAttribute('style',`width:${149 * (Math.floor(playerObj.actions.length/2) + 1)}px;`)
+            // el('cards-row').setAttribute('style',`width:${149 * (Math.floor(playerObj.actions.length/2) + 1)}px;`)
             
             //Add button per player item
             playerObj.actions.forEach(action => {
@@ -526,7 +524,7 @@
                 }else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
                     heading = `${upp(action.actionName)} for ${playerObj.roll + playerObj.power}`
                 }else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
-                    heading = `${upp(action.actionName)} for ${3 + playerObj.power}(+${playerObj.swordDmgMod})`
+                    heading = `${upp(action.actionName)} (${3 + playerObj.power}+${playerObj.swordDmgMod})`
                 }else if(['inferno'].indexOf(referenceAction.actionName) > -1){
                     heading = `${upp(action.actionName)} (${playerObj.power * playerObj.coins} dmg)`
                 }
@@ -535,7 +533,7 @@
             button.querySelector('section').innerHTML = `
                 <span>
                     <h3>${heading}</h3> 
-                    <p>x${action.actionCharge}</p>
+                    <p class="charge-indicator">x${action.actionCharge}</p>
                     ${cooldownCounter}
                 </span>
                 <p class='desc'>${upp(action.desc)}.</p>

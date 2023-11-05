@@ -1,15 +1,21 @@
 let config = {
     //Player
-        life: 32, //32
-        power: 0,
-        def:   0,
-        dice:  6,
+        life:      32, //32
+        power:      0,
+        def:        0,
+        dice:       6,
         inventory: 20,
-        slots:6,
+        slots:     12,
         startingItems: [
             'bow',
             'shield',
-            'healing potion'
+            'healing potion',
+            'hammer',
+            'sword',
+            'mace',
+            'boots',
+            // 'plate armor',
+            // 'water potion'
         ],
 
         coins: rng(12,6),

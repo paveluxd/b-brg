@@ -1,7 +1,3 @@
-/* * {
-    border: 1px solid rgba(255, 0, 166, 0.2) !important;
-} */
-
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -33,7 +29,6 @@
 .scroll, .scroll *{
     touch-action: pan-y !important;
 }
-
 .scrollx, .scrollx *{
     touch-action: pan-x !important;
 
@@ -170,7 +165,9 @@ body{
         margin-bottom: 2px;
         padding-left: 0px;
     }
-    b { font-weight: bold; }
+    b { 
+        font-weight: bold; 
+    }
 
 
 /* Screens */
@@ -534,8 +531,47 @@ body{
     button:disabled{
         cursor: auto;
         background-color: var(--w20);
+    }
 
-        .cooldown-indicator{
+
+/* Actions */
+    .action{
+        max-width: 200px;
+        width: calc(50% - 1px);
+        /* min-width: 180px; */
+        height: 68px;
+        
+        padding: 0px;
+        /* justify-content: flex-start; */
+
+        text-align: left;
+        font-size: 12px;
+        line-height: 14px;
+
+        position: relative;
+        overflow: hidden;
+    
+        & div{
+            display: flex;
+            justify-content: space-between;
+        }
+        & span{
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0 0 6px;
+        }
+        & .desc{
+            padding: 0 38px 6px 6px;
+            overflow: hidden;
+            position: relative;
+            height: 44px;
+        }
+        & img{
+            position: absolute;
+            right: -8px;
+            bottom: -8px;
+        } 
+        & .cooldown-indicator{
             color: var(--white);
             background-color: black;
             padding: 4px 6px;
@@ -545,73 +581,27 @@ body{
 
             border-radius: 0 4px 0 0;
         }
-    }
+        & .charge-indicator{
+            color: var(--white);
+            background-color: black;
 
+            padding: 2px 4px 2px 6px;
 
-/* Actions */
-    .action{
-        width: 152px;
-        height: 50%;
-
-        padding: 0px;
-        margin: 0 1px 0 0;
-
-        justify-content: flex-start;
-        align-items: stretch;
-
-        /* border-radius: 4px 4px 0 0; */
-
-        text-align: left;
-        font-size: 12px;
-        line-height: 16px;
-
-        position: relative;
-        overflow: hidden;
-
-        -moz-box-shadow: inset 0 -10px 10px -10px var(--b20);
-        -webkit-box-shadow: inset 0 -10px 10px -10px var(--b20);
-        box-shadow: inset 0 -10px 10px -10px var(--b20);
-    
-        & div{
-            display: flex;
-            justify-content: space-between;
-        }
-        & span{
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 8px 0px 8px;
-
-        }
-        & span p {
-            color: var(--b50); 
-        }
-        & h3{
-            font-weight: 600;
-        }
-        & .desc{
-            /* height: 32px; */
-            padding: 0 8px 8px 8px;
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
-        }
-        & img{
             position: absolute;
-            right: -8px;
-            bottom: -8px;
-            opacity: 1.0;
-            z-index: 0;
-        } 
+            top: 0px;
+            right: 0px;
+
+            border-radius: 0 0 0 4px;
+        }
     }
     .action, .action:hover, .action:active{
-        background-color: rgb(215, 215, 215);
+        background-color: rgb(255, 255, 255);
         border: none;
     }
     .actions-container{
         display: flex;
         flex-direction: row;
-        padding: 0 0 0 8px;
-        height: 180px;
+        height: 188px;
         width: 100%;
 
         overflow: scroll;
@@ -619,14 +609,16 @@ body{
     #cards-row{
         display: flex;
         flex-wrap: wrap;
-        flex-direction: column;
+        justify-content: center;
         align-content: flex-start;
+        gap: 1px;
 
-        max-width: calc(3 * var(--action-card-max-width));
         width: 100%;
-        min-width: calc(100vw - 16px);
+        /* min-width: calc(2 * 180px + 2px); */
+        /* max-width: calc(3 * var(--action-card-max-width)); */
+        /* min-width: calc(100vw - 16px); */
 
-        max-height: 100%;
+        /* max-height: 100%; */
     }
     .empty-slot{
         font-family: 'JetBrains mono', sans-serif;
@@ -749,7 +741,7 @@ body{
     /* Combat: Intent indicator */
         #intent-indicator{
             position: absolute; 
-            bottom: -40px;
+            bottom: -20px;
             z-index: 3;
 
             & div{
@@ -803,7 +795,6 @@ body{
 
     /* Combat: stats ui */
         #stats{
-            border-radius: 4px 4px 0 0;
             font-family: 'JetBrains mono', sans-serif;
             color: var(--white);
             font-size: 12px;
@@ -819,20 +810,46 @@ body{
                 flex:1 1 0;
                 justify-content: center;
     
-                margin: 8px auto 8px auto;
+                margin: 8px auto 24px auto;
     
                 .stat{
                     display: flex;
                     flex-direction: column;
-                    min-width: 26px;
                     align-items: center;
+
+                    min-width: 26px;
+
+                    position: relative;
                 }
-                .life{
+                #p-life, #life{
                     color: var(--orange);
                 }
                 #dice span, #p-dice span{
                     color: var(--w50);
                 }
+            }
+
+            .floater{
+                position: absolute;
+                bottom: 0;
+                opacity: 0%;
+            }
+
+            .stat-float{
+                animation-name: stat-float;
+                animation-duration: 1s;
+                animation-iteration-count: 1;
+            }
+        }
+
+        @keyframes stat-float{
+            0%{
+                bottom: 0;
+                opacity: 100%;
+            }
+            100%{
+                bottom: -16px;
+                opacity: 100%;
             }
         }
 
