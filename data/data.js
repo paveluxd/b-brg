@@ -1,6 +1,6 @@
 //Global vars 
 //Move to game obj?
-let playerObj, enemyObj, combatState
+let playerObj, enemyObj, gameState
 
 
 //Game
@@ -8,48 +8,38 @@ let playerObj, enemyObj, combatState
         constructor(){
             this.stage = 0 //Keep at 0, it is increased during generation.
             this.encounter = 1
+
+            //Encounter
+            this.inCombat = false
+            this.combatTurn = 1
+            this.logMsg = []      // Combat log messages.
+            this.statChange = []  // Stats for UI indicator.
+            this.enemyAction = [] // Last enemy action.
             
-            //Map data obj
+            //Map data obj.
             this.mapObj                                   
             
-            //Stats for end game screen
-            this.turnCounter = 0 //Calc turns for win stats
+            //Stats for end game screen.
+            this.turnCounter = 0 //Calc turns for win stats.
             this.enemyCounter = 0
             this.totalEnemies = config.portalDefenders + this.stage
             this.totalCombatTurns = 0
             
-            //Merchant config
+            //Merchant config.
             this.merchantQuant = config.merchantQuant
 
-            //Casino bets
+            //Casino bets.
             //TBA
 
-            //Combat config
-            this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%
+            //Combat config.
+            this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%.
             this.enemyPartyCap = 2
             this.portalDefenders = 4
 
-            this.bossFrequency = 3 //Every Nth stage legacy
-            this.flatItemReward = 2 //Base rewards
-            this.flatFoodReward = 1 //Food per round +1 per enemy
+            this.bossFrequency   = 3 // Every Nth stage legacy.
+            this.flatItemReward  = 2 // Base rewards.
+            this.flatFoodReward  = 1 // Food per round +1 per enemy.
             this.flatCoinsReward = 6 
-        }
-    }
-
-//Combat
-    class CombatState {
-        constructor(){
-            this.turn = 1
-
-            this.dmgDoneByEnemy = 0
-            this.dmgTakenByEnemy = 0
-
-            this.dmgDoneByPlayer = 0
-            this.dmgTakenByPlayer = 0
-
-            this.enemyAction = []
-            this.playerAction = []
-            this.logMsg = [] //combat log messages
         }
     }
 
@@ -57,33 +47,41 @@ let playerObj, enemyObj, combatState
     class PlayerObj {
         constructor(){
             //Life
-                this.baseLife       = config.life //Lvl 1 char life
-                this.flatLife       = this.baseLife   //Life cap
-                this.life           = this.baseLife   //Current life
+                this.baseLife       = config.life   //Lvl 1 char life.
+                this.flatLife       = this.baseLife //Life cap.
+                this.life           = this.baseLife //Current life.
+                this.dmgDone        = 0
+                this.dmgTaken       = 0
             //Power
                 this.basePower      = config.power
                 this.flatPower      = this.basePower
                 this.power          = this.basePower
+                this.powerChange    = 0
             //Def
                 this.baseDef        = config.def
                 this.flatDef        = this.baseDef
                 this.def            = this.baseDef
+                this.defChange      = 0
             //Dice
                 this.baseDice       = config.dice //needed as ref in case flat dice is modified by item
                 this.flatDice       = this.baseDice
                 this.dice           = this.baseDice
+                this.diceChange     = 0
+            //Roll
                 this.roll           = 0
                 this.rollBonus      = 0
-            //Temporary buffs
+                this.rollChange     = 0
+
+            //While in combat
                 this.piercing       = false
                 this.swordDmgMod    = 0
                 this.poisonBuff     = false
+                
 
             //Inventory
                 this.inventorySlots = config.inventory
                 this.inventory      = [] //Items gained as rewards
-                this.startingItems  = config.startingItems
-                    
+                this.startingItems  = config.startingItems   
             //Equipment slots
                 this.baseSlots      = config.slots
                 this.equipmentSlots = this.baseSlots
@@ -111,7 +109,6 @@ let playerObj, enemyObj, combatState
     class EnemyObj {
         constructor(){
             this.level = gameState.stage //tileIdRef[1] prev. value.
-            this.roll = 0
             
             //Misc
             this.poisonStacks = 0
@@ -127,7 +124,6 @@ let playerObj, enemyObj, combatState
             let powerMod, defMod, diceMod, imgPath, lifeMod
             // el('enemyImg').classList.remove('boss')
 
-            
             if     (randomEnemyProfile == 'balanced'){
                 lifeMod  = 1
                 powerMod = 1
@@ -136,8 +132,7 @@ let playerObj, enemyObj, combatState
 
                 this.profile = 'balanced'
                 imgPath  = `balanced/${rng(17,1)}`
-            }
-            else if(randomEnemyProfile == 'tank'){
+            }else if(randomEnemyProfile == 'tank'){
                 lifeMod  = 1.5
                 powerMod = 0.5
                 defMod   = 3.5
@@ -145,8 +140,7 @@ let playerObj, enemyObj, combatState
 
                 this.profile = 'tank'
                 imgPath  = `tank/${rng(1,1)}`
-            }
-            else if(randomEnemyProfile == 'assassin'){
+            }else if(randomEnemyProfile == 'assassin'){
                 lifeMod  = 0.5
                 powerMod = 2
                 defMod   = 0.5
@@ -154,8 +148,7 @@ let playerObj, enemyObj, combatState
 
                 this.profile = 'assassin'
                 imgPath  = `assassin/${rng(1,1)}`
-            }
-            else if(randomEnemyProfile == 'minion'){
+            }else if(randomEnemyProfile == 'minion'){
                 lifeMod  = 0.1
                 powerMod = 0.5
                 defMod   = 0.5
@@ -175,7 +168,6 @@ let playerObj, enemyObj, combatState
             //     this.profile = 'boss'
             // }
 
-
             //Set stats
             //Get column value to scale mobs
             let tileIdRef = []
@@ -184,15 +176,27 @@ let playerObj, enemyObj, combatState
             })
 
             // mod(0.5) -> Get +1 every 2 stages
-            this.life    = 0 + Math.round((8   + this.level) * lifeMod )
-            this.power   = 0 + Math.round((0.2 * this.level) * powerMod) 
-            this.def     = 0 + Math.round((0.2 * this.level) * defMod)
-            this.dice    = 4 + Math.round((0.2 * this.level) * diceMod)
-            
-            this.flatLife = this.life
-            this.flatPower = this.power
-            this.flatDef = this.def
-            this.flatDice = this.dice 
+            this.life        = 0 + Math.round((8   + this.level) * lifeMod )
+            this.flatLife    = this.life
+            this.dmgDone     = 0 // For dmg calc.
+            this.dmgTaken    = 0 // For dmg calc.
+
+            this.power       = 0 + Math.round((0.2 * this.level) * powerMod) 
+            this.flatPower   = this.power
+            this.powerChange = 0
+            this.powerChangeBol = false
+
+            this.def         = 0 + Math.round((0.2 * this.level) * defMod)
+            this.flatDef     = this.def
+            this.defChange   = 0
+            this.defChangeBol = false
+
+            this.dice        = 4 + Math.round((0.2 * this.level) * diceMod)
+            this.flatDice    = this.dice 
+            this.diceChange  = 0
+
+            this.roll        = 0
+            this.rollChange  = 0
         }
     }
     class EnemyActionObj {

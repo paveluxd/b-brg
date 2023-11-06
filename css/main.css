@@ -837,7 +837,7 @@ body{
 
             .stat-float{
                 animation-name: stat-float;
-                animation-duration: 1s;
+                animation-duration: 2s;
                 animation-iteration-count: 1;
             }
         }
@@ -845,6 +845,10 @@ body{
         @keyframes stat-float{
             0%{
                 bottom: 0;
+                opacity: 100%;
+            }
+            50%{
+                bottom: -16px;
                 opacity: 100%;
             }
             100%{
