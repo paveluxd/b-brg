@@ -159,6 +159,11 @@
                     return
                 } else {
                     playerObj.roll -= 3
+
+                    //Changes for floating numbers
+                    playerObj.rollChangeMarker = true
+                    playerObj.rollChange -= 3
+
                     playerObj.dmgDone = gameState.sourceAction.actionMod + playerObj.power 
                     gameState.logMsg.push('Attacked with dagger as extra action.')
                 }
@@ -539,24 +544,19 @@
                     
                     //Reduce def on low hit
                     if(enemyObj.def >= playerObj.dmgDone && enemyObj.def > 0){
-                        playerObj.dmgDone -= enemyObj.def
-                        enemyObj.def--
+                        changeStat('def', -1, 'enemy')
                     }
                     //Reduce dmg by def
-                    else{
-                        playerObj.dmgDone -= enemyObj.def
-                    }
+                    playerObj.dmgDone -= enemyObj.def
+                    
                 }
                 //Set positive damage to 0 (due to def)
                 if(playerObj.dmgDone < 0){
                     playerObj.dmgDone = 0
                 }
                 
-                //Reduce life
-                enemyObj.life -= playerObj.dmgDone
-
-                //Trigger floating number
-                gameState.statChange.push(['e-life', -playerObj.dmgDone])
+                //Resolve stat change
+                changeStat('life', -playerObj.dmgDone, 'enemy')           
 
                 //Reset piercing buff after attack was performed
                 playerObj.piercing = false
@@ -579,9 +579,9 @@
 
                     //Reduce def on low hit
                     if(playerObj.def >= enemyObj.dmgDone && playerObj.def > 0){
-                        playerObj.def--
+                        changeStat('def', -1, 'player')
                     }
-
+                    //Reduce dmg by def
                     enemyObj.dmgDone -= playerObj.def
 
                     //Set positive damage to 0
@@ -589,11 +589,8 @@
                         enemyObj.dmgDone = 0
                     } 
 
-                    playerObj.life -= enemyObj.dmgDone
-
-
-                    //Trigger player damage indicator
-                    playerObj.dmgTaken = enemyObj.dmgDone
+                    //Resolve dmg
+                    changeStat('life', -enemyObj.dmgDone, 'player')
 
                 }else if(['combo'].indexOf(enemyObj.action.key) > -1){
                     for (let i = 0; i < 3; i ++){
@@ -609,17 +606,15 @@
 
                         //Set positive damage to 0
                         if (playerDamageTaken < 0){playerDamageTaken = 0} 
-                        playerObj.life -= playerDamageTaken
 
-                        //Trigger player damage indicator
-                        playerObj.dmgTaken = enemyObj.dmgDone
+                        //Resolve dmg
+                        changeStat('life', -playerDamageTaken, 'player')
+
                     }
                 }else if(['final strike'].indexOf(enemyObj.action.key) > -1 && enemyObj.life < 0){ //final strike only works if enemy is dead.
 
-                    playerObj.life -= enemyObj.dmgDone
-
-                    //Trigger player damage indicator
-                    playerObj.dmgTaken = enemyObj.dmgDone
+                    //Resolve dmg
+                    changeStat('life', -enemyObj.dmgDone, 'player')
                 }
             }
 
@@ -629,22 +624,27 @@
             }
         }
 
-        //Floating stat number
+        //Floating stat number 
         function indicateStatChange(){
             ['player', 'enemy'].forEach(target =>{
+                ['lifeChange', 'diceChange', 'rollChange', 'defChange', 'powerChange'].forEach(stat => {
 
-                ['diceChange', 'rollChange', 'defChange', 'powerChange'].forEach(stat => {
                     let objStat = playerObj[stat]
-
+                    let objStatMarker = playerObj[`${stat}Marker`]
+                    let elem = el(`p-${stat}`)
+                    let statValue = playerObj[stat]
+                    
                     if (target == 'enemy'){
                         objStat = enemyObj[stat]
+                        objStatMarker = enemyObj[`${stat}Marker`]
+                        elem = el(`e-${stat}`)
+                        statValue = enemyObj[stat]
                     }
+                    console.log(elem, objStat);
 
-                    if(objStat == undefined) return //Return if stat was not modified
+                    if(objStatMarker == false) return console.log(stat, 'was not changed.');//Return if stat was not modified
                     //if (marker == false) return
                     
-                    let elem = el(`e-${stat}`)
-                    let statValue = enemyObj[stat]
                     elem.innerHTML = statValue
 
                     //Set color
@@ -660,24 +660,49 @@
                     runAnim(elem, 'stat-float')
 
                     //Reset 'change' properties.
-                    objStat = 0 
+                    playerObj[stat] = 0
+                    playerObj[`${stat}Marker`] = false
+
+                    if (target == 'enemy'){
+                        enemyObj[stat] = 0
+                        enemyObj[`${stat}Marker`] = false
+                    }
                 })
 
             })
+        }
+
+        function changeStat(stat, value, target){
+            if(target == 'player'){
+                playerObj[stat] += value
+
+                //Trigger floating number
+                playerObj[`${stat}ChangeMarker`] = true
+                playerObj[`${stat}Change`] += value
+            } else { //enemy
+                enemyObj[stat] += value
+
+                //Trigger floating number
+                enemyObj[`${stat}ChangeMarker`] = true
+                enemyObj[`${stat}Change`] += value
+            }
         }
 
         function restoreLife(val){
             let lifeChange = val
             playerObj.life += lifeChange
 
+           
+            
             //Prevent overhealing
             if(playerObj.life > playerObj.flatLife){
                 playerObj.life = playerObj.flatLife
+                lifeChange = 0
             }
-
+            
             //Trigger floating number
-            // el('p-life-change').innerHTML = `+${lifeChange}`
-            // runAnim(el('p-life-change'), 'stat-float')
+            playerObj.lifeChangeMarker = true
+            playerObj.lifeChange += lifeChange
         }
 
     //2.END TURN

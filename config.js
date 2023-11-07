@@ -10,6 +10,7 @@ let config = {
             'bow',
             'shield',
             'healing potion',
+            'dagger',
             // 'hammer',
             // 'sword',
             // 'mace',

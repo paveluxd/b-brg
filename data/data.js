@@ -52,25 +52,31 @@ let playerObj, enemyObj, gameState
                 this.life           = this.baseLife //Current life.
                 this.dmgDone        = 0
                 this.dmgTaken       = 0
+                this.lifeChange  = 0
+                this.lifeChangeMarker = false
             //Power
                 this.basePower      = config.power
                 this.flatPower      = this.basePower
                 this.power          = this.basePower
                 this.powerChange    = 0
+                this.powerChangeMarker    = false
             //Def
                 this.baseDef        = config.def
                 this.flatDef        = this.baseDef
                 this.def            = this.baseDef
                 this.defChange      = 0
+                this.defChangeMarker = false
             //Dice
                 this.baseDice       = config.dice //needed as ref in case flat dice is modified by item
                 this.flatDice       = this.baseDice
                 this.dice           = this.baseDice
                 this.diceChange     = 0
+                this.diceChangeMarker = false
             //Roll
                 this.roll           = 0
                 this.rollBonus      = 0
                 this.rollChange     = 0
+                this.rollChangeMarker = false
 
             //While in combat
                 this.piercing       = false
@@ -180,23 +186,27 @@ let playerObj, enemyObj, gameState
             this.flatLife    = this.life
             this.dmgDone     = 0 // For dmg calc.
             this.dmgTaken    = 0 // For dmg calc.
+            this.lifeChange  = 0
+            this.lifeChangeMarker = false
 
             this.power       = 0 + Math.round((0.2 * this.level) * powerMod) 
             this.flatPower   = this.power
             this.powerChange = 0
-            this.powerChangeBol = false
+            this.powerChangeMarker = false
 
             this.def         = 0 + Math.round((0.2 * this.level) * defMod)
             this.flatDef     = this.def
             this.defChange   = 0
-            this.defChangeBol = false
+            this.defChangeMarker = false
 
             this.dice        = 4 + Math.round((0.2 * this.level) * diceMod)
             this.flatDice    = this.dice 
             this.diceChange  = 0
+            this.diceChangeMarker = false
 
             this.roll        = 0
             this.rollChange  = 0
+            this.rollChangeMarker = false
         }
     }
     class EnemyActionObj {
