@@ -47,41 +47,42 @@ let playerObj, enemyObj, gameState
     class PlayerObj {
         constructor(){
             //Life
-                this.baseLife       = config.life   //Lvl 1 char life.
-                this.flatLife       = this.baseLife //Life cap.
-                this.life           = this.baseLife //Current life.
-                this.dmgDone        = 0
-                this.dmgTaken       = 0
-                this.lifeChange  = 0
-                this.lifeChangeMarker = false
+                this.baseLife          = config.life   //Lvl 1 char life
+                this.flatLifeMod       = 0
+                this.flatLife          = this.baseLife //Life cap.
+                this.life              = this.baseLife //Current life.
+                this.dmgDone           = 0
+                this.dmgTaken          = 0
+                this.lifeChange        = 0
+                this.lifeChangeMarker  = false
             //Power
-                this.basePower      = config.power
-                this.flatPower      = this.basePower
-                this.power          = this.basePower
-                this.powerChange    = 0
-                this.powerChangeMarker    = false
+                this.basePower         = config.power
+                this.flatPower         = this.basePower
+                this.power             = this.basePower
+                this.powerChange       = 0
+                this.powerChangeMarker = false
             //Def
-                this.baseDef        = config.def
-                this.flatDef        = this.baseDef
-                this.def            = this.baseDef
-                this.defChange      = 0
-                this.defChangeMarker = false
+                this.baseDef           = config.def
+                this.flatDef           = this.baseDef
+                this.def               = this.baseDef
+                this.defChange         = 0
+                this.defChangeMarker   = false
             //Dice
-                this.baseDice       = config.dice //needed as ref in case flat dice is modified by item
-                this.flatDice       = this.baseDice
-                this.dice           = this.baseDice
-                this.diceChange     = 0
-                this.diceChangeMarker = false
+                this.baseDice          = config.dice //needed as ref in case flat dice is modified by item
+                this.flatDice          = this.baseDice
+                this.dice              = this.baseDice
+                this.diceChange        = 0
+                this.diceChangeMarker  = false
             //Roll
-                this.roll           = 0
-                this.rollBonus      = 0
-                this.rollChange     = 0
-                this.rollChangeMarker = false
+                this.roll              = 0
+                this.rollBonus         = 0
+                this.rollChange        = 0
+                this.rollChangeMarker  = false
 
             //While in combat
-                this.piercing       = false
-                this.swordDmgMod    = 0
-                this.poisonBuff     = false
+                this.piercing          = false
+                this.swordDmgMod       = 0
+                this.poisonBuff        = false
                 
 
             //Inventory
