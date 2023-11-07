@@ -36,7 +36,8 @@
     function initiateCombat(){
 
         //1.Create cinbat object.
-            combatState = new CombatState
+            gameState.inCombat = true
+            gameState.combatTurn = 1
 
         //2.Reset variables for new encounter.
             if(typeof gameState.encounter !== 'number'){
@@ -79,91 +80,96 @@
     //1.TURN CALC
         function turnCalc(buttonElem){
             //Reset combat state vars
-            combatState.turnState = ''
-            combatState.dmgDoneByPlayer = 0
-            combatState.dmgTakenByPlayer = 0
-            combatState.dmgDoneByEnemy = 0
-            combatState.dmgTakenByEnemy = 0
-            combatState.lifeRestoredByPlayer = 0
+            gameState.combatTurnState = ''
+            playerObj.dmgDone = 0
+            playerObj.dmgTaken = 0
+            enemyObj.dmgDone = 0
+            enemyObj.dmgTaken = 0
+            gameState.lifeRestoredByPlayer = 0
 
-            //Combat log.
-            combatState.logMsg = [``]
+            //Clear combat log.
+            gameState.logMsg = [``]
 
             //Save players previous action.
-            if(combatState.sourceAction !== undefined){
-                combatState.previousAction = combatState.sourceAction 
+            if(gameState.sourceAction !== undefined){
+                gameState.previousAction = gameState.sourceAction 
             }
 
-            combatState.sourceAction = findObj(playerObj.actions, 'actionId', buttonElem.getAttribute('actionId')) //Get action id from button elem
-            let actionMod = combatState.sourceAction.actionMod
-            let playerActionKey = combatState.sourceAction.keyId
+            gameState.sourceAction = findObj(playerObj.actions, 'actionId', buttonElem.getAttribute('actionId')) //Get action id from button elem
+            let actionMod = gameState.sourceAction.actionMod
+            let playerActionKey = gameState.sourceAction.keyId
 
             //LOGIC: player
             if      (playerActionKey =='a1' ){// mace
 
-                combatState.dmgDoneByPlayer += actionMod + playerObj.power
+                playerObj.dmgDone += actionMod + playerObj.power
     
                 if(playerObj.roll === 4){
                     playerObj.def += 1
     
-                    combatState.logMsg.push('Mace: +1 def.')
+                    gameState.logMsg.push('Mace: +1 def.')
                 }
     
-                combatState.logMsg.push(`Mace: deals ${actionMod + playerObj.power} dmg.`)
+                gameState.logMsg.push(`Mace: deals ${actionMod + playerObj.power} dmg.`)
     
             }else if(playerActionKey =='a2' ){// 'armor break' 'hammer'
 
+                //Get reduction value
                 let defReduction = playerObj.def
-                if(defReduction < 1){
-                    defReduction = 0
-                }
+                if(defReduction < 1){defReduction = 0}
+
+                //Resolve stat change
+                changeStat('def', -defReduction, 'enemy') 
+                changeStat('def', -1, 'player') 
+
+                //Log
+                gameState.logMsg.push(`Hammer attack: reduced enemy def by ${defReduction}.`)
     
-                enemyObj.def -= defReduction
-                playerObj.def -= 1
-                combatState.logMsg.push(`Hammer attack: reduced enemy def by ${defReduction}.`)
+            }else if(playerActionKey =='a3' ){// Spell: shards "book of moon" 
     
-            }else if(playerActionKey =='a3' ){// ice shards "book of magic" 
+                //Action cost
+                if(playerObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+
+                //Resolve stat change
+                changeStat('power', -1, 'player') 
     
-                if(playerObj.power > 0){
-                    playerObj.power -= 1 //Cost
-    
-                    let mult = playerObj.actionSlots - playerObj.actions.length 
+                //Calc total dmg
+                let mult = playerObj.actionSlots - playerObj.actions.length 
+                if(mult < 1){mult = 0}
             
-                    if(mult < 1){
-                        mult = 0
-                    }
-            
-                    combatState.dmgDoneByPlayer += (actionMod + playerObj.power) * mult
-                }
-                else{
-                    showAlert('Not enough power to pay for action cost.')
-                    return
-                }
+                //Damage
+                playerObj.dmgDone += (actionMod + playerObj.power) * mult
+
+                //Log
+                gameState.logMsg.push(`Shard: dealt ${(actionMod + playerObj.power) * mult} dmg.`)
     
             }else if(playerActionKey =='a4' ){// dagger pair 
     
-                combatState.dmgDoneByPlayer += (actionMod + playerObj.power) * 2 
-                combatState.logMsg.push('Dagger pair attack.')
+                playerObj.dmgDone += (actionMod + playerObj.power) * 2 
+                gameState.logMsg.push('Dagger pair attack.')
     
             }else if(playerActionKey =='a5' ){// bow
     
                 console.log('bow');
-                combatState.dmgDoneByPlayer += playerObj.roll + playerObj.power
+                playerObj.dmgDone += playerObj.roll + playerObj.power
     
-            }else if(playerActionKey =='a6' ){// cut 'dagger'
-    
-                //Resolve action cost
-                if(playerObj.roll < 3){
-                    showAlert('Action requires roll greater than 2.')
-                    return
-                } else {
-                    playerObj.roll -= 3
-                    combatState.dmgDoneByPlayer = combatState.sourceAction.actionMod + playerObj.power 
-                    combatState.logMsg.push('Attacked with dagger as extra action.')
-                }
+            }else if(playerActionKey =='a6' ){// EX: cut 'dagger'
+
+                //Action cost check
+                if(playerObj.roll < 3) return showAlert('Action requires roll greater than 2.')
+                
+                //Resolve stat change
+                changeStat('roll', -3, 'player') 
+
+                //Damage
+                playerObj.dmgDone = gameState.sourceAction.actionMod + playerObj.power 
+
+                //Combat log
+                gameState.logMsg.push('Attacked with dagger as extra action.')
+                
             }else if(playerActionKey =='a7' ){// sword attack 
     
-                combatState.dmgDoneByPlayer += combatState.sourceAction.actionMod + playerObj.power + playerObj.swordDmgMod
+                playerObj.dmgDone += gameState.sourceAction.actionMod + playerObj.power + playerObj.swordDmgMod
                 if(playerObj.roll == 5 || playerObj.roll == 6){
                     playerObj.swordDmgMod += 1
                 }
@@ -178,22 +184,23 @@
     
                 playerObj.life -= 5
     
-                combatState.dmgDoneByPlayer += playerObj.flatLife - playerObj.life + playerObj.power
+                playerObj.dmgDone += playerObj.flatLife - playerObj.life + playerObj.power
     
-            }else if(playerActionKey =='a9' ){// ice lance "book of ice"
+            }else if(playerActionKey =='a9' ){// SP/EX: ice lance "book of ice"
+
+                //Action cost
+                if(playerObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+
+                //Resolve stat change
+                changeStat('power', -1, 'player') 
+   
+                //Dmg
+                playerObj.dmgDone += playerObj.power
+
+                //Log
+                gameState.logMsg.push(`Ice lance: dealt ${playerObj.power} dmg.`)
     
-                if(playerObj.power > 0){
-                    playerObj.power -= 1 //Cost
-            
-                    combatState.dmgDoneByPlayer += playerObj.power
-    
-                }
-                else{
-                    showAlert('Not enough power to pay for action cost.')
-                    return
-                }
-    
-            }else if(playerActionKey =='a10'){// backstab "iron dagger"
+            }else if(playerActionKey =='a10'){// EX: backstab "iron dagger"
     
                 //Resolve action cost
                 if(playerObj.roll < 5) return showAlert('Action requires roll greater than 5.')
@@ -203,116 +210,151 @@
                 // } 
     
                 playerObj.roll -= 5
-                combatState.dmgDoneByPlayer = combatState.sourceAction.actionMod + playerObj.power
+                playerObj.dmgDone = gameState.sourceAction.actionMod + playerObj.power
                 playerObj.power += 1
     
             }
-             else if(playerActionKey =='a11'){// lightning "book of lightning"
+             else if(playerActionKey =='a11'){// SP: lightning "book of lightning"
     
-                if(playerObj.power < 1) return showAlert('Not enough power to pay for action cost.')
-                playerObj.power -= 2 //Cost
-                combatState.dmgDoneByPlayer += rng(20) + playerObj.power
+                //Action cost
+                if(playerObj.power < 2) return showAlert('Not enough power to pay for action cost.')
+
+                //Resolve stat change
+                changeStat('power', -2, 'player') 
+
+                //Dmg
+                let dmgVal = rng(20) + playerObj.power
+                playerObj.dmgDone += dmgVal
+
+                //Log
+                gameState.logMsg.push(`Lightning: dealt ${dmgVal} dmg.`)
     
             }else if(playerActionKey =='a12'){// shield bash
     
-                combatState.dmgDoneByPlayer += playerObj.def * playerObj.power
+                //Dmg
+                playerObj.dmgDone += playerObj.def * playerObj.power
+
+                //Log
+                gameState.logMsg.push(`Shield bash: dealt ${playerObj.def * playerObj.power} dmg.`)
     
-            }else if(playerActionKey =='a13'){// fireball "book of fire"
+            }else if(playerActionKey =='a13'){// SP: fireball  "book of fire"
     
-                combatState.dmgDoneByPlayer += actionMod + playerObj.power
+                //Dmg
+                playerObj.dmgDone += actionMod + playerObj.power
+
+                //Log
+                gameState.logMsg.push(`Fireball: dealt ${actionMod + playerObj.power} dmg.`)
     
-            }else if(playerActionKey =='a14'){// pyroblast "book of fire"
+            }else if(playerActionKey =='a14'){// SP: pyroblast "book of fire"
     
-                if(playerObj.power < 0) return showAlert('Not enough power to pay for action cost.')
-                playerObj.power -= 1 //Cost
+                //Action cost
+                if(playerObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+
+                //Resolve stat change
+                changeStat('power', -1, 'player') 
     
-                combatState.dmgDoneByPlayer += playerObj.power * playerObj.roll
-    
+                //Dmg
+                playerObj.dmgDone += playerObj.power * playerObj.roll
+
+                //Log
+                gameState.logMsg.push(`Pyroblast: dealt ${playerObj.power * playerObj.roll} dmg.`)
+
             }else if(playerActionKey =='a15'){// quick block "tower shield"
     
-                combatState.dmgDoneByEnemy -= actionMod - playerObj.dice
+                enemyObj.dmgDone -= actionMod - playerObj.dice
     
             }else if(playerActionKey =='a16'){// barrier
                 
                 playerObj.protection = ['Barrier']
-                combatState.sourceAction.cooldown = 0
+                gameState.sourceAction.cooldown = 0
     
             }else if(playerActionKey =='a18'){// preparation "boots" (keep 50% of roll)
     
+                //Value
                 playerObj.rollBonus += Math.ceil(playerObj.roll * 0.5)
+
+                //Log
+                gameState.logMsg.push(`Preparation: saved ${Math.ceil(playerObj.roll * 0.5)} roll points.`)
     
             }else if(playerActionKey =='a19'){// reroll
     
+                //Val
                 playerObj.roll = rng(playerObj.dice)
-                //PASSIVE: post roll passives.
+
+                //PASSIVE: check for on-roll passives.
                 resolvePostRollPassives()
     
             }else if(playerActionKey =="a20"){// "scroll of repetition"
-    
+
+                //Restores charge to all items
                 playerObj.inventory.forEach(item => {
                     item.actions.forEach(action => {
                         if(action.playerActionKeyId !== 'a20'){
-                            action.actionCharge += combatState.sourceAction.actionMod
+                            action.actionCharge += gameState.sourceAction.actionMod
                         }
                     })
                 })
-            }else if(playerActionKey =='a21'){// weakness "scroll of weakness"
+
+            }else if(playerActionKey =='a21'){// "curse of weakness"
     
-                enemyObj.power -= actionMod
+                //Resolve stat change
+                changeStat('power', -actionMod, 'enemy')
     
             } 
              else if(playerActionKey =='a22'){// (ene def-) wounds
+
+                //Resolve stat change
+                changeStat('def', -actionMod, 'enemy')
     
-                enemyObj.def -= actionMod
+            }else if(playerActionKey =='a23'){// (ene -dice) "curse of chain"
     
-            }else if(playerActionKey =='a23'){// (ene stun) chain
+                //Resolve stat change
+                changeStat('dice', -actionMod, 'enemy')
     
-                enemyObj.dice -= actionMod
+            }else if(playerActionKey =='a24'){// (ene roll-) slowness "curse of slowness"
     
-            }else if(playerActionKey =='a24'){// (ene roll-) slowness "scroll of slowness"
+                //Resolve stat change
+                changeStat('roll', -actionMod, 'enemy')
     
-                enemyObj.roll -= actionMod
+            }else if(playerActionKey =='a25'){// stun "chain"
     
-            }else if(playerActionKey =='a25'){// tank stun
-    
-                if(playerObj.roll === 1){
-                    enemyObj.state = 'Skip turn'
-                }
-                else{
-                    showAlert('Action requires roll 1.')
-                    return
-                }
-    
+                if(playerObj.roll != 1) return showAlert('Action requires roll 1.')
+
+                enemyObj.state = 'Skip turn'
+     
             }else if(playerActionKey =='a47'){// stun: smoke bomb
     
                 if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(enemyObj.action.playerActionKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
                 enemyObj.state = 'Skip turn'
                 
-            }else if(playerActionKey =='a26'){// spell: freeze (stun spell) "book of ice"
+            }else if(playerActionKey =='a26'){// SP: freeze (stun spell) "book of ice"
+
+                //Action cost
+                if(playerObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+
+                //Resolve stat change
+                changeStat('power', -1, 'player') 
     
-                if(playerObj.power > 0){
-                    playerObj.power -= 1 //Cost
-                    enemyObj.state = 'Skip turn'
-                }
-                else{
-                    showAlert('Not enough power to pay for action cost.')
-                    return
-                }
+                enemyObj.state = 'Skip turn'
     
-            }else if(playerActionKey =='a31'){// defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
+            }else if(playerActionKey =='a31'){// RING: defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
     
                 // playerObj.def -= actionMod
-                resolveCharge(combatState.sourceAction)
+                resolveCharge(gameState.sourceAction)
                 resolvePlayerStats()
     
             }else if(playerActionKey =='a33'){// healing potion
                 
-                combatState.lifeRestoredByPlayer += Math.round((playerObj.flatLife - playerObj.life) / 100 * actionMod)
-                combatState.logMsg.push(`Heling potion: +${combatState.lifeRestoredByPlayer}  life.`)  
+                //Heal value
+                gameState.lifeRestoredByPlayer += Math.round((playerObj.flatLife - playerObj.life) / 100 * actionMod)
+
+                //Log
+                gameState.logMsg.push(`Heling potion: +${gameState.lifeRestoredByPlayer}  life.`)  
                  
             }else if(playerActionKey =='a34'){// (def+) fortification
-    
-                playerObj.def += actionMod
+
+                //Resolve stat change
+                changeStat('def', actionMod, 'player')
     
             }else if(playerActionKey =='a35'){// dodge % evasion "leather cape"
     
@@ -320,52 +362,49 @@
                 let dodgeRoll = rng(100)
     
                 if(dodgeRoll < dodgePercent){
-                    combatState.dmgDoneByEnemy = -99999 // write something custom later
+                    enemyObj.dmgDone = -99999 // add something better for dodge later
                 }
     
             }
-             else if(playerActionKey =='a37'){// buff next attack with piercing "leather gloves"
+             else if(playerActionKey =='a37'){// SP: buff next attack with piercing "leather gloves"
+
+                //Action cost
+                if(playerObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+
+                //Resolve stat change
+                changeStat('power', -1, 'player') 
     
-                if(playerObj.power > 0){
-    
-                    playerObj.power -= 1 //Cost
-                    playerObj.piercing = true
-                    combatState.sourceAction.cooldown = 0
-    
-                }
-                else{
-                    showAlert('Not enough power to pay for action cost.')
-                    return
-                }
-    
+                playerObj.piercing = true
+                gameState.sourceAction.cooldown = 0
+
             }else if(playerActionKey =='a38'){// static "cape"
     
-                if(playerObj.roll > 8){
+                if(playerObj.roll < 8) return showAlert('This action requires roll greater than 8.')
     
-                    playerObj.power += 2 //Cost
+                //Resolve stat change
+                changeStat('power', 2, 'player')
                     
-                }
-                else{
-                    showAlert('This action requires roll greater than 8.')
-                    return
-                }
-    
             }else if(playerActionKey =='a39'){// sprint "woolen boots"
-    
-                    playerObj.roll += 2 //Cost
+
+                //Resolve stat change
+                changeStat('roll', 2, 'player')
     
             }else if(playerActionKey =='a40'){// water potion "water potion"
-    
-                playerObj.power += actionMod
+
+                //Resolve stat change
+                changeStat('power', actionMod, 'player')
     
             }else if(playerActionKey =='a41'){// poison
-    
+                
+                //Marker
                 playerObj.poisonBuff = true
-                combatState.logMsg.push('Applied poison to weapons.<br>')
+
+                //Log
+                gameState.logMsg.push('Applied poison to weapons.<br>')
     
             }else if(playerActionKey =='a42'){// shield block "buckler"
     
-                combatState.dmgDoneByEnemy -= playerObj.roll //- playerObj.power
+                enemyObj.dmgDone -= playerObj.roll //- playerObj.power
     
             }else if(playerActionKey =='a44'){// "restoration" "scroll of restoration"
 
@@ -385,27 +424,34 @@
                 }
 
                 if(restoredPoints == undefined) return false
-                playerObj.life += (-1 * restoredPoints)
-                combatState.logMsg.push(`restoration: restored ${-1 * restoredPoints} life`)
+
+                gameState.lifeRestoredByPlayer += (-1 * restoredPoints)
+
+                //Log
+                gameState.logMsg.push(`restoration: restored ${-1 * restoredPoints} life`)
     
             }else if(playerActionKey =='a45'){// wooden mace attack
     
-                combatState.dmgDoneByPlayer += 3 + playerObj.power
+                playerObj.dmgDone += 3 + playerObj.power
     
             }else if(playerActionKey =='a48'){// "focus" "wooden staff"
-    
-                playerObj.power += Math.floor(1 * playerObj.roll / 4)
+
+                //Resolve stat change
+                changeStat('power', Math.floor(1 * playerObj.roll / 4), 'player')
     
             }else if(playerActionKey =='a49'){// zealotry
     
-                playerObj.power += playerObj.roll
-                playerObj.def -= playerObj.roll
+                //Resolve stat change
+                changeStat('power', playerObj.roll, 'player')
+                changeStat('def', -playerObj.roll, 'player')
     
             }
              else if(playerActionKey =='a50'){// defensive stance
             
-                playerObj.roll--
-                combatState.sourceAction.cooldown = 0
+                //Resolve stat change
+                changeStat('roll', -1, 'player')
+                
+                gameState.sourceAction.cooldown = 0
      
             }else if(playerActionKey =='a52'){// hook/swap
             
@@ -413,44 +459,59 @@
                 playerObj.roll = enemyObj.roll
                 enemyObj.roll = rollRef
     
-                combatState.logMsg.push(`rolls swapped (Result: P${playerObj.roll}/E${enemyObj.roll})`)
+                //Log
+                gameState.logMsg.push(`rolls swapped (Result: P${playerObj.roll}/E${enemyObj.roll})`)
     
                 //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
                 recalcEneAction()
             }else if(playerActionKey =='a53'){// "transmute" "alchemists playerActionKey"
                 
+                //Condition check
                 if(playerObj.roll != 1 && playerObj.roll != 2) return showAlert('Transmute requires roll 1 or 2.')
     
+                //Stat mod
                 playerObj.coins += playerObj.roll
                 
-                combatState.logMsg.push(`transmute: added ${playerObj.roll} coins`)
+                //Log
+                gameState.logMsg.push(`transmute: added ${playerObj.roll} coins`)
     
             }else if(playerActionKey =='a54'){// "inferno" "scroll of inferno"
     
-                combatState.dmgDoneByPlayer += playerObj.power * playerObj.coins
+                //Dmg
+                playerObj.dmgDone += playerObj.power * playerObj.coins
     
-                combatState.logMsg.push(`inferno: dealt ${playerObj.coins} dmg, and consued ${playerObj.coins} coins`)
+                //Log
+                gameState.logMsg.push(`inferno: dealt ${playerObj.coins} dmg, and consued ${playerObj.coins} coins`)
     
+                //Cost
                 playerObj.coins = 0
     
             }else if(playerActionKey =='a55'){// "fear" "wizards head"
 
+                //Marker
                 enemyObj.state = 'fear'
-                combatState.sourceAction.cooldown = 0
+                gameState.sourceAction.cooldown = 0
                 
                 //Set variable cooldown.  
-                let referenceActionObj = findByProperty(actionsRef, 'keyId', combatState.sourceAction.keyId) //Find action reference
+                let referenceActionObj = findByProperty(actionsRef, 'keyId', gameState.sourceAction.keyId) //Find action reference
                 referenceActionObj.cooldown = rng(4,2)
-                combatState.logMsg.push(`fear: enamy will block during the next turn (fear reacharge:${referenceActionObj.cooldown})`)
+
+                //Log
+                gameState.logMsg.push(`fear: enamy will block during the next turn (fear reacharge:${referenceActionObj.cooldown})`)
 
             }else if(playerActionKey =='a57'){// "heal" "book of order"
 
+                //Cost
                 if(playerObj.power < 0) return showAlert('Not enough power to pay for action cost.')
-
-                combatState.lifeRestoredByPlayer += 3 + playerObj.power + playerObj.def
                 
-                combatState.logMsg.push(`heal: +:${combatState.lifeRestoredByPlayer} life, -1 power.`)
-                playerObj.power -= 1 //Cost
+                //Resolve stat change
+                changeStat('power', -1, 'player') 
+
+                gameState.lifeRestoredByPlayer += actionMod + playerObj.power + playerObj.def
+                
+                //Log
+                gameState.logMsg.push(`heal: +${gameState.lifeRestoredByPlayer} life, -1 power.`)
+                
             }
 
             //PASSIVES post-action: Player passive effects.
@@ -458,30 +519,44 @@
                 if      (action.keyId == 'a17'){ // combo "gloves"
                     if(playerObj.roll === 6 && action.cooldown > 0){
 
-                        combatState.turnState = 'extra-action'
+                        gameState.combatTurnState = 'extra-action'
                         action.cooldown = 0
+
+                        //Log
                         ombatState.logMsg.push(`Combo extra action (passive).`)
 
                     }
                 }else if(action.keyId == 'a36'){ // critical hit "woolen gloves"
                     if(playerObj.roll > 8 && action.cooldown > 0){
 
-                        combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * (action.actionMod/100)
+                        playerObj.dmgDone = playerObj.dmgDone * (action.actionMod/100)
                         action.cooldown = 0
+
+                        //Log
                         ombatState.logMsg.push(`Critical hit (passive).`)
 
                     }
                 }else if(action.keyId == 'a51'){ // overload 'exoskeleton'
                     if(playerObj.roll > playerObj.dice){
 
-                        combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * (action.actionMod / 100 + 1)
-                        combatState.logMsg.push(`Overload activated (passive).`)
+                        playerObj.dmgDone = playerObj.dmgDone * (action.actionMod / 100 + 1)
+
+                        //Log
+                        gameState.logMsg.push(`Overload activated (passive).`)
 
                     }
                 }else if(action.keyId == 'a56'){ // sigil of light
-                    if(playerObj.life + combatState.lifeRestoredByPlayer <= playerObj.flatLife) return
+
+                    if(playerObj.life + gameState.lifeRestoredByPlayer <= playerObj.flatLife) return
+
+
+
+                    //Mod max life
                     playerObj.flatLife += action.actionMod
-                    combatState.logMsg.push(`Faith: +${action.actionMod} max life (passive).`)  
+                    playerObj.flatLifeMod += action.actionMod
+
+                    // Log
+                    gameState.logMsg.push(`Faith: +${action.actionMod} max life (passive).`)  
                 }
             })
             
@@ -491,11 +566,11 @@
             //PASSIVES: work for both player and enemy.
             playerObj.actions.forEach(action => {
                 if (action.keyId === 'a43'){ // throns crown
-                    if(combatState.dmgDoneByEnemy !== undefined){
-                        combatState.dmgDoneByEnemy = combatState.dmgDoneByEnemy * 2
+                    if(enemyObj.dmgDone !== undefined){
+                        enemyObj.dmgDone = enemyObj.dmgDone * 2
                     }
-                    if(combatState.dmgDoneByPlayer !== undefined){
-                        combatState.dmgDoneByPlayer = combatState.dmgDoneByPlayer * 2
+                    if(playerObj.dmgDone !== undefined){
+                        playerObj.dmgDone = playerObj.dmgDone * 2
                     }
                 }
             })
@@ -507,14 +582,14 @@
         function combatCalc(){    
 
             //PLAYER DMG
-            if(combatState.dmgDoneByPlayer > 0){
+            if(playerObj.dmgDone > 0){
 
                 //POISON: apply id dmg is done.
                 if(playerObj.poisonBuff || playerObj.poisonBuff == 'triggered'){
                     let poisonStackCount = 1
             
                     //Shards
-                    if(combatState.sourceAction.keyId === 'a3'){
+                    if(gameState.sourceAction.keyId === 'a3'){
                         let mult = playerObj.actionSlots - playerObj.actions.length 
             
                         if(mult < 1){
@@ -524,45 +599,40 @@
                         poisonStackCount = mult
                     } 
                     //Dagger pair
-                    else if(combatState.sourceAction.keyId === 'a4'){
+                    else if(gameState.sourceAction.keyId === 'a4'){
                         poisonStackCount = 2
                     }
             
                     enemyObj.poisonStacks += poisonStackCount
                     playerObj.poisonBuff = 'triggered'
-                    combatState.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
+                    gameState.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
                 }
                 
                 //DEF: resolve.
                 if(!playerObj.piercing){//Ignore def if piercing state
                     
                     //Reduce def on low hit
-                    if(enemyObj.def >= combatState.dmgDoneByPlayer && enemyObj.def > 0){
-                        combatState.dmgDoneByPlayer -= enemyObj.def
-                        enemyObj.def--
+                    if(enemyObj.def >= playerObj.dmgDone && enemyObj.def > 0){
+                        changeStat('def', -1, 'enemy')
                     }
                     //Reduce dmg by def
-                    else{
-                        combatState.dmgDoneByPlayer -= enemyObj.def
-                    }
+                    playerObj.dmgDone -= enemyObj.def
+                    
                 }
                 //Set positive damage to 0 (due to def)
-                if(combatState.dmgDoneByPlayer < 0){
-                    combatState.dmgDoneByPlayer = 0
+                if(playerObj.dmgDone < 0){
+                    playerObj.dmgDone = 0
                 }
                 
-                //Reduce life
-                enemyObj.life -= combatState.dmgDoneByPlayer            
-
-                //Trigger enemy damage indicator
-                combatState.dmgTakenByEnemy = combatState.dmgDoneByPlayer 
+                //Resolve stat change
+                changeStat('life', -playerObj.dmgDone, 'enemy')           
 
                 //Reset piercing buff after attack was performed
                 playerObj.piercing = false
             }
 
             //ENE DMG
-            if(combatState.dmgDoneByEnemy > 0){
+            if(enemyObj.dmgDone > 0){
 
                 //Reduce damage if barrier
                 if(playerObj.protection !== undefined && playerObj.protection[0] === 'Barrier'){
@@ -570,77 +640,146 @@
                     playerObj.protection = '' //Reset variable
 
                     // Convert action mod (75) to barrier reduction %
-                    combatState.dmgDoneByEnemy = Math.round(combatState.dmgDoneByEnemy * (1 - combatState.sourceAction.actionMod / 100)) 
+                    enemyObj.dmgDone = Math.round(enemyObj.dmgDone * (1 - gameState.sourceAction.actionMod / 100)) 
                 }
 
                 //Resolve enemy actions
                 if      (['attack', 'crit', 'charged strike'].indexOf(enemyObj.action.key) > -1){
 
                     //Reduce def on low hit
-                    if(playerObj.def >= combatState.dmgDoneByEnemy && playerObj.def > 0){
-                        playerObj.def--
+                    if(playerObj.def >= enemyObj.dmgDone && playerObj.def > 0){
+                        changeStat('def', -1, 'player')
                     }
-
-                    combatState.dmgDoneByEnemy -= playerObj.def
+                    //Reduce dmg by def
+                    enemyObj.dmgDone -= playerObj.def
 
                     //Set positive damage to 0
-                    if (combatState.dmgDoneByEnemy < 0){
-                        combatState.dmgDoneByEnemy = 0
+                    if (enemyObj.dmgDone < 0){
+                        enemyObj.dmgDone = 0
                     } 
 
-                    playerObj.life -= combatState.dmgDoneByEnemy
+                    //Resolve dmg
+                    changeStat('life', -enemyObj.dmgDone, 'player')
 
-
-                    //Trigger player damage indicator
-                    combatState.dmgTakenByPlayer = combatState.dmgDoneByEnemy
                 }else if(['combo'].indexOf(enemyObj.action.key) > -1){
                     for (let i = 0; i < 3; i ++){
 
                         //Move to a diff var due to def reducing dmg done 3 times
-                        let playerDamageTaken = combatState.dmgDoneByEnemy
+                        let playerDamageTaken = enemyObj.dmgDone
 
                         //Reduce def on low hit
-                        if(playerObj.def >= combatState.dmgDoneByEnemy && playerObj.def > 0){playerObj.def--} //Reduce def
+                        if(playerObj.def >= enemyObj.dmgDone && playerObj.def > 0){playerObj.def--} //Reduce def
 
                         //Reduce damage by def
                         playerDamageTaken -= playerObj.def
 
                         //Set positive damage to 0
                         if (playerDamageTaken < 0){playerDamageTaken = 0} 
-                        playerObj.life -= playerDamageTaken
 
-                        //Trigger player damage indicator
-                        combatState.dmgTakenByPlayer = combatState.dmgDoneByEnemy
+                        //Resolve dmg
+                        changeStat('life', -playerDamageTaken, 'player')
+
                     }
                 }else if(['final strike'].indexOf(enemyObj.action.key) > -1 && enemyObj.life < 0){ //final strike only works if enemy is dead.
 
-                    playerObj.life -= combatState.dmgDoneByEnemy
-
-                    //Trigger player damage indicator
-                    combatState.dmgTakenByPlayer = combatState.dmgDoneByEnemy
+                    //Resolve dmg
+                    changeStat('life', -enemyObj.dmgDone, 'player')
                 }
             }
 
             //Player healing
-            if(combatState.lifeRestoredByPlayer > 0){
-                restoreLife(combatState.lifeRestoredByPlayer)
+            if(gameState.lifeRestoredByPlayer > 0){
+                restoreLife(gameState.lifeRestoredByPlayer)
+            }
+        }
+
+        //Floating stat number 
+        function indicateStatChange(){
+            ['player', 'enemy'].forEach(target =>{
+                ['lifeChange', 'diceChange', 'rollChange', 'defChange', 'powerChange'].forEach(stat => {
+
+                    let objStat = playerObj[stat]
+                    let objStatMarker = playerObj[`${stat}Marker`]
+                    let elem = el(`p-${stat}`)
+                    let statValue = playerObj[stat]
+                    
+                    if (target == 'enemy'){
+                        objStat = enemyObj[stat]
+                        objStatMarker = enemyObj[`${stat}Marker`]
+                        elem = el(`e-${stat}`)
+                        statValue = enemyObj[stat]
+                    }
+
+                    //Return if stat was not modified
+                    if(objStatMarker == false) return 
+                    
+                    //Update elem value
+                    elem.innerHTML = statValue
+
+                    //Set color
+                    if(statValue > 0){//gain
+                        elem.setAttribute('style','color:var(--green);')
+                        elem.innerHTML = `+${statValue}`
+                    } else if(statValue == 0){
+                        elem.setAttribute('style','color:white;')
+                    } else{ //loose
+                        elem.setAttribute('style','color:var(--orange);')
+                    }
+
+                    //Trigger animation
+                    runAnim(elem, 'stat-float')
+
+                    //Reset 'change' properties.
+                    playerObj[stat] = 0
+                    playerObj[`${stat}Marker`] = false
+
+                    if (target == 'enemy'){
+                        enemyObj[stat] = 0
+                        enemyObj[`${stat}Marker`] = false
+                    }
+                })
+
+            })
+        }
+
+        function changeStat(stat, value, target){
+            if(target == 'player'){
+                playerObj[stat] += value
+
+                //Trigger floating number
+                playerObj[`${stat}ChangeMarker`] = true
+                playerObj[`${stat}Change`] += value
+            } else { //enemy
+                enemyObj[stat] += value
+
+                //Trigger floating number
+                enemyObj[`${stat}ChangeMarker`] = true
+                enemyObj[`${stat}Change`] += value
             }
         }
 
         function restoreLife(val){
-            playerObj.life += val
+            let lifeChange = val
+            playerObj.life += lifeChange
 
+           
+            
             //Prevent overhealing
             if(playerObj.life > playerObj.flatLife){
                 playerObj.life = playerObj.flatLife
+                lifeChange = 0
             }
+            
+            //Trigger floating number
+            playerObj.lifeChangeMarker = true
+            playerObj.lifeChange += lifeChange
         }
 
     //2.END TURN
         function combatEndCheck(){ 
             
             gameState.totalCombatTurns++ //Stats for testing.
-            resolveCharge(combatState.sourceAction) //Deal with action charges.
+            resolveCharge(gameState.sourceAction) //Deal with action charges.
 
             // DEFEAT (also loose if 0 actions).
             if(playerObj.life < 1 || playerObj.actions.length < 1){
@@ -681,7 +820,7 @@
                 playerObj.lvl = Math.round(1 + playerObj.exp / 3) //Recalc player lvl'
             }
             // NEXT TURN.
-            else if (combatState.sourceAction.actionType !== "extra-action" || playerObj.roll < 1){
+            else if (gameState.sourceAction.actionType !== "extra-action" || playerObj.roll < 1){
 
                 //POISON: resolve stacks
                 if(enemyObj.poisonStacks > 0){
@@ -692,22 +831,22 @@
                             
                         if       (statRoll == 2){
                             enemyObj.def -= 1
-                            combatState.logMsg.push(`poison: -1 def. ${enemyObj.poisonStacks - 1} stacks remaining`)
+                            gameState.logMsg.push(`poison: -1 def. ${enemyObj.poisonStacks - 1} stacks remaining`)
 
                         }else if (statRoll == 3){
                             enemyObj.power -= 1
-                            combatState.logMsg.push(`poison: -1 power. ${enemyObj.poisonStacks - 1} stacks remaining`)
+                            gameState.logMsg.push(`poison: -1 power. ${enemyObj.poisonStacks - 1} stacks remaining`)
 
                         }else if (statRoll == 4 && enemyObj.dice > 3){
                             enemyObj.dice -= 1
-                            combatState.logMsg.push(`poison: -1 dice. ${enemyObj.poisonStacks - 1} stacks remaining`)
+                            gameState.logMsg.push(`poison: -1 dice. ${enemyObj.poisonStacks - 1} stacks remaining`)
 
                         }else if (statRoll == 5){ //20% to increase poison stacks
                             enemyObj.poisonStacks += 1
-                            combatState.logMsg.push(`poison: +1 stack. ${enemyObj.poisonStacks - 1} stacks remaining`)
+                            gameState.logMsg.push(`poison: +1 stack. ${enemyObj.poisonStacks - 1} stacks remaining`)
                         }else {
                             enemyObj.life -= 1
-                            combatState.logMsg.push(`poison: -1 life. ${enemyObj.poisonStacks - 1} stacks remaining`)
+                            gameState.logMsg.push(`poison: -1 life. ${enemyObj.poisonStacks - 1} stacks remaining`)
                         }
                     }
 
@@ -717,7 +856,7 @@
                     //Removes poison buff if it was triggered during this turn.
                     if(playerObj.poisonBuff == 'triggered'){
                         playerObj.poisonBuff = false
-                        combatState.logMsg.push(`poison buff removed`)
+                        gameState.logMsg.push(`poison buff removed`)
                     }
                 }
 
@@ -738,13 +877,16 @@
                 runAnim(el('intent-indicator'), 'turn-slide')              // Enemy intent animation.
                 genEneAction()                                             // Gen enemy action.
                 enemyObj.state = ``                                        // Reset enemy state.
-                combatState.turn++                                         // Increase turn counter.
+                gameState.combatTurn++                                     // Increase turn counter.
             }
 
             //Print all combat logs.
-            combatState.logMsg.forEach(msg => {
-                console.log(`${combatState.turn}. ${upp(msg)}`)
+            gameState.logMsg.forEach(msg => {
+                console.log(`${gameState.combatTurn}. ${upp(msg)}`)
             })
+
+            //Run floating indicators
+            indicateStatChange()
 
             syncUi()
         }
@@ -780,30 +922,32 @@
     //Enemy action logic
     function enemyActionLogic(){
         //State checkd. Deals with stun and extra actions.
-        if(enemyObj.state == 'Skip turn') return                         combatState.logMsg.push(`enemy skipped turn due to stun`)
-        if(combatState.sourceAction.actionType == "extra-action") return combatState.logMsg.push(`enemy skipped turn due to extra action`)
+        if(enemyObj.state == 'Skip turn') return                         gameState.logMsg.push(`enemy skipped turn due to stun`)
+        if(gameState.sourceAction.actionType == "extra-action") return gameState.logMsg.push(`enemy skipped turn due to extra action`)
 
         //Resolve actions.
         if      ('attack, combo, final strike, charged strike'.slice(', ').indexOf(enemyObj.action.key) > -1){
 
-            combatState.dmgDoneByEnemy += enemyObj.action.actionVal
+            enemyObj.dmgDone += enemyObj.action.actionVal
 
         }else if('block'.slice(', ').indexOf(enemyObj.action.key) > -1){
 
-            combatState.dmgDoneByPlayer -= enemyObj.action.actionVal
+            playerObj.dmgDone -= enemyObj.action.actionVal
 
         }else if('recover, rush, empower, fortify'.slice(', ').indexOf(enemyObj.action.key) > -1){
 
-            enemyObj[enemyObj.action.stat] += enemyObj.action.actionVal
+            //Resolve stat change
+            changeStat(enemyObj.action.stat, enemyObj.action.actionVal, 'enemy')
 
         }else if('wound, weaken, slow, drain'.slice(', ').indexOf(enemyObj.action.key) > -1){   
 
-            playerObj[enemyObj.action.stat] -= enemyObj.action.actionVal
+            //Resolve stat change
+            changeStat(enemyObj.action.stat, -enemyObj.action.actionVal, 'player')
 
         }
         
         //Records previous action for ui updates.
-        combatState.enemyAction = enemyObj.action 
+        gameState.enemyAction = enemyObj.action 
     }
     //Pick enemy action
     function genEneAction(){
@@ -888,7 +1032,7 @@
     //Recalculate current action.
     function recalcEneAction(){
         enemyObj.action = new EnemyActionObj(enemyObj.action.key)
-        combatState.logMsg.push(`enemy action recalculated`)
+        gameState.logMsg.push(`enemy action recalculated`)
     }
     
 
@@ -959,7 +1103,7 @@
 
         //Resolve life  
         //Add reclaculation for all stats
-        let baseLife = playerObj.baseLife
+        let baseLife = playerObj.baseLife + playerObj.flatLifeMod //Flat life mod for max life spell fx
         let flatLife = 0
         let lifeMultiplier = 1
         let lifeDeviation = playerObj.life - playerObj.flatLife// See if temporary bonuses should be included.
@@ -1068,14 +1212,14 @@
             if     (action.keyId == 'a58'){ // power surge
                 if(playerObj.roll == 8){
                     playerObj.power += action.actionMod
-                    combatState.logMsg.push(`Power surge: +1 power (passive).`)
+                    gameState.logMsg.push(`Power surge: +1 power (passive).`)
                     el('p-power').innerHTML = playerObj.power
                 }
             }
             else if(action.keyId == 'a59'){ // armor up
                 if(playerObj.roll == 4){
                     playerObj.def += action.actionMod
-                    combatState.logMsg.push(`Armor up: +1 def (passive).`)
+                    gameState.logMsg.push(`Armor up: +1 def (passive).`)
                     el('p-def').innerHTML = playerObj.def
                 }
             }

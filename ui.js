@@ -6,7 +6,7 @@
         // syncTree()
 
         //Combat screen: Log stats at the top
-        if(typeof combatState !== 'undefined'){
+        if(gameState.inCombat){
 
             //Top left log
             el('log').innerHTML = `
@@ -14,14 +14,14 @@
                 Ene: lvl ${enemyObj.level} ${enemyObj.profile}<br>
                 ` 
                 // Loc: ${gameState.playerLocationTile.tileId}
-                // Tur: ${combatState.turn}<br>
+                // Tur: ${gameState.combatTurn}<br>
                 // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
 
             //Enemy floating number
-            //combatState.enemyAction -> Previous action
+            //gameState.enemyAction -> Previous action
 
-            if(combatState.dmgTakenByEnemy > 0){//Attack
-                floatText('en',`-${combatState.dmgTakenByEnemy} life`)
+            if(enemyObj.dmgTaken > 0){//Attack
+                floatText('en',`-${enemyObj.dmgTaken} life`)
             }else if(enemyObj.action.key === 'fortify'){
                 floatText('en',`+${enemyObj.action.stat} def`)
             }else if(enemyObj.action.key === 'empower'){
@@ -36,11 +36,11 @@
                 floatText('en',`Recovered ${enemyObj.action.stat} ${enemyObj.action.actionVal}`)
             }
 
-            combatState.enemyAction = []
+            gameState.enemyAction = []
             
             //Player floating number
-            if(combatState.dmgTakenByPlayer > 0){
-                floatText('pl',`-${combatState.dmgTakenByPlayer} life`)
+            if(playerObj.dmgTaken > 0){
+                floatText('pl',`-${playerObj.dmgTaken} life`)
             }
 
             //Player stats

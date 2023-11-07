@@ -9,8 +9,9 @@ let config = {
         startingItems: [
             'bow',
             'shield',
-            'healing potion',
-            // 'hammer',
+            "healing potion"
+            // 'wooden staff',
+            // 'book of order',
             // 'sword',
             // 'mace',
             // 'boots',
