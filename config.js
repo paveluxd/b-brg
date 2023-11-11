@@ -1,6 +1,6 @@
 let config = {
     //Player
-        life:      32, //32
+        life:      932, //32
         power:      0,
         def:        0,
         dice:       6,
@@ -23,6 +23,10 @@ let config = {
         coins: rng(12,6),
         food:  rng(5,1),
 
+    //Enemy
+        eneLife: 998,
+
+
     //Map
         mapX: 2,
         mapY: 2,
@@ -30,7 +34,7 @@ let config = {
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
-            {tileType: 'merchant'},
+            // {tileType: 'merchant'},
             // {tileType: 'house-1'},
         ],
 
@@ -41,5 +45,8 @@ let config = {
         flatCoinsReward: 6, 
 
         //Merchant
-        merchantQuant: 8
+        merchantQuant: 8,
+
+    //Misc
+    testCombat: 2, //Initiates combat at the start (for testing).
 }

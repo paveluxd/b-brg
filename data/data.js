@@ -34,7 +34,6 @@ let playerObj, enemyObj, gameState
             //Combat config.
             this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%.
             this.enemyPartyCap = 2
-            this.portalDefenders = 4
 
             this.bossFrequency   = 3 // Every Nth stage legacy.
             this.flatItemReward  = 2 // Base rewards.
@@ -183,7 +182,7 @@ let playerObj, enemyObj, gameState
             })
 
             // mod(0.5) -> Get +1 every 2 stages
-            this.life        = 0 + Math.round((8   + this.level) * lifeMod )
+            this.life        = 0 + Math.round((config.eneLife   + this.level) * lifeMod )
             this.flatLife    = this.life
             this.dmgDone     = 0 // For dmg calc.
             this.dmgTaken    = 0 // For dmg calc.

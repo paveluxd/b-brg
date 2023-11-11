@@ -414,51 +414,56 @@
     //Animation
     function floatText(target, string){
 
-        if(target === 'en'){
-            el('enDmgInd').innerHTML = string
-            runAnim(el('enDmgInd'), 'float-num')
-        }
-        else{
-            el('plDmgInd').innerHTML = string
-            runAnim(el('plDmgInd'), 'float-num')
-        }
+        // if(target === 'en'){
+        //     el('enDmgInd').innerHTML = string
+        //     runAnim(el('enDmgInd'), 'float-num')
+        // }
+        // else{
+        //     el('plDmgInd').innerHTML = string
+        //     runAnim(el('plDmgInd'), 'float-num')
+        // }
 
-        //if positive -> text green etc
-        if(string[0] === '-'){
-            el('enDmgInd').setAttribute('style', 'color:red;')
-            el('plDmgInd').setAttribute('style', 'color:red;')
-        }
-        else{
-            el('enDmgInd').setAttribute('style', 'color:white;')
-            el('plDmgInd').setAttribute('style', 'color:white;')
-        }
+        // //if positive -> text green etc
+        // if(string[0] === '-'){
+        //     el('enDmgInd').setAttribute('style', 'color:red;')
+        //     el('plDmgInd').setAttribute('style', 'color:red;')
+        // }
+        // else{
+        //     el('enDmgInd').setAttribute('style', 'color:white;')
+        //     el('plDmgInd').setAttribute('style', 'color:white;')
+        // }
     }
 
     //Sprite builder
     function spriteBuilder(target){
         if(target === 'player'){
             el('player-sprite').innerHTML = `
+                <img src="./img/character/shade.svg">
                 <img src="./img/character/${rng(3,1)}-back.svg">
                 <img src="./img/character/${rng(3,1)}-back-arm.svg">
                 <img src="./img/character/${rng(4,1)}-legs.svg">
                 <img src="./img/character/${rng(4,1)}-torso.svg">
                 <img src="./img/character/${rng(3,1)}-front-arm.svg">
                 <img src="./img/character/${rng(4,1)}-head.svg">
+                <img id='p-ghost' src="">
             `
         }
         else if(target === 'enemy'){
-            if(rng(4) === 4){
+            if(rng(4) == 99){
                 el('enemy-sprite').innerHTML = `
+                    <img src="./img/character/shade.svg">
                     <img src="./img/enemy/boss/${rng(2,1)}.svg">
                 ` 
             }
             else{
                 el('enemy-sprite').innerHTML = ` 
+                    <img src="./img/character/shade.svg">
                     <img src="./img/enemy/balanced/${rng(3,1)}-back-arm.svg">
                     <img src="./img/enemy/balanced/${rng(2,1)}-legs.svg">
                     <img src="./img/enemy/balanced/${rng(2,1)}-torso.svg">
                     <img src="./img/enemy/balanced/${rng(3,1)}-front-arm.svg">
                     <img src="./img/enemy/balanced/${rng(5,1)}-head.svg">
+                    <img id='e-ghost' src="">
                 ` 
             }
         }

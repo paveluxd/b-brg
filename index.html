@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Gates Of Morr</title>
+    <meta name="description" content="A free mini rougleike game for the web. The goal of the game is to survive as long as possible by managing resources and finding strong item combos. There are 60 unique items and various map events.">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Gates Of Morr</title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/dev-view.css">
@@ -76,19 +78,48 @@
 
     <!-- Combat -->
     <div id="combat" class="screen hide ">
-
         <!-- Game info -->
         <p id="log"></p>
-
+        
         <!-- Units images -->
-        <div class="column grow bg-image" style="width:100%; align-items: stretch; padding: 0 4px;">
+        <div class="column grow units-container">
+            <img class="bg-cover" src="./img/bg/combat-2.svg" alt="">
+
             <div class="row" style="align-items: stretch; flex-grow: 1;">
 
                 <!-- Player -->
                 <div class="column">
                     <div class="imgcont">
-                        <div id="player-sprite"></div>
-                        <p id="plDmgInd" class="floating-ind"></p>
+                        <div id="player-sprite" onclick="screen('character', 'combat-menu')"></div>
+
+                        <!-- Disabled temporary -->
+                        <!-- <p id="plDmgInd" class="floating-ind"></p>  -->
+
+                        <!-- Player stat section --> 
+                        <div class="stat-group">
+                            <div class="stat">
+                                <img src="./img/ico/dice.svg">
+                                <div id="p-dice"></div>
+                                <div id="p-diceChange" class="floater"></div>
+                                <div id="p-rollChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
+                                <img src="./img/ico/life.svg">
+                                <div id="p-life"></div>
+                                <div id="p-lifeChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
+                                <img src="./img/ico/power.svg">
+                                <div id="p-power"></div>
+                                <div id="p-powerChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
+                                <img src="./img/ico/def.svg">
+                                <div id="p-def"></div>
+                                <div id="p-defChange" class="floater"></div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
         
@@ -96,13 +127,41 @@
                 <div class="column">
                     <div class="imgcont">
                         <div id="enemy-sprite" class="boss"></div>
-                        <p id="enDmgInd" class="floating-ind"></p>
+
+                        <!-- Disabled temporary -->
+                        <!-- <p id="enDmgInd" class="floating-ind"></p> -->
                         
                         <!-- UI:Enemy intent indicator -->
-                        <div id="intent-indicator" class="row">
-                            <svg><polygon points="0,12 6,4 12,12"/></svg>
+                        <div id="intent-indicator">
                             <div id="intent" class="body-14"></div>
+                            <svg><polygon points="0,0 12,0 6,6"/></svg>
                         </div>
+
+                        <!-- Enemy stat section -->
+                        <div class="stat-group">
+                            <div class="stat">
+                                <img src="./img/ico/dice.svg" alt="">
+                                <div id="dice"></div>
+                                <div id="e-diceChange" class="floater"></div>
+                                <div id="e-rollChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
+                                <img src="./img/ico/life.svg" alt="">
+                                <div id="life"></div>
+                                <div id="e-lifeChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
+                                <img src="./img/ico/power.svg" alt="">
+                                <div id="power"></div>
+                                <div id="e-powerChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
+                                <img src="./img/ico/def.svg" alt="">
+                                <div id="def"></div>
+                                <div id="e-defChange" class="floater"></div>
+                            </div>
+                        </div>
+
                     </div>                
                 </div>
             </div>
@@ -111,64 +170,18 @@
         
         <!-- UI: Actions -->
         <!-- Actions container -->
-        <div id="stats" onclick="screen('character', 'combat-menu')">
+        <div id="stats" >
 
-            <!-- Player stat section --> 
-            <div class="stat-group">
-                <div class="stat">
-                    <img src="./img/ico/dice.svg">
-                    <div id="p-dice"></div>
-                    <div id="p-diceChange" class="floater"></div>
-                    <div id="p-rollChange" class="floater"></div>
-                </div>
-                <div class="stat">
-                    <img src="./img/ico/life.svg">
-                    <div id="p-life"></div>
-                    <div id="p-lifeChange" class="floater"></div>
-                </div>
-                <div class="stat">
-                    <img src="./img/ico/power.svg">
-                    <div id="p-power"></div>
-                    <div id="p-powerChange" class="floater"></div>
-                </div>
-                <div class="stat">
-                    <img src="./img/ico/def.svg">
-                    <div id="p-def"></div>
-                    <div id="p-defChange" class="floater"></div>
-                </div>
-            </div>
+            
     
-            <!-- Enemy stat section -->
-            <div class="stat-group">
-                <div class="stat">
-                    <img src="./img/ico/dice.svg" alt="">
-                    <div id="dice"></div>
-                    <div id="e-diceChange" class="floater"></div>
-                    <div id="e-rollChange" class="floater"></div>
-                </div>
-                <div class="stat">
-                    <img src="./img/ico/life.svg" alt="">
-                    <div id="life"></div>
-                    <div id="e-lifeChange" class="floater"></div>
-                </div>
-                <div class="stat">
-                    <img src="./img/ico/power.svg" alt="">
-                    <div id="power"></div>
-                    <div id="e-powerChange" class="floater"></div>
-                </div>
-                <div class="stat">
-                    <img src="./img/ico/def.svg" alt="">
-                    <div id="def"></div>
-                    <div id="e-defChange" class="floater"></div>
-                </div>
-            </div>
+            
         </div>
 
         <div id="playerActionContainer" class="actions-container scroll">
             <div id="cards-row"></div>
         </div>
 
-        <img class="bg-cover" src="./img/bg/combat-2.svg" alt="">
+        
     </div>
 
     <!-- Reward screen -->

@@ -79,6 +79,10 @@
     }
     //1.TURN CALC
         function turnCalc(buttonElem){
+            //Set random ghost images
+            el('p-ghost').setAttribute('src',`./img/character/ghost-${rng(3)}.svg`)
+            el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(3)}.svg`)
+
             //Reset combat state vars
             gameState.combatTurnState = ''
             playerObj.dmgDone = 0
@@ -583,6 +587,11 @@
 
             combatCalc() //Dmg and heal calc.
             combatEndCheck()
+
+            //Trigger ghost animation
+            el('e-ghost').setAttribute('style',`transform: scale(-1, 1);`) //flip ene
+            runAnim(el(`p-ghost`), 'ghost-trigger')
+            runAnim(el('e-ghost'), 'ghost-trigger')
         }
         //Damage calculation.
         function combatCalc(){    
@@ -894,7 +903,6 @@
                 resolvePostRollPassives()
 
                 playerObj.rollBonus = 0                                    // Remove any roll bonuses.
-                runAnim(el('intent-indicator'), 'turn-slide')              // Enemy intent animation.
                 genEneAction()                                             // Gen enemy action.
                 enemyObj.state = ``                                        // Reset enemy state.
                 gameState.combatTurn++                                     // Increase turn counter.
@@ -1557,6 +1565,7 @@
 
 //GAME START
     initGame()
-    // initiateCombat() //Disable if not testing combat
-
+    if(config.testCombat == 1){
+        initiateCombat() //Disable if not testing combat
+    }
     // el('map').scrollTo(0, 9999); // Sets map position to view unit.
