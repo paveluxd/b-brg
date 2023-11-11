@@ -138,6 +138,7 @@ let playerObj, enemyObj, gameState
 
                 this.profile = 'balanced'
                 imgPath  = `balanced/${rng(17,1)}` //Sprite builder is now in ui.js
+
             }else if(randomEnemyProfile == 'tank'){
                 lifeMod  = 1.5
                 powerMod = 0.5
@@ -146,22 +147,25 @@ let playerObj, enemyObj, gameState
 
                 this.profile = 'tank'
                 imgPath  = `tank/${rng(1,1)}`
+
             }else if(randomEnemyProfile == 'assassin'){
-                lifeMod  = 0.5
-                powerMod = 2
+                lifeMod  = 1.2
+                powerMod = 1.5
                 defMod   = 0.5
                 diceMod  = 1
 
                 this.profile = 'assassin'
                 imgPath  = `assassin/${rng(1,1)}`
+
             }else if(randomEnemyProfile == 'minion'){
-                lifeMod  = 0.1
+                lifeMod  = 0.7
                 powerMod = 0.5
                 defMod   = 0.5
                 diceMod  = 0.5
 
                 this.profile = 'minion'
                 imgPath  = `minion/${rng(1,1)}`
+                
             }
 
             //Set boss mods
