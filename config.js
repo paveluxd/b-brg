@@ -1,6 +1,6 @@
 let config = {
     //Player
-        life:      932, //32
+        life:      32, //32
         power:      0,
         def:        0,
         dice:       6,
@@ -24,7 +24,7 @@ let config = {
         food:  rng(5,1),
 
     //Enemy
-        eneLife: 998,
+        eneLife: 8,
 
 
     //Map
