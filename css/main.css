@@ -779,7 +779,7 @@ body{
         @keyframes ghostfx {
 
             0%{
-                opacity: 0.45;
+                opacity: 0.75;
             }
             100%{
                 opacity: 0;

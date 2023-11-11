@@ -1332,6 +1332,9 @@
                 //Destroy item card
                 el(itemId).remove()
 
+                //Update coins indicator
+                el('merchant-coins-indicator').innerHTML = `You have: ${playerObj.coins}<img src="./img/ico/coin.svg">`
+
                 showAlert(`${upp(targetItem.itemName)} purchased for ${targetItem.cost} and added to the inventory.`)
 
                 playerObj.inventory.push(targetItem)

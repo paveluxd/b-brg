@@ -424,6 +424,9 @@ class MapObj{
                 el('items-to-sell').append(genItemCard(item, 'item-to-sell'))
             })
 
+            //Add coins indicator
+            el('merchant-coins-indicator').innerHTML = `You have: ${playerObj.coins}<img src="./img/ico/coin.svg">`
+
             //Open merchant screen.
             screen('merchant')
         }
