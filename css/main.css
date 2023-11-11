@@ -84,6 +84,7 @@ body{
     font-size: 16px;
     line-height: 125%;
     color: var(--black);
+    background-color: black;
 
     transition: filter 1s;
 }
