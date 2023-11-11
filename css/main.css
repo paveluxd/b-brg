@@ -84,6 +84,7 @@ body{
     font-size: 16px;
     line-height: 125%;
     color: var(--black);
+    background-color: black;
 
     transition: filter 1s;
 }
@@ -832,13 +833,13 @@ body{
             flex:1 1 0;
             justify-content: center;
 
-            padding: 4px 6px 2px 6px;
+            padding: 4px 6px 14px 6px;
             border-radius: 0px;
 
             position: absolute;
-            bottom: -32px;
+            bottom: -48px;
 
-            background-color: var(--b50);
+            background-color: var(--black);
             z-index: 2;
 
             .stat{
