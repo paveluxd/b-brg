@@ -792,7 +792,7 @@ body{
             align-items: center;
             position: absolute;
 
-            top: -24px;
+            bottom: -20px;
             z-index: 3;
 
             & div{
@@ -833,11 +833,11 @@ body{
             flex:1 1 0;
             justify-content: center;
 
-            padding: 4px 6px 14px 6px;
+            padding: 2px 2px 0px 2px;
             border-radius: 0px;
 
             position: absolute;
-            bottom: -48px;
+            bottom: -60px;
 
             background-color: var(--black);
             z-index: 2;
@@ -862,6 +862,9 @@ body{
         .floater{
             position: absolute;
             opacity: 0;
+            background-color: rgba(0, 0, 0, 0.60);
+            font-weight: 500;
+            padding: 0 4px;
         }
 
         .stat-float{
@@ -872,19 +875,19 @@ body{
 
         @keyframes stat-float{
             0%{
-                bottom: -8px;
+                bottom: 8px;
                 opacity: 0;
             }
             4%{
-                bottom: -14px;
+                bottom: 16px;
                 opacity: 1;
             }
             50%{
-                bottom: -14px;
+                bottom: 16px;
                 opacity: 1;
             }
             100%{
-                bottom: -14px;
+                bottom: 16px;
             }
         }
 
