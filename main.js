@@ -627,9 +627,10 @@
                 if(!playerObj.piercing){//Ignore def if piercing state
                     
                     //Reduce def on low hit
-                    if(enemyObj.def >= playerObj.dmgDone && enemyObj.def > 0){
+                    if(enemyObj.def > 0){
                         changeStat('def', -1, 'enemy')
                     }
+                    
                     //Reduce dmg by def
                     playerObj.dmgDone -= enemyObj.def
                     
@@ -662,9 +663,10 @@
                 if      (['attack', 'crit', 'charged strike'].indexOf(enemyObj.action.key) > -1){
 
                     //Reduce def on low hit
-                    if(playerObj.def >= enemyObj.dmgDone && playerObj.def > 0){
+                    if(playerObj.def > 0){
                         changeStat('def', -1, 'player')
                     }
+
                     //Reduce dmg by def
                     enemyObj.dmgDone -= playerObj.def
 
@@ -683,7 +685,9 @@
                         let playerDamageTaken = enemyObj.dmgDone
 
                         //Reduce def on low hit
-                        if(playerObj.def >= enemyObj.dmgDone && playerObj.def > 0){playerObj.def--} //Reduce def
+                        if(playerObj.def > 0){
+                            changeStat('def', -1, 'player')
+                        }
 
                         //Reduce damage by def
                         playerDamageTaken -= playerObj.def
@@ -696,6 +700,14 @@
 
                     }
                 }else if(['final strike'].indexOf(enemyObj.action.key) > -1 && enemyObj.life < 0){ //final strike only works if enemy is dead.
+
+                    //Reduce def on low hit
+                    if(playerObj.def > 0){
+                        changeStat('def', -1, 'player')
+                    }
+
+                    //Reduce damage by def
+                    playerDamageTaken -= playerObj.def
 
                     //Resolve dmg
                     changeStat('life', -enemyObj.dmgDone, 'player')

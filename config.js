@@ -13,6 +13,7 @@ let config = {
             // "sigil of light",
             // 'wooden staff',
             // 'book of order',
+            // 'book of lightning'
             // 'sword',
             // 'mace',
             // 'boots',
