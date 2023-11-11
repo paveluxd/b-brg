@@ -1,9 +1,9 @@
 <svg width="128" height="144" viewBox="0 0 128 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M49 45.0001L32 45L31 53H46L49 45.0001Z" fill="#B28C52" stroke="black" stroke-width="2"/>
-<path d="M30 60L30.0001 55L37.0001 55L37.0001 67L30 60Z" fill="#8A6130" stroke="black" stroke-width="2"/>
+<path d="M48 45H32L31 53V58H37L48 53V45Z" fill="#B28C52" stroke="black" stroke-width="2"/>
+<path d="M30.0001 62V53L33 53.0001V54C33 56.2091 34.7909 58 37 58V58V67L30.0001 62Z" fill="#8A6130" stroke="black" stroke-width="2"/>
 <path d="M50.9999 26H48.6909C37.8679 26 29.0942 34.5066 29.0942 45L45.5968 44.9999L50.9999 44.9998L51 39.9998L50.9999 26Z" fill="url(#paint0_linear_3511_14148)"/>
 <path d="M27 45H29.0942M29.0942 45L45.5968 44.9999L50.9999 44.9998L51 39.9998L50.9999 26L48.6909 26C37.8679 26 29.0942 34.5066 29.0942 45Z" stroke="black" stroke-width="2"/>
-<path d="M57 38L57 22L51 26L51.0001 42L55 38L57 38Z" fill="#F27155" stroke="black" stroke-width="2"/>
+<path d="M57 38L57 24L51.0001 24L51.0001 42L55 38L57 38Z" fill="#F27155" stroke="black" stroke-width="2"/>
 <circle cx="52.5" cy="38.5" r="4.5" fill="#B28C52" stroke="black" stroke-width="2"/>
 <path d="M28 42L28 45" stroke="black" stroke-width="2"/>
 <path d="M33 42L33 45" stroke="black" stroke-width="2"/>
@@ -11,17 +11,18 @@
 <path d="M45 42L45 45" stroke="black" stroke-width="2"/>
 <path d="M51 42L51 46" stroke="black" stroke-width="2"/>
 <path d="M55.4142 48H67V82.382L52 89.882L37 82.382V48H48.5858L51.2929 50.7071L52 51.4142L52.7071 50.7071L55.4142 48Z" fill="#AD793C" stroke="black" stroke-width="2"/>
-<path d="M52 50V90" stroke="black" stroke-width="2"/>
-<path d="M37 48H49L52 51V90L37 82V48Z" fill="black" fill-opacity="0.2"/>
-<path opacity="0.3" d="M36 83L52 91L68 83V47H55L52 50L49 47H36V83Z" fill="url(#paint1_linear_3511_14148)"/>
+<path opacity="0.2" d="M52 58L52 77" stroke="black" stroke-width="2"/>
+<path d="M52 50L52 56" stroke="black" stroke-width="2"/>
+<path opacity="0.2" d="M52 79L52 90" stroke="black" stroke-width="2"/>
+<path opacity="0.2" d="M46 67L58 67" stroke="black" stroke-width="2"/>
+<path d="M36 67L44 67" stroke="black" stroke-width="2"/>
+<path d="M39 49L39 51" stroke="black" stroke-width="2"/>
+<path d="M65 49L65 51" stroke="black" stroke-width="2"/>
+<path opacity="0.2" d="M60 67L68 67" stroke="black" stroke-width="2"/>
 <defs>
 <linearGradient id="paint0_linear_3511_14148" x1="39" y1="26" x2="39" y2="45" gradientUnits="userSpaceOnUse">
 <stop stop-color="#C1C1C1"/>
 <stop offset="1" stop-color="#C1C1C1"/>
-</linearGradient>
-<linearGradient id="paint1_linear_3511_14148" x1="51.1579" y1="47" x2="51.1579" y2="90" gradientUnits="userSpaceOnUse">
-<stop/>
-<stop offset="1" stop-opacity="0"/>
 </linearGradient>
 </defs>
 </svg>

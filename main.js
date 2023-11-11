@@ -79,6 +79,10 @@
     }
     //1.TURN CALC
         function turnCalc(buttonElem){
+            //Set random ghost images
+            el('p-ghost').setAttribute('src',`./img/character/ghost-${rng(3)}.svg`)
+            el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(3)}.svg`)
+
             //Reset combat state vars
             gameState.combatTurnState = ''
             playerObj.dmgDone = 0
@@ -88,7 +92,7 @@
             gameState.lifeRestoredByPlayer = 0
 
             //Clear combat log.
-            gameState.logMsg = [``]
+            gameState.logMsg = [`TURN:${gameState.combatTurn} ------------------------------------`]
 
             //Save players previous action.
             if(gameState.sourceAction !== undefined){
@@ -150,7 +154,6 @@
     
             }else if(playerActionKey =='a5' ){// bow
     
-                console.log('bow');
                 playerObj.dmgDone += playerObj.roll + playerObj.power
     
             }else if(playerActionKey =='a6' ){// EX: cut 'dagger'
@@ -170,9 +173,13 @@
             }else if(playerActionKey =='a7' ){// sword attack 
     
                 playerObj.dmgDone += gameState.sourceAction.actionMod + playerObj.power + playerObj.swordDmgMod
+
                 if(playerObj.roll == 5 || playerObj.roll == 6){
                     playerObj.swordDmgMod += 1
                 }
+
+                //Log
+                gameState.logMsg.push(`Sword: dealt ${playerObj.power} dmg.`)
     
             }else if(playerActionKey =='a8' ){// "axe" 
     
@@ -430,9 +437,12 @@
                 //Log
                 gameState.logMsg.push(`restoration: restored ${-1 * restoredPoints} life`)
     
-            }else if(playerActionKey =='a45'){// wooden mace attack
+            }else if(playerActionKey =='a45'){// club attack
     
                 playerObj.dmgDone += 3 + playerObj.power
+
+                //Log
+                gameState.logMsg.push(`Club: dealt ${playerObj.power} dmg.`)
     
             }else if(playerActionKey =='a48'){// "focus" "wooden staff"
 
@@ -577,6 +587,11 @@
 
             combatCalc() //Dmg and heal calc.
             combatEndCheck()
+
+            //Trigger ghost animation
+            el('e-ghost').setAttribute('style',`transform: scale(-1, 1);`) //flip ene
+            runAnim(el(`p-ghost`), 'ghost-trigger')
+            runAnim(el('e-ghost'), 'ghost-trigger')
         }
         //Damage calculation.
         function combatCalc(){    
@@ -807,8 +822,22 @@
                 
                 //If final encounter, show rewards
                 if(gameState.encounter == 'end'){
-                    //Generate rewards modal
-                    genRewards(gameState.flatItemReward + gameState.playerLocationTile.enemyQuant) //Number of rewards to give
+
+                    //Lock screen
+                    document.body.classList.add('lock-actions', 'darken')
+
+                    //Run gen reward after delay
+                    window.setTimeout(
+                        function(){
+
+                            //Open reward screen
+                            genRewards(gameState.flatItemReward + gameState.playerLocationTile.enemyQuant)
+
+                            //Unlock screen
+                            document.body.classList.remove('lock-actions', 'darken')
+                        },
+                        1000
+                    )
                 }
                 //Next encounter
                 else{
@@ -874,15 +903,14 @@
                 resolvePostRollPassives()
 
                 playerObj.rollBonus = 0                                    // Remove any roll bonuses.
-                runAnim(el('intent-indicator'), 'turn-slide')              // Enemy intent animation.
                 genEneAction()                                             // Gen enemy action.
                 enemyObj.state = ``                                        // Reset enemy state.
                 gameState.combatTurn++                                     // Increase turn counter.
             }
 
-            //Print all combat logs.
+            //COMBAT LOG: Print all combat logs.
             gameState.logMsg.forEach(msg => {
-                console.log(`${gameState.combatTurn}. ${upp(msg)}`)
+                console.log(`${upp(msg)}`)
             })
 
             //Run floating indicators
@@ -1537,6 +1565,7 @@
 
 //GAME START
     initGame()
-    // initiateCombat() //Disable if not testing combat
-
+    if(config.testCombat == 1){
+        initiateCombat() //Disable if not testing combat
+    }
     // el('map').scrollTo(0, 9999); // Sets map position to view unit.

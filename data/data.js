@@ -34,7 +34,6 @@ let playerObj, enemyObj, gameState
             //Combat config.
             this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%.
             this.enemyPartyCap = 2
-            this.portalDefenders = 4
 
             this.bossFrequency   = 3 // Every Nth stage legacy.
             this.flatItemReward  = 2 // Base rewards.
@@ -131,14 +130,14 @@ let playerObj, enemyObj, gameState
             let powerMod, defMod, diceMod, imgPath, lifeMod
             // el('enemyImg').classList.remove('boss')
 
-            if     (randomEnemyProfile == 'balanced'){
+            if      (randomEnemyProfile == 'balanced'){
                 lifeMod  = 1
                 powerMod = 1
                 defMod   = 1
                 diceMod  = 1
 
                 this.profile = 'balanced'
-                imgPath  = `balanced/${rng(17,1)}`
+                imgPath  = `balanced/${rng(17,1)}` //Sprite builder is now in ui.js
             }else if(randomEnemyProfile == 'tank'){
                 lifeMod  = 1.5
                 powerMod = 0.5
@@ -183,7 +182,7 @@ let playerObj, enemyObj, gameState
             })
 
             // mod(0.5) -> Get +1 every 2 stages
-            this.life        = 0 + Math.round((8   + this.level) * lifeMod )
+            this.life        = 0 + Math.round((config.eneLife   + this.level) * lifeMod )
             this.flatLife    = this.life
             this.dmgDone     = 0 // For dmg calc.
             this.dmgTaken    = 0 // For dmg calc.

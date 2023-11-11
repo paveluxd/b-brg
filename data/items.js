@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "club",
+    "passiveStats": "",
+    "actions": "club attack",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
     "itemName": "wooden staff",
     "passiveStats": "",
     "actions": "focus",

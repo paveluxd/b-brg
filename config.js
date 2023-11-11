@@ -1,15 +1,16 @@
 let config = {
     //Player
-        life:      32, //32
+        life:      932, //32
         power:      0,
         def:        0,
         dice:       6,
         inventory: 20,
         slots:     6,
         startingItems: [
-            'bow',
+            'club',
             'shield',
-            "healing potion"
+            "healing potion",
+            // "sigil of light",
             // 'wooden staff',
             // 'book of order',
             // 'sword',
@@ -21,6 +22,10 @@ let config = {
 
         coins: rng(12,6),
         food:  rng(5,1),
+
+    //Enemy
+        eneLife: 998,
+
 
     //Map
         mapX: 2,
@@ -40,5 +45,8 @@ let config = {
         flatCoinsReward: 6, 
 
         //Merchant
-        merchantQuant: 8
+        merchantQuant: 8,
+
+    //Misc
+    testCombat: 2, //Initiates combat at the start (for testing).
 }
