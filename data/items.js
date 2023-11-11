@@ -263,7 +263,7 @@ let itemsRef = [
   {
     "itemName": "book of lightning",
     "passiveStats": "",
-    "actions": "lightning",
+    "actions": "lightning, shock",
     "itemSlot": "",
     "itemType": "book",
     "itemRarity": "",
