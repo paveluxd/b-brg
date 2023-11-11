@@ -88,7 +88,7 @@
             gameState.lifeRestoredByPlayer = 0
 
             //Clear combat log.
-            gameState.logMsg = [``]
+            gameState.logMsg = [`TURN:${gameState.combatTurn} ------------------------------------`]
 
             //Save players previous action.
             if(gameState.sourceAction !== undefined){
@@ -150,7 +150,6 @@
     
             }else if(playerActionKey =='a5' ){// bow
     
-                console.log('bow');
                 playerObj.dmgDone += playerObj.roll + playerObj.power
     
             }else if(playerActionKey =='a6' ){// EX: cut 'dagger'
@@ -170,9 +169,13 @@
             }else if(playerActionKey =='a7' ){// sword attack 
     
                 playerObj.dmgDone += gameState.sourceAction.actionMod + playerObj.power + playerObj.swordDmgMod
+
                 if(playerObj.roll == 5 || playerObj.roll == 6){
                     playerObj.swordDmgMod += 1
                 }
+
+                //Log
+                gameState.logMsg.push(`Sword: dealt ${playerObj.power} dmg.`)
     
             }else if(playerActionKey =='a8' ){// "axe" 
     
@@ -430,9 +433,12 @@
                 //Log
                 gameState.logMsg.push(`restoration: restored ${-1 * restoredPoints} life`)
     
-            }else if(playerActionKey =='a45'){// wooden mace attack
+            }else if(playerActionKey =='a45'){// club attack
     
                 playerObj.dmgDone += 3 + playerObj.power
+
+                //Log
+                gameState.logMsg.push(`Club: dealt ${playerObj.power} dmg.`)
     
             }else if(playerActionKey =='a48'){// "focus" "wooden staff"
 
@@ -807,8 +813,22 @@
                 
                 //If final encounter, show rewards
                 if(gameState.encounter == 'end'){
-                    //Generate rewards modal
-                    genRewards(gameState.flatItemReward + gameState.playerLocationTile.enemyQuant) //Number of rewards to give
+
+                    //Lock screen
+                    document.body.classList.add('lock-actions', 'darken')
+
+                    //Run gen reward after delay
+                    window.setTimeout(
+                        function(){
+
+                            //Open reward screen
+                            genRewards(gameState.flatItemReward + gameState.playerLocationTile.enemyQuant)
+
+                            //Unlock screen
+                            document.body.classList.remove('lock-actions', 'darken')
+                        },
+                        1000
+                    )
                 }
                 //Next encounter
                 else{
@@ -880,9 +900,9 @@
                 gameState.combatTurn++                                     // Increase turn counter.
             }
 
-            //Print all combat logs.
+            //COMBAT LOG: Print all combat logs.
             gameState.logMsg.forEach(msg => {
-                console.log(`${gameState.combatTurn}. ${upp(msg)}`)
+                console.log(`${upp(msg)}`)
             })
 
             //Run floating indicators

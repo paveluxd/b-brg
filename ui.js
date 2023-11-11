@@ -127,27 +127,38 @@
     }
 
     //Manage screens.
-    function screen(id, mod){
+    function screen(elemId, mod){
 
         //Hide everything
-        el('.screen', 'all').forEach(t => t.classList.add('hide')); //screens
-        el('.modal', 'all').forEach(t => t.classList.add('hide'));//screens
+        el('.screen', 'all').forEach(elem => elem.classList.add('hide'));//screens
+        el('.modal', 'all').forEach(elem => elem.classList.add('hide')); //modals
         el('tab-container').classList.add('hide')  //tabs
         
         //Show tabs                     
-        if(el(id).classList.contains('tab')){//if it's a tab, show tabs
-        el('tab-container').classList.remove('hide')
+        if(el(elemId).classList.contains('tab')){//if it's a tab, show tabs
+            
+            el('tab-container').classList.remove('hide')
+            
+            //Restore tabs
+            el('stat-indicator').classList.remove('hide')
+            el('character-tab').classList.remove('hide')
+            el('inventory-tab').classList.remove('hide')
         }
 
 
-        if(mod === 'combat-menu'){//switch visible tabs
-        el('character').classList.remove('hide');//display screen with id
-        el('close-tab').classList.remove('hide')
-        el('map-tab').classList.add('hide')
-        //    el('inventory-tab').classList.add('hide')
+        if(mod == 'combat-menu'){//switch visible tabs
+            el('stat-indicator').classList.add('hide')
+
+            el('character').classList.remove('hide')
+            el('close-tab').classList.remove('hide')
+
+            el('map-tab').classList.add('hide')
+
+            el('character-tab').classList.add('hide')
+            el('inventory-tab').classList.add('hide')
         }
         else{
-        el(id).classList.remove('hide');//display screen with id
+            el(elemId).classList.remove('hide');//display screen with id
         }
     }
 
@@ -200,12 +211,17 @@
         `
 
         //Add action cards
-        el('actions-list').innerHTML = ``
+        el('action-list').innerHTML = ``
+        el('passive-list').innerHTML = ``
+
         playerObj.actions.forEach(action => {
-            if(action.actionType == 'passive') return //Skip passives
-            let actionCard = genActionCard(action, 'card')
-            el('actions-list').append(actionCard)
+            if(action.actionType != 'passive'){
+                el('action-list').append(genActionCard(action, 'card'))
+            } else {
+                el('passive-list').append(genActionCard(action, 'card'))
+            }         
         })
+
     }
 
 
@@ -433,7 +449,7 @@
         else if(target === 'enemy'){
             if(rng(4) === 4){
                 el('enemy-sprite').innerHTML = `
-                    <img src="./img/enemy/boss/${rng(3,1)}.svg">
+                    <img src="./img/enemy/boss/${rng(2,1)}.svg">
                 ` 
             }
             else{

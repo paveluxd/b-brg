@@ -131,14 +131,14 @@ let playerObj, enemyObj, gameState
             let powerMod, defMod, diceMod, imgPath, lifeMod
             // el('enemyImg').classList.remove('boss')
 
-            if     (randomEnemyProfile == 'balanced'){
+            if      (randomEnemyProfile == 'balanced'){
                 lifeMod  = 1
                 powerMod = 1
                 defMod   = 1
                 diceMod  = 1
 
                 this.profile = 'balanced'
-                imgPath  = `balanced/${rng(17,1)}`
+                imgPath  = `balanced/${rng(17,1)}` //Sprite builder is now in ui.js
             }else if(randomEnemyProfile == 'tank'){
                 lifeMod  = 1.5
                 powerMod = 0.5

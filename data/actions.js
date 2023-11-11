@@ -1,5 +1,15 @@
 let actionsRef = [
   {
+    "actionName": "club attack",
+    "desc": "deal 3 dmg",
+    "passiveStats": "",
+    "actionMod": 3,
+    "actionCharge": 100,
+    "cooldown": "",
+    "keyId": 45,
+    "actionType": ""
+  },
+  {
     "actionName": "mace attack",
     "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
     "passiveStats": "",

@@ -7,9 +7,10 @@ let config = {
         inventory: 20,
         slots:     6,
         startingItems: [
-            'bow',
+            'club',
             'shield',
-            "healing potion"
+            "healing potion",
+            // "sigil of light",
             // 'wooden staff',
             // 'book of order',
             // 'sword',
@@ -29,7 +30,7 @@ let config = {
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
-            // {tileType: 'merchant'},
+            {tileType: 'merchant'},
             // {tileType: 'house-1'},
         ],
 

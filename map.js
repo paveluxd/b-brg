@@ -408,12 +408,15 @@ class MapObj{
             screen('event-screen')
         }
         else if(eventType.startsWith('merchant')){
-            //Generate shop.
-            el('merchant-container').innerHTML = ``
 
-            //Swap for testing
-            // genOfferedItemList("all", 'merchant')
-            genOfferedItemList(gameState.merchantQuant, 'merchant')
+            if(gameState.playerLocationTile.visited == undefined){
+                //Generate shop.
+                el('merchant-container').innerHTML = ``
+    
+                //Swap for testing
+                // genOfferedItemList("all", 'merchant')
+                genOfferedItemList(gameState.merchantQuant, 'merchant')
+            }
 
             //Regen item cards for 'sell' page.
             el('items-to-sell').innerHTML = ``
