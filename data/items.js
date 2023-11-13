@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "tower shield",
+    "passiveStats": "",
+    "actions": "heavy block",
+    "itemSlot": "",
+    "itemType": "",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
     "itemName": "club",
     "passiveStats": "",
     "actions": "club attack",

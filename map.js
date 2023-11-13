@@ -1,8 +1,8 @@
 //MAP
 //Background image ids
-let tileSetUnique = 'casino, blacksmith, monument-1, monument-2'.split(', ') //castle
-let tileSetRare   = 'grave, house-1, lake-3, merchant'.split(', ') //mine
-let tileSetCommon = 'chest-1, lake-1, lake-2'.split(', ') //dungeon, 
+let tileSetUnique = 'lake-2, casino, monument-1, monument-2'.split(', ') //castle
+let tileSetRare   = 'grave, house-1, lake-3, blacksmith'.split(', ') //mine
+let tileSetCommon = 'chest-1, lake-1, merchant'.split(', ') //dungeon, 
 let tileSetBase   = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
 let forests       = 'forest-1, forest-2, forest-3'.split(', ')
 
