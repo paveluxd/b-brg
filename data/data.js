@@ -1,12 +1,10 @@
-//Global vars 
-//Move to game obj?
-let playerObj, enemyObj, gameState
+let gs //game state object
 
 
 //Game
     class GameState {
         constructor(){
-            this.stage = 0 //Keep at 0, it is increased during generation.
+            this.stage = config.stage
             this.encounter = 1
 
             //Encounter
@@ -114,7 +112,7 @@ let playerObj, enemyObj, gameState
 //Enemy
     class EnemyObj {
         constructor(){
-            this.level = gameState.stage //tileIdRef[1] prev. value.
+            this.level = gs.stage //tileIdRef[1] prev. value.
             
             //Misc
             this.poisonStacks = 0
@@ -169,7 +167,7 @@ let playerObj, enemyObj, gameState
             }
 
             //Set boss mods
-            // if(gameState.stage % gameState.bossFrequency === 0){//boss
+            // if(gs.stage % gs.bossFrequency === 0){//boss
             //     // lifeMod  += 0.5
             //     // powerMod += 0.25
             //     // defMod   += 0.25
@@ -181,7 +179,7 @@ let playerObj, enemyObj, gameState
             //Set stats
             //Get column value to scale mobs
             let tileIdRef = []
-            gameState.playerLocationTile.tileId.split('-').forEach(val =>{
+            gs.playerLocationTile.tileId.split('-').forEach(val =>{
                 tileIdRef.push(parseInt(val))
             })
 
@@ -228,29 +226,29 @@ let playerObj, enemyObj, gameState
             if      (key == 'attack'){
 
                 this.rate = 1
-                this.actionVal = enemyObj.roll + enemyObj.power 
+                this.actionVal = gs.enObj.roll + gs.enObj.power 
                 this.desc = `${ico('attack')}${this.actionVal} dmg`
 
             }else if(key == 'combo'){       //multistrike
 
                 this.rate = 2
-                this.actionVal = 1 + enemyObj.power 
+                this.actionVal = 1 + gs.enObj.power 
                 this.desc = `${ico('combo')}${this.actionVal} dmg (x3)`
 
             }else if(key == 'block'){
 
                 this.rate = 1
-                this.actionVal = enemyObj.roll
+                this.actionVal = gs.enObj.roll
                 this.desc = `${ico("block")} Block for ${this.actionVal}`
 
             }else if(key == 'final strike'){//on death
 
                 //Enable if low life
-                if(enemyObj.life < 3){
+                if(gs.enObj.life < 3){
                     this.rate = 1
                 }
 
-                this.actionVal = enemyObj.flatLife
+                this.actionVal = gs.enObj.flatLife
                 this.desc = `${ico('skull') + this.actionVal} dmg on death`
 
             }else if(key == 'charge'){      //charge crit
@@ -261,7 +259,7 @@ let playerObj, enemyObj, gameState
 
             }else if(key == 'charged strike'){
 
-                this.actionVal = (enemyObj.dice * 2) + enemyObj.power
+                this.actionVal = (gs.enObj.dice * 2) + gs.enObj.power
                 this.desc = `Charged strike ${this.actionVal} dmg`
 
             }
@@ -271,12 +269,12 @@ let playerObj, enemyObj, gameState
 
                 this.rate = 2
                 this.stat = 'def'
-                this.actionVal = Math.ceil((enemyObj.roll) * 0.25)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 0.25)
 
                 //Enable recovery if def is negative.
-                if(enemyObj.def < 0){
+                if(gs.enObj.def < 0){
                     this.rate = 1
-                    this.actionVal = enemyObj.flatDef - enemyObj.def
+                    this.actionVal = gs.enObj.flatDef - gs.enObj.def
                 }
 
                 this.desc = `${ico('def-buff')} +${this.actionVal}`
@@ -285,12 +283,12 @@ let playerObj, enemyObj, gameState
 
                 this.rate = 3
                 this.stat = 'power'
-                this.actionVal = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.25)
 
                 //Enable recovery if def is negative.
-                if(enemyObj.power < 0){
+                if(gs.enObj.power < 0){
                     this.rate = 1
-                    this.actionVal = enemyObj.flatPower - enemyObj.power
+                    this.actionVal = gs.enObj.flatPower - gs.enObj.power
                 }
 
                 this.desc = `${ico('power-buff')} +${this.actionVal}`
@@ -299,12 +297,12 @@ let playerObj, enemyObj, gameState
 
                 this.rate = 3
                 this.stat = 'dice'
-                this.actionVal = Math.round(1 + (gameState.stage) *0.2)
+                this.actionVal = Math.round(1 + (gs.stage) *0.2)
 
                 //Enable recovery if def is negative.
-                if(enemyObj.dice < enemyObj.flatDice){
+                if(gs.enObj.dice < gs.enObj.flatDice){
                     this.rate = 1
-                    this.actionVal = enemyObj.flatDice - enemyObj.dice
+                    this.actionVal = gs.enObj.flatDice - gs.enObj.dice
                 }
 
                 this.desc = `${ico('dice-buff')} +${this.actionVal}`
@@ -312,12 +310,12 @@ let playerObj, enemyObj, gameState
             }else if(key == 'recover'){//+ life
 
                 //Enable if life lost
-                if(enemyObj.flatLife > enemyObj.life){
+                if(gs.enObj.flatLife > gs.enObj.life){
                     this.rate = 2
                 }
 
                 this.stat = 'life'
-                this.actionVal = enemyObj.roll * 2
+                this.actionVal = gs.enObj.roll * 2
                 this.desc = `${ico('life-buff')} +${this.actionVal}`
 
             }
@@ -327,14 +325,14 @@ let playerObj, enemyObj, gameState
 
                 this.rate = 3
                 this.stat = 'def'
-                this.actionVal = Math.ceil((enemyObj.roll) * 0.25)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 0.25)
                 this.desc = `${ico('curse-def')} -${this.actionVal}`
 
             }else if(key == 'weaken'){ //- power
 
                 this.rate = 2
                 this.stat = 'power'
-                this.actionVal = Math.round((enemyObj.roll + gameState.stage) *0.25)
+                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.25)
                 this.desc = `${ico('curse-power')} -${this.actionVal}`
 
             }else if(key == 'slow'){   //- dice
@@ -348,7 +346,7 @@ let playerObj, enemyObj, gameState
 
                 this.rate = 4
                 this.stat = 'life'
-                this.actionVal = Math.round(enemyObj.roll * 1.5)
+                this.actionVal = Math.round(gs.enObj.roll * 1.5)
                 this.desc = `${ico('curse-life')} -${this.actionVal}`
 
             }
@@ -395,8 +393,8 @@ let playerObj, enemyObj, gameState
             let itemData = findByProperty(itemsRef, 'itemName', itemName)
             
             //Set iLvl to stage val
-            if(iLvl === undefined && gameState !== undefined){
-                iLvl = gameState.stage
+            if(iLvl === undefined && gs !== undefined){
+                iLvl = gs.stage
             }else{
                 iLvl = 1
             } 
@@ -440,7 +438,7 @@ let playerObj, enemyObj, gameState
     //Calc equipped items
     function calcEquippedItems(){
         let equipped = 0
-        playerObj.inventory.forEach(item => {
+        gs.plObj.inventory.forEach(item => {
             if(item.equipped){
                 equipped++
             }
@@ -600,3 +598,36 @@ let playerObj, enemyObj, gameState
         //Ideas
         //All fireballs that you draft have +5 charge.
     ]
+
+//Saving
+    function saveGame(){
+        //Increase stage to scale enemies
+        gs.stage++ 
+        gs.mapObj = new MapObj //Generate a mapObj for the next stage
+
+        localStorage.setItem('gameState', JSON.stringify(gs))        
+        console.log('Game saved');
+    }
+
+    function clearSavedGame(){
+        localStorage.removeItem('gameState')
+        console.log('Game save removed');
+    }
+
+    function loadGame(){
+        let gameObj = JSON.parse(localStorage.getItem('gameState'))
+
+        if (gameObj == undefined){
+            // gs = new GameState
+
+            // gs.plObj = new PlayerObj
+            // //Resolve ititial items
+            // gs.plObj.startingItems.forEach(key => {addItem(key)})
+
+            console.log('New game started');
+        }
+        else {
+            gs = gameObj
+            console.log('Game loaded');
+        }
+    }

@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Gates Of Morr</title>
-    <meta name="description" content="A free mini rougleike game for the web. The goal of the game is to survive as long as possible by managing resources and finding strong item combos. There are 60 unique items and various map events.">
     
+    <meta property="og:title" content="Gates Of Morr" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://www.gatesofmorr.com" />
+    <meta property="og:image:url" content="http://www.gatesofmorr.com/img/bg/start.png" />
+
+    <meta property="og:description" content="A free web rougleike with unique dice based combat system, many interesting items and map events." />
+    <meta name="description" content="A free web rougleike with unique dice based combat system, many interesting items and map events.">
+
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <link rel="stylesheet" href="./css/reset.css">
@@ -54,19 +62,19 @@
         
             <div>
                 <img src='./img/ico/fish.svg'>
-                <p id='pl-food' class="mono-m">${playerObj.food}</p>
+                <p id='pl-food' class="mono-m">${gs.plObj.food}</p>
             </div>
             <div>
                 <img src='./img/ico/power.svg'>
-                <p id='pl-power' class="mono-m">${playerObj.power}</p>
+                <p id='pl-power' class="mono-m">${gs.plObj.power}</p>
             </div>
             <div>
                 <img src='./img/ico/hp-bb-red.svg'>
-                <p id='pl-life' class="mono-m">${playerObj.life}</p>
+                <p id='pl-life' class="mono-m">${gs.plObj.life}</p>
             </div>
             <div>
                 <img src='./img/ico/coin.svg'>
-                <p id='pl-coins' class="mono-m">${playerObj.coins}</p>
+                <p id='pl-coins' class="mono-m">${gs.plObj.coins}</p>
             </div>
         </div>
     </div>
