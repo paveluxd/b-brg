@@ -9,8 +9,8 @@ let forests       = 'forest-1, forest-2, forest-3'.split(', ')
 class MapObj{
     constructor(){
         //Set map dimensions
-        this.xAxis = config.mapX + gameState.stage
-        this.yAxis = config.mapY + gameState.stage
+        this.xAxis = config.mapX + gs.stage
+        this.yAxis = config.mapY + gs.stage
 
         //Ref array for all tile objects
         this.tiles = []
@@ -46,11 +46,11 @@ class MapObj{
             }
 
             //Add player & enemies
-            if (1 === rng(gameState.enemySpawnFrequency)){ //Add enemy units 30%
-                let eneQuant = rng(gameState.enemyPartyCap)
+            if (1 === rng(gs.enemySpawnFrequency)){ //Add enemy units 30%
+                let eneQuant = rng(gs.enemyPartyCap)
                 tile.enemyUnit = true
                 tile.enemyQuant = eneQuant
-                gameState.totalEnemies += eneQuant //Counts total enemies
+                gs.totalEnemies += eneQuant //Counts total enemies
             }
             
             //Flip tiles
@@ -68,7 +68,7 @@ class MapObj{
         //Map position is set in last main.js
         let overrides = [
             {tileId:`1-1`, playerUnit: true, enemyUnit: false}, //Player
-            {tileId:`${this.xAxis}-${this.yAxis}`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gameState.stage},
+            {tileId:`${this.xAxis}-${this.yAxis}`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gs.stage},
         ]
 
         //Adds mandatory tiles from config
@@ -121,9 +121,9 @@ class MapObj{
         //Sets map size & description (+1 due to border)
         el('map-container').setAttribute('style', 
         `
-            min-width:${120 * gameState.mapObj.xAxis +1}px; min-height:${120 * gameState.mapObj.yAxis}px;
-                width:${120 * gameState.mapObj.xAxis +1}px;     height:${120 * gameState.mapObj.yAxis}px;
-            max-width:${120 * gameState.mapObj.xAxis +1}px; max-height:${120 * gameState.mapObj.yAxis}px;
+            min-width:${120 * gs.mapObj.xAxis +1}px; min-height:${120 * gs.mapObj.yAxis}px;
+                width:${120 * gs.mapObj.xAxis +1}px;     height:${120 * gs.mapObj.yAxis}px;
+            max-width:${120 * gs.mapObj.xAxis +1}px; max-height:${120 * gs.mapObj.yAxis}px;
         `)
 
         //Add unit
@@ -151,7 +151,7 @@ class MapObj{
                         <img src="./img/map/player-unit-arms.svg" id="player-unit-arms">
                     </div>
                 `
-                gameState.playerLocationTile = tile
+                gs.playerLocationTile = tile
 
             }
 
@@ -196,13 +196,14 @@ class MapObj{
         })
 
         //Resolve cost per movement
-            if(playerObj.food > 0){
-                playerObj.food--
-            }else if(playerObj.power > 0){
-                playerObj.power--
-            }else if(playerObj.life > 1){
-                playerObj.life--
+            if(gs.plObj.food > 0){
+                gs.plObj.food--
+            }else if(gs.plObj.power > 0){
+                gs.plObj.power--
+            }else if(gs.plObj.life > 1){
+                gs.plObj.life--
             }else{
+                clearSavedGame()
                 openStateScreen('starved')
             }
 
@@ -211,7 +212,7 @@ class MapObj{
         //Get current tile X
             let startIdRef = []
             //Add current tile location id values as int to startIdRef
-            gameState.playerLocationTile.tileId.split('-').forEach(val =>{
+            gs.playerLocationTile.tileId.split('-').forEach(val =>{
                 startIdRef.push(parseInt(val))
             })
 
@@ -239,8 +240,8 @@ class MapObj{
             //     el('map').scrollBy(0,-120)
             // }
 
-        gameState.turnCounter++
-        gameState.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id)
+        gs.turnCounter++
+        gs.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id)
         
         resolveMove()
         syncUi() 
@@ -250,7 +251,7 @@ class MapObj{
     function resolveMove(){
         //Converts id to intigers
         let tileIdRef = []
-        gameState.playerLocationTile.tileId.split('-').forEach(val =>{
+        gs.playerLocationTile.tileId.split('-').forEach(val =>{
             tileIdRef.push(parseInt(val))
         })
 
@@ -267,17 +268,17 @@ class MapObj{
                 el(tile.tileId).childNodes[3].remove() //remove unit quantity
                 tile.enemyUnit = false
                 
-                gameState.playerLocationTile = tile
+                gs.playerLocationTile = tile
             }
             else if(tile.playerUnit){
                 el(tile.tileId).append(el('player-unit'))
 
-                gameState.playerLocationTile = tile
+                gs.playerLocationTile = tile
             }
 
             //Add event if adjacent
             if(
-                tile.tileId == gameState.playerLocationTile.tileId || //Player tile
+                tile.tileId == gs.playerLocationTile.tileId || //Player tile
 
                 tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]+1}` || //+1 row
                 tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]-1}` || //-1 row
@@ -294,7 +295,7 @@ class MapObj{
                 el(tile.tileId).removeAttribute("onmousedown")
 
                 //Combat envet
-                if(tile.enemyUnit && tile.tileId != gameState.playerLocationTile.tileId){
+                if(tile.enemyUnit && tile.tileId != gs.playerLocationTile.tileId){
                     el(tile.tileId).setAttribute("onmousedown", 'initiateCombat()')
                 }
                 //Portal event
@@ -303,13 +304,13 @@ class MapObj{
                 }
                 //POI event
                 else if(!tile.tileType.startsWith('empty') || !tile.tileType.startsWith('forest')){
-                    if(tile == gameState.playerLocationTile){
+                    if(tile == gs.playerLocationTile){
                         el(tile.tileId).setAttribute('onmousedown', 'mapEvent()')
                     }
                 }
                 
                 //Move event
-                if(tile.tileId != gameState.playerLocationTile.tileId){
+                if(tile.tileId != gs.playerLocationTile.tileId){
                     el(tile.tileId).setAttribute("onmousedown", `movePlayerUnit(this), ${el(tile.tileId).getAttribute('onmousedown')}`)
                 }
             }
@@ -327,15 +328,15 @@ class MapObj{
         //Open casino
         if(bet == undefined){
             //Update player coins indicator
-            el('casino-coins').innerHTML = `Your coins: ${playerObj.coins}<img src='./img/ico/coin.svg'>`
+            el('casino-coins').innerHTML = `Your coins: ${gs.plObj.coins}<img src='./img/ico/coin.svg'>`
 
             screen('casino-screen')
         }
         else{
 
             //Check if player has enough coins
-            if(playerObj.coins < bet) return showAlert(`Not enough coins to make a bet.`)
-            playerObj.coins -= bet
+            if(gs.plObj.coins < bet) return showAlert(`Not enough coins to make a bet.`)
+            gs.plObj.coins -= bet
     
             let cardQuant = 3
             let cardsValues = ['card-1','card-2','card-3','card-4','card-5']
@@ -355,12 +356,12 @@ class MapObj{
             //If at least two cards are the same give player 2x
             if(maxDuplicates > 2){
                 el('casino-outcome').innerHTML = `You win ${bet * 2} coins.`
-                playerObj.coins += bet * 3
+                gs.plObj.coins += bet * 3
             }
             //If 3 same give player 3x
             else if(maxDuplicates > 1){
                 el('casino-outcome').innerHTML = `You win ${bet} coins.`
-                playerObj.coins += bet * 2
+                gs.plObj.coins += bet * 2
             }
             //Else player looses
             else {
@@ -368,7 +369,7 @@ class MapObj{
             }
 
             //Update player coins indicator
-            el('casino-coins').innerHTML = `Your coins: ${playerObj.coins}<img src='./img/ico/coin.svg'>`
+            el('casino-coins').innerHTML = `Your coins: ${gs.plObj.coins}<img src='./img/ico/coin.svg'>`
         }
 
 
@@ -377,12 +378,12 @@ class MapObj{
     //Generic event.
     function mapEvent(){
         
-        let eventType = gameState.playerLocationTile.tileType
+        let eventType = gs.playerLocationTile.tileType
 
         if(eventType.startsWith('lake')){
-            if(gameState.playerLocationTile.visited != true){
-                let numberOfFish = rng(parseInt(gameState.playerLocationTile.tileId[0]) + parseInt(gameState.playerLocationTile.tileId[2]))
-                playerObj.food += numberOfFish
+            if(gs.playerLocationTile.visited != true){
+                let numberOfFish = rng(parseInt(gs.playerLocationTile.tileId[0]) + parseInt(gs.playerLocationTile.tileId[2]))
+                gs.plObj.food += numberOfFish
                 el('event-cover').setAttribute('src','./img/bg/lake.svg')
                 el('event-desc').innerHTML =`You found ${numberOfFish} <img src="./img/ico/fish.svg">`
 
@@ -394,9 +395,9 @@ class MapObj{
             screen('event-screen')
         }
         else if(eventType.startsWith('chest')){
-            if(gameState.playerLocationTile.visited != true){
-                let val = rng(parseInt(gameState.playerLocationTile.tileId[0]) + parseInt(gameState.playerLocationTile.tileId[2]) + 12, 6)
-                playerObj.coins += val
+            if(gs.playerLocationTile.visited != true){
+                let val = rng(parseInt(gs.playerLocationTile.tileId[0]) + parseInt(gs.playerLocationTile.tileId[2]) + 12, 6)
+                gs.plObj.coins += val
                 el('event-cover').setAttribute('src','./img/bg/chest.svg')
                 el('event-desc').innerHTML =`You found ${val} <img src="./img/ico/coin.svg">`
                 syncUi()
@@ -409,23 +410,23 @@ class MapObj{
         }
         else if(eventType.startsWith('merchant')){
 
-            if(gameState.playerLocationTile.visited == undefined){
+            if(gs.playerLocationTile.visited == undefined){
                 //Generate shop.
                 el('merchant-container').innerHTML = ``
     
                 //Swap for testing
                 // genOfferedItemList("all", 'merchant')
-                genOfferedItemList(gameState.merchantQuant, 'merchant')
+                genOfferedItemList(gs.merchantQuant, 'merchant')
             }
 
             //Regen item cards for 'sell' page.
             el('items-to-sell').innerHTML = ``
-            playerObj.inventory.forEach(item => {
+            gs.plObj.inventory.forEach(item => {
                 el('items-to-sell').append(genItemCard(item, 'item-to-sell'))
             })
 
             //Add coins indicator
-            el('merchant-coins-indicator').innerHTML = `You have: ${playerObj.coins}<img src="./img/ico/coin.svg">`
+            el('merchant-coins-indicator').innerHTML = `You have: ${gs.plObj.coins}<img src="./img/ico/coin.svg">`
 
             //Open merchant screen.
             screen('merchant')
@@ -433,13 +434,13 @@ class MapObj{
         else if(eventType.startsWith('blacksmith')){
             //Generate items-to-enhance.
             el('items-to-enhance').innerHTML = ``
-            playerObj.inventory.forEach(item => {
+            gs.plObj.inventory.forEach(item => {
                 el('items-to-enhance').append(genItemCard(item, 'item-to-enhance'))
             })
 
             //Generate items-to-repair
             el('items-to-repair').innerHTML = ``
-            playerObj.inventory.forEach(item => {
+            gs.plObj.inventory.forEach(item => {
                 el('items-to-repair').append(genItemCard(item, 'item-to-repair'))
             })
 
@@ -449,7 +450,7 @@ class MapObj{
         //Lore
         else if(eventType.startsWith('monument')){
             
-            let event = eventRef[gameState.playerLocationTile.loreEvent]
+            let event = eventRef[gs.playerLocationTile.loreEvent]
 
             if(event.img != undefined){
                 el('event-cover').setAttribute('src',`./img/lore/${event.img}.svg`)
@@ -471,7 +472,7 @@ class MapObj{
 
             let roll = rng(5)
 
-            if(gameState.playerLocationTile.visited == true || roll == 5){
+            if(gs.playerLocationTile.visited == true || roll == 5){
                 el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
                 el('event-desc').innerHTML =`There is nothing in here.`
             }
@@ -481,23 +482,23 @@ class MapObj{
                 el('event-desc').innerHTML =`You approach a house, it is empty. You look around and find <b>${item.itemName}</b>.`
 
                 //Add item to the inventory.
-                playerObj.inventory.push(item)
+                gs.plObj.inventory.push(item)
             }
             else if(roll == 3){
-                let heal = rng(Math.round(playerObj.life/3))
+                let heal = rng(Math.round(gs.plObj.life/3))
                 el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty and find a <b>medical kit (+${heal}<img src='./img/ico/life.svg'>)</b>.`
                 
                 restoreLife(heal)
             }
             else {
-                let dmg = rng(Math.round(playerObj.life/2))
+                let dmg = rng(Math.round(gs.plObj.life/2))
                 el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You enter an empty house, and step into a <b>spike trap hole (-${dmg} <img src='./img/ico/life.svg'>)</b>.`
 
-                playerObj.life -= dmg
+                gs.plObj.life -= dmg
 
-                if(playerObj.life < 1){
+                if(gs.plObj.life < 1){
                     el('event-screen').setAttribute('onclick','openStateScreen("game-end")')
                 }
             }
@@ -510,7 +511,7 @@ class MapObj{
         }
 
         //Check if visited.
-        gameState.playerLocationTile.visited = true
+        gs.playerLocationTile.visited = true
     }
 
     let eventRef =[

@@ -6,70 +6,70 @@
         // syncTree()
 
         //Combat screen: Log stats at the top
-        if(gameState.inCombat){
+        if(gs.inCombat){
 
             //Top left log
             el('log').innerHTML = `
-                Enc: ${gameState.encounter}/${gameState.playerLocationTile.enemyQuant}<br>
-                Ene: lvl ${enemyObj.level} ${enemyObj.profile}<br>
+                Enc: ${gs.encounter}/${gs.playerLocationTile.enemyQuant}<br>
+                Ene: lvl ${gs.enObj.level} ${gs.enObj.profile}<br>
                 ` 
-                // Loc: ${gameState.playerLocationTile.tileId}
-                // Tur: ${gameState.combatTurn}<br>
-                // Lvl: ${playerObj.lvl} / Exp:${playerObj.exp}
+                // Loc: ${gs.playerLocationTile.tileId}
+                // Tur: ${gs.combatTurn}<br>
+                // Lvl: ${gs.plObj.lvl} / Exp:${gs.plObj.exp}
 
             //Enemy floating number
-            //gameState.enemyAction -> Previous action
+            //gs.enemyAction -> Previous action
 
-            if(enemyObj.dmgTaken > 0){//Attack
-                floatText('en',`-${enemyObj.dmgTaken} life`)
-            }else if(enemyObj.action.key === 'fortify'){
-                floatText('en',`+${enemyObj.action.stat} def`)
-            }else if(enemyObj.action.key === 'empower'){
-                floatText('en',`+${enemyObj.action.stat} power`)
-            }else if(enemyObj.action.key === 'rush'){
-                floatText('en',`+${enemyObj.action.stat} dice`)
-            }else if(enemyObj.action.key === 'sleep'){
+            if(gs.enObj.dmgTaken > 0){//Attack
+                floatText('en',`-${gs.enObj.dmgTaken} life`)
+            }else if(gs.enObj.action.key === 'fortify'){
+                floatText('en',`+${gs.enObj.action.stat} def`)
+            }else if(gs.enObj.action.key === 'empower'){
+                floatText('en',`+${gs.enObj.action.stat} power`)
+            }else if(gs.enObj.action.key === 'rush'){
+                floatText('en',`+${gs.enObj.action.stat} dice`)
+            }else if(gs.enObj.action.key === 'sleep'){
                 floatText('en',`Zzzzz`)
-            }else if(enemyObj.action.key === 'block'){
-                floatText('en',`Blocked ${enemyObj.action.stat}`)
-            }else if(enemyObj.action.key === 'recover'){
-                floatText('en',`Recovered ${enemyObj.action.stat} ${enemyObj.action.actionVal}`)
+            }else if(gs.enObj.action.key === 'block'){
+                floatText('en',`Blocked ${gs.enObj.action.stat}`)
+            }else if(gs.enObj.action.key === 'recover'){
+                floatText('en',`Recovered ${gs.enObj.action.stat} ${gs.enObj.action.actionVal}`)
             }
 
-            gameState.enemyAction = []
+            gs.enemyAction = []
             
             //Player floating number
-            if(playerObj.dmgTaken > 0){
-                floatText('pl',`-${playerObj.dmgTaken} life`)
+            if(gs.plObj.dmgTaken > 0){
+                floatText('pl',`-${gs.plObj.dmgTaken} life`)
             }
 
             //Player stats
-            el('p-life').innerHTML  =`${playerObj.life}`
-            el('p-def').innerHTML   =`${playerObj.def}`
-            el('p-dice').innerHTML  =`${playerObj.roll}<span>/${playerObj.dice}</span>`
-            el('p-power').innerHTML =`${playerObj.power}`        
+            el('p-life').innerHTML  =`${gs.plObj.life}`
+            el('p-def').innerHTML   =`${gs.plObj.def}`
+            el('p-dice').innerHTML  =`${gs.plObj.roll}<span>/${gs.plObj.dice}</span>`
+            el('p-power').innerHTML =`${gs.plObj.power}`        
 
             //Enemy stats
-            el('life').innerHTML    =`${enemyObj.life}`
-            el('def').innerHTML     =`${enemyObj.def}`
-            el('dice').innerHTML    =`${enemyObj.roll}<span>/${enemyObj.dice}</span>`
-            el('power').innerHTML   =`${enemyObj.power}`        
+            el('life').innerHTML    =`${gs.enObj.life}`
+            el('def').innerHTML     =`${gs.enObj.def}`
+            el('dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
+            el('power').innerHTML   =`${gs.enObj.power}`        
 
             //Enemy intent indicator
-            el('intent').innerHTML = `${enemyObj.action.desc}`
+            el('intent').innerHTML = `${gs.enObj.action.desc}`
         }
 
         //Modify map stat indicator
         ['food', 'power','life','coins'].forEach(stat => {
-            el(`pl-${stat}`).innerHTML = playerObj[stat]
+            el(`pl-${stat}`).innerHTML = gs.plObj[stat]
         })
 
-        el('map-desc').innerHTML = `Stage:${gameState.stage}`
+        el('map-desc').innerHTML = `Stage:${gs.stage}`
 
         //Modify inventroy slide heading.
         el('inventorySlideDesc').innerHTML = `
-            Inventory capacity: ${playerObj.inventory.length} / ${playerObj.inventorySlots}<br>
-            Equipped items: ${calcEquippedItems()} / ${playerObj.equipmentSlots}
+            Inventory capacity: ${gs.plObj.inventory.length} / ${gs.plObj.inventorySlots}<br>
+            Equipped items: ${calcEquippedItems()} / ${gs.plObj.equipmentSlots}
         `
     }
 
@@ -83,19 +83,19 @@
             
                 <div>
                     <img src='./img/ico/fish.svg'>
-                    <p id='pl-food' class="mono-m">${playerObj.food}</p>
+                    <p id='pl-food' class="mono-m">${gs.plObj.food}</p>
                 </div>
                 <div>
                     <img src='./img/ico/power.svg'>
-                    <p id='pl-power' class="mono-m">${playerObj.power}</p>
+                    <p id='pl-power' class="mono-m">${gs.plObj.power}</p>
                 </div>
                 <div>
                     <img src='./img/ico/hp-bb-red.svg'>
-                    <p id='pl-life' class="mono-m">${playerObj.life}</p>
+                    <p id='pl-life' class="mono-m">${gs.plObj.life}</p>
                 </div>
                 <div>
                     <img src='./img/ico/coin.svg'>
-                    <p id='pl-coins' class="mono-m">${playerObj.coins}</p>
+                    <p id='pl-coins' class="mono-m">${gs.plObj.coins}</p>
                 </div>
             </div>
         `
@@ -165,48 +165,48 @@
 
 //CHARACTER
     function syncCharPage(){
-        // playerObj.treePoints = playerObj.lvl - playerObj.treeNodes.length -1
+        // gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length -1
     
         //Add text
         el('stat-block').innerHTML =`
             <div class='stat'>
                 <img src="./img/ico/life.svg">
-                <p>Life: ${playerObj.life} / ${playerObj.flatLife}</p>
+                <p>Life: ${gs.plObj.life} / ${gs.plObj.flatLife}</p>
             </div>
 
             <div class='stat'>
                 <img src="./img/ico/placeholder.svg">
-                <p>Inventory: ${playerObj.inventory.length}/${playerObj.inventorySlots}</p>
+                <p>Inventory: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}</p>
             </div>
 
             <div class='stat'>
                 <img src="./img/ico/dice.svg">
-                <p>Dice: d${playerObj.flatDice}</p>
+                <p>Dice: d${gs.plObj.flatDice}</p>
             </div>
 
             <div class='stat'>
                 <img src="./img/ico/slots.svg">
-                <p>Equipment: ${calcEquippedItems()}/${playerObj.equipmentSlots}</p>
+                <p>Equipment: ${calcEquippedItems()}/${gs.plObj.equipmentSlots}</p>
             </div>
 
             <div class='stat'>
                 <img src="./img/ico/power.svg">
-                <p>Power: ${playerObj.power}</p>
+                <p>Power: ${gs.plObj.power}</p>
             </div>
 
             <div class='stat'>
                 <img src="./img/ico/fish.svg">
-                <p>Food: ${playerObj.food}</p>
+                <p>Food: ${gs.plObj.food}</p>
             </div>
 
             <div class='stat'>
                 <img src="./img/ico/def.svg">
-                <p>Def: ${playerObj.def}</p>
+                <p>Def: ${gs.plObj.def}</p>
             </div>
 
             <div class='stat'>
                 <img src="./img/ico/coin-sm.svg">
-                <p>Coins: ${playerObj.coins}</p>
+                <p>Coins: ${gs.plObj.coins}</p>
             </div>              
         `
 
@@ -214,7 +214,7 @@
         el('action-list').innerHTML = ``
         el('passive-list').innerHTML = ``
 
-        playerObj.actions.forEach(action => {
+        gs.plObj.actions.forEach(action => {
             if(action.actionType != 'passive'){
                 el('action-list').append(genActionCard(action, 'card'))
             } else {
@@ -230,27 +230,27 @@
     function syncItemCards(){
         
         //Set inventory heading
-        el('inventory-heading').innerHTML = `Inventory ${playerObj.inventory.length}/${playerObj.inventorySlots}`
+        el('inventory-heading').innerHTML = `Inventory ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`
         
         //Sync inventory
         el('inventory-list').innerHTML = ''
-        playerObj.inventory.forEach(item => {
+        gs.plObj.inventory.forEach(item => {
             el('inventory-list').append(genItemCard(item))
         })
 
         //Sync market 
         el('items-to-sell').innerHTML = ``
-        playerObj.inventory.forEach(item => {
+        gs.plObj.inventory.forEach(item => {
             el('items-to-sell').append(genItemCard(item, 'item-to-sell'))
         })
 
         //Sync blacksmith
         el('items-to-enhance').innerHTML = ``
-        playerObj.inventory.forEach(item => {
+        gs.plObj.inventory.forEach(item => {
             el('items-to-enhance').append(genItemCard(item, 'item-to-enhance'))
         })
         el('items-to-repair').innerHTML = ``
-        playerObj.inventory.forEach(item => {
+        gs.plObj.inventory.forEach(item => {
             el('items-to-repair').append(genItemCard(item, 'item-to-repair'))
         })
     }
@@ -377,10 +377,10 @@
     //Item details modal
     function genItemModal(itemId, source){
         let itemModal = el('item-modal-body')
-        let itemObj = findByProperty(playerObj.inventory, 'itemId', itemId)
+        let itemObj = findByProperty(gs.plObj.inventory, 'itemId', itemId)
 
         if(source === 'reward'){
-            itemObj = findByProperty(playerObj.offeredItemsArr, 'itemId', itemId)
+            itemObj = findByProperty(gs.plObj.offeredItemsArr, 'itemId', itemId)
         }
 
         itemModal.innerHTML = `${itemObj.itemName} (${itemObj.itemSlot})<br><br>Adds actions: <br>`
@@ -474,17 +474,17 @@
             el('cards-row').innerHTML = ''
 
             //Set #cards-row width to display cards in two rows.
-            // el('cards-row').setAttribute('style',`width:${149 * (Math.floor(playerObj.actions.length/2) + 1)}px;`)
+            // el('cards-row').setAttribute('style',`width:${149 * (Math.floor(gs.plObj.actions.length/2) + 1)}px;`)
             
             //Add button per player item
-            playerObj.actions.forEach(action => {
+            gs.plObj.actions.forEach(action => {
                 if(action.actionType == 'passive') return //Skip passives
                 let actionCard = genActionCard(action)
                 el('cards-row').append(actionCard)
             })
 
             //Add empty item slots
-                // let emptySlots = playerObj.actionSlots - playerObj.actions.length
+                // let emptySlots = gs.plObj.actionSlots - gs.plObj.actions.length
                 // let button = document.createElement('button')
                 // button.innerHTML = `[ ]x${emptySlots}`
                 // button.disabled = true
@@ -541,13 +541,13 @@
 
             if(type != 'card'){//Remove numbers if generated for character page.
                 if      (['block'].indexOf(referenceAction.actionName) > -1){
-                    heading = `${upp(action.actionName)} ${playerObj.roll}`
+                    heading = `${upp(action.actionName)} ${gs.plObj.roll}`
                 }else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
-                    heading = `${upp(action.actionName)} for ${playerObj.roll + playerObj.power}`
+                    heading = `${upp(action.actionName)} for ${gs.plObj.roll + gs.plObj.power}`
                 }else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
-                    heading = `${upp(action.actionName)} (${3 + playerObj.power}+${playerObj.swordDmgMod})`
+                    heading = `${upp(action.actionName)} (${3 + gs.plObj.power}+${gs.plObj.swordDmgMod})`
                 }else if(['inferno'].indexOf(referenceAction.actionName) > -1){
-                    heading = `${upp(action.actionName)} (${playerObj.power * playerObj.coins} dmg)`
+                    heading = `${upp(action.actionName)} (${gs.plObj.power * gs.plObj.coins} dmg)`
                 }
             }
 
@@ -574,16 +574,16 @@
                     <img id="end-img" src="./img/bg/victory.svg" alt="" class="illustration">
 
                     <ul>
-                        <li>Reached stage ${gameState.stage}.</li>
-                        <li>Survived ${gameState.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gameState.enemyCounter}/${gameState.totalEnemies} enemies.</li>
+                        <li>Reached stage ${gs.stage}.</li>
+                        <li>Survived ${gs.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
                     </ul>
 
                     <p class="body-14 italic b50">Tap to continue</p>
 
                 </div>`
             
-            el('state-screen').setAttribute('onclick', "initGame(), screen('map')")
+            el('state-screen').setAttribute('onclick', "saveGame(), initGame(), screen('map')")
         }
         //Starvation
         else if(type == 'starved'){
@@ -593,9 +593,9 @@
                     <img id="end-img" src="./img/bg/starvation.svg" alt="" class="illustration">
                     
                     <ul>
-                        <li>Reached stage ${gameState.stage}.</li>
-                        <li>Survived ${gameState.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gameState.enemyCounter}/${gameState.totalEnemies} enemies.</li>
+                        <li>Reached stage ${gs.stage}.</li>
+                        <li>Survived ${gs.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
                     </ul>
 
                     <p class="body-14 italic b50">Tap to restart</p>
@@ -611,9 +611,9 @@
                     <img id="end-img" src="./img/bg/end.svg" alt="" class="illustration">
 
                     <ul>
-                        <li>Reached stage ${gameState.stage}.</li>
-                        <li>Survived ${gameState.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gameState.enemyCounter}/${gameState.totalEnemies} enemies.</li>
+                        <li>Reached stage ${gs.stage}.</li>
+                        <li>Survived ${gs.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
                     </ul>
 
                     <p class="body-14 italic b50">Tap to restart</p>
@@ -645,7 +645,7 @@
 
 //TREE
     function syncTree(){
-        el('skill-tree').innerHTML = `Available passive point: ${playerObj.treePoints}`
+        el('skill-tree').innerHTML = `Available passive point: ${gs.plObj.treePoints}`
 
         treeRef.forEach(node => {
             let btn = document.createElement('button')
@@ -662,7 +662,7 @@
             el('skill-tree').append(btn)
         })
 
-        playerObj.treeNodes.forEach(node => {
+        gs.plObj.treeNodes.forEach(node => {
             el(node.id).disabled = true
         })
     }

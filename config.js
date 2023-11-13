@@ -22,15 +22,16 @@ let config = {
         ],
 
         coins: rng(12,6),
-        food:  rng(5,1),
+        food:  rng(5,3),
 
     //Enemy
         eneLife: 8,
 
 
     //Map
-        mapX: 2,
-        mapY: 2,
+        stage: 0,
+        mapX: 1,
+        mapY: 1,
         portalDefenders: 1,
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
