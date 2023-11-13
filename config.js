@@ -5,7 +5,7 @@ let config = {
         def:        0,
         dice:       6,
         inventory: 20,
-        slots:     6,
+        slots:      6,
         startingItems: [
             'club',
             'shield',
