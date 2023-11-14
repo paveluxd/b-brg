@@ -68,6 +68,9 @@
         //6.syncUI() will generate action cards that will trigger turnCalc().
             syncUi()
 
+            //6.1 Update the background
+            el('combat-bg').setAttribute('src',`./img/bg/combat-${rng(config.bgCounter)}.svg`)
+
         //7.Open combat screen
             screen("combat")
     }

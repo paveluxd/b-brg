@@ -30,6 +30,9 @@ let config = {
     //Game
         testCombat: 2, //Initiates combat at the start (for testing).
 
+    //Combat UI
+        bgCounter: 3, //1 per saved combat bg for rng.
+
     //Map
         stage: 0,
         mapX: 1,
