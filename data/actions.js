@@ -1,5 +1,15 @@
 let actionsRef = [
   {
+    "actionName": "heavy block",
+    "desc": "reduce incoming damage by 200% of your def",
+    "passiveStats": "",
+    "actionMod": 200,
+    "actionCharge": 30,
+    "cooldown": "",
+    "keyId": 60,
+    "actionType": ""
+  },
+  {
     "actionName": "club attack",
     "desc": "deal 3 dmg",
     "passiveStats": "",
@@ -414,7 +424,7 @@ let actionsRef = [
     "desc": "reduce incoming dmg by dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 30,
+    "actionCharge": 60,
     "cooldown": "",
     "keyId": 42,
     "actionType": ""

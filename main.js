@@ -5,7 +5,7 @@
         if(typeof gs == 'undefined'){
             gs = new GameState
             gs.plObj = new PlayerObj
-            
+
             //Resolve ititial items
             gs.plObj.startingItems.forEach(key => {addItem(key)})
 
@@ -15,8 +15,6 @@
         mapRef = gs.mapObj.tiles
         genMap()
 
-
-        
         
         //Gen remaining UI
         // syncTree()     //merge
@@ -69,6 +67,9 @@
 
         //6.syncUI() will generate action cards that will trigger turnCalc().
             syncUi()
+
+            //6.1 Update the background
+            el('combat-bg').setAttribute('src',`./img/bg/combat-${rng(config.bgCounter)}.svg`)
 
         //7.Open combat screen
             screen("combat")
@@ -405,9 +406,12 @@
                 //Log
                 gs.logMsg.push('Applied poison to weapons.<br>')
     
-            }else if(playerActionKey =='a42'){// shield block "buckler"
+            }else if(playerActionKey =='a42'){// 'block' 'shield'
     
-                gs.enObj.dmgDone -= gs.plObj.roll //- gs.plObj.power
+                gs.enObj.dmgDone -= gs.plObj.roll
+
+                //Log
+                gs.logMsg.push(`Blocked ${gs.plObj.roll} dmg.`)
     
             }else if(playerActionKey =='a44'){// "restoration" "scroll of restoration"
 
@@ -518,6 +522,13 @@
                 //Log
                 gs.logMsg.push(`heal: +${gs.lifeRestoredByPlayer} life, -1 power.`)
                 
+            }else if(playerActionKey =='a60'){// heavy block "towerbuckler"
+    
+                gs.enObj.dmgDone -= gs.plObj.def * (actionMod/100) 
+
+                //Log
+                gs.logMsg.push(`Hevy block: blocked ${gs.plObj.def * (actionMod/100)} dmg.`)
+    
             }
 
             //PASSIVES post-action: Player passive effects.

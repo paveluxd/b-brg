@@ -27,6 +27,11 @@ let config = {
     //Enemy
         eneLife: 8,
 
+    //Game
+        testCombat: 2, //Initiates combat at the start (for testing).
+
+    //Combat UI
+        bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
         stage: 0,
@@ -47,8 +52,5 @@ let config = {
         flatCoinsReward: 6, 
 
         //Merchant
-        merchantQuant: 8,
-
-    //Misc
-    testCombat: 2, //Initiates combat at the start (for testing).
+        merchantQuant: 10,    
 }
