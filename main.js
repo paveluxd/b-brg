@@ -17,9 +17,7 @@
 
         
         //Gen remaining UI
-        // syncTree()     //merge
-        syncCharPage() //merge?
-        genTabs()      //merge ui
+        // genTabs()              //merge ui
         spriteBuilder('player')//create player sprite
 
         resolvePlayerStats()
@@ -28,6 +26,8 @@
 
 //INITITATE COMBAT
     function initiateCombat(){
+        //Log to debug the combat issue
+        console.log('Combat initiated.');
 
         //1.Create cinbat object.
             gs.inCombat = true
@@ -43,22 +43,9 @@
             genEneAction()          //Gen before player turn and after. Do it at this stage because it references gs.enObj.
             spriteBuilder('enemy')
 
-        //4.Set stats before combat
-            //Restore sword dmg buff
-            gs.plObj.swordDmgMod = 0
-
-            //Restore flat def
-            if(gs.plObj.def !== gs.plObj.flatDef){
-                gs.plObj.def = gs.plObj.flatDef
-            }
-
-            //Restore flat power
-            if(gs.plObj.power !== gs.plObj.flatPower){//see if power should stay betweeen combats, set sign to <
-                gs.plObj.power = gs.plObj.flatPower
-            } 
         
-            //Recalc all items and actions
-            resolvePlayerStats()
+        //4. Reset flat stats
+            resetFlatStats()
 
         //5.Roll player dice. Roll after stats if dice will be changed.
             gs.plObj.roll = rng(gs.plObj.dice)
@@ -79,8 +66,8 @@
     //1.TURN CALC
         function turnCalc(buttonElem){
             //Set random ghost images
-            el('p-ghost').setAttribute('src',`./img/character/ghost-${rng(3)}.svg`)
-            el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(3)}.svg`)
+            el('p-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
+            el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
 
             //Reset combat state vars
             gs.combatTurnState = ''
@@ -356,6 +343,14 @@
 
                 //Log
                 gs.logMsg.push(`Heling potion: +${gs.lifeRestoredByPlayer}  life.`)  
+                 
+            }else if(playerActionKey =='a61'){// bandages
+                
+                //Heal value
+                gs.lifeRestoredByPlayer += actionMod
+
+                //Log
+                gs.logMsg.push(`Bandages: +${actionMod}  life.`)  
                  
             }else if(playerActionKey =='a34'){// (def+) fortification
 
@@ -827,11 +822,11 @@
                 //End game stats
                 gs.enemyCounter++
 
-                //Exit
+                //Exit encounter
                 if(gs.encounter == gs.playerLocationTile.enemyQuant){
                     gs.encounter = 'end'
 
-                    if(gs.playerLocationTile.tileType === 'portal'){
+                    if(gs.playerLocationTile.tileType == 'portal'){
                         openStateScreen("completed")
                         return
                     }
@@ -857,6 +852,9 @@
 
                             //Unlock screen
                             document.body.classList.remove('lock-actions', 'darken')
+
+                            //Reset flat stats
+                            resetFlatStats()
                         },
                         1000
                     )
@@ -867,8 +865,8 @@
                     runAnim(el('enemy-sprite'), 'enemyEntrance') 
                 }
 
-                gs.plObj.exp++                                   //Add 1 exp
-                gs.plObj.lvl = Math.round(1 + gs.plObj.exp / 3) //Recalc player lvl'
+                //Add exerience and recalculate level
+                resolveExpAndLvl()
             }
             // NEXT TURN.
             else if (gs.sourceAction.actionType !== "extra-action" || gs.plObj.roll < 1){
@@ -964,9 +962,29 @@
             gs.plObj.food += gs.flatFoodReward + (gs.playerLocationTile.enemyQuant)
             gs.plObj.coins += coinsReward
 
-            toggleModal('reward-screen')         
+            // toggleModal('reward-screen')         
+            screen('reward-screen')        
         }
 
+    //* COMBAT MISC
+        function resetFlatStats(){
+            //4.Set stats before combat
+            //Restore sword dmg buff
+            gs.plObj.swordDmgMod = 0
+
+            //Restore flat def
+            if(gs.plObj.def !== gs.plObj.flatDef){
+                gs.plObj.def = gs.plObj.flatDef
+            }
+
+            //Restore flat power
+            if(gs.plObj.power !== gs.plObj.flatPower){//see if power should stay betweeen combats, set sign to <
+                gs.plObj.power = gs.plObj.flatPower
+            } 
+        
+            //Recalc all items and actions
+            resolvePlayerStats()
+        }
         
 //ENEMY
     //Enemy action logic
@@ -1578,23 +1596,49 @@
 
 //TREE
 //Spend tree points
-    function addTreeNode(node){
+    function addTreeNode(nodeId){
         if(gs.plObj.treePoints > 0){
+            let node = findByProperty(treeRef, 'id', nodeId)
+
             gs.plObj.treeNodes.push(node)// Add skill node to player obj        
             
+            gs.plObj.treePoints--
+
             resolvePlayerStats()
             syncUi()
         }
+        else{
+            showAlert(`All your passive skill points are allocated.`)
+        }
+    }
+    function resolveExpAndLvl(){
+        gs.plObj.exp++                                  //Add 1 exp for winning
+
+        gs.plObj.lvl = Math.floor(gs.plObj.exp / config.expRequiredPerLvl + 1) //Recalc player lvl
+
+        gs.plObj.lvlUpExp = (gs.plObj.lvl - 1) * config.expRequiredPerLvl + config.expRequiredPerLvl
+
+
     }
 
 
 //GAME START
     //Checks if LS save exists
     loadGame()
-
     initGame()
 
-    if(config.testCombat == 1){
+    if(config.testCombat == true){
         initiateCombat() //Disable if not testing combat
+
+        el('map').classList.add('hide')
+    }
+
+    if(config.clearLs == true){
+        localStorage.clear();
+        console.log('Local storage cleared.');
+    }
+
+    if(config.showScreen != false){
+        screen(config.showScreen)
     }
     // el('map').scrollTo(0, 9999); // Sets map position to view unit.

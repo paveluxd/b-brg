@@ -9,7 +9,12 @@ let config = {
         startingItems: [
             'club',
             'shield',
-            "healing potion",
+            "bandages",
+            // 'dagger',
+            // 'tetracore',
+            // 'octocore',
+            // 'decacore',
+            // 'dodecacore'
             // "sigil of light",
             // 'wooden staff',
             // 'book of order',
@@ -28,7 +33,13 @@ let config = {
         eneLife: 8,
 
     //Game
-        testCombat: 2, //Initiates combat at the start (for testing).
+        testCombat: false, //Initiates combat at the start (for testing).
+        showScreen: '',
+        clearLs: false,
+
+    //Progression
+        expRequiredPerLvl: 3,
+        basePassieSkillPoints: 0,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
@@ -42,7 +53,7 @@ let config = {
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
             // {tileType: 'merchant'},
-            // {tileType: 'house-1'},
+            // {tileType: 'monument-1'},
         ],
 
         bossFrequency: 3, //Every Nth stage

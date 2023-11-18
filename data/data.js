@@ -102,8 +102,9 @@ let gs //game state object
             //Progression
                 this.exp            = 0
                 this.lvl            = 1
+                this.lvlUpExp       = config.expRequiredPerLvl
                 this.treeNodes      = []
-                this.treePoints     = 0
+                this.treePoints     = config.basePassieSkillPoints
             //Misc
                 this.offeredItemsArr     = [] //Stores rewards
         }
@@ -227,19 +228,20 @@ let gs //game state object
 
                 this.rate = 1
                 this.actionVal = gs.enObj.roll + gs.enObj.power 
-                this.desc = `${ico('attack')}${this.actionVal} dmg`
+                // this.desc = `${ico('attack')}${this.actionVal} dmg`
+                this.desc = `${ico('attack')}Will attack for ${this.actionVal}`
 
             }else if(key == 'combo'){       //multistrike
 
                 this.rate = 2
                 this.actionVal = 1 + gs.enObj.power 
-                this.desc = `${ico('combo')}${this.actionVal} dmg (x3)`
+                this.desc = `${ico('combo')}Will attack 3<br>times for ${this.actionVal}`
 
             }else if(key == 'block'){
 
                 this.rate = 1
                 this.actionVal = gs.enObj.roll
-                this.desc = `${ico("block")} Block for ${this.actionVal}`
+                this.desc = `${ico("block")}Will block ${this.actionVal} dmg`
 
             }else if(key == 'final strike'){//on death
 
@@ -269,7 +271,7 @@ let gs //game state object
 
                 this.rate = 2
                 this.stat = 'def'
-                this.actionVal = Math.ceil((gs.enObj.roll) * 0.25)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 0.5)
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.def < 0){
@@ -277,7 +279,7 @@ let gs //game state object
                     this.actionVal = gs.enObj.flatDef - gs.enObj.def
                 }
 
-                this.desc = `${ico('def-buff')} +${this.actionVal}`
+                this.desc = `${ico('def-buff')} Will gain ${this.actionVal} def`
 
             }else if(key == 'empower'){//+ power
 
@@ -291,7 +293,7 @@ let gs //game state object
                     this.actionVal = gs.enObj.flatPower - gs.enObj.power
                 }
 
-                this.desc = `${ico('power-buff')} +${this.actionVal}`
+                this.desc = `${ico('power-buff')} Will gian ${this.actionVal} power`
 
             }else if(key == 'rush'){   //+ dice
 
@@ -305,7 +307,7 @@ let gs //game state object
                     this.actionVal = gs.enObj.flatDice - gs.enObj.dice
                 }
 
-                this.desc = `${ico('dice-buff')} +${this.actionVal}`
+                this.desc = `${ico('dice-buff')}Will increse dice by ${this.actionVal}`
 
             }else if(key == 'recover'){//+ life
 
@@ -316,7 +318,7 @@ let gs //game state object
 
                 this.stat = 'life'
                 this.actionVal = gs.enObj.roll * 2
-                this.desc = `${ico('life-buff')} +${this.actionVal}`
+                this.desc = `${ico('life-buff')}Will heal for ${this.actionVal}`
 
             }
 
@@ -326,35 +328,62 @@ let gs //game state object
                 this.rate = 3
                 this.stat = 'def'
                 this.actionVal = Math.ceil((gs.enObj.roll) * 0.25)
-                this.desc = `${ico('curse-def')} -${this.actionVal}`
+                this.desc = `${ico('curse-def')}Will reduce your<br>def by ${this.actionVal}`
 
             }else if(key == 'weaken'){ //- power
 
                 this.rate = 2
                 this.stat = 'power'
                 this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.25)
-                this.desc = `${ico('curse-power')} -${this.actionVal}`
+                this.desc = `${ico('curse-power')}Will reduce your<br>power by ${this.actionVal}`
 
             }else if(key == 'slow'){   //- dice
 
                 this.rate = 5
                 this.stat = 'dice'
                 this.actionVal = rng(2)
-                this.desc = `${ico('curse-dice')} -${this.actionVal}`
+                this.desc = `${ico('curse-dice')}Will reduce your<br>dice by ${this.actionVal}`
 
             }else if(key == 'drain'){  //- life
 
                 this.rate = 4
                 this.stat = 'life'
                 this.actionVal = Math.round(gs.enObj.roll * 1.5)
-                this.desc = `${ico('curse-life')} -${this.actionVal}`
+                this.desc = `${ico('curse-life')}Will reduce your<br>life by ${this.actionVal}`
 
             }
 
             //Misc
             else if (key == 'sleep'){
-                this.rate = 3
-                this.desc = `Zzz...`
+                let dialogueOptions = [
+                    'Surrender!',
+                    'Your end nears...',
+                    "Accept your fate!",
+                    "No mercy!",
+                    "Feel my wrath!",
+                    "You won't survive!",
+                    "Surrender now!",
+                    "Face oblivion!",
+                    "Meet your doom!",
+                    "Bow before me!",
+                    "Prise the Hecatocore!",
+                    "Dance, fool, dance!",
+                    "My blade hungers.",
+                    "Annihilation!",
+                    "Chaos embraces you.",
+                    "Face the nightmare.",
+                    "SUFFER!",
+                    "Hope is a lie.",
+                    "Meet your reckoning.",
+                    "Why so serious?",
+                    "Face the truth!",
+                    "Your head is mine!",
+                ]
+                this.rate = 2
+                this.desc = `
+                    <span class="italic">"${dialogueOptions[rng(dialogueOptions.length -1)]}"</span>
+                    <span class="w50">(will skip turn)</span>
+                `
             }
             
             //Debuff player item
@@ -407,6 +436,7 @@ let gs //game state object
                 {key:'equipped'    ,val: false},
                 {key:'passiveStats',val: []},
                 {key:'cost'        ,val: rng(12, 6)},
+                {key:'desc'        ,val: undefined},
                 // {key:'durability'  ,val: 10},
             ]
             //Resolve props via default value above, or value from reference object
@@ -549,37 +579,37 @@ let gs //game state object
 //Tree -> Nodes
     let treeRef = [
         //Core stats
-        {id:'add-life'      ,desc:'add 10 base life'         , passiveStats:[{stat:'life', value:10}],},
-        {id:'percent-life'  ,desc:'increse base life by 25%' , passiveStats:[{stat:'life%', value:25}],},
+        {id:'add-life'      ,desc:'add 10 base life'         ,passiveStats:[{stat:'life',  value:10}],},
+        {id:'percent-life'  ,desc:'increse base life by 25%' ,passiveStats:[{stat:'life%', value:25}],},
 
-        {id:'add-def'       ,desc:'gain 1 basse def'         ,nodeType:'baseDef'     ,nodeMod: 1   },
-        {id:'add-power'     ,desc:'gain 1 base power'        ,nodeType:'basePower'   ,nodeMod: 1   },
-        {id:'add-dice'      ,desc:'gain 2 to base dice'      ,nodeType:'baseDice'    ,nodeMod: 2   },
-        {id:'add-inventory'},
+        {id:'add-def'       ,desc:'gain 2 base def'          ,passiveStats:[{stat:'def',   value:2}],},
+        {id:'add-power'     ,desc:'gain 1 base power'        ,passiveStats:[{stat:'power', value:1}],},
+        {id:'add-dice'      ,desc:'gain 1 to base dice'      ,passiveStats:[{stat:'dice',  value:1}],},
+        {id:'add-inventory' ,desc:'gain 2 equipment slots'   ,passiveStats:[{stat:'slots', value:2}],},
 
 
         //Recovery
-        {id:'add-regen-per-turn'}, //Regen N life per turn or combat.
-        {id:'add-regen-per-combat'},
+        // {id:'add-regen-per-turn'}, //Regen N life per turn or combat.
+        // {id:'add-regen-per-combat'},
         
-        {id:'add-leech'}, //Recover % of damage dealt
+        // {id:'add-leech'}, //Recover % of damage dealt
         
         
         //On hit effects
-        {id:'ext-dmg'}, //Deal +1 damage
-        {id:"ext-def-break-dmg"}, //Break 1 def on hit.
+        // {id:'ext-dmg'}, //Deal +1 damage
+        // {id:"ext-def-break-dmg"}, //Break 1 def on hit.
 
 
         //Extra defences
-        {id:'add-def-per-power'}, //+1 def per point of power.
+        // {id:'add-def-per-power'}, //+1 def per point of power.
 
 
         //Action specific
-        {id:'improve-barrier'}, //improve barrier by 25%
+        // {id:'improve-barrier'}, //improve barrier by 25%
 
 
         //Cooldown actions
-        {id:'less-cd'}, //Cooldowns recover 1 turn faster
+        // {id:'less-cd'}, //Cooldowns recover 1 turn faster
 
 
         //Extra actions
@@ -592,7 +622,7 @@ let gs //game state object
 
 
         //Aaction charge
-        {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
+        // {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
 
 
         //Ideas

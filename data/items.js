@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "bandages",
+    "passiveStats": "",
+    "actions": "bandage wounds",
+    "itemSlot": "",
+    "itemType": "",
+    "itemRarity": "",
+    "cost": ""
+  },
+  {
     "itemName": "tower shield",
     "passiveStats": "",
     "actions": "heavy block",
@@ -171,8 +180,8 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "dice 4",
-    "passiveStats": "dice:4, def:1",
+    "itemName": "tetracore",
+    "passiveStats": "dice:4, def:2",
     "actions": "",
     "itemSlot": "dice",
     "itemType": "dice",
@@ -180,13 +189,32 @@ let itemsRef = [
     "cost": ""
   },
   {
-    "itemName": "dice 8",
-    "passiveStats": "dice:8",
+    "itemName": "octocore",
+    "passiveStats": "dice:8, def:-2,",
     "actions": "",
     "itemSlot": "dice",
     "itemType": "dice",
     "itemRarity": "rare",
     "cost": ""
+  },
+  {
+    "itemName": "decacore",
+    "passiveStats": "dice:10, life:-6",
+    "actions": "",
+    "itemSlot": "dice",
+    "itemType": "dice",
+    "itemRarity": "rare",
+    "cost": ""
+  },
+  {
+    "itemName": "dodecacore",
+    "passiveStats": "dice:12, def:-4",
+    "actions": "",
+    "itemSlot": "dice",
+    "itemType": "dice",
+    "itemRarity": "rare",
+    "cost": "",
+    "desc": "a deceptively small green jewel possessing an insidious charm, unstable cores tend to influence the minds of those who possess them, compelling them towards acts of greed, and recklesness"
   },
   {
     "itemName": "plate armor",

@@ -294,7 +294,7 @@ class MapObj{
                 //Clear all events
                 el(tile.tileId).removeAttribute("onmousedown")
 
-                //Combat envet
+                //Combat event
                 if(tile.enemyUnit && tile.tileId != gs.playerLocationTile.tileId){
                     el(tile.tileId).setAttribute("onmousedown", 'initiateCombat()')
                 }
@@ -451,6 +451,10 @@ class MapObj{
         else if(eventType.startsWith('monument')){
             
             let event = eventRef[gs.playerLocationTile.loreEvent]
+
+            if (event == undefined){
+                event = eventRef[rng(eventRef.length - 1)]
+            }
 
             if(event.img != undefined){
                 el('event-cover').setAttribute('src',`./img/lore/${event.img}.svg`)

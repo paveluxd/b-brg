@@ -3,7 +3,7 @@
         syncActionTiles()
         syncCharPage()
         syncItemCards()
-        // syncTree()
+        syncTree()
 
         //Combat screen: Log stats at the top
         if(gs.inCombat){
@@ -64,8 +64,6 @@
             el(`pl-${stat}`).innerHTML = gs.plObj[stat]
         })
 
-        el('map-desc').innerHTML = `Stage:${gs.stage}`
-
         //Modify inventroy slide heading.
         el('inventorySlideDesc').innerHTML = `
             Inventory capacity: ${gs.plObj.inventory.length} / ${gs.plObj.inventorySlots}<br>
@@ -78,9 +76,7 @@
 
         //Clear tabs
         el('tab-container').innerHTML = `
-            <div id="stat-indicator">
-                <p id="map-desc" class='italic'></p>
-            
+            <div id="stat-indicator">    
                 <div>
                     <img src='./img/ico/fish.svg'>
                     <p id='pl-food' class="mono-m">${gs.plObj.food}</p>
@@ -90,7 +86,7 @@
                     <p id='pl-power' class="mono-m">${gs.plObj.power}</p>
                 </div>
                 <div>
-                    <img src='./img/ico/hp-bb-red.svg'>
+                    <img src='./img/ico/life.svg'>
                     <p id='pl-life' class="mono-m">${gs.plObj.life}</p>
                 </div>
                 <div>
@@ -111,103 +107,161 @@
         let screens = [
             ['map','map-tab'], 
             ['character', 'character-tab'], 
-            ['inventory','inventory-tab']
-        ] // add 'tree' , 'inventory','inventory' to arr to enable tree tab
+            ['inventory','inventory-tab'],
+            ['tree','tree-tab']
+        ]
 
         //Gen map tabs
         screens.forEach(elem => {
             let tab = document.createElement('button')
-            tab.addEventListener('click', function(){screen(elem[0])})
+            tab.setAttribute('onclick',`screen('${elem[0]}')`)
 
-            tab.innerHTML = `<img src="./img/ico/${elem[1]}.svg">${upp(elem[0])}`
+            tab.innerHTML = `<img src="./img/ico/${elem[0]}.svg">${upp(elem[0])}`
             tab.id = `${elem[0]}-tab`
 
             el('tab-container').append(tab)
         })
     }
 
+    //Manage slider tabs
+    function slideTo(screen, sourceElem){
+        location.href=`#${screen}`
+
+        //Remove previous tab selection
+        clearClassOfAll('active')
+
+        //Set new tab selection
+        console.log(sourceElem);
+        el(sourceElem.id).classList.add('active')
+    }
+
     //Manage screens.
-    function screen(elemId, mod){
+    function screen(elemId){
+
+        //For target bug
+        console.log(`Screen() was triggered by:`, elemId);
+
+
+        //Removes animation classes to prevent trigger when page is opened.
+        clearClassOfAll('stat-float')
+        clearClassOfAll('ghost-trigger')
+
 
         //Hide everything
         el('.screen', 'all').forEach(elem => elem.classList.add('hide'));//screens
         el('.modal', 'all').forEach(elem => elem.classList.add('hide')); //modals
-        el('tab-container').classList.add('hide')  //tabs
+        el('.external-tabs', 'all').forEach(elem => elem.classList.add('hide'));  //tabs containers
         
-        //Show tabs                     
-        if(el(elemId).classList.contains('tab')){//if it's a tab, show tabs
+
+        //Display appropriate tab container
+        if(elemId =='map'){
+            el('map-tabs').classList.remove('hide')
+        }
+
+        else if(['character','inventory', 'tree'].indexOf(elemId) > -1){
+
+            el('character-tabs').classList.remove('hide')
+
+            //Remove all active classes
+            clearClassOfAll('active')
+
+            //Set page button to active
+            el(`${elemId}-btn`).classList.add('active')
+        }
+
+        else if(elemId == 'reward-screen'){
+
+            el('reward-tabs').classList.remove('hide')   
             
-            el('tab-container').classList.remove('hide')
-            
-            //Restore tabs
-            el('stat-indicator').classList.remove('hide')
-            el('character-tab').classList.remove('hide')
-            el('inventory-tab').classList.remove('hide')
+            //Remove all active classes
+            clearClassOfAll('active')
+
+            //Set page button to active
+            el(`rw-rewards-btn`).classList.add('active')
+
         }
 
 
-        if(mod == 'combat-menu'){//switch visible tabs
-            el('stat-indicator').classList.add('hide')
-
-            el('character').classList.remove('hide')
-            el('close-tab').classList.remove('hide')
-
-            el('map-tab').classList.add('hide')
-
-            el('character-tab').classList.add('hide')
-            el('inventory-tab').classList.add('hide')
-        }
-        else{
-            el(elemId).classList.remove('hide');//display screen with id
-        }
+        //Show page
+        el(elemId).classList.remove('hide') 
     }
 
 
 //CHARACTER
     function syncCharPage(){
-        // gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length -1
     
         //Add text
         el('stat-block').innerHTML =`
-            <div class='stat'>
-                <img src="./img/ico/life.svg">
-                <p>Life: ${gs.plObj.life} / ${gs.plObj.flatLife}</p>
-            </div>
+            <section>
+                <div class='stat'>
+                    <img src="./img/ico/life.svg">
+                    <p>Life: ${gs.plObj.life} / ${gs.plObj.flatLife}</p>
+                </div>
 
-            <div class='stat'>
-                <img src="./img/ico/placeholder.svg">
-                <p>Inventory: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}</p>
-            </div>
+                <div class='stat'>
+                    <img src="./img/ico/dice.svg">
+                    <p>Dice: d${gs.plObj.flatDice}</p>
+                </div>
 
-            <div class='stat'>
-                <img src="./img/ico/dice.svg">
-                <p>Dice: d${gs.plObj.flatDice}</p>
-            </div>
+                <div class='stat'>
+                    <img src="./img/ico/power.svg">
+                    <p>Power: ${gs.plObj.power}</p>
+                </div>
 
-            <div class='stat'>
-                <img src="./img/ico/slots.svg">
-                <p>Equipment: ${calcEquippedItems()}/${gs.plObj.equipmentSlots}</p>
-            </div>
+                <div class='stat'>
+                    <img src="./img/ico/def.svg">
+                    <p>Def: ${gs.plObj.def}</p>
+                </div>
+            </section>
 
-            <div class='stat'>
-                <img src="./img/ico/power.svg">
-                <p>Power: ${gs.plObj.power}</p>
-            </div>
+            <section>
+                <div class='stat'>
+                    <img src="./img/ico/fish.svg">
+                    <p>Food: ${gs.plObj.food}</p>
+                </div>
+                
+                <div class='stat'>
+                    <img src="./img/ico/slots.svg">
+                    <p>Equipment: ${calcEquippedItems()}/${gs.plObj.equipmentSlots}</p>
+                </div>
+                
+                <div class='stat'>
+                    <img src="./img/ico/coin-sm.svg">
+                    <p>Coins: ${gs.plObj.coins}</p>
+                </div>     
+                
+                <div class='stat'>
+                    <img src="./img/ico/placeholder.svg">
+                    <p>Inventory: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}</p>
+                </div>    
+            </section>
+                
+            <section>
+                <div class='stat'>
+                    <img src="./img/ico/placeholder.svg">
+                    <p>Level: ${gs.plObj.lvl}</p>
+                </div>
 
-            <div class='stat'>
-                <img src="./img/ico/fish.svg">
-                <p>Food: ${gs.plObj.food}</p>
-            </div>
+                <div class='stat'>
+                    <img src="./img/ico/placeholder.svg">
+                    <p>Exp: ${gs.plObj.exp}</p>
+                </div>
 
-            <div class='stat'>
-                <img src="./img/ico/def.svg">
-                <p>Def: ${gs.plObj.def}</p>
-            </div>
+                <div class='stat'>
+                    <img src="./img/ico/placeholder.svg">
+                    <p>Sill points:  ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}</p>
+                </div>
 
-            <div class='stat'>
-                <img src="./img/ico/coin-sm.svg">
-                <p>Coins: ${gs.plObj.coins}</p>
-            </div>              
+                <div class='stat'>
+                    <img src="./img/ico/placeholder.svg">
+                    <p>Next lvl exp:  ${gs.plObj.lvlUpExp}</p>
+                </div>
+
+                <div class='stat'>
+                    <img src="./img/ico/placeholder.svg">
+                    <p>World stage:  ${gs.stage}</p>
+                </div>
+            </section>
         `
 
         //Add action cards
@@ -263,8 +317,23 @@
             let cardId = item.itemId
 
             //Top container on click
-            let                   clickAttr =`onclick="toggleModal('item-modal'), genItemModal('${item.itemId}')"`
-            if(type === 'reward'){clickAttr =`onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')"`}
+            let                   clickAttr =`onclick="genItemModal('${item.itemId}')"`
+            if(type == 'reward'){
+
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'reward')"`
+
+            }
+            else if(['item-to-enhance', 'item-to-repair'].indexOf(type) > -1){
+
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'preview')"`
+
+            }
+            else if(['item-to-buy', 'item-to-sell'].indexOf(type) > -1){
+                
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'merchant')"`
+
+            }
+
 
             //Image key
             let                                imgKey = item.itemName
@@ -301,7 +370,7 @@
                             <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
                         </button>`
 
-            if(type === 'reward'){
+            if(type == 'reward'){
                 // btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
                 //             <img src="./img/ico/item-view.svg"> <p>View</p>
                 //         </button>`
@@ -376,37 +445,106 @@
 
     //Item details modal
     function genItemModal(itemId, source){
-        let itemModal = el('item-modal-body')
+        let itemModal = el('item-modal')
+
+        //Find item object
         let itemObj = findByProperty(gs.plObj.inventory, 'itemId', itemId)
 
-        if(source === 'reward'){
+        //Search reward pool if reward
+        if(source == 'reward' || source == 'merchant'){
             itemObj = findByProperty(gs.plObj.offeredItemsArr, 'itemId', itemId)
         }
 
-        itemModal.innerHTML = `${itemObj.itemName} (${itemObj.itemSlot})<br><br>Adds actions: <br>`
+        //Get actions
+        let actionSet = ``
 
-        itemObj.actions.forEach(action => {
-            itemModal.innerHTML += `<br> ${action.actionName} (x${action.actionCharge}): ${upp(action.desc)}.<br>`
-        })
-
-        //Add drop item button
-        let btn = document.createElement('button')
-
-        if(source === 'reward'){
-            btn.innerHTML = 'Pick item'
-            btn.setAttribute('onclick',`removeItem("${itemId}"), toggleModal('item-modal')`)
+        if(itemObj.actions.length > 0){
+            actionSet = `
+                <br><br>
+                <h3>Adds actions</h3>
+            `
+            itemObj.actions.forEach(action => {
+                actionSet += `
+                    <div class="action-ref">
+                        <h3>${upp(action.actionName)}</h3>
+                        <p>${upp(action.desc)}.</p>
+                        <p>Action charges: ${action.actionCharge}</p>
+                    </div>
+                `
+            })
         }
-        else{
-            btn.innerHTML = 'Drop item'
-            btn.setAttribute('onclick',`removeItem("${itemId}"), toggleModal('item-modal')`)
+
+        //Get passives
+        let passiveSet = ``
+
+        if(itemObj.passiveStats.length > 0){
+            passiveSet = `
+                <br><br>
+                <h3>Stat modifications</h3>
+            `
+            itemObj.passiveStats.forEach(passive => {
+                passiveSet += `
+                    <div class="stat">
+                        <img src=./img/ico/${passive.stat}.svg> 
+                        <p>${upp(passive.stat)}</p> ${passive.value}
+                    </div>`
+            })
         }
 
-        //Add close button
-        let closeBtn = document.createElement('button')
-        closeBtn.innerHTML = 'Close'
-        closeBtn.setAttribute('onclick', 'toggleModal("item-modal")')
+        //Get description
+            let descriptionSet = ``
 
-        itemModal.append(btn, closeBtn)
+            if(itemObj.desc != undefined){
+                descriptionSet = `
+                    <br>
+                        <p class="italic">${upp(itemObj.desc)}.</p>
+                    <br>
+                `
+            }
+
+
+        //Gen button
+            let btn = `
+                <button  onclick="removeItem('${itemId}'), toggleModal('item-modal')">
+                    <img src="./img/ico/unequip.svg">
+                    Destroy item
+                </button>
+            `
+            //Swap button if reward
+            if(source == 'reward'){
+                btn = `
+                <button onclick="removeItem('${itemId}'), toggleModal('item-modal')">
+                    <img src="./img/ico/equip.svg">
+                    Pick item
+                </button>
+                `
+            }
+            else if(source == 'preview' || source == 'merchant'){
+                btn = ``
+            }
+
+        itemModal.innerHTML = `
+            <div id="item-modal-tabs" class="tab-container">
+                ${btn}
+        
+                <button onclick="toggleModal('item-modal')">
+                    <img src="./img/ico/tab-hide.svg">
+                    Close
+                </button>
+            </div>
+
+            <div class="modal-container tab-margin">
+                <img class="item-img" src="./img/items/${itemObj.itemName}.svg">
+                <h2>${upp(itemObj.itemName)}</h2>
+                ${descriptionSet}
+                Item type: ${upp(itemObj.itemSlot)}
+
+                ${actionSet}
+                ${passiveSet}
+            </div>
+        `
+
+        toggleModal('item-modal')
     }
 
 
@@ -574,9 +712,9 @@
                     <img id="end-img" src="./img/bg/victory.svg" alt="" class="illustration">
 
                     <ul>
-                        <li>Reached stage ${gs.stage}.</li>
-                        <li>Survived ${gs.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
+                        <li>Completed stage ${gs.stage}.</li>
+                        <li>Survived for ${gs.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gs.enemyCounter} enemies.</li>
                     </ul>
 
                     <p class="body-14 italic b50">Tap to continue</p>
@@ -612,8 +750,8 @@
 
                     <ul>
                         <li>Reached stage ${gs.stage}.</li>
-                        <li>Survived ${gs.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
+                        <li>Survived for ${gs.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gs.enemyCounter} enemies.</li>
                     </ul>
 
                     <p class="body-14 italic b50">Tap to restart</p>
@@ -633,23 +771,18 @@
         clearTimeout(alertTimer)
         alertTimer = setTimeout(() => {el('alert').classList.add('hide')}, 5000)
     }
-    
-
-
-
-
-
-
-
-
 
 //TREE
     function syncTree(){
-        el('skill-tree').innerHTML = `Available passive point: ${gs.plObj.treePoints}`
+        //Update points counter
+        el('skill-points-indicator').innerHTML = `Skill tree point: ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}`
+
+        //Clear tree container
+        el('skill-tree').innerHTML = ``
 
         treeRef.forEach(node => {
             let btn = document.createElement('button')
-            btn.addEventListener('click', function(){addTreeNode(node)})
+            btn.setAttribute('onclick', `addTreeNode("${node.id}")`)
         
             let description = ''
         
@@ -658,11 +791,45 @@
             }
         
             btn.id = node.id
-            btn.innerHTML = `${upp(node.id)} <br> ${description}`
+            btn.innerHTML = `
+                <img src ="./img/ico/item-equip-no.svg">
+
+                <div>
+                    <h3>${upp(node.id)}</h3> 
+                    <p>${description}</p>
+                </div>
+            `
             el('skill-tree').append(btn)
+
+            //Set allocated nodes as disabled
+            if(findByProperty(gs.plObj.treeNodes, 'id', node.id)){
+                btn.classList.add('allocated-tree-node')
+                
+                btn.innerHTML = `
+                <img src ="./img/ico/item-equip-yes.svg">
+
+                <div>
+                    <h3>${upp(node.id)}</h3> 
+                    <p>${description}</p>
+                </div>
+            `
+            el('skill-tree').append(btn)
+            }
         })
+
 
         gs.plObj.treeNodes.forEach(node => {
             el(node.id).disabled = true
         })
+
+        // Adjust label if there are unspent skill tree points.
+        if(gs.plObj.treePoints > 0){
+            el('map-character-btn').innerHTML = `<img src="./img/ico/character-active.svg">Character`
+            el('tree-btn').innerHTML = `<img src="./img/ico/tree-active.svg">Tree`
+        } else {
+            el('map-character-btn').innerHTML = `<img src="./img/ico/character.svg">Character`
+            el('tree-btn').innerHTML = `<img src="./img/ico/tree.svg">Tree`
+        }
+
+        
     }

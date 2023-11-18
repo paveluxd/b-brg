@@ -4,6 +4,14 @@ function runAnim(elem, animClass){//Allows to run css animation mutliple times
     elem.classList.add(animClass)
 }
 
+function clearClassOfAll(classId){//Removes class from all html elems
+    var elems = document.querySelectorAll(`.${classId}`);
+
+    [].forEach.call(elems, function(el) {
+        el.classList.remove(classId);
+    });
+}
+
 function toggleModal(id){//modal
     document.getElementById(id).classList.toggle('hide')
     this.runAnim(el(id).firstElementChild, 'modal-slide')

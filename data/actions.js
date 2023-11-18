@@ -1,5 +1,15 @@
 let actionsRef = [
   {
+    "actionName": "bandage wounds",
+    "desc": "restore 4 life",
+    "passiveStats": "",
+    "actionMod": 4,
+    "actionCharge": 12,
+    "cooldown": "",
+    "keyId": 61,
+    "actionType": ""
+  },
+  {
     "actionName": "heavy block",
     "desc": "reduce incoming damage by 200% of your def",
     "passiveStats": "",
