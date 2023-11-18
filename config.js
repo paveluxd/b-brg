@@ -1,7 +1,7 @@
 let config = {
     //Player
         life:      32, //32
-        power:      9,
+        power:      0,
         def:        0,
         dice:       6,
         inventory: 20,
@@ -10,11 +10,11 @@ let config = {
             'club',
             'shield',
             "bandages",
-            'dagger',
-            'tetracore',
-            'octocore',
-            'decacore',
-            'dodecacore'
+            // 'dagger',
+            // 'tetracore',
+            // 'octocore',
+            // 'decacore',
+            // 'dodecacore'
             // "sigil of light",
             // 'wooden staff',
             // 'book of order',
@@ -34,8 +34,8 @@ let config = {
 
     //Game
         testCombat: false, //Initiates combat at the start (for testing).
-        showScreen: 'map',
-        clearLs: true,
+        showScreen: '',
+        clearLs: false,
 
     //Progression
         expRequiredPerLvl: 3,
@@ -53,7 +53,7 @@ let config = {
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
             // {tileType: 'merchant'},
-            {tileType: 'monument-1'},
+            // {tileType: 'monument-1'},
         ],
 
         bossFrequency: 3, //Every Nth stage

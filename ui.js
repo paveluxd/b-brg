@@ -64,8 +64,6 @@
             el(`pl-${stat}`).innerHTML = gs.plObj[stat]
         })
 
-        el('map-desc').innerHTML = `Stage ${gs.stage}`
-
         //Modify inventroy slide heading.
         el('inventorySlideDesc').innerHTML = `
             Inventory capacity: ${gs.plObj.inventory.length} / ${gs.plObj.inventorySlots}<br>
@@ -78,9 +76,7 @@
 
         //Clear tabs
         el('tab-container').innerHTML = `
-            <div id="stat-indicator">
-                <p id="map-desc"></p>
-            
+            <div id="stat-indicator">    
                 <div>
                     <img src='./img/ico/fish.svg'>
                     <p id='pl-food' class="mono-m">${gs.plObj.food}</p>
@@ -260,6 +256,11 @@
                     <img src="./img/ico/placeholder.svg">
                     <p>Next lvl exp:  ${gs.plObj.lvlUpExp}</p>
                 </div>
+
+                <div class='stat'>
+                    <img src="./img/ico/placeholder.svg">
+                    <p>World stage:  ${gs.stage}</p>
+                </div>
             </section>
         `
 
@@ -316,8 +317,23 @@
             let cardId = item.itemId
 
             //Top container on click
-            let                   clickAttr =`onclick="toggleModal('item-modal'), genItemModal('${item.itemId}')"`
-            if(type === 'reward'){clickAttr =`onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')"`}
+            let                   clickAttr =`onclick="genItemModal('${item.itemId}')"`
+            if(type == 'reward'){
+
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'reward')"`
+
+            }
+            else if(['item-to-enhance', 'item-to-repair'].indexOf(type) > -1){
+
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'preview')"`
+
+            }
+            else if(['item-to-buy', 'item-to-sell'].indexOf(type) > -1){
+                
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'merchant')"`
+
+            }
+
 
             //Image key
             let                                imgKey = item.itemName
@@ -354,7 +370,7 @@
                             <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
                         </button>`
 
-            if(type === 'reward'){
+            if(type == 'reward'){
                 // btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
                 //             <img src="./img/ico/item-view.svg"> <p>View</p>
                 //         </button>`
@@ -435,7 +451,7 @@
         let itemObj = findByProperty(gs.plObj.inventory, 'itemId', itemId)
 
         //Search reward pool if reward
-        if(source === 'reward'){
+        if(source == 'reward' || source == 'merchant'){
             itemObj = findByProperty(gs.plObj.offeredItemsArr, 'itemId', itemId)
         }
 
@@ -450,8 +466,9 @@
             itemObj.actions.forEach(action => {
                 actionSet += `
                     <div class="action-ref">
-                        <h3>${upp(action.actionName)} (x${action.actionCharge})</h3>
+                        <h3>${upp(action.actionName)}</h3>
                         <p>${upp(action.desc)}.</p>
+                        <p>Action charges: ${action.actionCharge}</p>
                     </div>
                 `
             })
@@ -463,40 +480,51 @@
         if(itemObj.passiveStats.length > 0){
             passiveSet = `
                 <br><br>
-                <h3>Passive stat mods</h3>
+                <h3>Stat modifications</h3>
             `
             itemObj.passiveStats.forEach(passive => {
                 passiveSet += `
                     <div class="stat">
                         <img src=./img/ico/${passive.stat}.svg> 
-                        ${upp(passive.stat)}: ${passive.value}
+                        <p>${upp(passive.stat)}</p> ${passive.value}
                     </div>`
             })
         }
 
+        //Get description
+            let descriptionSet = ``
+
+            if(itemObj.desc != undefined){
+                descriptionSet = `
+                    <br>
+                        <p class="italic">${upp(itemObj.desc)}.</p>
+                    <br>
+                `
+            }
+
 
         //Gen button
-        let btn = `
-            <button  onclick="removeItem('${itemId}'), toggleModal('item-modal')">
-                <img src="./img/ico/unequip.svg">
-                Destroy item
-            </button>
-        `
-
-        //Swap button if reward
-        if(source === 'reward'){
-            btn = `
-            <button onclick="removeItem('${itemId}'), toggleModal('item-modal')">
-                <img src="./img/ico/equip.svg">
-                Pick item
-            </button>
+            let btn = `
+                <button  onclick="removeItem('${itemId}'), toggleModal('item-modal')">
+                    <img src="./img/ico/unequip.svg">
+                    Destroy item
+                </button>
             `
-        }
+            //Swap button if reward
+            if(source == 'reward'){
+                btn = `
+                <button onclick="removeItem('${itemId}'), toggleModal('item-modal')">
+                    <img src="./img/ico/equip.svg">
+                    Pick item
+                </button>
+                `
+            }
+            else if(source == 'preview' || source == 'merchant'){
+                btn = ``
+            }
 
         itemModal.innerHTML = `
             <div id="item-modal-tabs" class="tab-container">
-
-                
                 ${btn}
         
                 <button onclick="toggleModal('item-modal')">
@@ -508,14 +536,15 @@
             <div class="modal-container tab-margin">
                 <img class="item-img" src="./img/items/${itemObj.itemName}.svg">
                 <h2>${upp(itemObj.itemName)}</h2>
-
-                <br>
+                ${descriptionSet}
                 Item type: ${upp(itemObj.itemSlot)}
 
                 ${actionSet}
                 ${passiveSet}
             </div>
         `
+
+        toggleModal('item-modal')
     }
 
 
@@ -683,9 +712,9 @@
                     <img id="end-img" src="./img/bg/victory.svg" alt="" class="illustration">
 
                     <ul>
-                        <li>Reached stage ${gs.stage}.</li>
-                        <li>Survived ${gs.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
+                        <li>Completed stage ${gs.stage}.</li>
+                        <li>Survived for ${gs.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gs.enemyCounter} enemies.</li>
                     </ul>
 
                     <p class="body-14 italic b50">Tap to continue</p>
@@ -721,8 +750,8 @@
 
                     <ul>
                         <li>Reached stage ${gs.stage}.</li>
-                        <li>Survived ${gs.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
+                        <li>Survived for ${gs.turnCounter} turn(s).</li> 
+                        <li>Defeated ${gs.enemyCounter} enemies.</li>
                     </ul>
 
                     <p class="body-14 italic b50">Tap to restart</p>

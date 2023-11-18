@@ -436,6 +436,7 @@ let gs //game state object
                 {key:'equipped'    ,val: false},
                 {key:'passiveStats',val: []},
                 {key:'cost'        ,val: rng(12, 6)},
+                {key:'desc'        ,val: undefined},
                 // {key:'durability'  ,val: 10},
             ]
             //Resolve props via default value above, or value from reference object

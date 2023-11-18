@@ -826,7 +826,7 @@
                 if(gs.encounter == gs.playerLocationTile.enemyQuant){
                     gs.encounter = 'end'
 
-                    if(gs.playerLocationTile.tileType === 'portal'){
+                    if(gs.playerLocationTile.tileType == 'portal'){
                         openStateScreen("completed")
                         return
                     }
@@ -935,7 +935,7 @@
 
             //Run floating indicators
             indicateStatChange()
-            
+
             syncUi()
         }
 

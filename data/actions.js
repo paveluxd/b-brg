@@ -1,9 +1,9 @@
 let actionsRef = [
   {
     "actionName": "bandage wounds",
-    "desc": "restore 6 life",
+    "desc": "restore 4 life",
     "passiveStats": "",
-    "actionMod": 6,
+    "actionMod": 4,
     "actionCharge": 12,
     "cooldown": "",
     "keyId": 61,

@@ -62,8 +62,6 @@
     
     <!-- TAB CONTAINER -->
     <!-- stats-->
-    
-    
 
     <div id="tab-container" class="tab-container row ">
         <!-- Tabs -->
@@ -71,30 +69,37 @@
 
     <!-- Map -->
     <div id="map" class="screen tab"> 
-  
+
         <!-- Open character page -->
         <div id="map-tabs" class="tab-container external-tabs row" onclick="screen('character')">
             <!-- Stat indicator -->
             <div id="stat-indicator">
-                <p id="map-desc"> </p>
                 
+                <!-- Food -->
                 <div>
                     <img src='./img/ico/fish.svg'>
                     <p id='pl-food' class="mono-m"></p>
                 </div>
+
+                <!-- Power -->
                 <div>
                     <img src='./img/ico/power.svg'>
                     <p id='pl-power' class="mono-m"></p>
                 </div>
         
+                <!-- Life -->
                 <div>
                     <img src='./img/ico/life.svg'>
                     <p id='pl-life' class="mono-m"></p>
                 </div>
+
+                <!-- Coins -->
                 <div>
                     <img src='./img/ico/coin-sm.svg'>
                     <p id='pl-coins' class="mono-m"></p>
                 </div>
+
+                
             </div>
 
             <button id="map-character-btn" class="">
@@ -455,13 +460,13 @@
 <script src="main.js"></script>
 
 <!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-706KLCDSBD"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-706KLCDSBD"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     
     gtag('config', 'G-706KLCDSBD');
-</script> -->
+</script>
 
 </html>

@@ -212,6 +212,8 @@ body{
         flex-direction: column;
 
         min-width: 100vw;
+
+        position: relative;
     }
     #map, #map *{
         touch-action:pan-x pan-y !important;
@@ -261,10 +263,11 @@ body{
         font-size: 10px;
     }
     #map-desc{
-        font-size: 12px;
-        width: 100%;
-        color: var(--w70);
-        line-height: 22px;
+        position: absolute;
+        top:12px;
+        left: 12px;
+        font-size: 18px;
+        color: var(--b50);
     }
 
     /* Map animation */
@@ -434,7 +437,7 @@ body{
         padding-top: 24px;
     }
     .tab-margin{
-        padding-bottom: 120px !important;       
+        padding-bottom: 96px !important;       
     }
     .modal-slide{
         animation-name: modal-slide;
@@ -464,7 +467,7 @@ body{
         width: calc(100% - 16px);
         
         /*Centers tabs*/
-        position: absolute; 
+        position: fixed; 
         left: 50%;
         transform: translate(-50%);
         bottom: 8px;
@@ -505,23 +508,9 @@ body{
         align-items: center;
         gap: 8px;
 
-        
-        /* position: absolute;
-        top: 8px;
-        right: 8px; */
-
-        /* background-color: var(--w20); */
         color: white;
-        z-index: 3;
-
         width:50%;
-
-        & #map-desc {
-            width: fit-content;
-            padding-right: 8px;
-            height: 32px;
-            border-right: 1px solid black;
-        }    
+  
         & div{
             gap: 2px;
             display: flex;  
@@ -1030,17 +1019,40 @@ body{
     /* Item modal */
     #item-modal{
         z-index: 5;
-
+        
         .action-ref{
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            margin-bottom: 2px;
+            
+            margin-top: 4px;
             background-color: var(--b10);
-            padding: 12px;
+
+            padding: 8px;
             border-radius: 4px;
+
+            width: calc(100%);
+            max-width: 320px;
+
+            text-align: left;
         }
 
+        .stat{
+            background-color: var(--b10);
+            padding: 4px 8px 4px 4px;
+            border-radius: 4px;
+
+            margin-top: 4px;
+            gap: 4px;
+
+            width: calc(50%);
+            max-width: 320px;
+
+            & p{
+                width: 100%;
+                font-style: italic;
+                text-align: left;
+            }
+        }
         .stat-ico{
             height: 16px;
             width: 16px;
@@ -1048,6 +1060,12 @@ body{
 
         .modal-container{
             padding: 24px 24px;
+            align-items: center;
+            text-align: center;
+
+            & p{
+                max-width: 280px;
+            }
         }
 
         & .item-img{

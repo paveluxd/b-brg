@@ -213,7 +213,8 @@ let itemsRef = [
     "itemSlot": "dice",
     "itemType": "dice",
     "itemRarity": "rare",
-    "cost": ""
+    "cost": "",
+    "desc": "a deceptively small green jewel possessing an insidious charm, unstable cores tend to influence the minds of those who possess them, compelling them towards acts of greed, and recklesness"
   },
   {
     "itemName": "plate armor",
