@@ -1,5 +1,5 @@
 //INITITATE GAME
-    function initGame(mapY, stage){
+    function initGame(){
 
         //Create initial game and player objects
         if(typeof gs == 'undefined'){
@@ -1600,7 +1600,8 @@
         if(gs.plObj.treePoints > 0){
             let node = findByProperty(treeRef, 'id', nodeId)
 
-            gs.plObj.treeNodes.push(node)// Add skill node to player obj        
+            // Add skill node to player obj    
+            gs.plObj.treeNodes.push(node)    
             
             gs.plObj.treePoints--
 
@@ -1612,13 +1613,19 @@
         }
     }
     function resolveExpAndLvl(){
-        gs.plObj.exp++                                  //Add 1 exp for winning
 
-        gs.plObj.lvl = Math.floor(gs.plObj.exp / config.expRequiredPerLvl + 1) //Recalc player lvl
+        //Add 1 exp for winning
+        gs.plObj.exp++                                  
 
+        //Recalc player lvl
+        gs.plObj.lvl = Math.floor(gs.plObj.exp / config.expRequiredPerLvl + 1) 
+
+        //Calc exp until lvl up
         gs.plObj.lvlUpExp = (gs.plObj.lvl - 1) * config.expRequiredPerLvl + config.expRequiredPerLvl
 
-
+        //Calc available tree points?
+        //-1 for initial lvl 1
+        gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length - 1
     }
 
 
@@ -1627,6 +1634,7 @@
     loadGame()
     initGame()
 
+    //Configs for testing
     if(config.testCombat == true){
         initiateCombat() //Disable if not testing combat
 
