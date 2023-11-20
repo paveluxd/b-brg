@@ -119,8 +119,8 @@
     //Tree nodes
     let treeRef = [
         //Core stats
-        {id:'t1' ,name:'life' ,desc:'add 10 base life'         ,passiveStats:[{stat:'life',  value:10}],},
-        {id:'t2' ,name:'life' ,desc:'increse base life by 25%' ,passiveStats:[{stat:'life%', value:25}],},
+        {id:'t1' ,name:'life' ,desc:'add 10 base life'         ,passiveStats:[{stat:'life',  value:6}],},
+        {id:'t2' ,name:'life' ,desc:'increse base life by 25%' ,passiveStats:[{stat:'life%', value:20}],},
 
         {id:'t3' ,name:'def' ,desc:'gain 2 base def'          ,passiveStats:[{stat:'def',   value:2}],},
         {id:'t4',name:'power' ,desc:'gain 1 base power'        ,passiveStats:[{stat:'power', value:1}],},
