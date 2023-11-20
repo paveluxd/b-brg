@@ -128,8 +128,8 @@
         {
             id:'t6' ,
             name:'slots' ,
-            desc:'gain 2 equipment slots'   ,
-            passiveStats:[{stat:'slots', value:2}],
+            desc:'gain 1 equipment slots'   ,
+            passiveStats:[{stat:'slots', value:1}],
         },
 
         //Recovery
@@ -138,7 +138,7 @@
             val:3,
         },
         {id:'t8', name:'leech',
-            desc:'restore 1 life whnever you hit an enemy',
+            desc:'restore 1 life whenever you hit an enemy',
             val:1,
         },
         
