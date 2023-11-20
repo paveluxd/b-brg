@@ -576,58 +576,7 @@ let gs //game state object
     convertStringsToArr(actionsRef) 
 
 
-//Tree -> Nodes
-    let treeRef = [
-        //Core stats
-        {id:'add-life'      ,desc:'add 10 base life'         ,passiveStats:[{stat:'life',  value:10}],},
-        {id:'percent-life'  ,desc:'increse base life by 25%' ,passiveStats:[{stat:'life%', value:25}],},
 
-        {id:'add-def'       ,desc:'gain 2 base def'          ,passiveStats:[{stat:'def',   value:2}],},
-        {id:'add-power'     ,desc:'gain 1 base power'        ,passiveStats:[{stat:'power', value:1}],},
-        {id:'add-dice'      ,desc:'gain 1 to base dice'      ,passiveStats:[{stat:'dice',  value:1}],},
-        {id:'add-inventory' ,desc:'gain 2 equipment slots'   ,passiveStats:[{stat:'slots', value:2}],},
-
-
-        //Recovery
-        // {id:'add-regen-per-turn'}, //Regen N life per turn or combat.
-        // {id:'add-regen-per-combat'},
-        
-        // {id:'add-leech'}, //Recover % of damage dealt
-        
-        
-        //On hit effects
-        // {id:'ext-dmg'}, //Deal +1 damage
-        // {id:"ext-def-break-dmg"}, //Break 1 def on hit.
-
-
-        //Extra defences
-        // {id:'add-def-per-power'}, //+1 def per point of power.
-
-
-        //Action specific
-        // {id:'improve-barrier'}, //improve barrier by 25%
-
-
-        //Cooldown actions
-        // {id:'less-cd'}, //Cooldowns recover 1 turn faster
-
-
-        //Extra actions
-
-
-        //Gold
-
-
-        //Exp
-
-
-        //Aaction charge
-        // {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
-
-
-        //Ideas
-        //All fireballs that you draft have +5 charge.
-    ]
 
 //Saving
     function saveGame(){

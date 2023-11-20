@@ -254,7 +254,7 @@ let itemsRef = [
   },
   {
     "itemName": "woolen bag",
-    "passiveStats": "slots:7, def:-2",
+    "passiveStats": "slots:5, def:-2",
     "actions": "",
     "itemSlot": "bag",
     "itemType": "bag",
@@ -263,7 +263,7 @@ let itemsRef = [
   },
   {
     "itemName": "leather bag",
-    "passiveStats": "slots:5, def:-1",
+    "passiveStats": "slots:4, def:-1",
     "actions": "",
     "itemSlot": "bag",
     "itemType": "bag",
