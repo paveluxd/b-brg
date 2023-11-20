@@ -63,6 +63,7 @@
         //7.Open combat screen
             screen("combat")
     }
+
     //1.TURN CALC
         function turnCalc(buttonElem){
             //Set random ghost images
@@ -87,10 +88,10 @@
 
             gs.sourceAction = findObj(gs.plObj.actions, 'actionId', buttonElem.getAttribute('actionId')) //Get action id from button elem
             let actionMod = gs.sourceAction.actionMod
-            let playerActionKey = gs.sourceAction.keyId
+            let paKey = gs.sourceAction.keyId
 
             //LOGIC: player
-            if      (playerActionKey =='a1' ){// mace
+            if      (paKey =='a1' ){// mace
 
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
     
@@ -102,7 +103,7 @@
     
                 gs.logMsg.push(`Mace: deals ${actionMod + gs.plObj.power} dmg.`)
     
-            }else if(playerActionKey =='a2' ){// 'armor break' 'hammer'
+            }else if(paKey =='a2' ){// 'armor break' 'hammer'
 
                 //Get reduction value
                 let defReduction = gs.plObj.def
@@ -115,7 +116,7 @@
                 //Log
                 gs.logMsg.push(`Hammer attack: reduced enemy def by ${defReduction}.`)
     
-            }else if(playerActionKey =='a3' ){// Spell: shards "book of moon" 
+            }else if(paKey =='a3' ){// Spell: shards "book of moon" 
     
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -133,16 +134,16 @@
                 //Log
                 gs.logMsg.push(`Shard: dealt ${(actionMod + gs.plObj.power) * mult} dmg.`)
     
-            }else if(playerActionKey =='a4' ){// dagger pair 
+            }else if(paKey =='a4' ){// dagger pair 
     
                 gs.plObj.dmgDone += (actionMod + gs.plObj.power) * 2 
                 gs.logMsg.push('Dagger pair attack.')
     
-            }else if(playerActionKey =='a5' ){// bow
+            }else if(paKey =='a5' ){// bow
     
                 gs.plObj.dmgDone += gs.plObj.roll + gs.plObj.power
     
-            }else if(playerActionKey =='a6' ){// EX: cut 'dagger'
+            }else if(paKey =='a6' ){// EX: cut 'dagger'
 
                 //Action cost check
                 if(gs.plObj.roll < 3) return showAlert('Action requires roll greater than 2.')
@@ -156,7 +157,7 @@
                 //Combat log
                 gs.logMsg.push('Attacked with dagger as extra action.')
                 
-            }else if(playerActionKey =='a7' ){// sword attack 
+            }else if(paKey =='a7' ){// sword attack 
     
                 gs.plObj.dmgDone += gs.sourceAction.actionMod + gs.plObj.power + gs.plObj.swordDmgMod
 
@@ -167,7 +168,7 @@
                 //Log
                 gs.logMsg.push(`Sword: dealt ${gs.plObj.power} dmg.`)
     
-            }else if(playerActionKey =='a8' ){// "axe" 
+            }else if(paKey =='a8' ){// "axe" 
     
                 let maxLife = gs.plObj.life //Deal with overcap life
     
@@ -179,7 +180,7 @@
     
                 gs.plObj.dmgDone += gs.plObj.flatLife - gs.plObj.life + gs.plObj.power
     
-            }else if(playerActionKey =='a9' ){// SP/EX: ice lance "book of ice"
+            }else if(paKey =='a9' ){// SP/EX: ice lance "book of ice"
 
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -193,7 +194,7 @@
                 //Log
                 gs.logMsg.push(`Ice lance: dealt ${gs.plObj.power} dmg.`)
     
-            }else if(playerActionKey =='a10'){// EX: backstab "iron dagger"
+            }else if(paKey =='a10'){// EX: backstab "iron dagger"
     
                 //Resolve action cost
                 if(gs.plObj.roll < 5) return showAlert('Action requires roll greater than 5.')
@@ -207,7 +208,7 @@
                 gs.plObj.power += 1
     
             }
-             else if(playerActionKey =='a11'){// SP: lightning "book of lightning"
+             else if(paKey =='a11'){// SP: lightning "book of lightning"
     
                 //Action cost
                 if(gs.plObj.power < 2) return showAlert('Not enough power to pay for action cost.')
@@ -222,7 +223,7 @@
                 //Log
                 gs.logMsg.push(`Lightning: dealt ${dmgVal} dmg.`)
     
-            }else if(playerActionKey =='a12'){// shield bash
+            }else if(paKey =='a12'){// shield bash
     
                 //Dmg
                 gs.plObj.dmgDone += gs.plObj.def * gs.plObj.power
@@ -230,7 +231,7 @@
                 //Log
                 gs.logMsg.push(`Shield bash: dealt ${gs.plObj.def * gs.plObj.power} dmg.`)
     
-            }else if(playerActionKey =='a13'){// SP: fireball  "book of fire"
+            }else if(paKey =='a13'){// SP: fireball  "book of fire"
     
                 //Dmg
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
@@ -238,7 +239,7 @@
                 //Log
                 gs.logMsg.push(`Fireball: dealt ${actionMod + gs.plObj.power} dmg.`)
     
-            }else if(playerActionKey =='a14'){// SP: pyroblast "book of fire"
+            }else if(paKey =='a14'){// SP: pyroblast "book of fire"
     
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -252,16 +253,16 @@
                 //Log
                 gs.logMsg.push(`Pyroblast: dealt ${gs.plObj.power * gs.plObj.roll} dmg.`)
 
-            }else if(playerActionKey =='a15'){// quick block "tower shield"
+            }else if(paKey =='a15'){// quick block "tower shield"
     
                 gs.enObj.dmgDone -= actionMod - gs.plObj.dice
     
-            }else if(playerActionKey =='a16'){// barrier
+            }else if(paKey =='a16'){// barrier
                 
                 gs.plObj.protection = ['Barrier']
                 gs.sourceAction.cooldown = 0
     
-            }else if(playerActionKey =='a18'){// preparation "boots" (keep 50% of roll)
+            }else if(paKey =='a18'){// preparation "boots" (keep 50% of roll)
     
                 //Value
                 gs.plObj.rollBonus += Math.ceil(gs.plObj.roll * 0.5)
@@ -269,7 +270,7 @@
                 //Log
                 gs.logMsg.push(`Preparation: saved ${Math.ceil(gs.plObj.roll * 0.5)} roll points.`)
     
-            }else if(playerActionKey =='a19'){// reroll
+            }else if(paKey =='a19'){// reroll
     
                 //Val
                 gs.plObj.roll = rng(gs.plObj.dice)
@@ -277,50 +278,50 @@
                 //PASSIVE: check for on-roll passives.
                 resolvePostRollPassives()
     
-            }else if(playerActionKey =="a20"){// "scroll of repetition"
+            }else if(paKey =="a20"){// "scroll of repetition"
 
                 //Restores charge to all items
                 gs.plObj.inventory.forEach(item => {
                     item.actions.forEach(action => {
-                        if(action.playerActionKeyId !== 'a20'){
+                        if(action.paKeyId !== 'a20'){
                             action.actionCharge += gs.sourceAction.actionMod
                         }
                     })
                 })
 
-            }else if(playerActionKey =='a21'){// "curse of weakness"
+            }else if(paKey =='a21'){// "curse of weakness"
     
                 //Resolve stat change
                 changeStat('power', -actionMod, 'enemy')
     
             } 
-             else if(playerActionKey =='a22'){// (ene def-) wounds
+             else if(paKey =='a22'){// (ene def-) wounds
 
                 //Resolve stat change
                 changeStat('def', -actionMod, 'enemy')
     
-            }else if(playerActionKey =='a23'){// (ene -dice) "curse of chain"
+            }else if(paKey =='a23'){// (ene -dice) "curse of chain"
     
                 //Resolve stat change
                 changeStat('dice', -actionMod, 'enemy')
     
-            }else if(playerActionKey =='a24'){// (ene roll-) slowness "curse of slowness"
+            }else if(paKey =='a24'){// (ene roll-) slowness "curse of slowness"
     
                 //Resolve stat change
                 changeStat('roll', -actionMod, 'enemy')
     
-            }else if(playerActionKey =='a25'){// stun "chain"
+            }else if(paKey =='a25'){// stun "chain"
     
                 if(gs.plObj.roll != 1) return showAlert('Action requires roll 1.')
 
                 gs.enObj.state = 'Skip turn'
      
-            }else if(playerActionKey =='a47'){// stun: smoke bomb
+            }else if(paKey =='a47'){// stun: smoke bomb
     
-                if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.playerActionKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
+                if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
                 gs.enObj.state = 'Skip turn'
                 
-            }else if(playerActionKey =='a26'){// SP: freeze (stun spell) "book of ice"
+            }else if(paKey =='a26'){// SP: freeze (stun spell) "book of ice"
 
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -330,13 +331,13 @@
     
                 gs.enObj.state = 'Skip turn'
     
-            }else if(playerActionKey =='a31'){// RING: defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
+            }else if(paKey =='a31'){// RING: defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
     
                 // gs.plObj.def -= actionMod
                 resolveCharge(gs.sourceAction)
                 resolvePlayerStats()
     
-            }else if(playerActionKey =='a33'){// healing potion
+            }else if(paKey =='a33'){// healing potion
                 
                 //Heal value
                 gs.lifeRestoredByPlayer += Math.round((gs.plObj.flatLife - gs.plObj.life) / 100 * actionMod)
@@ -344,7 +345,7 @@
                 //Log
                 gs.logMsg.push(`Heling potion: +${gs.lifeRestoredByPlayer}  life.`)  
                  
-            }else if(playerActionKey =='a61'){// bandages
+            }else if(paKey =='a61'){// bandages
                 
                 //Heal value
                 gs.lifeRestoredByPlayer += actionMod
@@ -352,12 +353,13 @@
                 //Log
                 gs.logMsg.push(`Bandages: +${actionMod}  life.`)  
                  
-            }else if(playerActionKey =='a34'){// (def+) fortification
+            }else if(paKey =='a34'){// (def+) fortification
 
                 //Resolve stat change
                 changeStat('def', actionMod, 'player')
     
-            }else if(playerActionKey =='a35'){// dodge % evasion "leather cape"
+            }
+             else if(paKey =='a35'){// dodge % evasion "leather cape"
     
                 let dodgePercent = gs.plObj.roll * actionMod
                 let dodgeRoll = rng(100)
@@ -366,8 +368,7 @@
                     gs.enObj.dmgDone = -99999 // add something better for dodge later
                 }
     
-            }
-             else if(playerActionKey =='a37'){// SP: buff next attack with piercing "leather gloves"
+            }else if(paKey =='a37'){// SP: buff next attack with piercing "leather gloves"
 
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -378,24 +379,24 @@
                 gs.plObj.piercing = true
                 gs.sourceAction.cooldown = 0
 
-            }else if(playerActionKey =='a38'){// static "cape"
+            }else if(paKey =='a38'){// static "cape"
     
                 if(gs.plObj.roll < 8) return showAlert('This action requires roll greater than 8.')
     
                 //Resolve stat change
                 changeStat('power', 2, 'player')
                     
-            }else if(playerActionKey =='a39'){// sprint "woolen boots"
+            }else if(paKey =='a39'){// sprint "woolen boots"
 
                 //Resolve stat change
                 changeStat('roll', 2, 'player')
     
-            }else if(playerActionKey =='a40'){// water potion "water potion"
+            }else if(paKey =='a40'){// water potion "water potion"
 
                 //Resolve stat change
                 changeStat('power', actionMod, 'player')
     
-            }else if(playerActionKey =='a41'){// poison
+            }else if(paKey =='a41'){// poison
                 
                 //Marker
                 gs.plObj.poisonBuff = true
@@ -403,14 +404,14 @@
                 //Log
                 gs.logMsg.push('Applied poison to weapons.<br>')
     
-            }else if(playerActionKey =='a42'){// 'block' 'shield'
+            }else if(paKey =='a42'){// 'block' 'shield'
     
                 gs.enObj.dmgDone -= gs.plObj.roll
 
                 //Log
                 gs.logMsg.push(`Blocked ${gs.plObj.roll} dmg.`)
     
-            }else if(playerActionKey =='a44'){// "restoration" "scroll of restoration"
+            }else if(paKey =='a44'){// "restoration" "scroll of restoration"
 
                 let restoredPoints = 0
     
@@ -434,33 +435,33 @@
                 //Log
                 gs.logMsg.push(`restoration: restored ${-1 * restoredPoints} life`)
     
-            }else if(playerActionKey =='a45'){// club attack
+            }else if(paKey =='a45'){// club attack
     
                 gs.plObj.dmgDone += 3 + gs.plObj.power
 
                 //Log
                 gs.logMsg.push(`Club: dealt ${gs.plObj.power} dmg.`)
     
-            }else if(playerActionKey =='a48'){// "focus" "wooden staff"
+            }else if(paKey =='a48'){// "focus" "wooden staff"
 
                 //Resolve stat change
                 changeStat('power', Math.floor(1 * gs.plObj.roll / 4), 'player')
     
-            }else if(playerActionKey =='a49'){// zealotry
+            }
+             else if(paKey =='a49'){// zealotry
     
                 //Resolve stat change
                 changeStat('power', gs.plObj.roll, 'player')
                 changeStat('def', -gs.plObj.roll, 'player')
     
-            }
-             else if(playerActionKey =='a50'){// defensive stance
+            }else if(paKey =='a50'){// defensive stance
             
                 //Resolve stat change
                 changeStat('roll', -1, 'player')
                 
                 gs.sourceAction.cooldown = 0
      
-            }else if(playerActionKey =='a52'){// hook/swap
+            }else if(paKey =='a52'){// hook/swap
             
                 let rollRef = gs.plObj.roll
                 gs.plObj.roll = gs.enObj.roll
@@ -471,7 +472,7 @@
     
                 //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
                 recalcEneAction()
-            }else if(playerActionKey =='a53'){// "transmute" "alchemists playerActionKey"
+            }else if(paKey =='a53'){// "transmute" "alchemists paKey"
                 
                 //Condition check
                 if(gs.plObj.roll != 1 && gs.plObj.roll != 2) return showAlert('Transmute requires roll 1 or 2.')
@@ -482,7 +483,7 @@
                 //Log
                 gs.logMsg.push(`transmute: added ${gs.plObj.roll} coins`)
     
-            }else if(playerActionKey =='a54'){// "inferno" "scroll of inferno"
+            }else if(paKey =='a54'){// "inferno" "scroll of inferno"
     
                 //Dmg
                 gs.plObj.dmgDone += gs.plObj.power * gs.plObj.coins
@@ -493,7 +494,7 @@
                 //Cost
                 gs.plObj.coins = 0
     
-            }else if(playerActionKey =='a55'){// "fear" "wizards head"
+            }else if(paKey =='a55'){// "fear" "wizards head"
 
                 //Marker
                 gs.enObj.state = 'fear'
@@ -506,7 +507,7 @@
                 //Log
                 gs.logMsg.push(`fear: enamy will block during the next turn (fear reacharge:${referenceActionObj.cooldown})`)
 
-            }else if(playerActionKey =='a57'){// "heal" "book of order"
+            }else if(paKey =='a57'){// "heal" "book of order"
 
                 //Cost
                 if(gs.plObj.power < 0) return showAlert('Not enough power to pay for action cost.')
@@ -519,7 +520,7 @@
                 //Log
                 gs.logMsg.push(`heal: +${gs.lifeRestoredByPlayer} life, -1 power.`)
                 
-            }else if(playerActionKey =='a60'){// heavy block "towerbuckler"
+            }else if(paKey =='a60'){// heavy block "towerbuckler"
     
                 gs.enObj.dmgDone -= gs.plObj.def * (actionMod/100) 
 
@@ -644,6 +645,9 @@
                     gs.plObj.dmgDone = 0
                 }
                 
+                //PASSIVES CHEC: oh-hit passies
+                resolveOnHitPassives()
+
                 //Resolve stat change
                 changeStat('life', -gs.plObj.dmgDone, 'enemy')           
 
@@ -819,54 +823,48 @@
             }
             // VICTORY.
             else if (gs.enObj.life < 1){
-                //End game stats
+
+                //End game screen stat counter
                 gs.enemyCounter++
 
-                //Exit encounter
+                //Add exerience and recalculate level
+                resolveExpAndLvl()
+
+                //End encounter
                 if(gs.encounter == gs.playerLocationTile.enemyQuant){
+
                     gs.encounter = 'end'
 
-                    if(gs.playerLocationTile.tileType == 'portal'){
-                        openStateScreen("completed")
-                        return
-                    }
-                }
-
-                //Next fight
-                else{
-                    gs.encounter++ 
-                }
-                
-                //If final encounter, show rewards
-                if(gs.encounter == 'end'){
+                    //PASSIVES CHECK: end of encounter
+                    resolveEndOfCombatPassives()
+                    
 
                     //Lock screen
                     document.body.classList.add('lock-actions', 'darken')
-
+    
                     //Run gen reward after delay
                     window.setTimeout(
                         function(){
-
+    
                             //Open reward screen
                             genRewards(gs.flatItemReward + gs.playerLocationTile.enemyQuant)
-
+    
                             //Unlock screen
                             document.body.classList.remove('lock-actions', 'darken')
-
+    
                             //Reset flat stats
                             resetFlatStats()
                         },
                         1000
                     )
                 }
-                //Next encounter
+                //Next fight
                 else{
+                    gs.encounter++ 
+
                     initiateCombat()
                     runAnim(el('enemy-sprite'), 'enemyEntrance') 
-                }
-
-                //Add exerience and recalculate level
-                resolveExpAndLvl()
+                }     
             }
             // NEXT TURN.
             else if (gs.sourceAction.actionType !== "extra-action" || gs.plObj.roll < 1){
@@ -985,6 +983,7 @@
             //Recalc all items and actions
             resolvePlayerStats()
         }
+      
         
 //ENEMY
     //Enemy action logic
@@ -1103,531 +1102,6 @@
         gs.logMsg.push(`enemy action recalculated`)
     }
     
-
-//ACTIONS
-    //Resolve action charges
-    function resolveCharge(action){
-        action.actionCharge--
-
-        if(action.actionCharge < 1){
-
-            //Remove action
-            removeFromArr(gs.plObj.actions, action)
-            removeFromArr(gs.plObj.tempActions, action)
-
-            //Resolve item on 0 charge
-            let item = findItemByAction(action)
-            //Delete id consumable
-            if(
-                item.itemName.includes('potion') ||
-                item.itemName.includes('scroll') ||
-                item.itemName.includes('curse')
-            ){
-                removeItem(item.itemId)
-            }
-            //Else unequip
-            else if(item.passiveStats.length === 0){
-                equipItem(item.itemId)
-            }
-
-            
-            //Loose passive stat
-            resolvePlayerStats()  
-        }
-    }
-    //Resolve stats
-    //Recalc stats & adds actions from items
-    function resolvePlayerStats(){
-
-        //Resets actions
-        //Regen action list if the item was added, removed, equipped, unequipped
-        gs.plObj.actions = []
-
-        //Adds actions from items to players actions array.
-        gs.plObj.inventory.forEach(item => {
-
-            //Check all equipped items
-            if(item.equipped){
-
-                //Add all actions from equipped item.
-                item.actions.forEach(action => {
-                    if(gs.plObj.actionSlots < gs.plObj.actions.length) return
-                    if(action.actionCharge < 1) return
-
-                    //Add action to player actions
-                    gs.plObj.actions.push(action)  
-                })
-            }
-        })
-
-        //Add temporary actions to players actions array.
-        gs.plObj.tempActions.forEach(action => {
-            if(gs.plObj.actionSlots > gs.plObj.actions.length){
-                gs.plObj.actions.push(action)
-            }
-        })
-
-
-
-        //Resolve life  
-        //Add reclaculation for all stats
-        let baseLife = gs.plObj.baseLife + gs.plObj.flatLifeMod //Flat life mod for max life spell fx
-        let flatLife = 0
-        let lifeMultiplier = 1
-        let lifeDeviation = gs.plObj.life - gs.plObj.flatLife// See if temporary bonuses should be included.
-
-        let basePower = gs.plObj.basePower
-        let flatPower = 0
-        let powerDeviation = gs.plObj.power - gs.plObj.flatPower
-
-        let baseDef = gs.plObj.baseDef
-        let flatDef   = 0
-        let defDeviation = gs.plObj.def - gs.plObj.flatDef
-
-        let baseDice = gs.plObj.baseDice
-        let flatDice = baseDice
-        let diceDeviation = gs.plObj.dice - gs.plObj.flatDice
-
-        let flatSlots = gs.plObj.baseSlots
-
-        //Extracts stats
-        function extractPassiveStats(obj){{
-            obj.passiveStats.forEach(statObj => {
-        
-                //Flat life
-                if(statObj.stat === 'life'){
-                    flatLife += statObj.value
-                }
-        
-                //% life
-                else if(statObj.stat === 'life%'){
-                    lifeMultiplier += (statObj.value / 100)
-                }
-
-                //Flat power
-                else if(statObj.stat === 'power'){
-                    flatPower += statObj.value
-                }
-
-                //
-                else if(statObj.stat === 'def'){
-                    flatDef += statObj.value
-                }
-
-                //Replace dice
-                else if(statObj.stat === 'dice'){
-                    flatDice = statObj.value
-                }
-
-                else if(statObj.stat === 'dice-mod'){
-                    flatDice += statObj.value
-                }
-
-                //Item slots
-                else if(statObj.stat === 'slots'){
-                    flatSlots += statObj.value
-                }
-            })
-        }}
-
-        //Check items
-        gs.plObj.inventory.forEach(item => {
-            if(item.passiveStats.length > 0 && item.equipped){
-                extractPassiveStats(item)
-            }
-        })
-
-        //Check actions
-        gs.plObj.actions.forEach(action => {
-            if(action.passiveStats.length > 0){
-            extractPassiveStats(action)
-            }
-        })
-
-        //Check tree nodes
-        gs.plObj.treeNodes.forEach(node => {
-            if(node.passiveStats !== undefined && node.passiveStats.length > 0){
-                extractPassiveStats(node)
-            }
-        })
-
-        //Life final calculation
-        //(base + flat) + deviation + temporary
-        //Temporayr not yet implemented
-        gs.plObj.flatLife= Math.round((baseLife + flatLife) * lifeMultiplier)
-        gs.plObj.life = gs.plObj.flatLife+ lifeDeviation  
-
-        //Power final calculation
-        //(base + flat) + deviation + temporary
-        gs.plObj.flatPower = basePower + flatPower
-        gs.plObj.power = gs.plObj.flatPower + powerDeviation
-
-        //Def final calc
-        gs.plObj.flatDef = baseDef + flatDef
-        gs.plObj.def = gs.plObj.flatDef + defDeviation
-
-        //Dice
-        gs.plObj.flatDice = flatDice
-        gs.plObj.dice = gs.plObj.flatDice + diceDeviation
-
-        //Slots 
-        gs.plObj.equipmentSlots = flatSlots
-        gs.plObj.actionSlots = flatSlots
-    }
-    //Resolve post-roll passives
-    function resolvePostRollPassives(){
-        gs.plObj.actions.forEach(action => {
-            if     (action.keyId == 'a58'){ // power surge
-                if(gs.plObj.roll == 8){
-                    gs.plObj.power += action.actionMod
-                    gs.logMsg.push(`Power surge: +1 power (passive).`)
-                    el('p-power').innerHTML = gs.plObj.power
-                }
-            }
-            else if(action.keyId == 'a59'){ // armor up
-                if(gs.plObj.roll == 4){
-                    gs.plObj.def += action.actionMod
-                    gs.logMsg.push(`Armor up: +1 def (passive).`)
-                    el('p-def').innerHTML = gs.plObj.def
-                }
-            }
-        })
-    }
-
-
-//Dealing with offered items
-    //Gen list
-    function genOfferedItemList(quant, event) {
-
-        gs.plObj.offeredItemsArr = []
-        let generatedReward
-
-        if(quant == undefined){quant = gs.flatItemReward}//Resolve undefined quant
-
-        if(quant == "all"){//all items for testing
-            itemsRef.forEach(item => {
-                generatedReward =  new ItemObj(item.itemName)
-                gs.plObj.offeredItemsArr.push(generatedReward.itemName)
-                
-
-                //Add card to container
-                el('merchant-container').append(genItemCard(generatedReward, 'item-to-buy'))
-            })
-        }else{
-
-            //Gen item per quant value in function
-            for(i = 0; i < quant; i++){ 
-    
-                generatedReward =  new ItemObj()
-    
-                //Add item to reward pool, to find them after item card is selected from html
-                gs.plObj.offeredItemsArr.push(generatedReward)
-                
-                //Add html cards per item
-                if(event == 'reward'){
-                    //Gen item html card elem
-                    let rewardElem = genItemCard(generatedReward, 'reward')
-    
-                    //Add card to container
-                    el('reward-container').append(rewardElem)
-                }
-                else if(event == 'merchant'){
-                    //Gen item html card elem
-                    let rewardElem = genItemCard(generatedReward, 'item-to-buy')
-    
-                    //Add card to container
-                    el('merchant-container').append(rewardElem)
-                }
-            }
-        }
-
-    }
-    //Resolve
-    function resolveChoosingOfferedItem(itemId, event){   
-
-        //Find item with matching id
-        gs.plObj.offeredItemsArr.forEach(targetItem => {
-
-            if(targetItem.itemId == undefined || targetItem.itemId != itemId) return false
-
-            //If no slots return
-            if(gs.plObj.inventory.length == gs.plObj.inventorySlots){ 
-                showAlert('No inventory slots.') 
-                return
-            }
-
-            if(event == 'reward'){
-                //Add item to players inventory & auto-equip
-                gs.plObj.inventory.push(targetItem)
-                equipItem(targetItem.itemId)
-    
-                //Move inventory list back to it's page
-                el('inventory').childNodes[1].append(el('inventory-list'))
-                
-                //screen() is ran from the button.
-            }
-            else if(event == 'purchase'){
-                if(resolvePayment(targetItem.cost) == false) return
-                
-                //Destroy item card
-                el(itemId).remove()
-
-                //Update coins indicator
-                el('merchant-coins-indicator').innerHTML = `You have: ${gs.plObj.coins}<img src="./img/ico/coin.svg">`
-
-                showAlert(`${upp(targetItem.itemName)} purchased for ${targetItem.cost} and added to the inventory.`)
-
-                gs.plObj.inventory.push(targetItem)
-
-                equipItem(targetItem.itemId)
-            }
-
-        })
-    }
-
-//ITEMS
-    //Add item (to player inventory based on arguments).
-    function addItem(key, iLvl){
-
-        //Check if there are slots in the inventory.
-        if(gs.plObj.inventory.length < gs.plObj.inventorySlots){
-
-            // console.log(key);
-
-            //Create new item obj
-            let newItem = new ItemObj(key, iLvl)
-
-            //If empty equippment slots, equip item automatically.
-            if(gs.plObj.equipmentSlots > calcEquippedItems()){
-                newItem.equipped = true
-            }
-
-            //Add item to the inventory.
-            gs.plObj.inventory.push(newItem)
-
-            //Resolve stats and actions added by item?
-            // resolvePlayerStats()
-        }
-
-        else{
-            showAlert('Inventory is full.')
-        }
-    }
-    //Equip/unequip item.
-    function equipItem(itemId){
-
-        //Find item by id
-        let item = findItemById(itemId)
-
-        //Get item types to prevent staking
-        let itemSlots = []
-        gs.plObj.inventory.forEach(invItem => {
-            if(!invItem.equipped || invItem.itemSlot == 'generic') return false
-            itemSlots.push(invItem.itemSlot)
-        })
-
-
-        //Equip
-        if(
-            !item.equipped &&                         //check if equipped
-            gs.plObj.equipmentSlots > calcEquippedItems() &&  //check if there are slots
-            !itemSlots.includes(item.itemSlot)        //check if unique type
-        )
-        {
-            item.equipped = true
-        } 
-        //Unequip item
-        else if (item.equipped == true){
-            item.equipped = false
-        }
-        else if(itemSlots.includes(item.itemSlot)){
-            showAlert("Can't equip two items of the same type.")
-        }
-        else {
-            showAlert('No equippment slots.')
-        }
-
-        resolvePlayerStats()//Adjust this to recalc all items
-        syncUi()
-    }
-    //Remove/drop item (inventory).
-    function removeItem(itemId){
-        let item = findByProperty(gs.plObj.inventory, 'itemId', itemId)
-        
-        //Remove item actions
-        item.actions.forEach(action => {
-            removeFromArr(gs.plObj.actions, action)
-        })
-
-        //Remove from inventory
-        removeFromArr(gs.plObj.inventory, item)
-
-        syncUi()
-    }
-    //Sell item (merchant).
-    function sellItem(itemId){
-        let item = findItemById(itemId)
-        
-        gs.plObj.coins += item.cost
-        
-        removeItem(itemId)
-
-        showAlert(`${upp(item.itemName)} sold for ${item.cost} coins.`)
-    }
-    //Enhance item (blacksmith).
-    function modifyItem(itemId, type){
-        //Find item
-        let targetItem = findItemById(itemId)
-
-        if(type == 'enhance'){
-            if(resolvePayment(calcCost('enhance', itemId)) == false) return
-
-            //Item enchance logic
-                 //Add passive mod
-                let addedStat = rarr([{stat:'life',value:6}, {stat:'power',value:1}, {stat:'def',value:2}])
-
-                //If no mods add.
-                if(targetItem.passiveStats.length < 1){
-                    targetItem.passiveStats.push(addedStat)
-                }
-                //Check if matching stat exists -> increase stat
-                else{
-                    let matchingStat
-
-                    targetItem.passiveStats.forEach(statObj =>{
-                        if(addedStat.stat != statObj.stat) return false
-                
-                        matchingStat = true
-                        statObj.value += addedStat.value  
-                    })
-
-                    //Else add stat
-                    if(!matchingStat){
-                        targetItem.passiveStats.push(addedStat)
-                    }
-                }
-
-                //Increase ench quant to increase cost per enhant of the same item.
-                targetItem.enhancementQuantity++
-
-            resolvePlayerStats()//Recalculates passive stats
-            showAlert('Item enhancement.')
-        }
-        else if(type == 'repair'){
-            //Find 1st action
-            let action = targetItem.actions[0]
-
-            //If no actions return
-            if(action == undefined) return showAlert("This item can't be repaired.")
-
-            //If can't pay return
-            if(resolvePayment(calcCost('repair', itemId)) == false) return
-
-            //Add 50% of max charges
-            action.actionCharge += Math.ceil(action.flatActionCharge / 2)
-
-            //Increase ench quant to increase cost per enhant of the same item.
-            targetItem.repairQuantity++
-
-            //item repair logic
-            showAlert('Item repaired.')
-        }
-
-        syncUi()
-    }
-    //Move function for purchasing and item here.
-
-    //Util: resolve payment.
-    function resolvePayment(cost){
-        if(gs.plObj.coins < cost){
-            showAlert(`You can't afford this. You need <img src="./img/ico/coin.svg"> ${cost - gs.plObj.coins} more.`)
-            return false
-        }
-        else{
-            gs.plObj.coins -= cost
-            showAlert(`You paid <img src="./img/ico/coin.svg"> ${cost} coins.`)
-        }
-    }
-    //Util: find item by action.
-    function findItemByAction(action){
-        let itemWihtAction
-
-        gs.plObj.inventory.forEach(item => {
-
-            item.actions.forEach(itemAction => {
-
-                if(itemAction.actionId === action.actionId){
-
-                    itemWihtAction = item
-
-                }
-
-            })
-
-        })
-
-        return itemWihtAction
-    }
-    //Util: find item by id.
-    function findItemById(itemId, sourceArr){
-        let targetItem
-
-        if(sourceArr == undefined){
-            sourceArr = gs.plObj.inventory
-        }
-
-        sourceArr.forEach(item => {
-            if(item.itemId != itemId) return false
-            targetItem = item
-        })
-
-        if(targetItem == undefined){
-            gs.plObj.offeredItemsArr
-
-            sourceArr.forEach(item => {
-                if(item.itemId != itemId) return false
-                targetItem = item
-            })
-        }
-
-        return targetItem
-    }
-    
-
-//TREE
-//Spend tree points
-    function addTreeNode(nodeId){
-        if(gs.plObj.treePoints > 0){
-            let node = findByProperty(treeRef, 'id', nodeId)
-
-            // Add skill node to player obj    
-            gs.plObj.treeNodes.push(node)    
-            
-            gs.plObj.treePoints--
-
-            resolvePlayerStats()
-            syncUi()
-        }
-        else{
-            showAlert(`All your passive skill points are allocated.`)
-        }
-    }
-    function resolveExpAndLvl(){
-
-        //Add 1 exp for winning
-        gs.plObj.exp++                                  
-
-        //Recalc player lvl
-        gs.plObj.lvl = Math.floor(gs.plObj.exp / config.expRequiredPerLvl + 1) 
-
-        //Calc exp until lvl up
-        gs.plObj.lvlUpExp = (gs.plObj.lvl - 1) * config.expRequiredPerLvl + config.expRequiredPerLvl
-
-        //Calc available tree points?
-        //-1 for initial lvl 1
-        gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length - 1
-    }
-
 
 //GAME START
     //Checks if LS save exists
