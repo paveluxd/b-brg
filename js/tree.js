@@ -116,63 +116,64 @@
         }) 
     }
 
+    //On death
+    function resolveOnDeathPassives(){
+        gs.plObj.treeNodes.forEach(node => {
+            if(node.id == 't9' && node.activated != true){//recovery
+
+                gs.plObj.life = node.val
+
+                //Set variable
+                node.activated = true
+
+                //Log
+                gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+            }
+        }) 
+    }
+
     //Tree nodes
     let treeRef = [
-        //Core stats
-        {id:'t1' ,name:'life' ,desc:'add 10 base life'         ,passiveStats:[{stat:'life',  value:6}],},
-        {id:'t2' ,name:'life' ,desc:'increse base life by 25%' ,passiveStats:[{stat:'life%', value:20}],},
-
-        {id:'t3' ,name:'def' ,desc:'gain 2 base def'          ,passiveStats:[{stat:'def',   value:2}],},
-        {id:'t4',name:'power' ,desc:'gain 1 base power'        ,passiveStats:[{stat:'power', value:1}],},
-        {id:'t5',name:'dice' ,desc:'gain 1 to base dice'      ,passiveStats:[{stat:'dice-mod',  value:1}],},
-        {
-            id:'t6' ,
-            name:'slots' ,
+          {id:'t1', name:'life' 
+            ,desc:'add 6 base life' ,passiveStats:[{stat:'life',  value:6}],
+        },{id:'t2', name:'life' 
+            ,desc:'increse base life by 10%' ,passiveStats:[{stat:'life%', value:10}],
+        },{id:'t3', name:'def',
+            desc:'gain 2 base def'           ,passiveStats:[{stat:'def',   value:2}],
+        },{id:'t4', name:'power',
+            desc:'gain 1 base power'        ,passiveStats:[{stat:'power', value:1}],
+        },{id:'t5', name:'dice',
+            desc:'gain 1 to base dice'       ,passiveStats:[{stat:'dice-mod',  value:1}],
+        },{id:'t6', name:'slots',
             desc:'gain 1 equipment slots'   ,
             passiveStats:[{stat:'slots', value:1}],
         },
 
-        //Recovery
-        {id:'t7', name:'recovery',
+          {id:'t7', name:'recovery',
             desc:'restore 3 life at end of the combat',
             val:3,
-        },
-        {id:'t8', name:'leech',
+        },{id:'t8', name:'leech',
             desc:'restore 1 life whenever you hit an enemy',
+            val:1,
+        },{id:'t9', name:'reborn',
+            desc:'once per encounter, when you reach 0 life, survive with 1 life',
             val:1,
         },
         
-
         //On hit effects
-        // {id:'ext-dmg'}, //Deal +1 damage
-        // {id:"ext-def-break-dmg"}, //Break 1 def on hit.
-
-
+            // {id:'ext-dmg'}, //Deal +1 damage
+            // {id:"ext-def-break-dmg"}, //Break 1 def on hit.
         //Extra defences
-        // {id:'add-def-per-power'}, //+1 def per point of power.
-
-
+            // {id:'add-def-per-power'}, //+1 def per point of power.
         //Action specific
-        // {id:'improve-barrier'}, //improve barrier by 25%
-
-
+            // {id:'improve-barrier'}, //improve barrier by 25%
         //Cooldown actions
-        // {id:'less-cd'}, //Cooldowns recover 1 turn faster
-
-
+            // {id:'less-cd'}, //Cooldowns recover 1 turn faster
         //Extra actions
-
-
         //Gold
-
-
         //Exp
-
-
         //Aaction charge
-        // {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
-
-
+            // {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
         //Ideas
-        //All fireballs that you draft have +5 charge.
+            //All fireballs that you draft have +5 charge.
     ]

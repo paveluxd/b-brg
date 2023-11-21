@@ -489,3 +489,267 @@
 
         return targetItem
     }
+
+//INVENTORY
+    //Move item card generation to a separate function
+    function syncItemCards(){
+        
+        //Set inventory heading
+        el('inventory-heading').innerHTML = `Inventory ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`
+        
+        //Sync inventory
+        el('inventory-list').innerHTML = ''
+        gs.plObj.inventory.forEach(item => {
+            el('inventory-list').append(genItemCard(item))
+        })
+
+        //Sync market 
+        el('items-to-sell').innerHTML = ``
+        gs.plObj.inventory.forEach(item => {
+            el('items-to-sell').append(genItemCard(item, 'item-to-sell'))
+        })
+
+        //Sync blacksmith
+        el('items-to-enhance').innerHTML = ``
+        gs.plObj.inventory.forEach(item => {
+            el('items-to-enhance').append(genItemCard(item, 'item-to-enhance'))
+        })
+        el('items-to-repair').innerHTML = ``
+        gs.plObj.inventory.forEach(item => {
+            el('items-to-repair').append(genItemCard(item, 'item-to-repair'))
+        })
+    }
+
+    //Gen item card
+    function genItemCard(item, type){
+        //Creates card container
+            let card = document.createElement('div')
+            card.classList.add('item-card', 'body-12')
+            let cardId = item.itemId
+
+            //Top container on click
+            let                   clickAttr =`onclick="genItemModal('${item.itemId}')"`
+            if(type == 'reward'){
+
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'reward')"`
+
+            }
+            else if(['item-to-enhance', 'item-to-repair'].indexOf(type) > -1){
+
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'preview')"`
+
+            }
+            else if(['item-to-buy', 'item-to-sell'].indexOf(type) > -1){
+                
+                clickAttr =`onclick="genItemModal('${item.itemId}', 'merchant')"`
+
+            }
+
+
+            //Image key
+            let                                imgKey = item.itemName
+            if     (imgKey.includes('scroll')){imgKey = 'magic scroll'} //scroll
+            else if(imgKey.includes('curse') ){imgKey = 'curse scroll'} //curse
+
+            //Item type
+            let itemSlot = ``
+            if(item.itemSlot !== 'generic'){itemSlot = ` (${item.itemSlot})`}
+
+            //Added actions
+            let actionSet = ``
+            item.actions.forEach(action =>{
+                if(action.actionType == 'passive'){
+                    actionSet += `${upp(action.desc)} (passive).`
+                }
+                else {
+                    actionSet += `${upp(action.actionName)} (x${action.actionCharge}) - ${upp(action.desc)}.<br>`
+                }
+            }) 
+
+            //Passive stats
+            let passiveSet = ``
+            item.passiveStats.forEach(stat =>{
+                passiveSet += `<div><img src="./img/ico/${stat.stat}.svg"> ${stat.value}</div>`
+            })
+
+            //Btns
+            let btn1 = `<button class="drop-button body-12" onclick="removeItem('${item.itemId}'), this.remove()">
+                            <img src="./img/ico/item-x.svg"> <p>Drop</p>
+                        </button>`
+
+            let btn2 = `<button class="equip-button body-12" onclick="equipItem('${item.itemId}'), this.classList.toggle('equipped')">
+                            <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
+                        </button>`
+
+            if(type == 'reward'){
+                // btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
+                //             <img src="./img/ico/item-view.svg"> <p>View</p>
+                //         </button>`
+
+                btn2 = `<button class="equip-button body-12" onclick="resolveChoosingOfferedItem('${item.itemId}', 'reward'), screen('map')">
+                            <p>Pick</p> <img src="./img/ico/item-pick.svg">
+                        </button>`
+            }
+            else if(type == 'item-to-buy'){
+                // btn1 = `<button class="drop-button body-12" onclick="toggleModal('item-modal'), genItemModal('${item.itemId}', 'reward')">
+                //             <img src="./img/ico/item-view.svg"> <p>View</p>
+                //         </button>`
+
+                btn2 = `<button class="equip-button body-12" onclick="resolveChoosingOfferedItem('${item.itemId}', 'purchase')">
+                            <p>Buy for ${item.cost}</p> <img src="./img/ico/coin.svg">
+                        </button>`
+            }
+            else if(type == 'item-to-sell'){
+                btn2 = `<button class="drop-button body-12" onclick="sellItem('${item.itemId}')">
+                            <p>Sell for ${item.cost}</p> <img src="./img/ico/coin.svg">
+                        </button>`
+
+                // btn1 = `<button class="equip-button body-12" onclick="equipItem('${item.itemId}'),  this.classList.toggle('equipped')">
+                //             <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
+                //         </button>`
+                cardId += '-to-sell'//Adjust id to avoid conflicts
+            }
+            else if(type == 'item-to-enhance'){
+                btn1 = ``
+
+                btn2 = `<button class="equip-button body-12" onclick="modifyItem('${item.itemId}', 'enhance')">
+                            <p>Enhance for ${calcCost('enhance', item.itemId)}</p> <img src="./img/ico/coin.svg">
+                        </button>`
+                cardId += '-to-enhance'//Adjust id to avoid conflicts
+            }
+            else if(type == 'item-to-repair'){
+                btn2 = `<button class="equip-button body-12" onclick="modifyItem('${item.itemId}', 'repair')">
+                            <p>Repair for ${calcCost('repair', item.itemId)}</p> <img src="./img/ico/coin.svg">
+                        </button>`
+                cardId += '-to-repair'//Adjust id to avoid conflicts
+            }
+
+            //Update equip state for inventory item
+            if(['item-to-enhance', 'item-to-repair', 'item-to-sell'].indexOf(type) > -1 == false){
+                if(item.equipped){ 
+                    btn2 = `<button class="equip-button body-12 equipped" onclick="equipItem('${item.itemId}'), this.classList.toggle('equipped')">
+                                <p>Equip</p> <img src="./img/ico/item-equip-yes.svg">
+                            </button>`
+                }
+            }
+
+            card.id = cardId //has to be here, if declared aboce, it will bind html elemnts with the same id (inventory and market)
+            card.innerHTML =`
+                            <div class="item-top-container" ${clickAttr}>
+                                <h3>${upp(item.itemName)}${itemSlot}</h3>
+                                <p>${actionSet}</p>
+                                <div class="passive-container">${passiveSet}</div>
+                            </div>
+                            
+                            <div class="item-bottom-container">
+                                <img src="./img/items/${imgKey}.svg">
+                                ${btn2}
+                            </div>
+                        `
+
+            return card
+    }
+
+    //Item details modal
+    function genItemModal(itemId, source){
+        let itemModal = el('item-modal')
+
+        //Find item object
+        let itemObj = findByProperty(gs.plObj.inventory, 'itemId', itemId)
+
+        //Search reward pool if reward
+        if(source == 'reward' || source == 'merchant'){
+            itemObj = findByProperty(gs.plObj.offeredItemsArr, 'itemId', itemId)
+        }
+
+        //Get actions
+        let actionSet = ``
+
+        if(itemObj.actions.length > 0){
+            actionSet = `
+                <br><br>
+                <h3>Adds actions</h3>
+            `
+            itemObj.actions.forEach(action => {
+                actionSet += `
+                    <div class="action-ref">
+                        <h3>${upp(action.actionName)}</h3>
+                        <p>${upp(action.desc)}.</p>
+                        <p>Action charges: ${action.actionCharge}</p>
+                    </div>
+                `
+            })
+        }
+
+        //Get passives
+        let passiveSet = ``
+
+        if(itemObj.passiveStats.length > 0){
+            passiveSet = `
+                <br><br>
+                <h3>Stat modifications</h3>
+            `
+            itemObj.passiveStats.forEach(passive => {
+                passiveSet += `
+                    <div class="stat">
+                        <img src=./img/ico/${passive.stat}.svg> 
+                        <p>${upp(passive.stat)}</p> ${passive.value}
+                    </div>`
+            })
+        }
+
+        //Get description
+            let descriptionSet = ``
+
+            if(itemObj.desc != undefined){
+                descriptionSet = `
+                    <br>
+                        <p class="italic">${upp(itemObj.desc)}.</p>
+                    <br>
+                `
+            }
+
+
+        //Gen button
+            let btn = `
+                <button  onclick="removeItem('${itemId}'), toggleModal('item-modal')">
+                    <img src="./img/ico/unequip.svg">
+                    Destroy item
+                </button>
+            `
+            //Swap button if reward
+            if(source == 'reward'){
+                btn = `
+                <button onclick="removeItem('${itemId}'), toggleModal('item-modal')">
+                    <img src="./img/ico/equip.svg">
+                    Pick item
+                </button>
+                `
+            }
+            else if(source == 'preview' || source == 'merchant'){
+                btn = ``
+            }
+
+        itemModal.innerHTML = `
+            <div id="item-modal-tabs" class="tab-container">
+                ${btn}
+        
+                <button onclick="toggleModal('item-modal')">
+                    <img src="./img/ico/tab-hide.svg">
+                    Close
+                </button>
+            </div>
+
+            <div class="modal-container ">
+                <img class="item-img" src="./img/items/${itemObj.itemName}.svg">
+                <h2>${upp(itemObj.itemName)}</h2>
+                ${descriptionSet}
+                Item type: ${upp(itemObj.itemSlot)}
+
+                ${actionSet}
+                ${passiveSet}
+            </div>
+        `
+
+        toggleModal('item-modal')
+    }

@@ -4,8 +4,8 @@ let config = {
         power:      0,
         def:        0,
         dice:       6,
-        inventory: 20,
-        slots:      6,
+        inventory: 40,
+        slots:      5,
         startingItems: [
             'club',
             'shield',
@@ -17,10 +17,14 @@ let config = {
             // 'dodecacore'
             // "sigil of light",
             // 'wooden staff',
+
             // 'book of order',
-            // 'book of lightning'
+            // 'book of lightning',
+            // 'book of moon',
+            // 'pauldron',
             // 'sword',
             // 'mace',
+
             // 'boots',
             // 'plate armor',
             // 'water potion'
@@ -34,20 +38,20 @@ let config = {
 
     //Game
         testCombat: false, //Initiates combat at the start (for testing).
-        showScreen: '',
+        showScreen: '', 
         clearLs: false,
 
     //Progression
-        expRequiredPerLvl: 3,
+        expRequiredPerLvl: 4,
         basePassieSkillPoints: 0,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
-        stage: 0,
-        mapX: 1,
-        mapY: 1,
+        stage:           0,
+        mapX:            1,
+        mapY:            1,
         portalDefenders: 1,
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
@@ -56,12 +60,13 @@ let config = {
             // {tileType: 'monument-1'},
         ],
 
-        bossFrequency: 3, //Every Nth stage
+        bossFrequency:   3, //Every Nth stage
 
-        flatItemReward: 2, //Base rewards
-        flatFoodReward: 1, //Food per round +1 per enemy
+        //Rewards
+        flatItemReward:  2, //Base rewards
+        flatFoodReward:  1, //Food per round +1 per enemy
         flatCoinsReward: 6, 
 
         //Merchant
-        merchantQuant: 10,    
+        merchantQuant:  10,    
 }
