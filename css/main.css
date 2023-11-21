@@ -177,6 +177,7 @@ body{
         justify-content: center;
 
         padding: 0px;
+        margin: auto;
 
         & p{ 
             max-width: 288px;
