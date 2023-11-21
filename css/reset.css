@@ -49,3 +49,30 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* ADDED FROM MAIN*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Hide all scrollbars */
+    /* Chrome, Safari. Opera */
+    *::-webkit-scrollbar {
+        display: none;
+    }
+    /* IE, Edge, Firefox */
+    * {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }   
+
+/* For anchor links nav */
+*, html{
+    scroll-behavior: smooth !important;
+
+    /* Disables gestures */
+    touch-action: none; 
+
+    /*Removes browser stretching on scroll*/
+    overscroll-behavior: none;
+}

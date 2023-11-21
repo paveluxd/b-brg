@@ -47,6 +47,11 @@
         //4. Reset flat stats
             resetFlatStats()
 
+        //Reset once per combat passives
+            gs.plObj.treeNodes.forEach(node => {
+                node.activated = false
+            }) 
+
         //5.Roll player dice. Roll after stats if dice will be changed.
             gs.plObj.roll = rng(gs.plObj.dice)
             //PASSIVE: post roll passives.
@@ -715,7 +720,7 @@
                     }
 
                     //Reduce damage by def
-                    playerDamageTaken -= gs.plObj.def
+                    gs.enObj.dmgDone -= gs.plObj.def
 
                     //Resolve dmg
                     changeStat('life', -gs.enObj.dmgDone, 'player')
@@ -794,10 +799,9 @@
         }
 
         function restoreLife(val){
+
             let lifeChange = val
             gs.plObj.life += lifeChange
-
-           
             
             //Prevent overhealing
             if(gs.plObj.life > gs.plObj.flatLife){
@@ -817,6 +821,10 @@
             resolveCharge(gs.sourceAction) //Deal with action charges.
 
             // DEFEAT (also loose if 0 actions).
+            //On death passives
+            if(gs.plObj.life < 1){
+                resolveOnDeathPassives()
+            }
             if(gs.plObj.life < 1 || gs.plObj.actions.length < 1){
                 clearSavedGame()
                 openStateScreen('game-end')
@@ -837,7 +845,6 @@
 
                     //PASSIVES CHECK: end of encounter
                     resolveEndOfCombatPassives()
-                    
 
                     //Lock screen
                     document.body.classList.add('lock-actions', 'darken')
@@ -983,124 +990,6 @@
             //Recalc all items and actions
             resolvePlayerStats()
         }
-      
-        
-//ENEMY
-    //Enemy action logic
-    function enemyActionLogic(){
-        //State checkd. Deals with stun and extra actions.
-        if(gs.enObj.state == 'Skip turn') return                         gs.logMsg.push(`enemy skipped turn due to stun`)
-        if(gs.sourceAction.actionType == "extra-action") return gs.logMsg.push(`enemy skipped turn due to extra action`)
-
-        //Resolve actions.
-        if      ('attack, combo, final strike, charged strike'.slice(', ').indexOf(gs.enObj.action.key) > -1){
-
-            gs.enObj.dmgDone += gs.enObj.action.actionVal
-
-        }else if('block'.slice(', ').indexOf(gs.enObj.action.key) > -1){
-
-            gs.plObj.dmgDone -= gs.enObj.action.actionVal
-
-        }else if('recover, rush, empower, fortify'.slice(', ').indexOf(gs.enObj.action.key) > -1){
-
-            //Resolve stat change
-            changeStat(gs.enObj.action.stat, gs.enObj.action.actionVal, 'enemy')
-
-        }else if('wound, weaken, slow, drain'.slice(', ').indexOf(gs.enObj.action.key) > -1){   
-
-            //Resolve stat change
-            changeStat(gs.enObj.action.stat, -gs.enObj.action.actionVal, 'player')
-
-        }
-        
-        //Records previous action for ui updates.
-        gs.enemyAction = gs.enObj.action 
-    }
-    //Pick enemy action
-    function genEneAction(){
-
-        
-        //Next turn roll
-        gs.enObj.roll = rng(gs.enObj.dice)         
-
-        //Generate action refs with proper calculation for this roll
-        let actionKeys = [
-            'attack', 
-            // 'final strike', 
-            'combo', 
-            // 'charge', 
-            'block', 
-            'fortify', 
-            'empower', 
-            // 'rush', 
-            'recover', 
-            'wound', 
-            // 'weaken', 
-            // 'slow', 
-            'drain', 
-            'sleep'
-        ]
-
-        
-        //Generates all enemy actions.
-        gs.enObj.actionRef = []
-        actionKeys.forEach(key => {gs.enObj.actionRef.push(new EnemyActionObj(key))})
-
-        //Pick action
-        let actionRoll = rng(100)           //Roll for action chance.
-
-        //Prevent action selection if enemy is charging an attack.
-        if(gs.enObj.action != undefined && gs.enObj.action.key == 'charge'){
-            
-            gs.enObj.action.actionVal--
-            gs.enObj.action.desc = `Charges an attack (${ gs.enObj.action.actionVal} turns)`
-
-            //Switch action to charged strike on cd 0
-            if(gs.enObj.action.actionVal < 1){
-                gs.enObj.action = new EnemyActionObj('charged strike')
-            }
-
-        }else if(actionRoll < 2){           //R5: 1%
-
-            gs.enObj.action = rarr(gs.enObj.actionRef.filter(action => action.rate == 5))
-
-        }else if(actionRoll < 7){           //R4: 5%
-
-            gs.enObj.action = rarr(gs.enObj.actionRef.filter(action => action.rate == 4))
-
-        }else if(actionRoll < 25){          //R3: 18%
-
-            gs.enObj.action = rarr(gs.enObj.actionRef.filter(action => action.rate == 3))
-
-        }else if(actionRoll < 55){          //R2: 30% 
-
-            gs.enObj.action = rarr(gs.enObj.actionRef.filter(action => action.rate == 2))
-
-        }else{                              //R1: 45%
-
-            gs.enObj.action = rarr(gs.enObj.actionRef.filter(action => action.rate == 1))
-
-        }
-
-        //Log: next enemy action.
-        // console.log(gs.enObj.action);
-
-        //Resolve fear.
-        if(gs.enObj.state == 'fear'){
-            gs.enObj.action = new EnemyActionObj('block')
-            gs.enObj.state = ''
-        }
-        
-        //Resolve undefined actions due to lack of rate.
-        if(gs.enObj.action === undefined) {
-            gs.enObj.action = rarr(gs.enObj.actionRef.filter(action => action.rate == 1))
-        }
-    }
-    //Recalculate current action.
-    function recalcEneAction(){
-        gs.enObj.action = new EnemyActionObj(gs.enObj.action.key)
-        gs.logMsg.push(`enemy action recalculated`)
-    }
     
 
 //GAME START
