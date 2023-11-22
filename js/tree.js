@@ -103,6 +103,34 @@
         })
     }
 
+    //On-action use
+    function resolveOnUsePassives(){
+        gs.plObj.treeNodes.forEach(node => {
+            if(node.id == 't10'){
+                if(rng(100) < node.val){
+
+                    //Check item type (due to itemless actions)
+                    let item = findItemByAction(gs.sourceAction)
+                    if(item == undefined) return
+
+                    gs.sourceAction.actionCharge++
+                }
+            }
+            if(node.id == 't11'){
+                if(rng(100) < node.val){
+
+                    //Check item type (due to itemless actions)
+                    let item = findItemByAction(gs.sourceAction)
+                    if(item == undefined) return
+                    if(item.itemType.includes('scroll') == false) return
+
+                    gs.sourceAction.actionCharge += 2
+                }
+            }
+        })
+        
+    }
+
     //End of combat check
     function resolveEndOfCombatPassives(){
         gs.plObj.treeNodes.forEach(node => {
@@ -158,6 +186,12 @@
         },{id:'t9', name:'reborn',
             desc:'once per encounter, when you reach 0 life, survive with 1 life',
             val:1,
+        },{id:'t10',name:'careful use',
+            desc:'25% chance to avoid loosing an action charge on action use',
+            val:25,
+        },{id:'t11',name:'librarian',
+            desc:'25% chance to gain 1 action charge when you use a scroll',
+            val:25,
         },
         
         //On hit effects

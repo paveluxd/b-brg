@@ -1,36 +1,7 @@
 let actionsRef = [
   {
-    "actionName": "bandage wounds",
-    "desc": "restore 4 life",
-    "passiveStats": "",
-    "actionMod": 4,
-    "actionCharge": 12,
-    "cooldown": "",
-    "keyId": 61,
-    "actionType": ""
-  },
-  {
-    "actionName": "heavy block",
-    "desc": "reduce incoming damage by 200% of your def",
-    "passiveStats": "",
-    "actionMod": 200,
-    "actionCharge": 30,
-    "cooldown": "",
-    "keyId": 60,
-    "actionType": ""
-  },
-  {
-    "actionName": "club attack",
-    "desc": "deal 3 dmg",
-    "passiveStats": "",
-    "actionMod": 3,
-    "actionCharge": 100,
-    "cooldown": "",
-    "keyId": 45,
-    "actionType": ""
-  },
-  {
     "actionName": "mace attack",
+    "tags": "attack",
     "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
     "passiveStats": "",
     "actionMod": 3,
@@ -41,9 +12,10 @@ let actionsRef = [
   },
   {
     "actionName": "armor break",
+    "tags": "curse",
     "desc": "reduce enemy def by your def value, loose 1 def",
     "passiveStats": "",
-    "actionMod": 3,
+    "actionMod": "",
     "actionCharge": 16,
     "cooldown": "",
     "keyId": 2,
@@ -51,6 +23,7 @@ let actionsRef = [
   },
   {
     "actionName": "shards",
+    "tags": "multistrike, spell",
     "desc": "deal 3 dmg per empty action slot (cost 1 power)",
     "passiveStats": "",
     "actionMod": 3,
@@ -61,6 +34,7 @@ let actionsRef = [
   },
   {
     "actionName": "dagger attack",
+    "tags": "attack, multistrike",
     "desc": "deal 1 dmg twice",
     "passiveStats": "",
     "actionMod": 1,
@@ -71,6 +45,7 @@ let actionsRef = [
   },
   {
     "actionName": "bow attack",
+    "tags": "attack",
     "desc": "deal dmg equal to your dice dice roll value",
     "passiveStats": "",
     "actionMod": "",
@@ -81,6 +56,7 @@ let actionsRef = [
   },
   {
     "actionName": "cut",
+    "tags": "",
     "desc": "deal 1 dmg (cost 3 dice roll, extra action)",
     "passiveStats": "",
     "actionMod": 1,
@@ -91,6 +67,7 @@ let actionsRef = [
   },
   {
     "actionName": "sword attack",
+    "tags": "attack",
     "desc": "deal 3 dmg. Temporary +1 dmg if dice roll is 5 or 6",
     "passiveStats": "",
     "actionMod": 3,
@@ -101,6 +78,7 @@ let actionsRef = [
   },
   {
     "actionName": "axe attack",
+    "tags": "attack",
     "desc": "deal 1 dmg per missing life (cost 5 life)",
     "passiveStats": "",
     "actionMod": 5,
@@ -111,6 +89,7 @@ let actionsRef = [
   },
   {
     "actionName": "lance",
+    "tags": "spell",
     "desc": "deal dmg equal to power (cost 1 power, extra action)",
     "passiveStats": "",
     "actionMod": 2,
@@ -121,6 +100,7 @@ let actionsRef = [
   },
   {
     "actionName": "backstab",
+    "tags": "attack",
     "desc": "deal 2 dmg, gain 1 power (cost 5 dice roll, extra action)",
     "passiveStats": "",
     "actionMod": 2,
@@ -131,6 +111,7 @@ let actionsRef = [
   },
   {
     "actionName": "lightning",
+    "tags": "spell",
     "desc": "deal 1-20 dmg (cost 2 power)",
     "passiveStats": "",
     "actionMod": 2,
@@ -141,6 +122,7 @@ let actionsRef = [
   },
   {
     "actionName": "bash",
+    "tags": "",
     "desc": "deal dmg equal to your def × power",
     "passiveStats": "",
     "actionMod": "",
@@ -151,6 +133,7 @@ let actionsRef = [
   },
   {
     "actionName": "fireball",
+    "tags": "attack, spell",
     "desc": "deal 3 dmg",
     "passiveStats": "",
     "actionMod": 3,
@@ -161,6 +144,7 @@ let actionsRef = [
   },
   {
     "actionName": "pyroblast",
+    "tags": "spell",
     "desc": "deal dmg equal to power × dice roll (cost 1 power)",
     "passiveStats": "",
     "actionMod": "",
@@ -170,7 +154,19 @@ let actionsRef = [
     "actionType": ""
   },
   {
+    "actionName": "quick block",
+    "tags": "block, defensive",
+    "desc": "reduce incoming dmg by (12 - dice)",
+    "passiveStats": "",
+    "actionMod": 12,
+    "actionCharge": 12,
+    "cooldown": "",
+    "keyId": 15,
+    "actionType": ""
+  },
+  {
     "actionName": "barrier",
+    "tags": "block, defensive, spell",
     "desc": "reduce incoming dmg by 75% (cooldown 3 turns)",
     "passiveStats": "",
     "actionMod": 75,
@@ -181,6 +177,7 @@ let actionsRef = [
   },
   {
     "actionName": "combo",
+    "tags": "utility",
     "desc": "if you rolled 6, perform two actions this turn",
     "passiveStats": "",
     "actionMod": "",
@@ -191,6 +188,7 @@ let actionsRef = [
   },
   {
     "actionName": "preparation",
+    "tags": "utility",
     "desc": "keep half of your dice roll for the next turn",
     "passiveStats": "",
     "actionMod": "",
@@ -201,6 +199,7 @@ let actionsRef = [
   },
   {
     "actionName": "roll",
+    "tags": "utility",
     "desc": "reroll your dice (extra action)",
     "passiveStats": "",
     "actionMod": "",
@@ -211,6 +210,7 @@ let actionsRef = [
   },
   {
     "actionName": "charge",
+    "tags": "utility",
     "desc": "add 1 action charge to all other actions",
     "passiveStats": "",
     "actionMod": 1,
@@ -221,6 +221,7 @@ let actionsRef = [
   },
   {
     "actionName": "weaken",
+    "tags": "curse",
     "desc": "reduce targets power by 2",
     "passiveStats": "",
     "actionMod": 2,
@@ -231,6 +232,7 @@ let actionsRef = [
   },
   {
     "actionName": "wound",
+    "tags": "curse",
     "desc": "reduce targets def by 4",
     "passiveStats": "",
     "actionMod": 4,
@@ -241,6 +243,7 @@ let actionsRef = [
   },
   {
     "actionName": "curse of chain",
+    "tags": "curse, scroll",
     "desc": "reduce targets dice by 1",
     "passiveStats": "",
     "actionMod": 1,
@@ -251,16 +254,18 @@ let actionsRef = [
   },
   {
     "actionName": "slow",
+    "tags": "curse",
     "desc": "reduce targets dice roll by 4 (extra action)",
     "passiveStats": "",
     "actionMod": 4,
-    "actionCharge": 3,
+    "actionCharge": 6,
     "cooldown": "",
     "keyId": 24,
     "actionType": ""
   },
   {
     "actionName": "stun",
+    "tags": "croud control",
     "desc": "stun target, requires dice roll 1",
     "passiveStats": "",
     "actionMod": "",
@@ -271,6 +276,7 @@ let actionsRef = [
   },
   {
     "actionName": "shock",
+    "tags": "croud control, spell",
     "desc": "stun the target (cost 1 power)",
     "passiveStats": "",
     "actionMod": "",
@@ -281,6 +287,7 @@ let actionsRef = [
   },
   {
     "actionName": "life charge",
+    "tags": "passive",
     "desc": "adds 10 max life while in action bar",
     "passiveStats": "life:10",
     "actionMod": "",
@@ -291,6 +298,7 @@ let actionsRef = [
   },
   {
     "actionName": "endurance charge",
+    "tags": "passive",
     "desc": "adds 25% life while in action bar",
     "passiveStats": "life%:25",
     "actionMod": 25,
@@ -301,6 +309,7 @@ let actionsRef = [
   },
   {
     "actionName": "order charge",
+    "tags": "passive",
     "desc": "reduces dice by 2 while in action bar",
     "passiveStats": "dice-mod:-2",
     "actionMod": 2,
@@ -311,6 +320,7 @@ let actionsRef = [
   },
   {
     "actionName": "chaos charge",
+    "tags": "passive",
     "desc": "adds 2 dice while in action bar",
     "passiveStats": "dice-mod:2",
     "actionMod": 2,
@@ -321,6 +331,7 @@ let actionsRef = [
   },
   {
     "actionName": "defence charge",
+    "tags": "passive",
     "desc": "adds 2 def while in action bar",
     "passiveStats": "def:2",
     "actionMod": 2,
@@ -331,6 +342,7 @@ let actionsRef = [
   },
   {
     "actionName": "power charge",
+    "tags": "passive",
     "desc": "adds 1 power while in action bar",
     "passiveStats": "power:1",
     "actionMod": 1,
@@ -341,6 +353,7 @@ let actionsRef = [
   },
   {
     "actionName": "healing potion",
+    "tags": "buff, defensive",
     "desc": "restore half of the missing life",
     "passiveStats": "",
     "actionMod": 50,
@@ -351,9 +364,10 @@ let actionsRef = [
   },
   {
     "actionName": "fortify",
-    "desc": "gain 2 def until the end of encounter",
+    "tags": "buff, defensive",
+    "desc": "gain 4 def until the end of encounter",
     "passiveStats": "",
-    "actionMod": 2,
+    "actionMod": 4,
     "actionCharge": 3,
     "cooldown": "",
     "keyId": 34,
@@ -361,6 +375,7 @@ let actionsRef = [
   },
   {
     "actionName": "dodge",
+    "tags": "buff, defensive",
     "desc": "gain dice roll × 10% chance to evade dmg this turn",
     "passiveStats": "",
     "actionMod": 10,
@@ -371,6 +386,7 @@ let actionsRef = [
   },
   {
     "actionName": "critical hit",
+    "tags": "buff",
     "desc": "next attack deals 2x dmg, requires dice roll greater than 8",
     "passiveStats": "",
     "actionMod": 200,
@@ -381,6 +397,7 @@ let actionsRef = [
   },
   {
     "actionName": "precision",
+    "tags": "buff",
     "desc": "your next attack ignores def (cost 1 power, extra action)",
     "passiveStats": "",
     "actionMod": 1,
@@ -391,6 +408,7 @@ let actionsRef = [
   },
   {
     "actionName": "static",
+    "tags": "buff",
     "desc": "gain 2 power, requires dice roll greater than 8",
     "passiveStats": "",
     "actionMod": 2,
@@ -401,6 +419,7 @@ let actionsRef = [
   },
   {
     "actionName": "sprint",
+    "tags": "buff",
     "desc": "gain 2 dice roll during this turn (extra action)",
     "passiveStats": "",
     "actionMod": 2,
@@ -411,6 +430,7 @@ let actionsRef = [
   },
   {
     "actionName": "water potion",
+    "tags": "buff",
     "desc": "gain 3 power until the end of encounter",
     "passiveStats": "",
     "actionMod": 3,
@@ -421,6 +441,7 @@ let actionsRef = [
   },
   {
     "actionName": "weapon poison",
+    "tags": "enchantment",
     "desc": "next time you deal dmg, all hits during that turn poison",
     "passiveStats": "",
     "actionMod": "",
@@ -431,6 +452,7 @@ let actionsRef = [
   },
   {
     "actionName": "block",
+    "tags": "block, defensive",
     "desc": "reduce incoming dmg by dice roll value",
     "passiveStats": "",
     "actionMod": "",
@@ -441,6 +463,7 @@ let actionsRef = [
   },
   {
     "actionName": "rage",
+    "tags": "passive",
     "desc": "you do and take 200% dmg",
     "passiveStats": "",
     "actionMod": 200,
@@ -451,7 +474,8 @@ let actionsRef = [
   },
   {
     "actionName": "restoration",
-    "desc": "reset dice, power and def. Heal 1 per restored point",
+    "tags": "utility",
+    "desc": "reset dice, power and def. Heal 1 life per restored point",
     "passiveStats": "",
     "actionMod": 0,
     "actionCharge": 12,
@@ -460,7 +484,19 @@ let actionsRef = [
     "actionType": ""
   },
   {
+    "actionName": "club attack",
+    "tags": "attack",
+    "desc": "deal 3 dmg",
+    "passiveStats": "",
+    "actionMod": 3,
+    "actionCharge": 100,
+    "cooldown": "",
+    "keyId": 45,
+    "actionType": ""
+  },
+  {
     "actionName": "smoke bomb",
+    "tags": "croud control",
     "desc": "stun target. Ineffective against attacks",
     "passiveStats": "",
     "actionMod": "",
@@ -471,6 +507,7 @@ let actionsRef = [
   },
   {
     "actionName": "focus",
+    "tags": "attack",
     "desc": "gain 1 power per 4 dice roll",
     "passiveStats": "",
     "actionMod": 1,
@@ -481,6 +518,7 @@ let actionsRef = [
   },
   {
     "actionName": "zealotry",
+    "tags": "buff",
     "desc": "reduce def by dice roll to gain that much power",
     "passiveStats": "",
     "actionMod": "",
@@ -491,6 +529,7 @@ let actionsRef = [
   },
   {
     "actionName": "defensive stance",
+    "tags": "utility",
     "desc": "once per turn, reduce dice roll by 1 (extra action)",
     "passiveStats": "",
     "actionMod": 1,
@@ -501,6 +540,7 @@ let actionsRef = [
   },
   {
     "actionName": "overload",
+    "tags": "enchantment",
     "desc": "deal 100% more damage if your dice roll is greater than dice",
     "passiveStats": "",
     "actionMod": 100,
@@ -511,6 +551,7 @@ let actionsRef = [
   },
   {
     "actionName": "swap",
+    "tags": "utility",
     "desc": "swap dice rolls (extra action)",
     "passiveStats": "",
     "actionMod": "",
@@ -521,6 +562,7 @@ let actionsRef = [
   },
   {
     "actionName": "transmute",
+    "tags": "utility",
     "desc": "gain 1 coin per dice roll. Requires dice roll 1 or 2",
     "passiveStats": "",
     "actionMod": "",
@@ -531,6 +573,7 @@ let actionsRef = [
   },
   {
     "actionName": "inferno",
+    "tags": "spell",
     "desc": "deal dmg equal to your power per every coin. Loose all coins",
     "passiveStats": "",
     "actionMod": "",
@@ -541,6 +584,7 @@ let actionsRef = [
   },
   {
     "actionName": "fear",
+    "tags": "utility",
     "desc": "force enemy to block during the next turn (cooldown 2-4 turns)",
     "passiveStats": "",
     "actionMod": "",
@@ -551,16 +595,18 @@ let actionsRef = [
   },
   {
     "actionName": "faith",
+    "tags": "passive",
     "desc": "gain 2 max life every time your healing exceeds max life",
     "passiveStats": "",
     "actionMod": 2,
-    "actionCharge": '',
+    "actionCharge": "",
     "cooldown": "",
     "keyId": 56,
     "actionType": "passive"
   },
   {
     "actionName": "heal",
+    "tags": "healing",
     "desc": "restore life equal to 3 + power + def (cost 1 power)",
     "passiveStats": "",
     "actionMod": 3,
@@ -571,6 +617,7 @@ let actionsRef = [
   },
   {
     "actionName": "power surge",
+    "tags": "passive",
     "desc": "gain 1 power on a die roll of 8",
     "passiveStats": "",
     "actionMod": 1,
@@ -581,6 +628,7 @@ let actionsRef = [
   },
   {
     "actionName": "armor up",
+    "tags": "passive",
     "desc": "gain 1 def on a die roll of 4",
     "passiveStats": "",
     "actionMod": 1,
@@ -588,5 +636,60 @@ let actionsRef = [
     "cooldown": "",
     "keyId": 59,
     "actionType": "passive"
+  },
+  {
+    "actionName": "heavy block",
+    "tags": "block, defensive",
+    "desc": "reduce incoming damage by 200% of your def",
+    "passiveStats": "",
+    "actionMod": 200,
+    "actionCharge": 30,
+    "cooldown": "",
+    "keyId": 60,
+    "actionType": ""
+  },
+  {
+    "actionName": "bandage wounds",
+    "tags": "healing",
+    "desc": "restore 4 life",
+    "passiveStats": "",
+    "actionMod": 4,
+    "actionCharge": 12,
+    "cooldown": "",
+    "keyId": 61,
+    "actionType": ""
+  },
+  {
+    "actionName": "punch",
+    "tags": "attack",
+    "desc": "deal 1 dmg",
+    "passiveStats": "",
+    "actionMod": 1,
+    "actionCharge": 1,
+    "cooldown": "",
+    "keyId": 62,
+    "actionType": ""
+  },
+  {
+    "actionName": "armor breaker",
+    "tags": "attack",
+    "desc": "deal 4 dmg, this attack breaks defence",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": "",
+    "cooldown": "",
+    "keyId": "",
+    "actionType": ""
+  },
+  {
+    "actionName": "melting steel",
+    "tags": "attack, spell",
+    "desc": "deal piercing dmg equal to enemy defence",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": "",
+    "cooldown": "",
+    "keyId": "",
+    "actionType": ""
   }
 ]
