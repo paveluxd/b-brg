@@ -337,7 +337,7 @@
             'attack', 
             'final strike', 
             'combo', 
-            // 'charge', 
+            'charge', 
             'block', 
             'fortify', 
             'empower', 

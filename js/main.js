@@ -47,6 +47,9 @@
         //4. Reset flat stats
             resetFlatStats()
 
+        //Check if player has a weapon
+            checkIfPlayerCanAttack()
+
         //Reset once per combat passives
             gs.plObj.treeNodes.forEach(node => {
                 node.activated = false
@@ -71,6 +74,7 @@
 
     //1.TURN CALC
         function turnCalc(buttonElem){
+            
             //Set random ghost images
             el('p-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
             el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
@@ -532,6 +536,14 @@
                 //Log
                 gs.logMsg.push(`Hevy block: blocked ${gs.plObj.def * (actionMod/100)} dmg.`)
     
+            }else if(paKey =='a62'){// punch
+
+                //Calc
+                gs.plObj.dmgDone += actionMod + gs.plObj.power
+    
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${actionMod + gs.plObj.power} dmg.`)
+    
             }
 
             //PASSIVES post-action: Player passive effects.
@@ -875,6 +887,8 @@
             }
             // NEXT TURN.
             else if (gs.sourceAction.actionType !== "extra-action" || gs.plObj.roll < 1){
+                //Check if player can attack
+                checkIfPlayerCanAttack()
 
                 //POISON: resolve stacks
                 if(gs.enObj.poisonStacks > 0){

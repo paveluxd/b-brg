@@ -4,12 +4,25 @@ let config = {
         power:      0,
         def:        0,
         dice:       6,
-        inventory: 40,
+        inventory: 99,
         slots:      5,
+
+    //Progression
+        expRequiredPerLvl: 4,
+        basePassieSkillPoints: 0,
+
+    //Game
+        testCombat: false, //Initiates combat at the start (for testing).
+        showScreen: '', 
+        clearLs: false,
+
+    //Items
         startingItems: [
             'club',
             'shield',
             "bandages",
+            // 'scroll of restoration',
+            // 'ring of endurance',
             // 'dagger',
             // 'tetracore',
             // 'octocore',
@@ -35,15 +48,6 @@ let config = {
 
     //Enemy
         eneLife: 8,
-
-    //Game
-        testCombat: false, //Initiates combat at the start (for testing).
-        showScreen: '', 
-        clearLs: false,
-
-    //Progression
-        expRequiredPerLvl: 4,
-        basePassieSkillPoints: 0,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.

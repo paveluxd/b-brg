@@ -110,91 +110,7 @@ let gs //game state object
         }
     }
 
-//Items
-    class ItemObj {
-        constructor(itemName, iLvl){
 
-            //Static properties taken from reference.
-            this.actions = []
-
-            //If no itemName -> get random
-            if(itemName == undefined){
-                let refNo = rng(itemsRef.length - 1, 0)
-                itemName = itemsRef[refNo].itemName
-            }
-
-            //Finds item data in csv itensRef
-            let itemData = findByProperty(itemsRef, 'itemName', itemName)
-            
-            //Set iLvl to stage val
-            if(iLvl === undefined && gs !== undefined){
-                iLvl = gs.stage
-            }else{
-                iLvl = 1
-            } 
-
-            //Gen variable properties
-            let props = [
-                {key:'itemName'    ,val: upp(itemName)},
-                {key:'itemSlot'    ,val: 'generic'},
-                {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
-                {key:'equipped'    ,val: false},
-                {key:'passiveStats',val: []},
-                {key:'cost'        ,val: rng(12, 6)},
-                {key:'desc'        ,val: undefined},
-                // {key:'durability'  ,val: 10},
-            ]
-            //Resolve props via default value above, or value from reference object
-            props.forEach(property => {
-
-                if(itemData[property.key] === undefined || itemData[property.key] === ''){
-                    this[property.key] = property.val //if no prop, set it to extra props value
-                }
-                else {
-                    this[property.key] = itemData[property.key] //if exists in ref, set it as ref.
-                }
-            })
-
-            //Static props
-            this.enhancementQuantity = 0 //Increases cost per enhancement.
-            this.repairQuantity = 0
-
-            //Resolve actions
-            if(itemData.actions.length == 0 || itemData.actions == undefined){
-                itemData.actions = []
-            }
-            else{
-                itemData.actions.forEach(actionKey => {
-                    this.actions.push(new ActionObj(actionKey))
-                })    
-            }
-        }
-    }
-    //Calc equipped items
-    function calcEquippedItems(){
-        let equipped = 0
-        gs.plObj.inventory.forEach(item => {
-            if(item.equipped){
-                equipped++
-            }
-        })
-
-        return equipped
-    }
-    //Calculates cost for ench repair etc.
-    function calcCost(type, itemId){
-        let targetItem = findItemById(itemId)
-        let cost
-
-        if(type == 'enhance'){
-            cost = targetItem.cost * (targetItem.enhancementQuantity + 1)
-        }
-        else if(type == 'repair'){
-            cost = targetItem.cost * (targetItem.repairQuantity + 1)
-        }
-
-        return cost
-    }
 
 //Actions
     class ActionObj {
@@ -213,7 +129,8 @@ let gs //game state object
                 {key:'actionType'  ,val: 'generic'},
                 {key:'desc'        ,val: ''},
                 {key:'passiveStats',val: []},
-                {key:'keyId'       ,val: '???'}
+                {key:'keyId'       ,val: '???'},
+                {key:'tags'        ,val: ''}
             ]
 
             //Resolves extra props

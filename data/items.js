@@ -1,453 +1,479 @@
 let itemsRef = [
   {
-    "itemName": "bandages",
+    "itemName": "wooden staff",
+    "actions": "focus",
     "passiveStats": "",
-    "actions": "bandage wounds",
     "itemSlot": "",
-    "itemType": "",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "tower shield",
-    "passiveStats": "",
-    "actions": "heavy block",
-    "itemSlot": "",
-    "itemType": "",
-    "itemRarity": "",
-    "cost": ""
+    "itemType": "weapon",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "club",
-    "passiveStats": "",
     "actions": "club attack",
-    "itemSlot": "",
-    "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
-  },
-  {
-    "itemName": "wooden staff",
     "passiveStats": "",
-    "actions": "focus",
     "itemSlot": "",
     "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "hammer",
-    "passiveStats": "",
     "actions": "armor break",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "mace",
-    "passiveStats": "",
     "actions": "mace attack",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "dagger",
-    "passiveStats": "",
     "actions": "cut",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "dagger pair",
-    "passiveStats": "",
     "actions": "dagger attack",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "sword",
-    "passiveStats": "",
     "actions": "sword attack",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "bow",
-    "passiveStats": "",
     "actions": "bow attack",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "hook",
-    "passiveStats": "",
     "actions": "swap",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "equipment",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "exoskeleton",
-    "passiveStats": "",
     "actions": "overload",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "equipment",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "wizards head",
-    "passiveStats": "",
     "actions": "fear",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "gonfalon",
-    "passiveStats": "",
     "actions": "defensive stance",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "iron cross",
-    "passiveStats": "",
     "actions": "zealotry",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "spiked shield",
-    "passiveStats": "",
     "actions": "bash",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "shield",
-    "passiveStats": "",
     "actions": "block",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "tower shield",
+    "actions": "quick block",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "off-hand",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "scroll of inferno",
-    "passiveStats": "",
     "actions": "inferno",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "scroll",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "curse of wounds",
+    "actions": "wound",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "scroll",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "thorns crown",
-    "passiveStats": "",
     "actions": "rage",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "helmet",
-    "itemRarity": "unique",
-    "cost": ""
+    "desc": "",
+    "itemRarity": "unique"
+  },
+  {
+    "itemName": "ring of endurance",
+    "actions": "endurance charge",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "ring",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "ring of twilight",
-    "passiveStats": "",
     "actions": "order charge, chaos charge",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "ring",
-    "itemRarity": "unique",
-    "cost": ""
-  },
-  {
-    "itemName": "tetracore",
-    "passiveStats": "dice:4, def:2",
-    "actions": "",
-    "itemSlot": "dice",
-    "itemType": "dice",
-    "itemRarity": "unique",
-    "cost": ""
-  },
-  {
-    "itemName": "octocore",
-    "passiveStats": "dice:8, def:-2,",
-    "actions": "",
-    "itemSlot": "dice",
-    "itemType": "dice",
-    "itemRarity": "rare",
-    "cost": ""
+    "desc": "",
+    "itemRarity": "unique"
   },
   {
     "itemName": "decacore",
-    "passiveStats": "dice:10, life:-6",
     "actions": "",
+    "passiveStats": "dice:10, life:-6",
     "itemSlot": "dice",
     "itemType": "dice",
-    "itemRarity": "rare",
-    "cost": ""
+    "desc": "",
+    "itemRarity": "rare"
+  },
+  {
+    "itemName": "tetracore",
+    "actions": "",
+    "passiveStats": "dice:4, def:2",
+    "itemSlot": "dice",
+    "itemType": "dice",
+    "desc": "",
+    "itemRarity": "unique"
   },
   {
     "itemName": "dodecacore",
-    "passiveStats": "dice:12, def:-4",
     "actions": "",
+    "passiveStats": "dice:12, def:-4",
     "itemSlot": "dice",
     "itemType": "dice",
-    "itemRarity": "rare",
-    "cost": "",
-    "desc": "a deceptively small green jewel possessing an insidious charm, unstable cores tend to influence the minds of those who possess them, compelling them towards acts of greed, and recklesness"
+    "desc": "",
+    "itemRarity": "unique"
+  },
+  {
+    "itemName": "octocore",
+    "actions": "",
+    "passiveStats": "dice:8, def:-2",
+    "itemSlot": "dice",
+    "itemType": "dice",
+    "desc": "",
+    "itemRarity": "rare"
   },
   {
     "itemName": "plate armor",
-    "passiveStats": "def:2",
     "actions": "",
+    "passiveStats": "def:2",
     "itemSlot": "body",
     "itemType": "body armor",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "robe",
-    "passiveStats": "power:1",
     "actions": "power surge",
+    "passiveStats": "power:1",
     "itemSlot": "body",
     "itemType": "body armor",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "gambison",
-    "passiveStats": "life:12",
     "actions": "",
+    "passiveStats": "life:12",
     "itemSlot": "body",
     "itemType": "body armor",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "chainmail",
-    "passiveStats": "life:6, def:1",
     "actions": "",
+    "passiveStats": "life:6, def:1",
     "itemSlot": "body",
     "itemType": "body armor",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "woolen bag",
-    "passiveStats": "slots:5, def:-2",
     "actions": "",
+    "passiveStats": "slots:5, def:-2",
     "itemSlot": "bag",
     "itemType": "bag",
-    "itemRarity": "unique",
-    "cost": ""
+    "desc": "",
+    "itemRarity": "unique"
   },
   {
     "itemName": "leather bag",
-    "passiveStats": "slots:4, def:-1",
     "actions": "",
+    "passiveStats": "slots:4, def:-1",
     "itemSlot": "bag",
     "itemType": "bag",
-    "itemRarity": "rare",
-    "cost": ""
+    "desc": "",
+    "itemRarity": "rare"
   },
   {
     "itemName": "bag",
-    "passiveStats": "slots:3",
     "actions": "",
+    "passiveStats": "slots:3",
     "itemSlot": "bag",
     "itemType": "bag",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "book of order",
-    "passiveStats": "power:1",
     "actions": "heal, barrier",
+    "passiveStats": "power:1",
     "itemSlot": "",
     "itemType": "book",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "book of fire",
-    "passiveStats": "",
     "actions": "fireball, pyroblast",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "book",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "book of lightning",
-    "passiveStats": "",
     "actions": "lightning, shock",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "book",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "book of moon",
-    "passiveStats": "",
     "actions": "lance, shards",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "book",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "woolen boots",
-    "passiveStats": "",
     "actions": "sprint",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "boots",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "leather boots",
-    "passiveStats": "",
     "actions": "roll",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "boots",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "boots",
-    "passiveStats": "",
     "actions": "preparation",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "boots",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "cape",
-    "passiveStats": "",
     "actions": "dodge",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "cape",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "helmet",
-    "passiveStats": "",
     "actions": "static",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "cape",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "bandages",
+    "actions": "bandage wounds",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "consumable",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "smoke bomb",
-    "passiveStats": "",
     "actions": "smoke bomb",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "consumable",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "scroll of restoration",
-    "passiveStats": "",
     "actions": "restoration",
+    "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
-    "itemRarity": "",
-    "cost": ""
+    "itemType": "consumable, scroll",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "water potion",
-    "passiveStats": "",
     "actions": "water potion",
+    "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
-    "itemRarity": "",
-    "cost": ""
+    "itemType": "consumable, potion",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "poison potion",
-    "passiveStats": "",
     "actions": "weapon poison",
+    "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
-    "itemRarity": "",
-    "cost": ""
+    "itemType": "consumable, potion",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "curse of slowness",
+    "actions": "slow",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "consumable, scroll",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "curse of weakness",
-    "passiveStats": "",
     "actions": "weaken",
+    "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
-    "itemRarity": "",
-    "cost": ""
+    "itemType": "consumable, scroll",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "healing potion",
-    "passiveStats": "",
     "actions": "healing potion",
+    "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
-    "itemRarity": "",
-    "cost": ""
+    "itemType": "consumable, potion",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "scroll of fortification",
-    "passiveStats": "",
     "actions": "fortify",
+    "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
-    "itemRarity": "",
-    "cost": ""
+    "itemType": "consumable, scroll",
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "sigil of light",
-    "passiveStats": "",
     "actions": "faith",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "jewelry",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "alchemists key",
-    "passiveStats": "",
     "actions": "transmute",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "jewelry",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   },
   {
     "itemName": "pauldron",
-    "passiveStats": "",
     "actions": "armor up",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "shoulder",
-    "itemRarity": "",
-    "cost": ""
+    "desc": "",
+    "itemRarity": ""
   }
 ]

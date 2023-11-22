@@ -329,7 +329,23 @@
             //!!! REPACE WITH keyID
 
             //Card item image
-            let itemString = findItemByAction(action).itemName
+            //If item does not exist, use placeholder image
+            let itemString
+            let itemRef = findItemByAction(action)
+
+            // console.log(action);
+
+            if (action.keyId == 'a62'){
+                console.log(1);
+                itemString = 'punch'
+            } 
+            else if(itemRef == undefined){
+                itemString = 'placeholder'
+            }
+            else{
+                itemString = itemRef.itemName
+            }
+
             if(itemString.includes('scroll')){
                 itemString = 'magic scroll'
             }
