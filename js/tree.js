@@ -109,6 +109,32 @@
                     gs.sourceAction.actionCharge += 2
                 }
             }
+            if(node.id == 't12'){
+                
+                if(!gs.sourceAction.tags.includes('block')) return
+                if(gs.plObj.roll != gs.enObj.roll) return
+                if(['attack', 'combo', 'charged strike'].indexOf(gs.enObj.action.key) > -1 == false) return
+
+                //Check item type (due to itemless actions)
+                gs.enObj.power -= node.val
+
+                //Log
+                gs.logMsg.push(`${node.name}: ${node.desc}`) 
+                
+            }
+            if(node.id == 't13'){
+                
+                if(!gs.sourceAction.tags.includes('attack')) return
+                if(gs.plObj.roll != gs.enObj.roll) return
+                if(['block'].indexOf(gs.enObj.action.key) > -1 == false) return
+
+                //Check item type (due to itemless actions)
+                gs.enObj.forcedAction = 'sleep'
+
+                //Log
+                gs.logMsg.push(`${node.name}: ${node.desc}`) 
+                
+            }
         })
         
     }
@@ -174,6 +200,11 @@
         },{id:'t11',name:'librarian',
             desc:'25% chance to gain 1 action charge when you use a scroll',
             val:25,
+        },{id:'t12',name:'perfect block',
+            desc:'on blocking and enemy attack with equal roll, reduce enemy power by 2',
+            val:2,
+        },{id:'t13',name:'perfect strike',
+            desc:'on attack blocking enemy with equal roll, force enemy to skip next turn',
         }
         
         //On hit effects

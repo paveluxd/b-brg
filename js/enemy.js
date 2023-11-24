@@ -7,6 +7,7 @@
             this.poisonStacks = 0
             this.crit = false
             this.state = '' //Used for stun, fear etc.
+            this.forcedAction = '' //for items that force acions
 
             this.actionRef = []
             this.acctionMod = ''
@@ -394,10 +395,14 @@
         //Log: next enemy action.
         // console.log(gs.enObj.action);
 
-        //Resolve fear.
-        if(gs.enObj.state == 'fear'){
-            gs.enObj.action = new EnemyActionObj('block')
-            gs.enObj.state = ''
+        //FORCED ACTIONS
+        if(gs.enObj.forcedAction != ''){
+
+            //Set action
+            gs.enObj.action = new EnemyActionObj(gs.enObj.forcedAction)
+
+            //Reset var
+            gs.enObj.forcedAction = ''
         }
         
         //Resolve undefined actions due to lack of rate.

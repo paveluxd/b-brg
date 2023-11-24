@@ -525,7 +525,7 @@
             }else if(paKey =='a55'){// "fear" "wizards head"
 
                 //Marker
-                gs.enObj.state = 'fear'
+                gs.enObj.forcedAction = 'block'
                 gs.sourceAction.cooldown = 0
                 
                 //Set variable cooldown.  
@@ -680,7 +680,7 @@
 
                     //Set positive damage to 0 (if def is greater than dmg)
                     if(gs.plObj.dmgDone < 0){gs.plObj.dmgDone = 0}
-                    
+
                     if(!gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
                         
                         //Reduce def on hit
