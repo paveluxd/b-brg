@@ -201,10 +201,10 @@
             desc:'25% chance to gain 1 action charge when you use a scroll',
             val:25,
         },{id:'t12',name:'perfect block',
-            desc:'on blocking and enemy attack with equal roll, reduce enemy power by 2',
+            desc:'on blocking an enemy attack with equal dice roll, reduce enemy power by 2',
             val:2,
         },{id:'t13',name:'perfect strike',
-            desc:'on attack blocking enemy with equal roll, force enemy to skip next turn',
+            desc:'on attack a blocking enemy with equal dice roll, force enemy to skip next turn',
         }
         
         //On hit effects
@@ -219,8 +219,6 @@
         //Extra actions
         //Gold
         //Exp
-        //Aaction charge
-            // {id:'chance-save-ac'}, //20% chance to not loose actionCharge on use <item type>
         //Ideas
             //All fireballs that you draft have +5 charge.
     ]
