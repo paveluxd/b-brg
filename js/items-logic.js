@@ -818,10 +818,10 @@ function calcCost(type, itemId){
             //Swap button if reward
             if(source == 'reward'){
                 btn = `
-                <button onclick="removeItem('${itemId}'), toggleModal('item-modal')">
-                    <img src="./img/ico/equip.svg">
-                    Pick item
-                </button>
+                    <button onclick="resolveChoosingOfferedItem('${itemId}', 'reward'), screen('map')">
+                        <img src="./img/ico/equip.svg">
+                        Pick item
+                    </button>
                 `
             }
             else if(source == 'preview' || source == 'merchant'){

@@ -101,7 +101,9 @@
             </button>
         </div>
 
-        <div id="map-container"></div>
+        <div class="map-border">
+            <div id="map-container"></div>
+        </div>
     </div>
 
 <!-- CHARACTER SCREEN -->
@@ -134,7 +136,7 @@
         </div>
 
         <!-- 1. Character -->
-        <div id="character" class="screen scroll hide">
+        <div id="character" class="screen hide">
             <!-- Page contetn -->
             <div class="modal-container">
                 <div id='character-content' class="column">
@@ -143,15 +145,6 @@
                 
                     <!-- Character stats -->
                     <div id="stat-block" class = "body-14 stat-block"></div>
-
-                    <!-- Social media container -->
-                    <div class ="column" style="gap:8px; align-items:flex-start;">
-                        <p class="body-14 italic b50">Support the game</p>
-                        <div class="social-container">
-                            <a class="discord"  href="https://discord.gg/AT8KdVbcVT" target="_blank"><img src="./img/ico/discord.svg" alt="">Join game community</a>
-                            <a class="x-social" href="https://twitter.com/pavelmorr" target="_blank"><img src="./img/ico/x-social.svg" alt=""></a>
-                        </div>
-                    </div>
 
                     <!-- Actions -->
                     <div class ="column" style="gap:8px; align-items:flex-start;">
@@ -165,13 +158,21 @@
                         <div id="passive-list"></div>
                     </div>
 
+                    <!-- Social media container -->
+                    
+                    <div class="social-container">
+                        <a class="discord"  href="https://discord.gg/AT8KdVbcVT" target="_blank"><img src="./img/ico/discord.svg" alt="">Join game community</a>
+                        <a class="x-social" href="https://twitter.com/pavelmorr" target="_blank"><img src="./img/ico/x-social.svg" alt="">Follow game on X</a>
+                    </div>
+                    
                     <button style="background-color: var(--b10); border-radius: 4px;" onclick="localStorage.clear(), location.reload();">Start new run</button>
+
 
                 </div>
             </div>
         </div>
         <!-- 2. Inventory -->
-        <div id="inventory" class="screen tab-margin scroll hide">
+        <div id="inventory" class="screen hide">
             <div class="modal-container">
                 
                 <h2 id="inventory-heading"></h2>
@@ -180,7 +181,7 @@
             </div>
         </div>
         <!-- 3. Tree -->
-        <div id="tree"      class="screen scroll hide">
+        <div id="tree"      class="screen hide">
 
             <div class="modal-container">
                 
@@ -296,14 +297,14 @@
         </button>
     </div>
 
-    <div id="reward-screen" class="screen scroll hide" >
+    <div id="reward-screen" class="screen hide" >
         <div  id="reward-slide" class="modal-container">
             <h2  id="combatEndIndicator">Victory</h2>
             <p   id="reward-desc" class="body-14"></p>
             <div id="reward-container" class="item-list"></div>
         </div>
     </div>
-    <div id="reward-screen-inventory" class="screen scroll hide" >
+    <div id="reward-screen-inventory" class="screen hide" >
         <div  id="inventory-slide" class="modal-container">
             <h2>Inventory</h2>
             <p   id="inventorySlideDesc" class="body-14"></p>
@@ -332,14 +333,14 @@
         </button>
     </div>
 
-    <div id="merchant" class="screen scroll hide">
+    <div id="merchant" class="screen hide">
         <div id="buy-slide" class="modal-container">
             <h2>Merchant</h2>     
             <p id="merchant-coins-indicator"></p>       
             <div id='merchant-container' class="item-list"></div>
         </div>
     </div>
-    <div id="merchant-sell" class="screen scroll hide">
+    <div id="merchant-sell" class="screen hide">
         <div id="sell-slide" class="modal-container">
             <h2>Sell</h2>
             <div id='items-to-sell' class="item-list"></div>
@@ -362,13 +363,13 @@
         </button>
     </div>
     
-    <div id="blacksmith" class="screen scroll hide">
+    <div id="blacksmith" class="screen hide">
         <div id="enhance-slide" class="modal-container">
             <h2>Enhance items</h2>           
             <div id='items-to-enhance' class="item-list"></div>
         </div>
     </div>
-    <div id="blacksmith-repair" class="screen scroll hide">
+    <div id="blacksmith-repair" class="screen hide">
         <div id="repair-slide" class="modal-container">
             <h2>Repair items</h2>
             <div id='items-to-repair' class="item-list"></div>
@@ -429,11 +430,14 @@
 
 <script src="./js/ui.js"></script>
 <script src="./js/map.js"></script>
-<script src="./js/items.js"></script>
-<script src="./js/actions.js"></script>
 <script src="./js/tree.js"></script>
+
+<script src="./js/items-logic.js"></script>
+<script src="./js/actions-logic.js"></script>
+
 <script src="./js/enemy.js"></script>
 <script src="./js/player.js"></script>
+
 <script src="./js/main.js"></script>
 
 <!-- Google tag (gtag.js) -->

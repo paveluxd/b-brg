@@ -8,11 +8,9 @@
 <rect x="37" y="25" width="4" height="2" fill="#D9D9D9"/>
 <rect x="27" y="11" width="4" height="2" transform="rotate(90 27 11)" fill="#D9D9D9"/>
 <rect x="27" y="37" width="4" height="2" transform="rotate(90 27 37)" fill="#D9D9D9"/>
-<path d="M24 20L31.9999 28" stroke="black" stroke-width="2"/>
-<path d="M11 45L27 29L27 25L23 25L7 41L7 45L11 45Z" fill="#8B9DA5" stroke="black" stroke-width="2"/>
-<path d="M27.4142 23L42 8.41421L43.5858 10L29 24.5858L27.4142 23Z" fill="black" stroke="black" stroke-width="2"/>
-<path d="M28 23H21.085C19.2912 23 17.7468 21.7339 17.395 19.9749V19.9749C17.1482 18.7411 17.5344 17.4656 18.4241 16.5759L19 16" stroke="black" stroke-width="2"/>
-<path d="M28.9999 24V30.915C28.9999 32.7088 30.266 34.2532 32.025 34.605V34.605C33.2588 34.8518 34.5343 34.4656 35.424 33.5759L35.9999 33" stroke="black" stroke-width="2"/>
-<path d="M15 32H17V40H15V32Z" fill="#D9D9D9"/>
-<path d="M11 45L27 29L27 25L23 25L7 41L7 45L11 45Z" stroke="black" stroke-width="2"/>
+<path d="M20 28L24 28L24 32L7 45L20 28Z" fill="#999167"/>
+<path d="M17 31L20 28V35L17 37V31Z" fill="#D9D9D9"/>
+<path d="M24 28L20 28L4.00002 48L24 32L24 28Z" stroke="black" stroke-width="2"/>
+<path d="M23.4564 25.7064L26.2848 28.5348L48.0277 6.79199L48 4L45.1993 3.96356L23.4564 25.7064Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M25 24H23V27H20V29H23V32H25V29H28V27H25V24Z" fill="#555452"/>
 </svg>

@@ -1,6 +1,6 @@
 let config = {
     //Player
-        life:      32, //32
+        life:      30, //32
         power:      0,
         def:        0,
         dice:       6,
@@ -8,7 +8,7 @@ let config = {
         slots:      5,
 
     //Progression
-        expRequiredPerLvl: 4,
+        expRequiredPerLvl: 2,
         basePassieSkillPoints: 0,
 
     //Game
@@ -19,8 +19,11 @@ let config = {
     //Items
         startingItems: [
             'club',
+            // 'spear',
             'shield',
             "bandages",
+            // 'gonfalon',
+            // 'wizards head',
             // 'scroll of restoration',
             // 'ring of endurance',
             // 'dagger',

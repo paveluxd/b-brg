@@ -7,6 +7,7 @@
             this.poisonStacks = 0
             this.crit = false
             this.state = '' //Used for stun, fear etc.
+            this.forcedAction = '' //for items that force acions
 
             this.actionRef = []
             this.acctionMod = ''
@@ -150,7 +151,7 @@
 
             }else if(key == 'charged strike'){
 
-                this.actionVal = (gs.enObj.dice * 2) + gs.enObj.power
+                this.actionVal = Math.round((gs.enObj.dice + gs.enObj.power) * 2) 
                 this.desc = `Charged strike ${this.actionVal} dmg`
 
             }
@@ -160,7 +161,7 @@
 
                 this.rate = 2
                 this.stat = 'def'
-                this.actionVal = Math.ceil((gs.enObj.roll) * 0.5)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 1)
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.def < 0){
@@ -174,7 +175,7 @@
 
                 this.rate = 3
                 this.stat = 'power'
-                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.25)
+                this.actionVal = Math.round((gs.enObj.roll + gs.stage) * 0.5)
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.power < 0){
@@ -216,14 +217,14 @@
 
                 this.rate = 3
                 this.stat = 'def'
-                this.actionVal = Math.ceil((gs.enObj.roll) * 0.25)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 0.5)
                 this.desc = `${ico('curse-def')}Will reduce your<br>def by ${this.actionVal}`
 
             }else if(key == 'weaken'){ //- power
 
                 this.rate = 2
                 this.stat = 'power'
-                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.25)
+                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.5)
                 this.desc = `${ico('curse-power')}Will reduce your<br>power by ${this.actionVal}`
 
             }else if(key == 'slow'){   //- dice
@@ -394,10 +395,14 @@
         //Log: next enemy action.
         // console.log(gs.enObj.action);
 
-        //Resolve fear.
-        if(gs.enObj.state == 'fear'){
-            gs.enObj.action = new EnemyActionObj('block')
-            gs.enObj.state = ''
+        //FORCED ACTIONS
+        if(gs.enObj.forcedAction != ''){
+
+            //Set action
+            gs.enObj.action = new EnemyActionObj(gs.enObj.forcedAction)
+
+            //Reset var
+            gs.enObj.forcedAction = ''
         }
         
         //Resolve undefined actions due to lack of rate.

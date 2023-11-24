@@ -100,6 +100,7 @@
             let paKey = gs.sourceAction.keyId
 
             //LOGIC: player
+            //Attacks
             if      (paKey =='a1' ){// mace
 
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
@@ -145,12 +146,19 @@
     
             }else if(paKey =='a4' ){// dagger pair 
     
-                gs.plObj.dmgDone += (actionMod + gs.plObj.power) * 2 
+                //Calc
+                gs.plObj.dmgDone += (actionMod + gs.plObj.power) * 2
+
+                //Log
                 gs.logMsg.push('Dagger pair attack.')
     
             }else if(paKey =='a5' ){// bow
     
+                //Calc
                 gs.plObj.dmgDone += gs.plObj.roll + gs.plObj.power
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
             }else if(paKey =='a6' ){// EX: cut 'dagger'
 
@@ -215,6 +223,17 @@
                 gs.plObj.roll -= 5
                 gs.plObj.dmgDone = gs.sourceAction.actionMod + gs.plObj.power
                 gs.plObj.power += 1
+    
+            }else if(paKey =='a63'){// spear
+
+                let dmg = gs.plObj.roll + gs.plObj.power
+                if(dmg > actionMod){dmg = actionMod}
+
+                //Calc
+                gs.plObj.dmgDone += dmg
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
             }
              else if(paKey =='a11'){// SP: lightning "book of lightning"
@@ -506,7 +525,7 @@
             }else if(paKey =='a55'){// "fear" "wizards head"
 
                 //Marker
-                gs.enObj.state = 'fear'
+                gs.enObj.forcedAction = 'block'
                 gs.sourceAction.cooldown = 0
                 
                 //Set variable cooldown.  
@@ -622,54 +641,62 @@
             if(gs.plObj.dmgDone > 0){
 
                 //POISON: apply id dmg is done.
-                if(gs.plObj.poisonBuff || gs.plObj.poisonBuff == 'triggered'){
-                    let poisonStackCount = 1
-            
-                    //Shards
-                    if(gs.sourceAction.keyId === 'a3'){
-                        let mult = gs.plObj.actionSlots - gs.plObj.actions.length 
-            
-                        if(mult < 1){
-                            mult = 0
+                    if(gs.plObj.poisonBuff || gs.plObj.poisonBuff == 'triggered'){
+                        let poisonStackCount = 1
+                
+                        //Shards
+                        if(gs.sourceAction.keyId === 'a3'){
+                            let mult = gs.plObj.actionSlots - gs.plObj.actions.length 
+                
+                            if(mult < 1){
+                                mult = 0
+                            }
+                
+                            poisonStackCount = mult
+                        } 
+                        //Dagger pair
+                        else if(gs.sourceAction.keyId === 'a4'){
+                            poisonStackCount = 2
                         }
-            
-                        poisonStackCount = mult
-                    } 
-                    //Dagger pair
-                    else if(gs.sourceAction.keyId === 'a4'){
-                        poisonStackCount = 2
+                
+                        gs.enObj.poisonStacks += poisonStackCount
+                        gs.plObj.poisonBuff = 'triggered'
+                        gs.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
                     }
-            
-                    gs.enObj.poisonStacks += poisonStackCount
-                    gs.plObj.poisonBuff = 'triggered'
-                    gs.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
-                }
                 
                 //DEF: resolve.
-                if(!gs.plObj.piercing){//Ignore def if piercing state
-                    
-                    //Reduce def on low hit
-                    if(gs.enObj.def > 0){
-                        changeStat('def', -1, 'enemy')
+                    if(gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
+                        
+                        changeStat('def', -gs.plObj.dmgDone, 'enemy')
+                        
+                        //Deal no dmg if def was broken
+                        gs.plObj.dmgDone = gs.enObj.def
+                        
                     }
 
                     //Reduce dmg by def
+                    // if(gs.plObj.piercing) return //skip def calc if piercing state
                     gs.plObj.dmgDone -= gs.enObj.def
+
+                    //Set positive damage to 0 (if def is greater than dmg)
+                    if(gs.plObj.dmgDone < 0){gs.plObj.dmgDone = 0}
+
+                    if(!gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
+                        
+                        //Reduce def on hit
+                        changeStat('def', -1, 'enemy')
+                        
+                    }
                     
-                }
-                //Set positive damage to 0 (due to def)
-                if(gs.plObj.dmgDone < 0){
-                    gs.plObj.dmgDone = 0
-                }
                 
-                //PASSIVES CHEC: oh-hit passies
-                resolveOnHitPassives()
+                //PASSIVES CHECK: oh-hit passies
+                    resolveOnHitPassives()
 
                 //Resolve stat change
-                changeStat('life', -gs.plObj.dmgDone, 'enemy')           
+                    changeStat('life', -gs.plObj.dmgDone, 'enemy')           
 
                 //Reset piercing buff after attack was performed
-                gs.plObj.piercing = false
+                    gs.plObj.piercing = false
             }
 
             //ENE DMG
@@ -985,25 +1012,7 @@
             screen('reward-screen')        
         }
 
-    //* COMBAT MISC
-        function resetFlatStats(){
-            //4.Set stats before combat
-            //Restore sword dmg buff
-            gs.plObj.swordDmgMod = 0
 
-            //Restore flat def
-            if(gs.plObj.def !== gs.plObj.flatDef){
-                gs.plObj.def = gs.plObj.flatDef
-            }
-
-            //Restore flat power
-            if(gs.plObj.power !== gs.plObj.flatPower){//see if power should stay betweeen combats, set sign to <
-                gs.plObj.power = gs.plObj.flatPower
-            } 
-        
-            //Recalc all items and actions
-            resolvePlayerStats()
-        }
     
 
 //GAME START

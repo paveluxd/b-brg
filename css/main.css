@@ -55,7 +55,7 @@ body{
 
 /* Enables gestures for selected pages */
 /* Atm it also disables reward screens swipe gestures to switch between tabs*/
-    .scroll, .scroll *{
+    .scroll, .scroll *, .screen, .screen *, .modal, .modal *{
         touch-action: pan-y !important;
     }
     .scrollx, .scrollx *{
@@ -159,13 +159,12 @@ body{
 
 /* Screens */
     .screen{
+        height: 100%;
         max-height: calc(100vh);
-        overflow: scroll;
-
         display: flex;
         align-items: stretch;
 
-        background-color: white;
+        overflow: scroll;
     }
     .state-screen{
         z-index: 3 !important;
@@ -205,6 +204,7 @@ body{
         width: 100%;
         height: 100%;
 
+        overflow: scroll;
     }
     .modal-container{
         width: 100%;
@@ -216,9 +216,9 @@ body{
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        margin: 0 auto;
         gap: 12px;
-
+        
+        margin: 0 auto;
         padding: 24px 24px 96px 24px;
     }
 
@@ -283,64 +283,63 @@ body{
 /* Map */
     #map{
         background-color: var(--map-bg);
-        padding: 72px 72px 124px 72px;
-        flex-direction: column;
-
-        min-width: 100vw;
-        min-height: 100%;
-
+        width: 100%;
+        height: 100%;
         position: relative;
         overflow: scroll;
+        
+    }
+    #map-container{
+        display: flex;
+        flex-wrap: wrap;        
+        border-right: 1px dashed var(--b20) !important;
+        border-top: 1px dashed var(--b20) !important;
+    }
+    .map-border{
+        padding: 96px 96px 148px 96px;
+        width: fit-content;
+    }
+    .map-tile{
+        width: 120px;
+        height: 120px;
 
-        #map-container{
-            display: flex;
-            flex-wrap: wrap;
-            margin: auto;
-    
-            border-right: 1px dashed var(--b20) !important;
-            border-top: 1px dashed var(--b20) !important;
-        }
-        .map-tile{
-            width: 120px;
-            height: 120px;
-    
-            border: none;
-            border-left: 1px dashed var(--b20) !important;
-            border-bottom: 1px dashed var(--b20) !important;
-            background-color: var(--w0);
-    
-            position: relative;
-        }
-        .map-tile:hover{
-            background-color: var(--w0);
-        }
-        .map-tile:active{
-            background-color: var(--w0);
-            border: none;
-        }
-        .map-unit{
-            position: absolute;
-            z-index: 1;
-            bottom: 4px;
-            right: 4px;
-        }
-        .unit-quant{
-            position: absolute;
-            bottom: 25px;
-            right: 9px;
-            z-index: 2;
-    
-            text-align: center;
-            font-family: 'jetbrains mono', sans-serif;
-            font-size: 10px;
-        }
-        #map-desc{
-            position: absolute;
-            top:12px;
-            left: 12px;
-            font-size: 18px;
-            color: var(--b50);
-        }
+        border: none;
+        border-left: 1px dashed var(--b20) !important;
+        border-bottom: 1px dashed var(--b20) !important;
+        background-color: var(--w0);
+
+        position: relative;
+        transition: all 1s;
+    }
+    .map-tile:hover{
+        background-color: var(--b10);
+    }
+    .map-tile:active{
+        background-color: var(--w0);
+        border: none;
+    }
+    .map-unit{
+        position: absolute;
+        z-index: 1;
+        bottom: 4px;
+        right: 4px;
+    }
+    .unit-quant{
+        position: absolute;
+        bottom: 25px;
+        right: 9px;
+        z-index: 2;
+
+        text-align: center;
+        font-family: 'jetbrains mono', sans-serif;
+        font-size: 10px;
+    }
+    #map-desc{
+        position: absolute;
+        top:12px;
+        left: 12px;
+        font-size: 18px;
+        color: var(--b50);
     }
     #map, #map *{
         touch-action:pan-x pan-y !important;
@@ -358,14 +357,13 @@ body{
         }
     }
     #player-unit-arms{
-        animation: player-char-idle 0.5s steps(2) infinite alternate;
+        animation: player-char-idle-map 0.9s steps(2) infinite alternate;
     } @keyframes player-char-idle-map {
         0% {
             transform: translateY(0px);
         }
-
         100%{
-            transform: translateY(2px);
+            transform: translateY(-2px);
         }
     }
 
@@ -457,8 +455,11 @@ body{
         }
         .social-container{
             display: flex;
+            flex-direction: column;
             gap: 4px;
             margin-top: 8px;
+
+            width: 100%;
     
             & a {
                 min-height: 48px;
@@ -468,17 +469,17 @@ body{
                 gap: 8px;
                 align-items: center;
                 font-size: 14px;
+                flex: 1;
+                padding: 8px 16px 8px 8px;
             }
             & .x-social{
                 background-color: var(--b10);
                 color: black;
-                padding: 8px 28px 8px 28px;
             }
             
             & .discord{
                 background-color: #3366FF;
                 color: white;
-                padding: 8px 16px 8px 8px;
             }
         }
     }
@@ -604,6 +605,7 @@ body{
                 left: 0px;
 
                 border-radius: 0 4px 0 0;
+                z-index: 5;
             }
             & .charge-indicator{
                 color: var(--white);
@@ -964,7 +966,6 @@ body{
         }
 
         .modal-container{
-            padding: 24px 24px;
             align-items: center;
             text-align: center;
 
