@@ -984,7 +984,11 @@ body{
     #skill-tree{
         display: flex;
         flex-wrap: wrap;
-        gap: 2px;
+
+        width: 480px;
+
+        border-right: 1px dashed var(--b20) !important;
+        border-top: 1px dashed var(--b20) !important;
 
         & button{
             display: flex;
@@ -993,19 +997,24 @@ body{
 
             flex-direction: row;
             gap: 8px;
+            padding: 8px;
 
-            width: calc(48%);
-            height:fit-content;
-            border-radius: 4px;
- 
+            width: calc(50% - 1px);
+            height: 92px;
+
             text-align: left;
+            font-size: 12px;
+            line-height: 18px;
+
+            border-left: 1px dashed var(--b20) !important;
+            border-bottom: 1px dashed var(--b20) !important;
         }
 
         & div{
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 4px;
+            gap: 0px;
         }
 
         .allocated-tree-node{
