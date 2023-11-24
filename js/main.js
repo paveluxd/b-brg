@@ -665,32 +665,31 @@
                     }
                 
                 //DEF: resolve.
-                    if(!gs.plObj.piercing){//Ignore def if piercing state
+                    if(gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
                         
+                        changeStat('def', -gs.plObj.dmgDone, 'enemy')
                         
-                        //Reduce def on low hit
-                        if(gs.enObj.def > 0){
-                            if(gs.sourceAction.tags.includes('breaks def')){
-
-                                changeStat('def', -gs.plObj.dmgDone, 'enemy')
-                                gs.plObj.dmgDone = 0
-
-                            } else {
-
-                                changeStat('def', -1, 'enemy')
-                                
-                                //Reduce dmg by def
-                                gs.plObj.dmgDone -= gs.enObj.def
-                            }
-                        }
-
+                        //Deal no dmg if def was broken
+                        gs.plObj.dmgDone = gs.enObj.def
+                        
                     }
-                    //Set positive damage to 0 (due to def)
-                    if(gs.plObj.dmgDone < 0){
-                        gs.plObj.dmgDone = 0
+
+                    //Reduce dmg by def
+                    // if(gs.plObj.piercing) return //skip def calc if piercing state
+                    gs.plObj.dmgDone -= gs.enObj.def
+
+                    //Set positive damage to 0 (if def is greater than dmg)
+                    if(gs.plObj.dmgDone < 0){gs.plObj.dmgDone = 0}
+                    
+                    if(!gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
+                        
+                        //Reduce def on hit
+                        changeStat('def', -1, 'enemy')
+                        
                     }
+                    
                 
-                //PASSIVES CHEC: oh-hit passies
+                //PASSIVES CHECK: oh-hit passies
                     resolveOnHitPassives()
 
                 //Resolve stat change

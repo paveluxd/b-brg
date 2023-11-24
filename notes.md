@@ -14,3 +14,4 @@ Update #
 - Made leveling up exp requirement scale with level.
 - Added *Spear*, a new base weapon.
 - Most enemy skills now are ~30% stronger.
+- *Attack* actions from equipped items will now always be at the start of action list during combat.

@@ -140,7 +140,7 @@ let itemsRef = [
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
-    "desc": "common in the early Middle Ages, round shields featured resilient wood. Enhanced with metal, the shield's design, allows to deflect incoming blowscommon in the early Middle Ages, round shields featured resilient wood. Enhanced with metal, the shield's design, allows to deflect incoming blows",
+    "desc": "common in the early Middle Ages, round shields featured resilient wood. Enhanced with metal, the shield's design, allows to deflect incoming blows",
     "itemRarity": ""
   },
   {
