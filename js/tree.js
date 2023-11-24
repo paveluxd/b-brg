@@ -201,10 +201,10 @@
             desc:'25% chance to gain 1 action charge when you use a scroll',
             val:25,
         },{id:'t12',name:'perfect block',
-            desc:'on blocking an enemy attack with equal dice roll, reduce enemy power by 2',
+            desc:'blocking an enemy attack with matching dice roll, will reduce enemy power by 2',
             val:2,
         },{id:'t13',name:'perfect strike',
-            desc:'on attack a blocking enemy with equal dice roll, force enemy to skip next turn',
+            desc:'attacking a blocking enemy with matching dice roll, will force enemy to skip the next turn',
         }
         
         //On hit effects
