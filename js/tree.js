@@ -1,5 +1,4 @@
 //TREE
-
     //Spend tree points
     function addTreeNode(nodeId){
         if(gs.plObj.treePoints > 0){
@@ -16,23 +15,6 @@
         else{
             showAlert(`All your passive skill points are allocated.`)
         }
-    }
-
-    //Exp and lvl
-    function resolveExpAndLvl(){
-
-        //Add 1 exp for winning
-        gs.plObj.exp++                                  
-
-        //Recalc player lvl
-        gs.plObj.lvl = Math.floor(gs.plObj.exp / config.expRequiredPerLvl + 1) 
-
-        //Calc exp until lvl up
-        gs.plObj.lvlUpExp = (gs.plObj.lvl - 1) * config.expRequiredPerLvl + config.expRequiredPerLvl
-
-        //Calc available tree points?
-        //-1 for initial lvl 1
-        gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length - 1
     }
 
     //UI
@@ -192,7 +174,7 @@
         },{id:'t11',name:'librarian',
             desc:'25% chance to gain 1 action charge when you use a scroll',
             val:25,
-        },
+        }
         
         //On hit effects
             // {id:'ext-dmg'}, //Deal +1 damage

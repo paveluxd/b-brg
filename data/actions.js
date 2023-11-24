@@ -1,5 +1,16 @@
 let actionsRef = [
   {
+    "actionName": "spear attack",
+    "tags": "attack, breaks def",
+    "desc": "deal dmg equal to dice roll no more than 4. Breaks def",
+    "passiveStats": "",
+    "actionMod": 4,
+    "actionCharge": 60,
+    "cooldown": "",
+    "keyId": 63,
+    "actionType": ""
+  },
+  {
     "actionName": "mace attack",
     "tags": "attack",
     "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
@@ -46,7 +57,7 @@ let actionsRef = [
   {
     "actionName": "bow attack",
     "tags": "attack",
-    "desc": "deal dmg equal to your dice dice roll value",
+    "desc": "deal dmg equal to your dice roll value",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 60,
@@ -507,7 +518,7 @@ let actionsRef = [
   },
   {
     "actionName": "focus",
-    "tags": "attack",
+    "tags": "",
     "desc": "gain 1 power per 4 dice roll",
     "passiveStats": "",
     "actionMod": 1,

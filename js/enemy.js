@@ -150,7 +150,7 @@
 
             }else if(key == 'charged strike'){
 
-                this.actionVal = (gs.enObj.dice * 2) + gs.enObj.power
+                this.actionVal = Math.round((gs.enObj.dice + gs.enObj.power) * 2) 
                 this.desc = `Charged strike ${this.actionVal} dmg`
 
             }
@@ -160,7 +160,7 @@
 
                 this.rate = 2
                 this.stat = 'def'
-                this.actionVal = Math.ceil((gs.enObj.roll) * 0.5)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 1)
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.def < 0){
@@ -174,7 +174,7 @@
 
                 this.rate = 3
                 this.stat = 'power'
-                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.25)
+                this.actionVal = Math.round((gs.enObj.roll + gs.stage) * 0.5)
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.power < 0){
@@ -216,14 +216,14 @@
 
                 this.rate = 3
                 this.stat = 'def'
-                this.actionVal = Math.ceil((gs.enObj.roll) * 0.25)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 0.5)
                 this.desc = `${ico('curse-def')}Will reduce your<br>def by ${this.actionVal}`
 
             }else if(key == 'weaken'){ //- power
 
                 this.rate = 2
                 this.stat = 'power'
-                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.25)
+                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.5)
                 this.desc = `${ico('curse-power')}Will reduce your<br>power by ${this.actionVal}`
 
             }else if(key == 'slow'){   //- dice

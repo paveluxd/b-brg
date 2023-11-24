@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "spear",
+    "actions": "spear attack",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "desc": "modeled after ancient hunting tools, this spear boasts a straight hardwood shaft topped with a tempered iron head. Practical and utilitarian",
+    "itemRarity": ""
+  },
+  {
     "itemName": "wooden staff",
     "actions": "focus",
     "passiveStats": "",
@@ -59,7 +68,7 @@ let itemsRef = [
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "desc": "",
+    "desc": "a weapon shaped by the forgotten age. Wield it as a silent hymn to the lost glories of previous owners, its edge is a faithful companion in a world longing for heroes",
     "itemRarity": ""
   },
   {
@@ -68,7 +77,7 @@ let itemsRef = [
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "weapon",
-    "desc": "",
+    "desc": "this longbow embodies the craftsmanship of a bygone era. Hemp strings ensure a powerful draw, while simplicity in design reflects the practicality valued in these turbulent times",
     "itemRarity": ""
   },
   {
@@ -131,7 +140,7 @@ let itemsRef = [
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
-    "desc": "",
+    "desc": "common in the early Middle Ages, round shields featured resilient wood. Enhanced with metal, the shield's design, allows to deflect incoming blowscommon in the early Middle Ages, round shields featured resilient wood. Enhanced with metal, the shield's design, allows to deflect incoming blows",
     "itemRarity": ""
   },
   {
@@ -212,7 +221,7 @@ let itemsRef = [
     "passiveStats": "dice:12, def:-4",
     "itemSlot": "dice",
     "itemType": "dice",
-    "desc": "",
+    "desc": "a deceptively small jewel possessing an insidious charm. Unstable cores tend to influence the minds of those who posses them, compelling them towards acts of greed, and recklessness",
     "itemRarity": "unique"
   },
   {

@@ -1,8 +1,29 @@
 <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M35.634 43.3285L32.75 46.5108L29.866 43.3285L29.125 42.5108L28.384 43.3285L25.5 46.5108L22.616 43.3285L21.875 42.5108L21.134 43.3285L18.25 46.5108L15.366 43.3285L15.0683 43H14.625H12V40V39H11H5V12C5 8.13401 8.13401 5 12 5H40C43.866 5 47 8.13401 47 12V39H40H39V40V43H36.375H35.9317L35.634 43.3285Z" fill="#7AA8C1" stroke="black" stroke-width="2"/>
-<path d="M26 15L26 4" stroke="black" stroke-width="2"/>
-<path d="M5 32L12 32" stroke="black" stroke-width="2"/>
-<path d="M39 32L47 32" stroke="black" stroke-width="2"/>
-<rect x="11" y="17" width="2" height="21" fill="black"/>
-<rect x="38" y="17" width="2" height="21" fill="black"/>
+<path d="M28.7048 5L34 6.72585V47H18V6.285L23.2568 5H28.7048Z" fill="#204876" stroke="black" stroke-width="2"/>
+<path d="M25.6061 11.9191L26 12.088L26.3939 11.9191L33.0763 9.05528L47 12.7683V47H5V12.7683L18.9237 9.05528L25.6061 11.9191Z" fill="url(#paint0_linear_3473_31617)" stroke="black" stroke-width="2"/>
+<path d="M19 9L26 12L17 29H20L12 47V24H5V13.125L19 9Z" fill="black" fill-opacity="0.2"/>
+<path d="M26 16L26 11" stroke="black" stroke-width="2"/>
+<path d="M17 48L17 44" stroke="black" stroke-width="2"/>
+<path d="M21 48L21 41" stroke="black" stroke-width="2"/>
+<path d="M23 50L23 44" stroke="black" stroke-width="2"/>
+<path d="M18 8L18 13" stroke="black" stroke-width="2"/>
+<path d="M34 9L34 13" stroke="black" stroke-width="2"/>
+<path d="M22 15L26 17L30 15" stroke="black" stroke-width="2"/>
+<rect x="11" y="17" width="2" height="31" fill="black"/>
+<rect x="38" y="17" width="2" height="31" fill="black"/>
+<rect x="3" y="24" width="9" height="5" fill="#3A4C79" stroke="black" stroke-width="2"/>
+<rect x="3" y="34" width="9" height="5" fill="#3A4C79" stroke="black" stroke-width="2"/>
+<rect x="39" y="34" width="9" height="5" fill="#3A4C79" stroke="black" stroke-width="2"/>
+<rect x="39" y="24" width="9" height="5" fill="#3A4C79" stroke="black" stroke-width="2"/>
+<rect x="44" y="24" width="4" height="5" fill="#3A4C79" stroke="black" stroke-width="2"/>
+<path d="M11 24H10V25V28V29H11H14H14.5352L14.8321 28.5547L15.8321 27.0547L16.2019 26.5L15.8321 25.9453L14.8321 24.4453L14.5352 24H14H11Z" fill="#3A4C79" stroke="black" stroke-width="2"/>
+<rect x="34" y="18" width="2" height="6" fill="#070707" fill-opacity="0.45"/>
+<rect x="32" y="18" width="2" height="2" fill="#070707" fill-opacity="0.45"/>
+<rect x="29" y="18" width="2" height="6" fill="#070707" fill-opacity="0.45"/>
+<defs>
+<linearGradient id="paint0_linear_3473_31617" x1="26" y1="4" x2="26" y2="48" gradientUnits="userSpaceOnUse">
+<stop stop-color="#7AA8C1"/>
+<stop offset="1" stop-color="#335987"/>
+</linearGradient>
+</defs>
 </svg>

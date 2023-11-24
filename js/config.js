@@ -1,20 +1,20 @@
 let config = {
     //Player
-        life:      32, //32
-        power:      0,
+        life:      372, //32
+        power:      1,
         def:        0,
         dice:       6,
         inventory: 99,
         slots:      5,
 
     //Progression
-        expRequiredPerLvl: 4,
+        expRequiredPerLvl: 3,
         basePassieSkillPoints: 0,
 
     //Game
         testCombat: false, //Initiates combat at the start (for testing).
         showScreen: '', 
-        clearLs: false,
+        clearLs: true,
 
     //Items
         startingItems: [
@@ -36,6 +36,7 @@ let config = {
             // 'book of moon',
             // 'pauldron',
             // 'sword',
+            'spear',
             // 'mace',
 
             // 'boots',
@@ -54,11 +55,11 @@ let config = {
 
     //Map
         stage:           0,
-        mapX:            1,
-        mapY:            1,
+        mapX:            3,
+        mapY:            3,
         portalDefenders: 1,
         mandatoryTiles: [
-            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
+            {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
             // {tileType: 'merchant'},
             // {tileType: 'monument-1'},
