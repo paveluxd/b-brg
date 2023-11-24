@@ -161,7 +161,7 @@
 
                 this.rate = 2
                 this.stat = 'def'
-                this.actionVal = Math.ceil((gs.enObj.roll) * 1)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 0.75)
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.def < 0){

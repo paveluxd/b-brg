@@ -981,6 +981,9 @@ body{
     }
 
 /* Skill tree */
+    #tree, #tree *{ 
+        touch-action: auto !important;
+    }
     #skill-tree{
         display: flex;
         flex-wrap: wrap;
