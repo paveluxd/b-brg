@@ -25,9 +25,6 @@
 <rect x="59" y="48" width="2" height="4" fill="black"/>
 <rect opacity="0.2" x="72" y="47" width="2" height="4" fill="black"/>
 <rect opacity="0.2" x="68" y="29" width="2" height="4" fill="black"/>
-<rect x="69" y="64" width="10" height="5" fill="#795F51" stroke="black" stroke-width="2"/>
-<rect x="1" y="-1" width="10" height="4" transform="matrix(1 0 0 -1 68 63)" fill="#795F51" stroke="black" stroke-width="2"/>
-<rect x="73" y="63" width="2" height="4" fill="black"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M32.945 70C32.9814 69.8353 33 69.6685 33 69.5C33 66.4624 26.9558 64 19.5 64C12.0442 64 6 66.4624 6 69.5C6 69.6685 6.01861 69.8353 6.05503 70H6L6.06277 70.0338C6.55886 72.1324 9.94962 73.8862 14.5888 74.6247L19 77L23.4878 74.7561C28.5977 74.1133 32.4119 72.2678 32.9379 70.0311L33 70H32.945Z" fill="url(#paint4_linear_3654_100853)" fill-opacity="0.2"/>
 <path d="M13.0124 52L20 39L24.5 48H23L29 58H27L32 65C32 65.6566 31.6767 66.3068 31.0485 66.9134C30.4203 67.52 29.4996 68.0712 28.3388 68.5355C27.1781 68.9998 25.8001 69.3681 24.2835 69.6194C22.767 69.8707 21.1415 70 19.5 70C17.8585 70 16.233 69.8707 14.7165 69.6194C13.1999 69.3681 11.8219 68.9998 10.6612 68.5355C9.50043 68.0712 8.57969 67.52 7.95151 66.9134C7.32332 66.3068 7 65.6566 7 65L12 59H10L14.5124 52H13.0124Z" fill="#4E5B49" stroke="black" stroke-width="2"/>
 <rect opacity="0.2" x="14" y="60" width="2" height="4" fill="black"/>
@@ -45,6 +42,11 @@
 <rect width="2" height="4" transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 98 60)" fill="black"/>
 <rect width="2" height="4" transform="matrix(-1 8.74228e-08 8.74228e-08 1 86 61)" fill="black"/>
 <rect opacity="0.2" x="89" y="51" width="2" height="4" fill="black"/>
+<rect x="68" y="56" width="6" height="9" fill="#50443E"/>
+<rect x="68" y="56" width="6" height="9" fill="black" fill-opacity="0.4"/>
+<rect x="68" y="56" width="6" height="9" stroke="black" stroke-width="2"/>
+<rect x="68" y="56" width="6" height="4" fill="#50443E" stroke="black" stroke-width="2"/>
+<rect x="67" y="66" width="8" height="3" fill="url(#paint6_linear_3654_100853)" fill-opacity="0.2"/>
 <defs>
 <linearGradient id="paint0_linear_3654_100853" x1="60.5" y1="108" x2="60.5" y2="114" gradientUnits="userSpaceOnUse">
 <stop/>
@@ -67,6 +69,10 @@
 <stop offset="1" stop-opacity="0"/>
 </linearGradient>
 <linearGradient id="paint5_linear_3654_100853" x1="89.5" y1="58" x2="89.5" y2="71" gradientUnits="userSpaceOnUse">
+<stop/>
+<stop offset="1" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint6_linear_3654_100853" x1="71" y1="66" x2="71" y2="69" gradientUnits="userSpaceOnUse">
 <stop/>
 <stop offset="1" stop-opacity="0"/>
 </linearGradient>

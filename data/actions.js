@@ -420,10 +420,10 @@ let actionsRef = [
   {
     "actionName": "dodge",
     "tags": "buff, defensive",
-    "desc": "gain dice roll × 10% chance to evade dmg this turn",
+    "desc": "gain 35% chance to dodge next attack (+5% per dice roll point)",
     "passiveStats": "",
-    "actionMod": 10,
-    "actionCharge": 12,
+    "actionMod": 5,
+    "actionCharge": 30,
     "cooldown": "",
     "keyId": 35,
     "actionType": ""

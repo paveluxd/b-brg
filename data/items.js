@@ -284,7 +284,7 @@ let itemsRef = [
     "passiveStats": "power:1",
     "itemSlot": "body",
     "itemType": "body armor",
-    "desc": "",
+    "desc": "full body garment  with long sleeves. The sleeves have few belts that can be tied the to the back of the jacket to restrict motion",
     "itemRarity": ""
   },
   {
@@ -401,7 +401,7 @@ let itemsRef = [
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "cape",
-    "desc": "",
+    "desc": "a piece of tent fabric in the shape of a raincoat. This makes the owner a difficult target from a distance. You can see a small label that says 'Berghaus'.",
     "itemRarity": ""
   },
   {

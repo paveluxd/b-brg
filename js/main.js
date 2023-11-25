@@ -425,12 +425,15 @@
             }
              else if(paKey =='a35'){// dodge % evasion "leather cape"
     
-                let dodgePercent = gs.plObj.roll * actionMod
+                let dodgePercent = 35 + gs.plObj.roll * actionMod
                 let dodgeRoll = rng(100)
     
                 if(dodgeRoll < dodgePercent){
                     gs.enObj.dmgDone = -99999 // add something better for dodge later
                 }
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: Dodge chance:${dodgePercent} / Dodge roll: ${dodgeRoll}.<br>`)
     
             }else if(paKey =='a37'){// SP: buff next attack with piercing "leather gloves"
 
