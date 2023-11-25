@@ -73,100 +73,122 @@
         }   
     }
 
-    //On-hit check
-    function resolveOnHitPassives(){
-        gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't8'){//leech
-                restoreLife(node.val)
+    //Resolve tree passive checks
+        //On-hit check
+        function resolveOnHitPassives(){
+            gs.plObj.treeNodes.forEach(node => {
+                if(node.id == 't8'){//leech
+                    restoreLife(node.val)
 
-                //Log
-                gs.logMsg.push(`${node.name}: ${node.desc}`) 
-            }
-        })
-    }
+                    //Log
+                    gs.logMsg.push(`${node.name}: ${node.desc}`) 
+                }
+            })
+        }
+        //On-action use
+        function resolveOnUsePassives(){
+            gs.plObj.treeNodes.forEach(node => {
+                if(node.id == 't10'){
+                    if(rng(100) < node.val){
 
-    //On-action use
-    function resolveOnUsePassives(){
-        gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't10'){
-                if(rng(100) < node.val){
+                        //Check item type (due to itemless actions)
+                        let item = findItemByAction(gs.sourceAction)
+                        if(item == undefined) return
+
+                        gs.sourceAction.actionCharge++
+                    }
+                }
+                if(node.id == 't11'){
+                    if(rng(100) < node.val){
+
+                        //Check item type (due to itemless actions)
+                        let item = findItemByAction(gs.sourceAction)
+                        if(item == undefined) return
+                        if(item.itemType.includes('scroll') == false) return
+
+                        gs.sourceAction.actionCharge += 2
+                    }
+                }
+                if(node.id == 't12'){
+                    
+                    if(!gs.sourceAction.tags.includes('block')) return
+                    if(gs.plObj.roll != gs.enObj.roll) return
+                    if(['attack', 'combo', 'charged strike'].indexOf(gs.enObj.action.key) > -1 == false) return
 
                     //Check item type (due to itemless actions)
-                    let item = findItemByAction(gs.sourceAction)
-                    if(item == undefined) return
+                    gs.enObj.power -= node.val
 
-                    gs.sourceAction.actionCharge++
+                    //Log
+                    gs.logMsg.push(`${node.name}: ${node.desc}`) 
+                    
                 }
-            }
-            if(node.id == 't11'){
-                if(rng(100) < node.val){
+                if(node.id == 't13'){
+                    
+                    if(!gs.sourceAction.tags.includes('attack')) return
+                    if(gs.plObj.roll != gs.enObj.roll) return
+                    if(['block'].indexOf(gs.enObj.action.key) > -1 == false) return
 
                     //Check item type (due to itemless actions)
-                    let item = findItemByAction(gs.sourceAction)
-                    if(item == undefined) return
-                    if(item.itemType.includes('scroll') == false) return
+                    gs.enObj.forcedAction = 'sleep'
 
-                    gs.sourceAction.actionCharge += 2
+                    //Log
+                    gs.logMsg.push(`${node.name}: ${node.desc}`) 
+                    
                 }
-            }
-            if(node.id == 't12'){
-                
-                if(!gs.sourceAction.tags.includes('block')) return
-                if(gs.plObj.roll != gs.enObj.roll) return
-                if(['attack', 'combo', 'charged strike'].indexOf(gs.enObj.action.key) > -1 == false) return
+            })
+            
+        }
+        //End of combat check
+        function resolveEndOfCombatPassives(){
+            gs.plObj.treeNodes.forEach(node => {
+                if(node.id == 't7'){//recovery
 
-                //Check item type (due to itemless actions)
-                gs.enObj.power -= node.val
+                    restoreLife(node.val)
 
-                //Log
-                gs.logMsg.push(`${node.name}: ${node.desc}`) 
-                
-            }
-            if(node.id == 't13'){
-                
-                if(!gs.sourceAction.tags.includes('attack')) return
-                if(gs.plObj.roll != gs.enObj.roll) return
-                if(['block'].indexOf(gs.enObj.action.key) > -1 == false) return
+                    //Log
+                    gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+                }
+            }) 
+        }
+        //On death
+        function resolveOnDeathPassives(){
+            gs.plObj.treeNodes.forEach(node => {
+                if(node.id == 't9' && node.activated != true){//recovery
 
-                //Check item type (due to itemless actions)
-                gs.enObj.forcedAction = 'sleep'
+                    gs.plObj.life = node.val
 
-                //Log
-                gs.logMsg.push(`${node.name}: ${node.desc}`) 
-                
-            }
-        })
-        
-    }
+                    //Set variable
+                    node.activated = true
 
-    //End of combat check
-    function resolveEndOfCombatPassives(){
-        gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't7'){//recovery
+                    //Log
+                    gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+                }
+            }) 
+        }
+        //On death
+        function resolveOnStatChangePassives(stat){
+            let val = 0
 
-                restoreLife(node.val)
+            gs.plObj.treeNodes.forEach(node => {
+                if    (node.id == 't14' && stat == 'exp'){//scholar
 
-                //Log
-                gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
-            }
-        }) 
-    }
+                    //Calc
+                    gs.plObj.exp += node.val
 
-    //On death
-    function resolveOnDeathPassives(){
-        gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't9' && node.activated != true){//recovery
+                    //Log
+                    gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+                }
+                else if(node.id == 't15' && stat == 'def'){//bastion
+                    //Set return value
+                    val = node.val
 
-                gs.plObj.life = node.val
+                    //Log
+                    gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+                }
+            }) 
 
-                //Set variable
-                node.activated = true
-
-                //Log
-                gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
-            }
-        }) 
-    }
+            return val
+        }
 
     //Tree nodes
     let treeRef = [
@@ -205,6 +227,12 @@
             val:2,
         },{id:'t13',name:'perfect strike',
             desc:'attacking a blocking enemy with matching dice roll, will force enemy to skip the next turn',
+        },{id:'t14',name:'scholar',
+            desc:'whenever you gain experience, gain 1 extra point',
+            val: 1,
+        },{id:'t15',name:'bastion',
+            desc:'whenever you gain def, gain 1 extra point',
+            val: 1,
         }
         
         //On hit effects

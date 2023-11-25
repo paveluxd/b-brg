@@ -277,8 +277,13 @@ function calcCost(type, itemId){
             }
             else if(action.keyId == 'a59'){ // armor up
                 if(gs.plObj.roll == 4){
-                    gs.plObj.def += action.actionMod
+                    //Change stat
+                    changeStat('def', action.actionMod, 'player')
+
+                    //Log
                     gs.logMsg.push(`Armor up: ${action.actionMod} def (passive).`)
+
+                    //Sync ui
                     el('p-def').innerHTML = gs.plObj.def
                 }
             }

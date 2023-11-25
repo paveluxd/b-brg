@@ -1,5 +1,41 @@
 let itemsRef = [
   {
+    "itemName": "red cross kit",
+    "actions": "first aid",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "",
+    "desc": "bag filled with drugs and first aid items. On the inside you can see a distorted print 'Volunteer for victory 1 5 ed Cro'",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "axe",
+    "actions": "axe attack",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "great axe",
+    "actions": "great axe attack",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "sickle",
+    "actions": "sickle attack",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
     "itemName": "spear",
     "actions": "spear attack",
     "passiveStats": "",
@@ -145,7 +181,7 @@ let itemsRef = [
   },
   {
     "itemName": "tower shield",
-    "actions": "quick block",
+    "actions": "heavy block",
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
@@ -333,11 +369,11 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
-    "itemName": "woolen boots",
-    "actions": "sprint",
+    "itemName": "adrenaline pen",
+    "actions": "adrenaline shot",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "boots",
+    "itemType": "",
     "desc": "",
     "itemRarity": ""
   },

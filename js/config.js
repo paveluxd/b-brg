@@ -9,56 +9,38 @@ let config = {
 
     //Progression
         expRequiredPerLvl: 2,
-        basePassieSkillPoints: 0,
+        basePassieSkillPoints: 2,
 
     //Game
         testCombat: false, //Initiates combat at the start (for testing).
         showScreen: '', 
-        clearLs: false,
+        clearLs: true,
 
     //Items
         startingItems: [
             'club',
-            // 'spear',
             'shield',
-            "bandages",
-            // 'gonfalon',
-            // 'wizards head',
-            // 'scroll of restoration',
-            // 'ring of endurance',
-            // 'dagger',
-            // 'tetracore',
-            // 'octocore',
-            // 'decacore',
-            // 'dodecacore'
-            // "sigil of light",
-            // 'wooden staff',
+            'bandages',
 
-            // 'book of order',
-            // 'book of lightning',
-            // 'book of moon',
-            // 'pauldron',
-            // 'sword',
-            // 'mace',
-
-            // 'boots',
-            // 'plate armor',
-            // 'water potion'
+            "scroll of fortification",
+            'mace',
+            'pauldron',
+            'adrenaline pen'
         ],
 
         coins: rng(12,6),
         food:  rng(5,3),
 
     //Enemy
-        eneLife: 8,
+        eneLife: 6, //8
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
         stage:           0,
-        mapX:            1,
-        mapY:            1,
+        mapX:            6,
+        mapY:            6,
         portalDefenders: 1,
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},

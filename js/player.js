@@ -115,7 +115,10 @@ function resetFlatStats(){
 function resolveExpAndLvl(){
 
     //Add 1 exp for winning
-    gs.plObj.exp++                                  
+    gs.plObj.exp++  
+
+    //TREE: On exp gain passives
+    resolveOnStatChangePassives('exp')                            
 
     //Lvl up
     if(gs.plObj.exp >= gs.plObj.lvlUpExp){

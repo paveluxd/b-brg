@@ -1,0 +1,24 @@
+<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.4" d="M12 16V12H16" stroke="white" stroke-width="2"/>
+<path opacity="0.4" d="M40 16V12H36" stroke="white" stroke-width="2"/>
+<path opacity="0.4" d="M12 36V40H16" stroke="white" stroke-width="2"/>
+<path opacity="0.4" d="M40 36V40H36" stroke="white" stroke-width="2"/>
+<rect x="9" y="25" width="6" height="2" fill="#B3B3B3"/>
+<rect x="37" y="25" width="6" height="2" fill="#B3B3B3"/>
+<rect x="27" y="9" width="6" height="2" transform="rotate(90 27 9)" fill="#B3B3B3"/>
+<rect x="27" y="37" width="6" height="2" transform="rotate(90 27 37)" fill="#B3B3B3"/>
+<circle cx="26" cy="26" r="14" stroke="#B3B3B3" stroke-width="2"/>
+<rect x="37" y="23" width="6" height="2" fill="#ECECEC"/>
+<rect x="23" y="9" width="2" height="6" fill="#ECECEC"/>
+<rect x="27" y="37" width="2" height="6" fill="#ECECEC"/>
+<rect x="9" y="27" width="6" height="2" fill="#ECECEC"/>
+<rect x="1.36603" y="-0.366025" width="8" height="23" transform="matrix(0.866025 0.5 0.5 -0.866025 15.0358 34.2583)" fill="#D9D9D9" stroke="black" stroke-width="2"/>
+<rect width="2" height="10" transform="matrix(0.866025 0.5 0.5 -0.866025 30.134 16.8397)" fill="black"/>
+<rect opacity="0.5" width="2" height="5" transform="matrix(0.866025 0.5 0.5 -0.866025 27.134 22.0359)" fill="black"/>
+<rect width="2" height="10" transform="matrix(0.866025 0.5 0.5 -0.866025 14.1339 44.5525)" fill="black"/>
+<rect width="6" height="2" transform="matrix(0.866025 0.5 0.5 -0.866025 33.4019 7.17944)" fill="black"/>
+<rect opacity="0.5" width="8" height="2" transform="matrix(0.866025 0.5 0.5 -0.866025 23.5359 22.2679)" fill="black"/>
+<rect width="6" height="14" transform="matrix(0.866025 0.5 0.5 -0.866025 17.4019 34.8922)" fill="#FCF8E6"/>
+<path d="M15.9019 37.4903L21.098 40.4903C21.5763 40.7664 22.1879 40.6026 22.464 40.1243L24.964 35.7941L18.0358 31.7941L15.5358 36.1243C15.2597 36.6026 15.4236 37.2142 15.9019 37.4903Z" fill="#FF5C00" stroke="#773900" stroke-width="2"/>
+<rect x="25.4378" y="12.9736" width="14" height="2" transform="rotate(30 25.4378 12.9736)" fill="black"/>
+</svg>

@@ -47,13 +47,46 @@
             el('p-life').innerHTML  =`${gs.plObj.life}`
             el('p-def').innerHTML   =`${gs.plObj.def}`
             el('p-dice').innerHTML  =`${gs.plObj.roll}<span>/${gs.plObj.dice}</span>`
-            el('p-power').innerHTML =`${gs.plObj.power}`        
+            el('p-power').innerHTML =`${gs.plObj.power}`  
+
+            //Life 5 ico indication
+                //Pl   
+                if      (gs.plObj.life / gs.plObj.flatLife < 0.2){
+                    el('p-life-icon').setAttribute('src', './img/ico/life-20.svg')
+                }else if(gs.plObj.life / gs.plObj.flatLife < 0.4){
+                    el('p-life-icon').setAttribute('src', './img/ico/life-40.svg')
+                }else if(gs.plObj.life / gs.plObj.flatLife < 0.6){
+                    el('p-life-icon').setAttribute('src', './img/ico/life-60.svg')
+                }else if(gs.plObj.life / gs.plObj.flatLife < 0.8){
+                    el('p-life-icon').setAttribute('src', './img/ico/life-80.svg')
+                }else{
+                    el('p-life-icon').setAttribute('src', './img/ico/life.svg')
+                } 
+                //Ene
+                if      (gs.enObj.life / gs.enObj.flatLife < 0.2){
+                    el('e-life-icon').setAttribute('src', './img/ico/life-20.svg')
+                }else if(gs.enObj.life / gs.enObj.flatLife < 0.4){
+                    el('e-life-icon').setAttribute('src', './img/ico/life-40.svg')
+                }else if(gs.enObj.life / gs.enObj.flatLife < 0.6){
+                    el('e-life-icon').setAttribute('src', './img/ico/life-60.svg')
+                }else if(gs.enObj.life / gs.enObj.flatLife < 0.8){
+                    el('e-life-icon').setAttribute('src', './img/ico/life-80.svg')
+                }else{
+                    el('e-life-icon').setAttribute('src', './img/ico/life.svg')
+                }
+
+            //Control stat vis
+                // if(gs.enObj.poisonStacks > 0){
+                //     el('poison-stat').classList.remove('hide')
+                // }else{
+                //     el('poison-stat').classList.add('hide')
+                // }
 
             //Enemy stats
-            el('life').innerHTML    =`${gs.enObj.life}`
-            el('def').innerHTML     =`${gs.enObj.def}`
-            el('dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
-            el('power').innerHTML   =`${gs.enObj.power}`        
+                el('life').innerHTML    =`${gs.enObj.life}`
+                el('def').innerHTML     =`${gs.enObj.def}`
+                el('dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
+                el('power').innerHTML   =`${gs.enObj.power}`        
 
             //Enemy intent indicator
             el('intent').innerHTML = `${gs.enObj.action.desc}`
