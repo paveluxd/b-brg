@@ -4,7 +4,7 @@ let config = {
         power:      0,
         def:        0,
         dice:       6,
-        inventory: 99,
+        inventory: 80,
         slots:      5,
 
     //Progression
@@ -19,38 +19,15 @@ let config = {
     //Items
         startingItems: [
             'club',
-            // 'spear',
             'shield',
-            "bandages",
-            // 'gonfalon',
-            // 'wizards head',
-            // 'scroll of restoration',
-            // 'ring of endurance',
-            // 'dagger',
-            // 'tetracore',
-            // 'octocore',
-            // 'decacore',
-            // 'dodecacore'
-            // "sigil of light",
-            // 'wooden staff',
-
-            // 'book of order',
-            // 'book of lightning',
-            // 'book of moon',
-            // 'pauldron',
-            // 'sword',
-            // 'mace',
-
-            // 'boots',
-            // 'plate armor',
-            // 'water potion'
+            'bandages',
         ],
 
         coins: rng(12,6),
         food:  rng(5,3),
 
     //Enemy
-        eneLife: 8,
+        eneLife: 6, //8
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
@@ -64,7 +41,7 @@ let config = {
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
             // {tileType: 'blacksmith'},
             // {tileType: 'merchant'},
-            // {tileType: 'monument-1'},
+            // {tileType: 'campfire-1'},
         ],
 
         bossFrequency:   3, //Every Nth stage

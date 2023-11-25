@@ -1,0 +1,23 @@
+<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 12H26H40V26V40H26H12V26V12Z" stroke="#B3B3B3" stroke-width="2"/>
+<path opacity="0.4" d="M12 16V12H16" stroke="white" stroke-width="2"/>
+<path opacity="0.4" d="M40 16V12H36" stroke="white" stroke-width="2"/>
+<path opacity="0.4" d="M12 36V40H16" stroke="white" stroke-width="2"/>
+<path opacity="0.4" d="M40 36V40H36" stroke="white" stroke-width="2"/>
+<rect x="11" y="25" width="4" height="2" fill="#D9D9D9"/>
+<rect x="37" y="25" width="4" height="2" fill="#D9D9D9"/>
+<rect x="27" y="11" width="4" height="2" transform="rotate(90 27 11)" fill="#D9D9D9"/>
+<rect x="27" y="37" width="4" height="2" transform="rotate(90 27 37)" fill="#D9D9D9"/>
+<path d="M26.3461 22.9086L45.0961 4.1587L47.9246 6.98706L29.1746 25.7371L26.3461 22.9086Z" fill="black"/>
+<path d="M22.3638 24.9755L23.7933 19.6404C26.0831 20.4331 28.1338 21.8089 29.739 23.6392C31.5646 25.721 32.732 28.2974 33.0934 31.0427C33.4548 33.7879 32.9941 36.5787 31.7694 39.0621C30.5447 41.5455 28.6112 43.6099 26.2132 44.9944C23.8152 46.3789 21.0606 47.0212 18.2975 46.8401C15.5345 46.659 12.8873 45.6626 10.6905 43.977C8.49378 42.2914 6.84622 39.9922 5.95617 37.3702C5.17363 35.0649 5.00757 32.6011 5.46595 30.2218L10.801 31.6513C10.6094 32.9738 10.7317 34.3279 11.1643 35.6023C11.7047 37.1942 12.705 38.5901 14.0387 39.6135C15.3725 40.637 16.9797 41.2419 18.6573 41.3518C20.3348 41.4618 22.0073 41.0718 23.4632 40.2313C24.9191 39.3907 26.0931 38.1373 26.8366 36.6295C27.5802 35.1217 27.8599 33.4273 27.6405 31.7606C27.421 30.0938 26.7123 28.5296 25.6038 27.2656C24.7165 26.2538 23.605 25.4708 22.3638 24.9755Z" fill="url(#paint0_linear_3462_9016)" stroke="black" stroke-width="2"/>
+<rect x="26.2843" y="41.3553" width="2" height="2" transform="rotate(-135 26.2843 41.3553)" fill="black"/>
+<rect x="12.1422" y="41.3553" width="2" height="2" transform="rotate(-135 12.1422 41.3553)" fill="black"/>
+<rect x="26.2843" y="27.2132" width="2" height="2" transform="rotate(-135 26.2843 27.2132)" fill="black"/>
+<path d="M26.9913 16.6066L28.4263 18.0417L33.7088 18.3744L34.0832 23.6985L35.4766 25.0919" stroke="black" stroke-width="2"/>
+<defs>
+<linearGradient id="paint0_linear_3462_9016" x1="19.2132" y1="18.3812" x2="19.2132" y2="47.8701" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A0A0A0"/>
+<stop offset="1" stop-color="#976E1E"/>
+</linearGradient>
+</defs>
+</svg>

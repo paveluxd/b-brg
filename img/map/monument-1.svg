@@ -1,5 +1,5 @@
 <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path opacity="0.2" d="M48 62H72V65V79H48V76V62Z" fill="black"/>
+<path opacity="0.2" d="M48 62H72V64.8235V78H48V75.1765V62Z" fill="black"/>
 <rect x="34" y="99" width="2" height="4" fill="black" fill-opacity="0.2"/>
 <rect x="48" y="105" width="2" height="4" fill="black" fill-opacity="0.2"/>
 <path d="M90 39H86M80 45V39M80 39V35M80 39H86M80 35V29M80 35H75M70 35H75M80 29H86M80 29V24M80 24H73M80 24V21M80 21H85M80 21V15V12M86 39V34M75 35V31" stroke="black" stroke-width="2"/>
@@ -34,7 +34,6 @@
 <rect x="49" y="61" width="22" height="14" fill="#404045"/>
 <rect x="49" y="61" width="22" height="14" fill="black" fill-opacity="0.4"/>
 <rect x="49" y="61" width="22" height="14" stroke="black" stroke-width="2"/>
-<rect x="49" y="57" width="22" height="14" fill="#404045" stroke="black" stroke-width="2"/>
 <rect x="54" y="46" width="12" height="14" fill="#404045" stroke="black" stroke-width="2"/>
 <rect x="54" y="50" width="12" height="14" fill="#404045"/>
 <rect x="54" y="50" width="12" height="14" fill="black" fill-opacity="0.2"/>
@@ -42,7 +41,7 @@
 <rect x="55" y="65" width="10" height="2" fill="black"/>
 <rect opacity="0.3" x="55" y="67" width="10" height="2" fill="black"/>
 <rect opacity="0.3" x="53" y="69" width="14" height="3" fill="black"/>
-<rect opacity="0.2" x="53" y="79" width="14" height="7" fill="url(#paint4_linear_3721_25907)"/>
+<rect opacity="0.2" x="53" y="78" width="14" height="7" fill="url(#paint4_linear_3721_25907)"/>
 <rect opacity="0.5" x="57" y="53" width="2" height="2" fill="black"/>
 <rect opacity="0.5" x="61" y="59" width="2" height="2" fill="black"/>
 <rect opacity="0.3" x="61" y="53" width="2" height="2" fill="black"/>
@@ -68,7 +67,7 @@
 <stop/>
 <stop offset="1" stop-opacity="0"/>
 </linearGradient>
-<linearGradient id="paint4_linear_3721_25907" x1="60" y1="79" x2="60" y2="86" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint4_linear_3721_25907" x1="60" y1="78" x2="60" y2="85" gradientUnits="userSpaceOnUse">
 <stop/>
 <stop offset="1" stop-opacity="0"/>
 </linearGradient>

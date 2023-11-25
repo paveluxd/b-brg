@@ -1,10 +1,12 @@
 //MAP
 //Background image ids
-let tileSetUnique = 'lake-2, casino, monument-1, monument-2'.split(', ') //castle
-let tileSetRare   = 'grave, house-1, lake-3, blacksmith'.split(', ') //mine
-let tileSetCommon = 'chest-1, lake-1, merchant'.split(', ') //dungeon, 
-let tileSetBase   = 'empty-1, empty-2, empty-3, empty-4'.split(', ')
-let forests       = 'forest-1, forest-2, forest-3'.split(', ')
+let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
+let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
+let tileSetCommon = 'casino, blacksmith, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3'.split(', ') //dungeon, 
+let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
+let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7'.split(', ')
+
+let uniqueTiles   = 'merchant, blacksmith, casino, campfire, monument, lake, house'
 
 class MapObj{
     constructor(){
@@ -19,12 +21,14 @@ class MapObj{
         let yAxis = 0 
         let xAxis = 1 //Offset because i know js yes
 
+        let placedUniqueTiles = ''
+
         //Generates tiles
         for(let i = 0; i < this.yAxis * this.xAxis; i++){
 
             let tile = {}
             let roll = rng(100)
-
+            
             //Modify id to match rows and columns
             if(i % this.xAxis === 0){
                 xAxis = 1
@@ -37,76 +41,91 @@ class MapObj{
                 tile.tileType = tileSetUnique[rng((tileSetUnique.length - 1), 0)]
             }else if (roll > 84){
                 tile.tileType = tileSetRare[rng((tileSetRare.length - 1), 0)]
-            }else if (roll > 70){
-                tile.tileType = tileSetCommon[rng((tileSetCommon.length - 1), 0)]
             }else if (roll > 65){
+                tile.tileType = tileSetCommon[rng((tileSetCommon.length - 1), 0)]
+            }else if (roll > 40){
                 tile.tileType = forests[rng((forests.length - 1), 0)]
             }else               {
                 tile.tileType = tileSetBase[rng((tileSetBase.length - 1), 0)]
             }
 
+            //Prevent repears of unique tiles
+            let tileTypePrefix = tile.tileType.split('-')[0];
+            if(uniqueTiles.includes(tileTypePrefix)){
+                if(placedUniqueTiles.includes(tileTypePrefix)){
+                    tile.tileType = tileSetBase[rng((tileSetBase.length - 1), 0)]
+                }else{
+                    placedUniqueTiles += `${tileTypePrefix}, `
+                }
+                
+                console.log(placedUniqueTiles);
+            }
+
             //Add player & enemies
-            if (1 === rng(gs.enemySpawnFrequency)){ //Add enemy units 30%
-                let eneQuant = rng(gs.enemyPartyCap)
-                tile.enemyUnit = true
-                tile.enemyQuant = eneQuant
-                gs.totalEnemies += eneQuant //Counts total enemies
-            }
-            
-            //Flip tiles
-            if(1 === rng(2)){
-                tile.flip = true
-            }
+                //Add enemy units 30%
+                if (1 == rng(gs.enemySpawnFrequency)){ 
+                    let eneQuant = rng(gs.enemyPartyCap)
+                    tile.enemyUnit = true
+                    tile.enemyQuant = eneQuant
+                    gs.totalEnemies += eneQuant //Counts total enemies
+                }
+                
+                //Flip tiles
+                if(1 === rng(2)){
+                    tile.flip = true
+                }
 
-            //LORE: Add event id to event tiles
-            if(tile.tileType.startsWith('monument')){tile.loreEvent = rng(eventRef.length)}
+                //LORE: Add event id to event tiles
+                if(tile.tileType.startsWith('monument')){
+                    tile.loreEvent = rng(eventRef.length)
+                }
 
-            this.tiles.push(tile)
+                this.tiles.push(tile)
         }
 
         //MANDATORY TILES
-        //Map position is set in last main.js
-        let overrides = [
-            {tileId:`1-1`, playerUnit: true, enemyUnit: false}, //Player
-            {tileId:`${this.xAxis}-${this.yAxis}`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gs.stage},
-        ]
+            //Map position is set in last main.js
+            let overrides = [
+                {tileId:`1-1`, playerUnit: true, enemyUnit: false}, //Player
+                {tileId:`${this.xAxis}-${this.yAxis}`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gs.stage},
+            ]
 
-        //Adds mandatory tiles from config
-        config.mandatoryTiles.forEach(tile => {
-            overrides.push(tile)
-        })
+            //Adds mandatory tiles from config
+            config.mandatoryTiles.forEach(tile => {
+                overrides.push(tile)
+            })
 
-        overrides.forEach(reqTile => {
-        
-            //Find tile by id
-            let tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
-            // console.log(reqTile, tile);
+            overrides.forEach(reqTile => {
+            
+                //Find tile by id
+                let tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
+                // console.log(reqTile, tile);
 
-            //If tiles overlap, pick new random id.
-            //Inf loop will check for new random id
-            if(tile == undefined || tile.required){
-                while(true){
-                    reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
-                    tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
+                //If tiles overlap, pick new random id.
+                //Inf loop will check for new random id
+                if(tile == undefined || tile.required){
+                    while(true){
+                        reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
+                        tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
 
-                    if(!tile.required){
-                        break;
+                        if(!tile.required){
+                            break;
+                        }
                     }
                 }
-            }
 
-            //Add required tile for loop above
-            tile.required = true
+                //Add required tile for loop above
+                tile.required = true
 
-            //Set properties
-            //Gets all props and checks for defined ones.
-            //***Add this for all other class object overrides.
-            Object.getOwnPropertyNames(reqTile).forEach(property =>{
-                if(reqTile[property] != undefined){
-                    tile[property] = reqTile[property]
-                }
+                //Set properties
+                //Gets all props and checks for defined ones.
+                //***Add this for all other class object overrides.
+                Object.getOwnPropertyNames(reqTile).forEach(property =>{
+                    if(reqTile[property] != undefined){
+                        tile[property] = reqTile[property]
+                    }
+                })
             })
-        })
     }
 }
 

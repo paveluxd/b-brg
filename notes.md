@@ -9,11 +9,17 @@
     - win + shift + s -> screenshot
 
 **Update notes**
-- Added *Spear*.
-- Added *Perfect block* passive.
-- Added *Perfect stricke* passive.
-- Fixed the *Pick item* for item detail screen durin greward phase.
-- Fixed map margins issue.
-- Made level up exp requirement scale with level.
-- Most enemy skills now are ~30% stronger.
-- *Attack* actions from equipped items will now always be at the start of action list during combat.
+- Added *Sickle* weapon.
+- Added *Axe* weapon.
+- Added *Great axe* weapon.
+- Added *Red cross kit* item.
+- Reworked *Sprint* action, now it's called *Adrenaline shot*, it incerases dice roll by 4 as an extra action, and has 6 charges.
+- Reworked *Dodge* action, now it grants 30% (+5% per roll point) chance to dodge. Previously it granted 5% per roll point. Action charge quantity increased from 12 to 30.
+
+- Added *Bastion* passive.
+- Added *Scholar* passive.
+
+- Added dice roll micro animation.
+- Added visual life % indicator during combat.
+
+- Adjusted map generation to avoid repeating certain tiles.

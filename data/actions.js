@@ -1,5 +1,38 @@
 let actionsRef = [
   {
+    "actionName": "first aid",
+    "tags": "passive",
+    "desc": "restore 6 life at the end of the fight",
+    "passiveStats": "",
+    "actionMod": 6,
+    "actionCharge": 1,
+    "cooldown": "",
+    "keyId": 66,
+    "actionType": "passive"
+  },
+  {
+    "actionName": "great axe attack",
+    "tags": "attack",
+    "desc": "attack for 25% of enemy life (+5% per power)",
+    "passiveStats": "",
+    "actionMod": 25,
+    "actionCharge": 60,
+    "cooldown": "",
+    "keyId": 65,
+    "actionType": ""
+  },
+  {
+    "actionName": "sickle attack",
+    "tags": "attack, poison",
+    "desc": "deal 2 dmg. Poisons on hit",
+    "passiveStats": "",
+    "actionMod": 1,
+    "actionCharge": 60,
+    "cooldown": "",
+    "keyId": 64,
+    "actionType": ""
+  },
+  {
     "actionName": "spear attack",
     "tags": "attack, breaks def",
     "desc": "deal dmg equal to dice roll no more than 4. Breaks def",
@@ -90,10 +123,10 @@ let actionsRef = [
   {
     "actionName": "axe attack",
     "tags": "attack",
-    "desc": "deal 1 dmg per missing life (cost 5 life)",
+    "desc": "pay 4 (+power) life, deal 1 dmg per 2 missing life",
     "passiveStats": "",
-    "actionMod": 5,
-    "actionCharge": 12,
+    "actionMod": 4,
+    "actionCharge": 60,
     "cooldown": "",
     "keyId": 8,
     "actionType": ""
@@ -387,10 +420,10 @@ let actionsRef = [
   {
     "actionName": "dodge",
     "tags": "buff, defensive",
-    "desc": "gain dice roll × 10% chance to evade dmg this turn",
+    "desc": "gain 35% chance to dodge next attack (+5% per dice roll point)",
     "passiveStats": "",
-    "actionMod": 10,
-    "actionCharge": 12,
+    "actionMod": 5,
+    "actionCharge": 30,
     "cooldown": "",
     "keyId": 35,
     "actionType": ""
@@ -429,12 +462,12 @@ let actionsRef = [
     "actionType": ""
   },
   {
-    "actionName": "sprint",
+    "actionName": "adrenaline shot",
     "tags": "buff",
-    "desc": "gain 2 dice roll during this turn (extra action)",
+    "desc": "gain 4 dice roll during this turn (extra action)",
     "passiveStats": "",
-    "actionMod": 2,
-    "actionCharge": 3,
+    "actionMod": 4,
+    "actionCharge": 6,
     "cooldown": "",
     "keyId": 39,
     "actionType": "extra-action"

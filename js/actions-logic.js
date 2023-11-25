@@ -1,87 +1,87 @@
 //Actions DATA
-class ActionObj {
-    constructor(actionKey){
-        //Static props
-        this.actionKey = actionKey
-        
+    class ActionObj {
+        constructor(actionKey){
+            //Static props
+            this.actionKey = actionKey
+            
 
-        //Variable properties generated
-        let props = [
-            {key:'actionName'  ,val: upp(actionKey)},
-            {key:'actionId'    ,val: "ac" + Math.random().toString(8).slice(2)},//gens unique id
-            {key:'actionCharge',val: 10},
-            {key:'actionMod'   ,val: 0},
-            {key:'cooldown'    ,val: undefined},
-            {key:'actionType'  ,val: 'generic'},
-            {key:'desc'        ,val: ''},
-            {key:'passiveStats',val: []},
-            {key:'keyId'       ,val: '???'},
-            {key:'tags'        ,val: ''}
-        ]
+            //Variable properties generated
+            let props = [
+                {key:'actionName'  ,val: upp(actionKey)},
+                {key:'actionId'    ,val: "ac" + Math.random().toString(8).slice(2)},//gens unique id
+                {key:'actionCharge',val: 10},
+                {key:'actionMod'   ,val: 0},
+                {key:'cooldown'    ,val: undefined},
+                {key:'actionType'  ,val: 'generic'},
+                {key:'desc'        ,val: ''},
+                {key:'passiveStats',val: []},
+                {key:'keyId'       ,val: '???'},
+                {key:'tags'        ,val: ''}
+            ]
 
-        //Resolves extra props
-        props.forEach(property => {
+            //Resolves extra props
+            props.forEach(property => {
 
-            // console.log(property)
+                // console.log(property)
 
-            //Find action by actionName
-            let actionData = findByProperty(actionsRef, 'actionName', actionKey)
+                //Find action by actionName
+                let actionData = findByProperty(actionsRef, 'actionName', actionKey)
 
-            if(typeof actionData[property.key] === 'undefined' || actionData[property.key] === ''){
-                this[property.key] = property.val //if no prop, set it to extra props vlaue
-            }
-            else {
-                this[property.key] = actionData[property.key] //if exists in ref, set it as red.
-            }
+                if(typeof actionData[property.key] === 'undefined' || actionData[property.key] === ''){
+                    this[property.key] = property.val //if no prop, set it to extra props vlaue
+                }
+                else {
+                    this[property.key] = actionData[property.key] //if exists in ref, set it as red.
+                }
 
-            //Set action charge of all passive items to 1.
-            if(actionData.actionType === 'passive' && property.key === 'actionCharge'){
-                this.actionCharge = 1 
-            } 
-        })
+                //Set action charge of all passive items to 1.
+                if(actionData.actionType === 'passive' && property.key === 'actionCharge'){
+                    this.actionCharge = 1 
+                } 
+            })
 
-        // this.actionCharge = 100 //for testing
+            // this.actionCharge = 100 //for testing
 
-        //Static props
-        this.flatActionCharge = this.actionCharge
+            //Static props
+            this.flatActionCharge = this.actionCharge
+        }
     }
-}
 
 //Convert action id to strings
-actionsRef.forEach(action => {
-    action.keyId = `a${action.keyId}`
-})
+    actionsRef.forEach(action => {
+        action.keyId = `a${action.keyId}`
+    })
 
 //Converts passiveStat to objects
-function convertStringsToArr(arr){
-    arr.forEach(item => {
-        //Convert passiveStat to arr
-        //Check if there are passive stats
-        if(item.passiveStats.length > 1){
-            let passivesArr = item.passiveStats.split(', ')
-            item.passiveStats = []
-    
-            passivesArr.forEach(stat =>{
-                statArr = stat.split(':')
-                item.passiveStats.push({'stat':statArr[0], 'value': parseInt(statArr[1])})
-            })
-            // console.log(item);
-        }
+    function convertStringsToArr(arr){
+        arr.forEach(item => {
+            //Convert passiveStat to arr
+            //Check if there are passive stats
+            if(item.passiveStats.length > 1){
+                let passivesArr = item.passiveStats.split(', ')
+                item.passiveStats = []
+        
+                passivesArr.forEach(stat =>{
+                    statArr = stat.split(':')
+                    item.passiveStats.push({'stat':statArr[0], 'value': parseInt(statArr[1])})
+                })
+                // console.log(item);
+            }
 
-        //Conver actions to arr
-        if(item.actions == undefined) return false
+            //Conver actions to arr
+            if(item.actions == undefined) return false
 
-        if(item.actions == ''){
-            item.actions = []
-        }
-        else{
-            item.actions = item.actions.split(', ')
-        }
-    })
-}
+            if(item.actions == ''){
+                item.actions = []
+            }
+            else{
+                item.actions = item.actions.split(', ')
+            }
+        })
+    }
 //Convert passiveStat, actions property to objects.
-convertStringsToArr(itemsRef)
-convertStringsToArr(actionsRef) 
+    convertStringsToArr(itemsRef)
+    convertStringsToArr(actionsRef) 
 
 
 //ACTIONS UI
@@ -147,7 +147,7 @@ convertStringsToArr(actionsRef)
 
         // console.log(action);
 
-        if (action.keyId == 'a62'){
+        if (action.keyId == 'a62'){//punch
             console.log(1);
             itemString = 'punch'
         } 
@@ -176,16 +176,40 @@ convertStringsToArr(actionsRef)
 
 
         let heading = `${upp(action.actionName)}`
+        let desc = `${upp(action.desc)}`
 
+        //Rewrites headings for calc
+        //See if you can merge it all with action obj/functions
         if(type != 'card'){//Remove numbers if generated for character page.
             if      (['block'].indexOf(referenceAction.actionName) > -1){
-                heading = `${upp(action.actionName)} ${gs.plObj.roll}`
+                heading = `${upp(action.actionName)} ${gs.plObj.roll} dmg`
             }else if(['bow attack'].indexOf(referenceAction.actionName) > -1){
                 heading = `${upp(action.actionName)} for ${gs.plObj.roll + gs.plObj.power}`
             }else if(['sword attack'].indexOf(referenceAction.actionName) > -1){
                 heading = `${upp(action.actionName)} (${3 + gs.plObj.power}+${gs.plObj.swordDmgMod})`
             }else if(['inferno'].indexOf(referenceAction.actionName) > -1){
                 heading = `${upp(action.actionName)} (${gs.plObj.power * gs.plObj.coins} dmg)`
+            }else if(['axe attack'].indexOf(referenceAction.actionName) > -1){
+
+    
+                //Cost
+                //Deal with negative power
+                let powerMod = gs.plObj.power
+                if (powerMod < 0){powerMod = 0}
+                
+                let cost = (referenceAction.actionMod + powerMod) * -1
+                let dmg
+                let maxLife = gs.plObj.life 
+    
+                //If max life is lower than max life pre combat, set max life to pre combat value
+                if(gs.plObj.flatLife > gs.plObj.life){
+                    maxLife = gs.plObj.flatLife
+                }
+    
+                dmg = Math.ceil((gs.plObj.flatLife - gs.plObj.life - cost)/2)
+                heading = `${upp(action.actionName)} for ${dmg}`
+
+                desc = `Pay ${cost * -1} life, deal 1 dmg per 2 missing life`
             }
         }
 
@@ -195,8 +219,20 @@ convertStringsToArr(actionsRef)
                 <p class="charge-indicator">x${action.actionCharge}</p>
                 ${cooldownCounter}
             </span>
-            <p class='desc'>${upp(action.desc)}.</p>
+            <p class='desc'>${desc}.</p>
             <img src="./img/items/${itemString}.svg">
         `
         return button
+    }
+
+    function resolveEndOfCombatPassiveActions(){
+        gs.plObj.actions.forEach(action => {
+            if(action.keyId == 'a66'){
+                //Heal value
+                changeStat('life', action.actionMod, 'player') 
+
+                //Log
+                gs.logMsg.push(`${action.actionName}: ${action.desc}`)  
+            }
+        })
     }

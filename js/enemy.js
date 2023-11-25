@@ -161,7 +161,7 @@
 
                 this.rate = 2
                 this.stat = 'def'
-                this.actionVal = Math.ceil((gs.enObj.roll) * 0.75)
+                this.actionVal = Math.ceil((gs.enObj.roll) * 0.6)
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.def < 0){
@@ -175,7 +175,7 @@
 
                 this.rate = 3
                 this.stat = 'power'
-                this.actionVal = Math.round((gs.enObj.roll + gs.stage) * 0.5)
+                this.actionVal = Math.round(gs.enObj.roll * 0.5)+ gs.stage
 
                 //Enable recovery if def is negative.
                 if(gs.enObj.power < 0){

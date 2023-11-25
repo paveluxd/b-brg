@@ -1,5 +1,41 @@
 let itemsRef = [
   {
+    "itemName": "red cross kit",
+    "actions": "first aid",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "",
+    "desc": "bag filled with drugs and first aid items. On the inside you can see a distorted print 'Volunteer for victory 1 5 ed Cro'",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "axe",
+    "actions": "axe attack",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "great axe",
+    "actions": "great axe attack",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "sickle",
+    "actions": "sickle attack",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "weapon",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
     "itemName": "spear",
     "actions": "spear attack",
     "passiveStats": "",
@@ -145,7 +181,7 @@ let itemsRef = [
   },
   {
     "itemName": "tower shield",
-    "actions": "quick block",
+    "actions": "heavy block",
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",
@@ -248,7 +284,7 @@ let itemsRef = [
     "passiveStats": "power:1",
     "itemSlot": "body",
     "itemType": "body armor",
-    "desc": "",
+    "desc": "full body garment  with long sleeves. The sleeves have few belts that can be tied the to the back of the jacket to restrict motion",
     "itemRarity": ""
   },
   {
@@ -333,11 +369,11 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
-    "itemName": "woolen boots",
-    "actions": "sprint",
+    "itemName": "adrenaline pen",
+    "actions": "adrenaline shot",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "boots",
+    "itemType": "",
     "desc": "",
     "itemRarity": ""
   },
@@ -365,7 +401,7 @@ let itemsRef = [
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "cape",
-    "desc": "",
+    "desc": "a piece of tent fabric in the shape of a raincoat. This makes the owner a difficult target from a distance. You can see a small label that says 'Berghaus'.",
     "itemRarity": ""
   },
   {

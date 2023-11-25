@@ -106,12 +106,14 @@
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
     
                 if(gs.plObj.roll === 4){
-                    gs.plObj.def += 1
+                    //Resolve stat change
+                    changeStat('def', 1, 'player')
     
                     gs.logMsg.push('Mace: +1 def.')
                 }
     
-                gs.logMsg.push(`Mace: deals ${actionMod + gs.plObj.power} dmg.`)
+                //Log
+                gs.logMsg.push(`Mace: deals ${actionMod + gs.plObj.power} dmg.<br>`)
     
             }else if(paKey =='a2' ){// 'armor break' 'hammer'
 
@@ -187,15 +189,26 @@
     
             }else if(paKey =='a8' ){// "axe" 
     
-                let maxLife = gs.plObj.life //Deal with overcap life
-    
-                if(gs.plObj.flatLife > gs.plObj.life){
-                    maxLife = gs.plObj.flatLife
-                }
-    
-                gs.plObj.life -= 5
-    
-                gs.plObj.dmgDone += gs.plObj.flatLife - gs.plObj.life + gs.plObj.power
+                //Cost
+                    //Deal with negative power
+                    let powerMod = gs.plObj.power
+                    if (powerMod < 0){powerMod = 0}
+
+                    //Pay cost
+                    changeStat('life', (actionMod + powerMod) * -1, 'player') 
+
+                //Dmg calc
+                    //Deal with overcap life, sets max life to current life
+                    let maxLife = gs.plObj.life 
+        
+                    //If max life is lower than max life pre combat, set max life to pre combat value
+                    if(gs.plObj.flatLife > gs.plObj.life){maxLife = gs.plObj.flatLife}
+
+                    //Dmg calc
+                    gs.plObj.dmgDone += Math.ceil((gs.plObj.flatLife - gs.plObj.life)/2)
+
+                //Log
+                    gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.dmgDone} dmg.`)
     
             }else if(paKey =='a9' ){// SP/EX: ice lance "book of ice"
 
@@ -234,6 +247,27 @@
 
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
+    
+            }else if(paKey =='a64'){// sicle
+
+                //Calc
+                gs.plObj.dmgDone += 2 + gs.plObj.power
+
+                //Apply 2 poison stacks
+                gs.enObj.poisonStacks += actionMod
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
+    
+            }else if(paKey =='a65'){// great axe
+    
+                //Calc
+                let dmg = Math.ceil(gs.enObj.life * (actionMod / 100 + 0.05 * gs.plObj.power))
+                if(dmg < 1){dmg = 1}
+                gs.plObj.dmgDone += dmg
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${dmg} dmg.`)
     
             }
              else if(paKey =='a11'){// SP: lightning "book of lightning"
@@ -381,20 +415,25 @@
                 //Log
                 gs.logMsg.push(`Bandages: +${actionMod}  life.`)  
                  
-            }else if(paKey =='a34'){// (def+) fortification
+            }else if(paKey =='a34'){// scroll of fortification
 
                 //Resolve stat change
                 changeStat('def', actionMod, 'player')
-    
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}<br>`)
             }
              else if(paKey =='a35'){// dodge % evasion "leather cape"
     
-                let dodgePercent = gs.plObj.roll * actionMod
+                let dodgePercent = 35 + gs.plObj.roll * actionMod
                 let dodgeRoll = rng(100)
     
                 if(dodgeRoll < dodgePercent){
                     gs.enObj.dmgDone = -99999 // add something better for dodge later
                 }
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: Dodge chance:${dodgePercent} / Dodge roll: ${dodgeRoll}.<br>`)
     
             }else if(paKey =='a37'){// SP: buff next attack with piercing "leather gloves"
 
@@ -414,15 +453,21 @@
                 //Resolve stat change
                 changeStat('power', 2, 'player')
                     
-            }else if(paKey =='a39'){// sprint "woolen boots"
+            }else if(paKey =='a39'){// adrenaline shot/ adrenaline pen
 
                 //Resolve stat change
-                changeStat('roll', 2, 'player')
+                changeStat('roll', actionMod, 'player')
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
     
             }else if(paKey =='a40'){// water potion "water potion"
 
                 //Resolve stat change
                 changeStat('power', actionMod, 'player')
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
     
             }else if(paKey =='a41'){// poison
                 
@@ -633,6 +678,10 @@
             el('e-ghost').setAttribute('style',`transform: scale(-1, 1);`) //flip ene
             runAnim(el(`p-ghost`), 'ghost-trigger')
             runAnim(el('e-ghost'), 'ghost-trigger')
+
+            //Dice roll animation
+            runAnim(el('p-dice-icon'), 'roll-dice')
+            runAnim(el('e-dice-icon'), 'roll-dice')
         }
         //Damage calculation.
         function combatCalc(){    
@@ -640,7 +689,7 @@
             //PLAYER DMG
             if(gs.plObj.dmgDone > 0){
 
-                //POISON: apply id dmg is done.
+                //POISON: apply if dmg is done.
                     if(gs.plObj.poisonBuff || gs.plObj.poisonBuff == 'triggered'){
                         let poisonStackCount = 1
                 
@@ -660,7 +709,7 @@
                         }
                 
                         gs.enObj.poisonStacks += poisonStackCount
-                        gs.plObj.poisonBuff = 'triggered'
+                        gs.plObj.poisonBuff = 'triggered' //For potion
                         gs.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
                     }
                 
@@ -821,9 +870,14 @@
             })
         }
 
+        //Stat mod
         function changeStat(stat, value, target){
             if(target == 'player'){
-                gs.plObj[stat] += value
+                //TREE: resolve on stat gain passives
+                value += resolveOnStatChangePassives(stat)
+            
+                // console.log(passiveMod + value);
+                gs.plObj[stat] += (value)
 
                 //Trigger floating number
                 gs.plObj[`${stat}ChangeMarker`] = true
@@ -884,6 +938,7 @@
 
                     //PASSIVES CHECK: end of encounter
                     resolveEndOfCombatPassives()
+                    resolveEndOfCombatPassiveActions()
 
                     //Lock screen
                     document.body.classList.add('lock-actions', 'darken')
@@ -925,22 +980,22 @@
                         let statRoll = rng(5)
                             
                         if       (statRoll == 2){
-                            gs.enObj.def -= 1
+                            changeStat('def', -1, 'enemy')
                             gs.logMsg.push(`poison: -1 def. ${gs.enObj.poisonStacks - 1} stacks remaining`)
 
                         }else if (statRoll == 3){
-                            gs.enObj.power -= 1
+                            changeStat('power', -1, 'enemy')
                             gs.logMsg.push(`poison: -1 power. ${gs.enObj.poisonStacks - 1} stacks remaining`)
 
                         }else if (statRoll == 4 && gs.enObj.dice > 3){
-                            gs.enObj.dice -= 1
+                            changeStat('dice', -1, 'enemy')
                             gs.logMsg.push(`poison: -1 dice. ${gs.enObj.poisonStacks - 1} stacks remaining`)
 
                         }else if (statRoll == 5){ //20% to increase poison stacks
                             gs.enObj.poisonStacks += 1
                             gs.logMsg.push(`poison: +1 stack. ${gs.enObj.poisonStacks - 1} stacks remaining`)
                         }else {
-                            gs.enObj.life -= 1
+                            changeStat('life', -1, 'enemy')
                             gs.logMsg.push(`poison: -1 life. ${gs.enObj.poisonStacks - 1} stacks remaining`)
                         }
                     }
