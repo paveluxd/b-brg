@@ -229,8 +229,8 @@
         gs.plObj.actions.forEach(action => {
             if(action.keyId == 'a66'){
                 //Heal value
-                changeStat('life', action.actionMod, 'player') 
-
+                restoreLife(action.actionMod)
+                
                 //Log
                 gs.logMsg.push(`${action.actionName}: ${action.desc}`)  
             }
