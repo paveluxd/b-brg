@@ -5,17 +5,20 @@
         if(typeof gs == 'undefined'){
             gs = new GameState
             gs.plObj = new PlayerObj
-
+            
             //Resolve ititial items
             gs.plObj.startingItems.forEach(key => {addItem(key)})
 
+            //Generate a mapObj for this stage
+            gs.mapObj = new MapObj 
+
+            //Save game once map was generated to prevent map regen
             saveGame()
         }
         
         mapRef = gs.mapObj.tiles
         genMap()
 
-        
         //Gen remaining UI
         // genTabs()              //merge ui
         spriteBuilder('player')//create player sprite
@@ -66,6 +69,10 @@
             //6.1 Update the background
             if(gs.encounter == 1){
                 el('combat-bg').setAttribute('src',`./img/bg/combat-${rng(config.bgCounter)}.svg`)
+
+                if(gs.mapObj.mapId.includes('dungeon')){
+                    el('combat-bg').setAttribute('src',`./img/bg/dungeon-1.svg`)
+                }
             }
 
         //7.Open combat screen
@@ -958,6 +965,9 @@
                         },
                         1000
                     )
+
+                    //Save game on win
+                    saveGame()
                 }
                 //Next fight
                 else{
@@ -1058,7 +1068,7 @@
 
             el('reward-desc').innerHTML = `
                 You defeated the enemy.<br>
-                You get +${gs.flatFoodReward + gs.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, ${coinsReward} coins , and one of these rewadrs:
+                You get +${gs.flatFoodReward + gs.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, ${coinsReward} coins , and one of these rewards:
             `
             gs.plObj.food += gs.flatFoodReward + (gs.playerLocationTile.enemyQuant)
             gs.plObj.coins += coinsReward

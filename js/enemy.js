@@ -18,7 +18,15 @@
             let powerMod, defMod, diceMod, imgPath, lifeMod
             // el('enemyImg').classList.remove('boss')
 
-            if      (randomEnemyProfile == 'balanced'){
+            if      (gs.playerLocationTile.boss){
+                lifeMod  = 2
+                powerMod = 2
+                defMod   = 2
+                diceMod  = 2
+
+                this.profile = 'boss'
+                imgPath  = `boss/${rng(3,1)}`
+            }else if(randomEnemyProfile == 'balanced'){
                 lifeMod  = 1
                 powerMod = 1
                 defMod   = 1
@@ -125,7 +133,11 @@
 
                 this.rate = 2
                 this.actionVal = 1 + gs.enObj.power 
-                this.desc = `${ico('combo')}Will attack 3<br>times for ${this.actionVal}`
+                this.desc = `
+                    ${ico('combo')}<span>Will attack for ${this.actionVal}<br>
+                    <span class="w50">(3x times)</span>
+                    </span>
+                `
 
             }else if(key == 'block'){
 
@@ -147,12 +159,16 @@
 
                 this.rate = 3
                 this.actionVal = rng(3)
-                this.desc = `Charges an attack (${this.actionVal} turns)`
+                this.desc = `
+                    <span>Charges an attack<br>
+                        <span class='w50'>(${this.actionVal} turns)</span>
+                    </span>
+                `
 
             }else if(key == 'charged strike'){
 
                 this.actionVal = Math.round((gs.enObj.dice + gs.enObj.power) * 2) 
-                this.desc = `Charged strike ${this.actionVal} dmg`
+                this.desc = `Will crit for ${this.actionVal} dmg`
 
             }
             
@@ -183,7 +199,7 @@
                     this.actionVal = gs.enObj.flatPower - gs.enObj.power
                 }
 
-                this.desc = `${ico('power-buff')} Will gian ${this.actionVal} power`
+                this.desc = `${ico('power-buff')} Will gain ${this.actionVal} power`
 
             }else if(key == 'rush'){   //+ dice
 
@@ -218,28 +234,28 @@
                 this.rate = 3
                 this.stat = 'def'
                 this.actionVal = Math.ceil((gs.enObj.roll) * 0.5)
-                this.desc = `${ico('curse-def')}Will reduce your<br>def by ${this.actionVal}`
+                this.desc = `${ico('curse-def')}Will hex (-${this.actionVal} def)`
 
             }else if(key == 'weaken'){ //- power
 
                 this.rate = 2
                 this.stat = 'power'
                 this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.5)
-                this.desc = `${ico('curse-power')}Will reduce your<br>power by ${this.actionVal}`
+                this.desc = `${ico('curse-power')}Will hex (-${this.actionVal} power)`
 
             }else if(key == 'slow'){   //- dice
 
                 this.rate = 5
                 this.stat = 'dice'
                 this.actionVal = rng(2)
-                this.desc = `${ico('curse-dice')}Will reduce your<br>dice by ${this.actionVal}`
+                this.desc = `${ico('curse-dice')}Will hex (-${this.actionVal} dice)`
 
             }else if(key == 'drain'){  //- life
 
                 this.rate = 4
                 this.stat = 'life'
                 this.actionVal = Math.round(gs.enObj.roll * 1.5)
-                this.desc = `${ico('curse-life')}Will reduce your<br>life by ${this.actionVal}`
+                this.desc = `${ico('curse-life')}Will hex (-${this.actionVal} life)`
 
             }
 
@@ -271,8 +287,9 @@
                 ]
                 this.rate = 3
                 this.desc = `
-                    <span class="italic">"${dialogueOptions[rng(dialogueOptions.length -1)]}"</span>
-                    <span class="w50">(will skip turn)</span>
+                    <span class="italic">"${dialogueOptions[rng(dialogueOptions.length -1)]}"<br>
+                        <span class="w50">(will skip turn)</span>
+                    </span>
                 `
             }
             
@@ -363,7 +380,7 @@
         if(gs.enObj.action != undefined && gs.enObj.action.key == 'charge'){
             
             gs.enObj.action.actionVal--
-            gs.enObj.action.desc = `Charges an attack (${ gs.enObj.action.actionVal} turns)`
+            gs.enObj.action.desc = `<span>Charges an attack<br><span class='w50'>(${gs.enObj.action.actionVal} turns)</span></span>`
 
             //Switch action to charged strike on cd 0
             if(gs.enObj.action.actionVal < 1){

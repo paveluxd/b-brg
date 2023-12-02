@@ -1,7 +1,7 @@
 let config = {
     //Player
-        life:      30, //32
-        power:      0,
+        life:      320, //32
+        power:      10,
         def:        0,
         dice:       6,
         inventory: 80,
@@ -14,7 +14,7 @@ let config = {
     //Game
         testCombat: false, //Initiates combat at the start (for testing).
         showScreen: '', 
-        clearLs: false,
+        clearLs: true,
 
     //Items
         startingItems: [
@@ -34,12 +34,13 @@ let config = {
 
     //Map
         stage:           0,
-        mapX:            1,
-        mapY:            1,
-        portalDefenders: 1,
+        mapX:            3,
+        mapY:            3,
+        exitDefenders: 1,
         mandatoryTiles: [
-            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: false},
-            // {tileType: 'blacksmith'},
+            {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true},
+            {tileType: 'dungeon-1', enemyUnit: false},
+            // {tileType: 'enchanter-1', enemyUnit: false},
             // {tileType: 'merchant'},
             // {tileType: 'campfire-1'},
         ],

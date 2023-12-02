@@ -1,5 +1,7 @@
 //UI
     function syncUi(){
+        console.log(`UI was synced.`);
+
         syncActionTiles()
         syncCharPage()
         syncItemCards()
@@ -152,9 +154,6 @@
         else if(['merchant','merchant-sell'].indexOf(elemId) > -1){
             el('merchant-tabs').classList.remove('hide')
         }
-        else if(['blacksmith','blacksmith-repair'].indexOf(elemId) > -1){
-            el('blacksmith-tabs').classList.remove('hide')
-        }
 
         //Show page
         el(elemId).classList.remove('hide') 
@@ -292,11 +291,14 @@
             `
         }
         else if(target === 'enemy'){
-            if(rng(4) == 99){
+            if(gs.playerLocationTile.boss){
                 el('enemy-sprite').innerHTML = `
                     <img src="./img/character/shade.svg">
-                    <img src="./img/enemy/boss/${rng(2,1)}.svg">
+                    <img src="./img/enemy/boss/${rng(3,1)}.svg">
+                    <img id='e-ghost' src="">
                 ` 
+
+                el('e-img-column').classList.add('boss')
             }
             else{
                 el('enemy-sprite').innerHTML = ` 
@@ -308,6 +310,7 @@
                     <img src="./img/enemy/balanced/${rng(5,1)}-head.svg">
                     <img id='e-ghost' src="">
                 ` 
+                el('e-img-column').classList.remove('boss')
             }
         }
     }
@@ -317,26 +320,8 @@
 //MISC
     //Game state screen
     function openStateScreen(type){
-        //Victory
-        if     (type == 'completed'){
-            el('state-screen').innerHTML = `
-                <div class="modal-container"> 
-                    <img id="end-img" src="./img/bg/victory.svg" alt="" class="illustration">
-
-                    <ul>
-                        <li>Completed stage ${gs.stage}.</li>
-                        <li>Survived for ${gs.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gs.enemyCounter} enemies.</li>
-                    </ul>
-
-                    <p class="body-14 italic b50">Tap to continue</p>
-
-                </div>`
-            
-            el('state-screen').setAttribute('onclick', "saveGame(), initGame(), screen('map')")
-        }
         //Starvation
-        else if(type == 'starved'){
+        if(type == 'starved'){
             el('state-screen').innerHTML = `
                 <div class="modal-container"> 
 

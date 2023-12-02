@@ -2,22 +2,42 @@
 //Background image ids
 let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
 let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
-let tileSetCommon = 'casino, blacksmith, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3'.split(', ') //dungeon, 
+let tileSetCommon = 'casino, blacksmith, enchanter-1, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
 let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
-let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7'.split(', ')
+let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7, road-1'.split(', ')
 
-let uniqueTiles   = 'merchant, blacksmith, casino, campfire, monument, lake, house'
+let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, campfire, monument, lake, house, dungeon'
 
 class MapObj{
-    constructor(){
+    constructor(type){
+        
         //Set map dimensions
         this.xAxis = config.mapX + gs.stage
         this.yAxis = config.mapY + gs.stage
+        
+        //Generates unique map id
+        this.mapId = "map" + Math.random().toString(8).slice(2)
+
+        //Dungeon setup
+        if(type == 'dungeon'){
+            this.xAxis = rng(3,3)
+            this.yAxis = rng(3,3)
+
+            //Generates unique map id
+            this.mapId = "dungeon" + Math.random().toString(8).slice(2)
+
+            tileSetUnique = ''.split(', ') //castle
+            tileSetRare   = ''.split(', ') //mine
+            tileSetCommon = ''.split(', ') //dungeon, 
+            tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
+            forests       = ''.split(', ')
+        }
+
 
         //Ref array for all tile objects
         this.tiles = []
 
-        //Vards for tile ID generation
+        //Vars for tile ID generation
         let yAxis = 0 
         let xAxis = 1 //Offset because i know js yes
 
@@ -57,8 +77,6 @@ class MapObj{
                 }else{
                     placedUniqueTiles += `${tileTypePrefix}, `
                 }
-                
-                console.log(placedUniqueTiles);
             }
 
             //Add player & enemies
@@ -86,12 +104,42 @@ class MapObj{
         //MANDATORY TILES
             //Map position is set in last main.js
             let overrides = [
-                {tileId:`1-1`, playerUnit: true, enemyUnit: false}, //Player
-                {tileId:`${this.xAxis}-${this.yAxis}`, tileType: 'portal-1', enemyUnit: true, enemyQuant: config.portalDefenders + gs.stage},
+                {//Player
+                    tileId:`1-1`, 
+                    tileType: `entrance-1`, 
+                    playerUnit: true, 
+                    enemyUnit: false, 
+                    flip: false
+                }, 
+                {//Exit
+                    tileId:`${this.xAxis}-${this.yAxis}`, 
+                    tileType: 'exit-1', 
+                    enemyUnit: true, 
+                    enemyQuant: config.exitDefenders + gs.stage,
+                    flip: false
+                },
             ]
+
+            if(type == 'dungeon'){
+                overrides = [
+                    {//Player
+                        tileId:`1-1`, 
+                        tileType: `dungeon-exit`, 
+                        playerUnit: true, 
+                        enemyUnit: false, 
+                    }, 
+                    {//Exit
+                        tileId:`${this.xAxis}-${this.yAxis}`,  
+                        enemyUnit: true, 
+                        enemyQuant: config.exitDefenders + gs.stage,
+                        boss: true,
+                    },
+                ]
+            }
 
             //Adds mandatory tiles from config
             config.mandatoryTiles.forEach(tile => {
+                if(type == 'dungeon') return
                 overrides.push(tile)
             })
 
@@ -105,9 +153,12 @@ class MapObj{
                 //Inf loop will check for new random id
                 if(tile == undefined || tile.required){
                     while(true){
+
+                        //Picks random tile on the map
                         reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
                         tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
 
+                        //Checks if tile is not required
                         if(!tile.required){
                             break;
                         }
@@ -173,7 +224,12 @@ class MapObj{
                 gs.playerLocationTile = tile
 
             }
-
+            //Boss unit
+            else if(tile.boss){
+                tileElem.innerHTML += `
+                    <img src="./img/map/boss-unit-1.svg" class="map-unit">
+                `
+            }
             //Ene unit image
             else if(tile.enemyUnit && tile.enemyQuant === 1){
 
@@ -184,9 +240,9 @@ class MapObj{
 
             } else if(tile.enemyUnit){
                 tileElem.innerHTML += `
-                <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
-                <p class="unit-quant">${tile.enemyQuant}</p>
-            `
+                    <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
+                    <p class="unit-quant">${tile.enemyQuant}</p>
+                `
             }
 
             //50% flip image
@@ -201,6 +257,7 @@ class MapObj{
         resolveMove()
     }
     
+    //Moves unit
     function movePlayerUnit(elem){
 
         mapRef.forEach(tile => {
@@ -209,7 +266,7 @@ class MapObj{
                 tile.playerUnit = false
             }
             //remove enemy unit from target tile
-            else if(tile.tileId === elem.id){ 
+            else if(tile.tileId == elem.id){ 
                 tile.playerUnit = true
             }
         })
@@ -228,14 +285,14 @@ class MapObj{
 
         
         //Readjust the viewport
-        //Get current tile X
+            //Get current tile X
             let startIdRef = []
             //Add current tile location id values as int to startIdRef
             gs.playerLocationTile.tileId.split('-').forEach(val =>{
                 startIdRef.push(parseInt(val))
             })
 
-        //Get target tile Y
+            //Get target tile Y
             let targetIdRef = []
             findByProperty(mapRef, 'tileId', elem.id).tileId.split('-').forEach(val =>{
                 targetIdRef.push(parseInt(val))
@@ -259,11 +316,21 @@ class MapObj{
             //     el('map').scrollBy(0,-120)
             // }
 
+        //Stats for end game scores
         gs.turnCounter++
+
+        //Update player location
         gs.playerLocationTile = findByProperty(mapRef, 'tileId', elem.id)
         
+        //Save if non-combat tile
+        if(gs.playerLocationTile.enemyUnit != true){
+            saveGame()
+        }
+
+        //Regen move envents
         resolveMove()
-        syncUi() 
+
+        syncUi()
     }
 
     //Adds movement events to tiles.
@@ -318,8 +385,8 @@ class MapObj{
                     el(tile.tileId).setAttribute("onmousedown", 'initiateCombat()')
                 }
                 //Portal event
-                else if(tile.tileType.startsWith('portal')){
-                    el(tile.tileId).setAttribute('onmousedown', 'openStateScreen("completed")')
+                else if(tile.tileType.startsWith('exit')){
+                    el(tile.tileId).setAttribute('onmousedown', 'nextStage()')
                 }
                 //POI event
                 else if(!tile.tileType.startsWith('empty') || !tile.tileType.startsWith('forest')){
@@ -327,7 +394,7 @@ class MapObj{
                         el(tile.tileId).setAttribute('onmousedown', 'mapEvent()')
                     }
                 }
-                
+
                 //Move event
                 if(tile.tileId != gs.playerLocationTile.tileId){
                     el(tile.tileId).setAttribute("onmousedown", `movePlayerUnit(this), ${el(tile.tileId).getAttribute('onmousedown')}`)
@@ -453,9 +520,6 @@ class MapObj{
         else if(eventType.startsWith('blacksmith')){
             //Generate items-to-enhance.
             el('items-to-enhance').innerHTML = ``
-            gs.plObj.inventory.forEach(item => {
-                el('items-to-enhance').append(genItemCard(item, 'item-to-enhance'))
-            })
 
             //Generate items-to-repair
             el('items-to-repair').innerHTML = ``
@@ -464,7 +528,18 @@ class MapObj{
             })
 
             //Open merchant screen
-            screen('blacksmith')
+            screen('blacksmith-repair')
+        }
+        else if(eventType.startsWith('enchanter')){
+            //Generate items-to-enhance.
+            el('items-to-enhance').innerHTML = ``
+
+            gs.plObj.inventory.forEach(item => {
+                el('items-to-enhance').append(genItemCard(item, 'item-to-enhance'))
+            })
+
+            //Open merchant screen
+            screen('enchanter')
         }
         //Lore
         else if(eventType.startsWith('monument')){
@@ -529,6 +604,69 @@ class MapObj{
             screen('event-screen')
             syncUi()
         }
+        else if(eventType.startsWith('dungeon')){
+            if(gs.maps == undefined){
+                gs.maps = []
+            }
+
+            //Check if you are in the dungeon
+            //Go back to surface
+            if(gs.maps.length > 0 && gs.mapObj.mapId.includes('map')){
+                //Save the map state
+                gs.maps[0] = gs.mapObj
+
+                //Update the main map
+                gs.mapObj = gs.maps[1]
+
+                //Recolor bg
+                el('map').classList.add('dungeon')
+
+            } 
+            
+            //Return to surface
+            else if (gs.maps.length > 0 && gs.mapObj.mapId.includes('dungeon')) {
+                //Save the map state
+                gs.maps[1] = gs.mapObj
+
+                //Update the main map
+                gs.mapObj = gs.maps[0]
+
+                //Recolor bg
+                el('map').classList.remove('dungeon')
+    
+            } 
+
+            //Gen new dungeon
+            else {
+                let newDungeon = new MapObj('dungeon')
+
+                //Save current maps
+                gs.maps = [gs.mapObj, newDungeon]
+                
+                //Set dungeon as the main map
+                gs.mapObj = newDungeon
+
+                //Recolor bg
+                el('map').classList.add('dungeon')
+            }
+
+            //Load map
+            initGame()
+        }
+        // else if(eventType.startsWith('campfire')){
+        //     if(gs.playerLocationTile.visited != true){
+        //         //Something else
+
+        //         el('event-cover').setAttribute('src','./img/bg/placeholder.svg')
+        //         el('event-desc').innerHTML =`Your enter a campfire, and tell others about your adventure. Your game is saved.`
+        //         syncUi()
+        //     }else{
+        //         el('event-cover').setAttribute('src','./img/bg/placeholder.svg')
+        //         el('event-desc').innerHTML =`The chest is empty.`
+        //     }
+
+        //     screen('event-screen')
+        // }
         else{
             showAlert(`You look around.<br>There is nothing to see here.`)
         }
@@ -610,3 +748,13 @@ class MapObj{
             `
         },
     ]
+
+    function nextStage(){
+        //Increase stage on exit entrance
+        gs.stage++
+
+        //Generate a mapObj for this stage
+        gs.mapObj = new MapObj 
+
+        initGame()
+    }

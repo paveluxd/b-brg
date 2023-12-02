@@ -14,12 +14,12 @@ let gs //game state object
             this.enemyAction = [] // Last enemy action.
             
             //Map data obj.
-            this.mapObj                                   
+            this.mapObj
             
             //Stats for end game screen.
             this.turnCounter = 0 //Calc turns for win stats.
             this.enemyCounter = 0
-            this.totalEnemies = config.portalDefenders + this.stage
+            this.totalEnemies = config.exitDefenders + this.stage
             this.totalCombatTurns = 0
             
             //Merchant config.
@@ -42,8 +42,7 @@ let gs //game state object
 //Saving
     function saveGame(){
         //Increase stage to scale enemies
-        gs.stage++ 
-        gs.mapObj = new MapObj //Generate a mapObj for the next stage
+        // gs.mapObj = new MapObj //Generate a mapObj for the next stage
 
         localStorage.setItem('gameState', JSON.stringify(gs))        
         console.log('Game saved');
