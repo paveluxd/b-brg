@@ -2,7 +2,7 @@
 //Background image ids
 let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
 let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
-let tileSetCommon = 'casino, blacksmith, enchanter-1, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
+let tileSetCommon = 'casino, blacksmith, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
 let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
 let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7, road-1'.split(', ')
 
@@ -20,14 +20,14 @@ class MapObj{
 
         //Dungeon setup
         if(type == 'dungeon'){
-            this.xAxis = rng(3,3)
-            this.yAxis = rng(3,3)
+            this.xAxis = rng(1 + gs.stage,2)
+            this.yAxis = rng(3 + gs.stage,3)
 
             //Generates unique map id
             this.mapId = "dungeon" + Math.random().toString(8).slice(2)
 
-            tileSetUnique = ''.split(', ') //castle
-            tileSetRare   = ''.split(', ') //mine
+            tileSetUnique = 'road-1'.split(', ') //castle
+            tileSetRare   = 'enchanter-1'.split(', ') //mine
             tileSetCommon = ''.split(', ') //dungeon, 
             tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
             forests       = ''.split(', ')
@@ -81,7 +81,15 @@ class MapObj{
 
             //Add player & enemies
                 //Add enemy units 30%
-                if (1 == rng(gs.enemySpawnFrequency)){ 
+                let rollForEne = rng(100)
+                let rollTarget = gs.enemySpawnFrequency //move to config?
+
+                if(type == 'dungeon'){
+                    rollTarget = gs.dungeonEnemySpawnFrequency
+                    console.log(rollForEne, rollTarget);
+                }
+
+                if (rollForEne < rollTarget){ 
                     let eneQuant = rng(gs.enemyPartyCap)
                     tile.enemyUnit = true
                     tile.enemyQuant = eneQuant
@@ -131,6 +139,7 @@ class MapObj{
                     {//Exit
                         tileId:`${this.xAxis}-${this.yAxis}`,  
                         enemyUnit: true, 
+                        enemyQuant: 1,
                         enemyQuant: config.exitDefenders + gs.stage,
                         boss: true,
                     },
@@ -222,7 +231,6 @@ class MapObj{
                     </div>
                 `
                 gs.playerLocationTile = tile
-
             }
             //Boss unit
             else if(tile.boss){
@@ -239,10 +247,12 @@ class MapObj{
                 `
 
             } else if(tile.enemyUnit){
+
                 tileElem.innerHTML += `
                     <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
                     <p class="unit-quant">${tile.enemyQuant}</p>
                 `
+
             }
 
             //50% flip image
@@ -350,8 +360,13 @@ class MapObj{
                 el(tile.tileId).append(el('player-unit'))
 
                 //Remove existing unit
-                el(tile.tileId).childNodes[2].remove() //remove unit image
-                el(tile.tileId).childNodes[3].remove() //remove unit quantity
+                    //Remove unit image
+                    el(tile.tileId).childNodes[2].remove() 
+
+                    //Remove unit quantity
+                    if(el(tile.tileId).querySelector('.unit-quant') != undefined){
+                        el(tile.tileId).querySelector('.unit-quant').remove() 
+                    }
                 tile.enemyUnit = false
                 
                 gs.playerLocationTile = tile
@@ -468,7 +483,7 @@ class MapObj{
 
         if(eventType.startsWith('lake')){
             if(gs.playerLocationTile.visited != true){
-                let numberOfFish = rng(parseInt(gs.playerLocationTile.tileId[0]) + parseInt(gs.playerLocationTile.tileId[2]))
+                let numberOfFish = rng(12,4)
                 gs.plObj.food += numberOfFish
                 el('event-cover').setAttribute('src','./img/bg/lake.svg')
                 el('event-desc').innerHTML =`You found ${numberOfFish} <img src="./img/ico/fish.svg">`

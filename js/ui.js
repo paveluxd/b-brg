@@ -13,7 +13,7 @@
             //Top left log
             el('log').innerHTML = `
                 Enc: ${gs.encounter}/${gs.playerLocationTile.enemyQuant}<br>
-                Ene: lvl ${gs.enObj.level} ${gs.enObj.profile}<br>
+                Ene: lvl ${gs.enObj.level} ${gs.enObj.profile.profileId}<br>
                 ` 
                 // Loc: ${gs.playerLocationTile.tileId}
                 // Tur: ${gs.combatTurn}<br>

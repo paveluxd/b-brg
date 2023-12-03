@@ -1068,9 +1068,9 @@
 
             el('reward-desc').innerHTML = `
                 You defeated the enemy.<br>
-                You get +${gs.flatFoodReward + gs.playerLocationTile.enemyQuant} <img src="./img/ico/fish.svg">, ${coinsReward} coins , and one of these rewards:
+                You get +${gs.flatFoodReward} <img src="./img/ico/fish.svg">, ${coinsReward} coins , and one of these rewards:
             `
-            gs.plObj.food += gs.flatFoodReward + (gs.playerLocationTile.enemyQuant)
+            gs.plObj.food += gs.flatFoodReward
             gs.plObj.coins += coinsReward
 
             // toggleModal('reward-screen')         
@@ -1081,6 +1081,11 @@
     
 
 //GAME START
+    if(config.clearLs == true){
+        localStorage.clear();
+        console.log('Local storage cleared.');
+    }
+
     //Checks if LS save exists
     loadGame()
     initGame()
@@ -1092,12 +1097,11 @@
         el('map').classList.add('hide')
     }
 
-    if(config.clearLs == true){
-        localStorage.clear();
-        console.log('Local storage cleared.');
-    }
-
     if(config.showScreen != false){
         screen(config.showScreen)
+    }
+
+    if(config.showCombatInfoLog == false){
+        el('log').classList.add('hide')
     }
     // el('map').scrollTo(0, 9999); // Sets map position to view unit.

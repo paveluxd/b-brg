@@ -6,73 +6,18 @@
             //Misc
             this.poisonStacks = 0
             this.crit = false
-            this.state = '' //Used for stun, fear etc.
-            this.forcedAction = '' //for items that force acions
+            this.state = ''        //Used for stun, fear etc.
+            this.forcedAction = '' //For items that force acions
 
             this.actionRef = []
             this.acctionMod = ''
 
             //Choose enemy profile
-            let profiles = 'balanced, tank, assassin'.split(', ') //, tank, assassin, minion
-            let randomEnemyProfile = rarr(profiles)
-            let powerMod, defMod, diceMod, imgPath, lifeMod
-            // el('enemyImg').classList.remove('boss')
-
             if      (gs.playerLocationTile.boss){
-                lifeMod  = 2
-                powerMod = 2
-                defMod   = 2
-                diceMod  = 2
-
-                this.profile = 'boss'
-                imgPath  = `boss/${rng(3,1)}`
-            }else if(randomEnemyProfile == 'balanced'){
-                lifeMod  = 1
-                powerMod = 1
-                defMod   = 1
-                diceMod  = 1
-
-                this.profile = 'balanced'
-                imgPath  = `balanced/${rng(17,1)}` //Sprite builder is now in ui.js
-
-            }else if(randomEnemyProfile == 'tank'){
-                lifeMod  = 1.5
-                powerMod = 0.5
-                defMod   = 3.5
-                diceMod  = 0.5
-
-                this.profile = 'tank'
-                imgPath  = `tank/${rng(1,1)}`
-
-            }else if(randomEnemyProfile == 'assassin'){
-                lifeMod  = 1.2
-                powerMod = 1.5
-                defMod   = 0.5
-                diceMod  = 1
-
-                this.profile = 'assassin'
-                imgPath  = `assassin/${rng(1,1)}`
-
-            }else if(randomEnemyProfile == 'minion'){
-                lifeMod  = 0.7
-                powerMod = 0.5
-                defMod   = 0.5
-                diceMod  = 0.5
-
-                this.profile = 'minion'
-                imgPath  = `minion/${rng(1,1)}`
-                
+                this.profile = bossProfilesRef[rarr(Object.keys(bossProfilesRef))]
+            } else {
+                this.profile = eneProfilesRef[rarr(Object.keys(eneProfilesRef))]
             }
-
-            //Set boss mods
-            // if(gs.stage % gs.bossFrequency === 0){//boss
-            //     // lifeMod  += 0.5
-            //     // powerMod += 0.25
-            //     // defMod   += 0.25
-            //     // diceMod  += 0.25
-
-            //     this.profile = 'boss'
-            // }
 
             //Set stats
             //Get column value to scale mobs
@@ -82,24 +27,24 @@
             })
 
             // mod(0.5) -> Get +1 every 2 stages
-            this.life        = 0 + Math.round((config.eneLife   + this.level) * lifeMod )
+            this.life        = 0 + Math.round((config.eneLife   + this.level) * this.profile.lifeMod )
             this.flatLife    = this.life
             this.dmgDone     = 0 // For dmg calc.
             this.dmgTaken    = 0 // For dmg calc.
             this.lifeChange  = 0
             this.lifeChangeMarker = false
 
-            this.power       = 0 + Math.round((0.2 * this.level) * powerMod) 
+            this.power       = 0 + Math.round((0.2 * this.level) * this.profile.powerMod) 
             this.flatPower   = this.power
             this.powerChange = 0
             this.powerChangeMarker = false
 
-            this.def         = 0 + Math.round((0.2 * this.level) * defMod)
+            this.def         = 0 + Math.round((0.2 * this.level) * this.profile.defMod)
             this.flatDef     = this.def
             this.defChange   = 0
             this.defChangeMarker = false
 
-            this.dice        = 4 + Math.round((0.2 * this.level) * diceMod)
+            this.dice        = 4 + Math.round((0.2 * this.level) * this.profile.diceMod)
             this.flatDice    = this.dice 
             this.diceChange  = 0
             this.diceChangeMarker = false
@@ -107,6 +52,8 @@
             this.roll        = 0
             this.rollChange  = 0
             this.rollChangeMarker = false
+
+            
         }
     }
 
@@ -350,25 +297,9 @@
         //Next turn roll
         gs.enObj.roll = rng(gs.enObj.dice)         
 
-        //Generate action refs with proper calculation for this roll
-        let actionKeys = [
-            'attack', 
-            'final strike', 
-            'combo', 
-            'charge', 
-            'block', 
-            'fortify', 
-            'empower', 
-            // 'rush', 
-            'recover', 
-            'wound', 
-            // 'weaken', 
-            // 'slow', 
-            'drain', 
-            'sleep'
-        ]
+        //Get actions from ene Obj
+        let actionKeys = gs.enObj.profile.actionPool 
 
-        
         //Generates all enemy actions.
         gs.enObj.actionRef = []
         actionKeys.forEach(key => {gs.enObj.actionRef.push(new EnemyActionObj(key))})
@@ -432,4 +363,129 @@
     function recalcEneAction(){
         gs.enObj.action = new EnemyActionObj(gs.enObj.action.key)
         gs.logMsg.push(`enemy action recalculated`)
+    }
+
+    let eneProfilesRef = {
+        balanced: {
+            profileId: 'balanced',
+            lifeMod:  1,
+            powerMod: 1,
+            defMod:   1,
+            diceMod:  1,
+            actionPool: [
+                'attack', 
+
+                'block', 
+
+                'recover',
+
+                'sleep'
+            ]
+        },
+        assasin: {
+            profileId: 'assasin',
+            lifeMod:  1,
+            powerMod: 2,
+            defMod:   1,
+            diceMod:  2,
+            actionPool: [
+                'attack', 
+                'combo',  
+                'final strike',
+
+                'recover', 
+
+                'empower', 
+                'rush',
+            ]
+        },
+        tank: {
+            profileId: 'tank',
+            lifeMod:  1.5,
+            powerMod: 0.5,
+            defMod:   3.5,
+            diceMod:  0.5,
+
+            actionPool: [
+                'attack', 
+                'charge', 
+
+                'block', 
+                'recover', 
+                'sleep',
+
+                'wound', 
+                'fortify', 
+                'recover'
+            ]
+        },
+        minion: {
+            profileId: 'minion',
+            lifeMod:    1,
+            powerMod: 0.5,
+            defMod:   0.5,
+            diceMod:  0.5,
+            actionPool: [
+                'attack',  
+                'final strike', 
+
+                'block', 
+
+                'recover', 
+
+                'sleep',
+            ]
+        },
+        mage: {
+            profileId: 'mage',
+            lifeMod:    1,
+            powerMod: 0.5,
+            defMod:   0.5,
+            diceMod:  0.5,
+            actionPool: [
+                'attack',
+
+                'block', 
+
+                'recover',
+                 
+                'sleep',
+
+                'wound', 
+                'weaken', 
+                'slow',
+                'drain', 
+            ]
+        },
+        
+    }
+
+    let bossProfilesRef = {
+        mech: {   
+            profileId: 'mech-boss',
+            lifeMod: 3,
+            powerMod: 2,
+            defMod:   2,
+            diceMod:  2,
+            actionPool: [
+                'attack', 
+                'final strike', 
+                'combo', 
+                'charge', 
+
+                'block', 
+
+                'fortify', 
+                'empower', 
+                // 'rush',
+                'recover',
+
+                'wound', 
+                // 'weaken', 
+                // 'slow', 
+                'drain', 
+
+                'sleep'
+            ]
+        }
     }

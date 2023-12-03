@@ -29,7 +29,8 @@ let gs //game state object
             //TBA
 
             //Combat config.
-            this.enemySpawnFrequency = 3 //1 is 100%, 2 is 50%.
+            this.enemySpawnFrequency = 30 //30%
+            this.dungeonEnemySpawnFrequency = 100
             this.enemyPartyCap = 2
 
             this.bossFrequency   = 3 // Every Nth stage legacy.

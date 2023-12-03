@@ -1,7 +1,7 @@
 let config = {
     //Player
-        life:      320, //32
-        power:      10,
+        life:      32, //32
+        power:      0,
         def:        0,
         dice:       6,
         inventory: 80,
@@ -15,6 +15,7 @@ let config = {
         testCombat: false, //Initiates combat at the start (for testing).
         showScreen: '', 
         clearLs: true,
+        showCombatInfoLog: true,
 
     //Items
         startingItems: [
@@ -24,22 +25,22 @@ let config = {
         ],
 
         coins: rng(12,6),
-        food:  rng(5,3),
+        food:  rng(4,2),
 
     //Enemy
-        eneLife: 6, //8
+        eneLife: 7, //8
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
         stage:           0,
-        mapX:            3,
-        mapY:            3,
-        exitDefenders: 1,
+        mapX:            2,
+        mapY:            2,
+        exitDefenders:   1,
         mandatoryTiles: [
-            {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true},
-            {tileType: 'dungeon-1', enemyUnit: false},
+            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
+            // {tileType: 'dungeon-1', enemyUnit: false},
             // {tileType: 'enchanter-1', enemyUnit: false},
             // {tileType: 'merchant'},
             // {tileType: 'campfire-1'},
@@ -49,7 +50,7 @@ let config = {
 
         //Rewards
         flatItemReward:  2, //Base rewards
-        flatFoodReward:  1, //Food per round +1 per enemy
+        flatFoodReward:  2, //Food per round +1 per enemy
         flatCoinsReward: 6, 
 
         //Merchant

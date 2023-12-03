@@ -536,7 +536,6 @@ body{
             transform: translate(-50%, -24px);
         }
         #log{
-            display: none;
     
             font-size: 13px;
             line-height: 16px;
@@ -549,6 +548,7 @@ body{
     
             padding: 4px 8px;
             background-color: var(--black);
+            z-index: 99;
         }
     }
     
@@ -693,10 +693,6 @@ body{
         }
 
         
-        .boss *{
-            animation: none !important;
-        }
-
     /*Entrance anim*/
         .enemyEntrance{
             animation-name: enemy-entrance;
@@ -774,6 +770,8 @@ body{
                 height: 12px;
             }
         }
+
+    /* Boss */
         .boss #intent-indicator{
             /* right: 0px; */
             bottom: -22px !important;
@@ -800,6 +798,11 @@ body{
             min-width: 180px !important;
             bottom: -62px !important;
         }
+        /* Remove idle anim */
+        .boss  #enemy-sprite img:nth-child(2){
+            animation: none !important;
+        }
+
 
     /* Combat: stats ui */
         .stat-group{

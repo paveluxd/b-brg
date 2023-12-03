@@ -14,3 +14,7 @@
 - Blacksmithd item enchantment is now set as a separate tile.
 - Added *entrance* and *exit* tiles that will replace portal.
 - Corrected few description typos.
+- Food reward from encounters was nerfed, lakes provide three times more food.
+- Added dungeons.
+- Enchanters now can only spawn in dungeons.
+- Boss unit will be at the end of every dungeon, if defeated, corrupted(items with 1 extra random action) items will be offered as a reward.
