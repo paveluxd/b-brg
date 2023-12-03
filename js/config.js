@@ -12,9 +12,9 @@ let config = {
         basePassieSkillPoints: 0,
 
     //Game
-        testCombat: false, //Initiates combat at the start (for testing).
+        // testCombat: true, //Initiates combat at the start (for testing).
         showScreen: '', 
-        clearLs: false,
+        // clearLs: true,
         showCombatInfoLog: true,
 
     //Items

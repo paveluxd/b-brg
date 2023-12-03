@@ -13,10 +13,13 @@
             this.acctionMod = ''
 
             //Choose enemy profile
-            if      (gs.playerLocationTile.boss){
+            if (gs.playerLocationTile.boss){
                 this.profile = bossProfilesRef[rarr(Object.keys(bossProfilesRef))]
             } else {
                 this.profile = eneProfilesRef[rarr(Object.keys(eneProfilesRef))]
+
+                //For testing combat
+                // this.profile = eneProfilesRef['minion']
             }
 
             //Set stats
