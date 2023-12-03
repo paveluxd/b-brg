@@ -1,6 +1,6 @@
 //Items
 class ItemObj {
-    constructor(itemName, iLvl){
+    constructor(itemName, iLvl, type){
 
         //Static properties taken from reference.
         this.actions = []
@@ -32,7 +32,7 @@ class ItemObj {
             {key:'desc'        ,val: undefined},
             {key:'itemType'    ,val: ''},
         ]
-        //Resolve props via default value above, or value from reference object
+        //Resolve props via default value above, or value from itemsRef object
         props.forEach(property => {
 
             if(itemData[property.key] === undefined || itemData[property.key] === ''){
@@ -55,6 +55,12 @@ class ItemObj {
             itemData.actions.forEach(actionKey => {
                 this.actions.push(new ActionObj(actionKey))
             })    
+        }
+
+        //Corruption modifier
+        if(type == 'corrupted'){
+            let randomAction = new ActionObj(rarr(actionsRef).actionName)
+            this.actions.push(randomAction)
         }
     }
 }
@@ -315,7 +321,12 @@ function calcCost(type, itemId){
             //Gen item per quant value in function
             for(i = 0; i < quant; i++){ 
     
-                generatedReward =  new ItemObj()
+                //Mod rewards if boss unit
+                if(gs.enObj.profile.profileId.includes('boss')){
+                    generatedReward =  new ItemObj(...[,,], 'corrupted')
+                }else{
+                    generatedReward =  new ItemObj()
+                }
     
                 //Add item to reward pool, to find them after item card is selected from html
                 gs.plObj.offeredItemsArr.push(generatedReward)

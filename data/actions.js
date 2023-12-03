@@ -464,7 +464,7 @@ let actionsRef = [
   {
     "actionName": "adrenaline shot",
     "tags": "buff",
-    "desc": "gain 4 dice roll during this turn (extra action)",
+    "desc": "increase dice roll by 4 (extra action)",
     "passiveStats": "",
     "actionMod": 4,
     "actionCharge": 6,

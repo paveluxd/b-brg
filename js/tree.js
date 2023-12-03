@@ -217,7 +217,7 @@
             desc:'once per encounter, when you reach 0 life, survive with 1 life',
             val:1,
         },{id:'t10',name:'careful use',
-            desc:'25% chance to avoid loosing an action charge on action use',
+            desc:'25% chance to avoid losing an action charge on action use',
             val:25,
         },{id:'t11',name:'librarian',
             desc:'25% chance to gain 1 action charge when you use a scroll',
