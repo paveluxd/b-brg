@@ -185,9 +185,9 @@
 
             }else if(key == 'weaken'){ //- power
 
-                this.rate = 2
+                this.rate = 3
                 this.stat = 'power'
-                this.actionVal = Math.round((gs.enObj.roll + gs.stage) *0.5)
+                this.actionVal = Math.round((gs.enObj.roll + gs.stage) * 0.25)
                 this.desc = `${ico('curse-power')}Will hex (-${this.actionVal} power)`
 
             }else if(key == 'slow'){   //- dice
@@ -448,7 +448,7 @@
                 'block', 
 
                 'recover',
-                 
+
                 'sleep',
 
                 'wound', 
