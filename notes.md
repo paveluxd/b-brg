@@ -9,4 +9,4 @@
     - win + shift + s -> screenshot
 
 **Update notes**
-- Now units of particular profile will have unique skins., starting from mages and minions that got unique outfit sets.
+- Now units of particular profile will have unique skins. starting from mages and minions that got unique outfit sets.
