@@ -286,11 +286,11 @@
                 <img src="./img/character/${rng(4,1)}-legs.svg">
                 <img src="./img/character/${rng(4,1)}-torso.svg">
                 <img src="./img/character/${rng(3,1)}-front-arm.svg">
-                <img src="./img/character/${rng(4,1)}-head.svg">
+                <img src="./img/character/${rng(5,1)}-head.svg">
                 <img id='p-ghost' src="">
             `
         }
-        else if(target === 'enemy'){
+        else if(target == 'enemy'){
             if(gs.playerLocationTile.boss){
                 el('enemy-sprite').innerHTML = `
                     <img src="./img/character/shade.svg">
@@ -301,13 +301,36 @@
                 el('e-img-column').classList.add('boss')
             }
             else{
-                el('enemy-sprite').innerHTML = ` 
-                    <img src="./img/character/shade.svg">
+
+                let enemySpriteParts = `
                     <img src="./img/enemy/balanced/${rng(3,1)}-back-arm.svg">
                     <img src="./img/enemy/balanced/${rng(2,1)}-legs.svg">
                     <img src="./img/enemy/balanced/${rng(2,1)}-torso.svg">
                     <img src="./img/enemy/balanced/${rng(3,1)}-front-arm.svg">
                     <img src="./img/enemy/balanced/${rng(5,1)}-head.svg">
+                `
+
+                if(gs.enObj.profile.profileId == 'mage'){
+                    enemySpriteParts = `
+                        <img src="./img/enemy/mage/${rng(2,1)}-back-arm.svg">
+                        <img src="./img/enemy/mage/${rng(2,1)}-legs.svg">
+                        <img src="./img/enemy/mage/${rng(2,1)}-torso.svg">
+                        <img src="./img/enemy/mage/${rng(2,1)}-front-arm.svg">
+                        <img src="./img/enemy/mage/${rng(3,1)}-head.svg">
+                    `
+                }else if(gs.enObj.profile.profileId == 'minion'){
+                    enemySpriteParts = `
+                        <img src="./img/enemy/minion/${rng(2,1)}-back-arm.svg">
+                        <img src="./img/enemy/minion/${rng(2,1)}-legs.svg">
+                        <img src="./img/enemy/minion/${rng(2,1)}-torso.svg">
+                        <img src="./img/enemy/minion/${rng(2,1)}-front-arm.svg">
+                        <img src="./img/enemy/minion/${rng(2,1)}-head.svg">
+                    `
+                }
+
+                el('enemy-sprite').innerHTML = ` 
+                    <img src="./img/character/shade.svg">
+                    ${enemySpriteParts}
                     <img id='e-ghost' src="">
                 ` 
                 el('e-img-column').classList.remove('boss')
