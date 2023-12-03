@@ -189,6 +189,28 @@
 
             return val
         }
+        //On dice roll
+        function resolvePostRollTreePassives(){
+            gs.plObj.treeNodes.forEach(node => {
+                if    (node.id == 't16' && gs.plObj.roll == 1){//scholar
+                    let negativeStats = []
+
+                    //Check if player has a negative stat
+                    if(gs.plObj.def < 0){
+                        negativeStats.push('def')
+                    }else if (gs.plObj.power < 0){
+                        negativeStats.push('power')
+                    }
+
+                    let randomStat = rarr(negativeStats)
+
+                    changeStat(randomStat, Math.round((gs.plObj[randomStat]/2) * -1), 'player' )
+
+                    //Log
+                    gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+                }
+            }) 
+        }
 
     //Tree nodes
     let treeRef = [
@@ -233,6 +255,8 @@
         },{id:'t15',name:'bastion',
             desc:'whenever you gain def, gain 1 extra point',
             val: 1,
+        },{id:'t16',name:'Close combat',
+            desc:'On a die roll of one, restore half of a random negative attribute',
         }
         
         //On hit effects

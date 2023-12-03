@@ -294,6 +294,8 @@ function calcCost(type, itemId){
                 }
             }
         })
+
+        resolvePostRollTreePassives()
     }
 
 
