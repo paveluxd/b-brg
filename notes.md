@@ -18,3 +18,4 @@
 - Added dungeons.
 - Enchanters now can only spawn in dungeons.
 - Boss unit will be at the end of every dungeon, if defeated, corrupted(items with 1 extra random action) items will be offered as a reward.
+- Enemy now are generated based on profiles (mage, tank, minion etc), each enemy profile will have a limited set of actions, for example minion will never hex.
