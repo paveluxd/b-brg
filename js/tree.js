@@ -166,11 +166,11 @@
             }) 
         }
         //On death
-        function resolveOnStatChangePassives(stat){
+        function resolveOnStatChangePassives(stat, value){
             let val = 0
 
             gs.plObj.treeNodes.forEach(node => {
-                if    (node.id == 't14' && stat == 'exp'){//scholar
+                if    (node.id == 't14' && stat == 'exp' && rng(100) < node.chance){//scholar
 
                     //Calc
                     gs.plObj.exp += node.val
@@ -178,7 +178,7 @@
                     //Log
                     gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
                 }
-                else if(node.id == 't15' && stat == 'def'){//bastion
+                else if(node.id == 't15' && stat == 'def' && value > 0){//bastion
                     //Set return value
                     val = node.val
 
@@ -250,12 +250,13 @@
         },{id:'t13',name:'perfect strike',
             desc:'attacking a blocking enemy with matching dice roll, will force enemy to skip the next turn',
         },{id:'t14',name:'scholar',
-            desc:'whenever you gain experience, gain 1 extra point',
+            desc:'50% chance to gain 1 extra exp point whenever you gain exp',
             val: 1,
+            chance: 50,
         },{id:'t15',name:'bastion',
             desc:'whenever you gain def, gain 1 extra point',
             val: 1,
-        },{id:'t16',name:'Close combat',
+        },{id:'t16',name:'close combat',
             desc:'On a die roll of one, restore half of a random negative attribute',
         }
         
