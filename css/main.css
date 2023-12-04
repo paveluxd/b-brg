@@ -386,6 +386,31 @@ body{
         }
     }
 
+    /* Quiz */
+        .quiz-container{
+            /* max-width: 288px; */
+
+            & img {
+                height: 192px;
+            }
+        }
+        .quiz-btn-container {
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            max-width: 288px;
+
+            justify-content: center;
+
+            & button{
+                width: calc(50% - 4px);
+                /* background-color: var(--b10); */
+                border: 2px solid var(--b10);
+                border-radius: 8px;
+            }
+        }
+
 /* Casino */
     #casino-screen .modal-container{
         gap: 32px;

@@ -3,18 +3,20 @@ let gs //game state object
 //Game
     class GameState {
         constructor(){
-            this.stage = config.stage
-            this.encounter = 1
-
+            this.stage = 0
+            
             //Encounter
             this.inCombat = false
+            this.encounter = 1
             this.combatTurn = 1
             this.logMsg = []      // Combat log messages.
             this.statChange = []  // Stats for UI indicator.
             this.enemyAction = [] // Last enemy action.
-            
-            //Map data obj.
-            this.mapObj
+
+            //Rewards
+            this.flatItemReward  = 2 // Base rewards.
+            this.flatFoodReward  = 1 // Food per round +1 per enemy.
+            this.flatCoinsReward = 6 
             
             //Stats for end game screen.
             this.turnCounter = 0 //Calc turns for win stats.
@@ -22,21 +24,14 @@ let gs //game state object
             this.totalEnemies = config.exitDefenders + this.stage
             this.totalCombatTurns = 0
             
-            //Merchant config.
-            this.merchantQuant = config.merchantQuant
+            //Map
+                //Merchant config.
+                this.merchantQuant = 10
 
-            //Casino bets.
-            //TBA
-
-            //Combat config.
-            this.enemySpawnFrequency = 30 //30%
-            this.dungeonEnemySpawnFrequency = 100
-            this.enemyPartyCap = 2
-
-            this.bossFrequency   = 3 // Every Nth stage legacy.
-            this.flatItemReward  = 2 // Base rewards.
-            this.flatFoodReward  = 1 // Food per round +1 per enemy.
-            this.flatCoinsReward = 6 
+                //Enemies
+                this.enemySpawnFrequency = 30 //30%
+                this.dungeonEnemySpawnFrequency = 70
+                this.enemyPartyCap = 2       
         }
     }
 

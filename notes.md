@@ -5,8 +5,12 @@
     - Extend itemObj to generate items without itemRef.
 
 - Notes
-    - ctrl+k+0 to collapse all
-    - win + shift + s -> screenshot
+    - Ctrl + K + 0     -> to collapse all
+    - Win + Shift + S  -> screenshot
+    - Ctrl + G         -> go to a particular line of code.
 
 **Update notes**
-- Now units of particular profile will have unique skins. starting from mages and minions that got unique outfit sets.
+- *Scholar* passive now has a 50% chance to grant extra exp.
+- Fixed a bug when bastion passive would trigger when enemy will reduce players def.
+- Fixed a bug when bastion passive would prevent on hit def reduction.
+- Fixed a bug when dungeons will fail to be generated properly.

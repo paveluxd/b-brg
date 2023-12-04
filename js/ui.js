@@ -1,6 +1,6 @@
 //UI
     function syncUi(){
-        console.log(`UI was synced.`);
+        // console.log(`UI was synced.`);
 
         syncActionTiles()
         syncCharPage()

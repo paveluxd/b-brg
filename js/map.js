@@ -86,7 +86,6 @@ class MapObj{
 
                 if(type == 'dungeon'){
                     rollTarget = gs.dungeonEnemySpawnFrequency
-                    console.log(rollForEne, rollTarget);
                 }
 
                 if (rollForEne < rollTarget){ 
@@ -481,7 +480,7 @@ class MapObj{
         
         let eventType = gs.playerLocationTile.tileType
 
-        if(eventType.startsWith('lake')){
+        if      (eventType.startsWith('lake')){
             if(gs.playerLocationTile.visited != true){
                 let numberOfFish = rng(12,4)
                 gs.plObj.food += numberOfFish
@@ -494,8 +493,7 @@ class MapObj{
                 el('event-desc').innerHTML =`You spent few hours trying to catch more fish, but it seems that there is no more left.`
             }
             screen('event-screen')
-        }
-        else if(eventType.startsWith('chest')){
+        }else if(eventType.startsWith('chest')){
             if(gs.playerLocationTile.visited != true){
                 let val = rng(parseInt(gs.playerLocationTile.tileId[0]) + parseInt(gs.playerLocationTile.tileId[2]) + 12, 6)
                 gs.plObj.coins += val
@@ -508,8 +506,7 @@ class MapObj{
             }
 
             screen('event-screen')
-        }
-        else if(eventType.startsWith('merchant')){
+        }else if(eventType.startsWith('merchant')){
 
             if(gs.playerLocationTile.visited == undefined){
                 //Generate shop.
@@ -531,8 +528,7 @@ class MapObj{
 
             //Open merchant screen.
             screen('merchant')
-        }
-        else if(eventType.startsWith('blacksmith')){
+        }else if(eventType.startsWith('blacksmith')){
             //Generate items-to-enhance.
             el('items-to-enhance').innerHTML = ``
 
@@ -544,8 +540,7 @@ class MapObj{
 
             //Open merchant screen
             screen('blacksmith-repair')
-        }
-        else if(eventType.startsWith('enchanter')){
+        }else if(eventType.startsWith('enchanter')){
             //Generate items-to-enhance.
             el('items-to-enhance').innerHTML = ``
 
@@ -557,31 +552,66 @@ class MapObj{
             screen('enchanter')
         }
         //Lore
-        else if(eventType.startsWith('monument')){
+        else if (eventType.startsWith('monument')){
             
-            let event = eventRef[gs.playerLocationTile.loreEvent]
+            //Get event id from tile
+                let event = eventRef[gs.playerLocationTile.loreEvent]
 
-            if (event == undefined){
-                event = eventRef[rng(eventRef.length - 1)]
-            }
+            //If no event, pick random one (for testing)
+                if (event == undefined){
+                    event = eventRef[rng(eventRef.length - 1)]
+                }
 
-            if(event.img != undefined){
-                el('event-cover').setAttribute('src',`./img/lore/${event.img}.svg`)
-            }
-            else{
-                el('event-cover').setAttribute('src',`./img/lore/event-${event.eventId}.svg`)
-            }
+            //If no img set, use placegolder
+                if(event.img != undefined){
+                    el('event-cover').setAttribute('src',`./img/lore/${event.img}.svg`)
+                }else{
+                    el('event-cover').setAttribute('src',`./img/lore/event-${event.eventId}.svg`)
+                }
 
-            el('event-desc').innerHTML =`${event.eventDesc}`
-            screen('event-screen')
+            //Add event description
+                el('event-desc').innerHTML =`${event.eventDesc}`
 
-        }
-        else if(eventType.startsWith('casino')){
+            //QUIZ:
+                if(event.type == 'physics-quiz'){
+
+                    //Add answer buttons
+                    let answers = ``
+                    event.answers.forEach(answer => {
+                        answers += `<button onclick="map">${answer}</button>` 
+                    })
+
+                    let img = event.img
+                    if(img == undefined){
+                        img = 'event-quiz'
+                    }
+
+                    //Reformat event screen
+                    el('event-screen').innerHTML = `
+                        <div class='modal-container quiz-container'>
+
+                            <img id="event-cover" src='./img/lore/${img}.svg' class="illustration">
+
+                            <p id="event-desc" class="body-14">
+                                <span class="italic b50">You find a damaged book, you decide to take notes, but certain fragments are distorted...</span>
+                                <br><br>
+                                ${event.eventDesc}
+                            </p>
+                            <div class="quiz-btn-container">
+                                ${answers}
+                            </div>
+                        </div>         
+                    `  
+                }
+            
+            //Open event screen
+                screen('event-screen')
+
+        }else if(eventType.startsWith('casino')){
 
             runCasino()
 
-        }
-        else if(eventType.startsWith('house')){
+        }else if(eventType.startsWith('house')){
 
             let roll = rng(5)
 
@@ -618,8 +648,7 @@ class MapObj{
 
             screen('event-screen')
             syncUi()
-        }
-        else if(eventType.startsWith('dungeon')){
+        }else if(eventType.startsWith('dungeon')){
             if(gs.maps == undefined){
                 gs.maps = []
             }
@@ -667,22 +696,7 @@ class MapObj{
 
             //Load map
             initGame()
-        }
-        // else if(eventType.startsWith('campfire')){
-        //     if(gs.playerLocationTile.visited != true){
-        //         //Something else
-
-        //         el('event-cover').setAttribute('src','./img/bg/placeholder.svg')
-        //         el('event-desc').innerHTML =`Your enter a campfire, and tell others about your adventure. Your game is saved.`
-        //         syncUi()
-        //     }else{
-        //         el('event-cover').setAttribute('src','./img/bg/placeholder.svg')
-        //         el('event-desc').innerHTML =`The chest is empty.`
-        //     }
-
-        //     screen('event-screen')
-        // }
-        else{
+        }else{
             showAlert(`You look around.<br>There is nothing to see here.`)
         }
 
@@ -697,15 +711,13 @@ class MapObj{
                 You notice a monolith, but it is heavily damaged. 
                 Something was depicted on it, but it's very hard to decipher.
             `
-        },
-        {
+        },{
             'eventId': 1,
             'eventDesc': `
                 You notice a large dark monolith in the middle of the area.
                 You approach it and see an engraved image...
             `
-        },
-        {
+        },{
             'eventId': 2,
             'eventDesc': `
                 You notice a large dark monolith in the middle of the area.
@@ -713,55 +725,50 @@ class MapObj{
             `
         },
         //Monolith
-        {
-            'eventId': 3,
+        {     eventId: 3,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"This palce is not a place of honour..."</h3>
             `
-        },
-        {
-            'eventId': 4,
+        },{   eventId: 4,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"No highly esteemed deed is commemorated here. Nothing valued...</h3>
 
             `
-        },
-        {
-            'eventId': 5,
+        },{   eventId: 5,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"Nothing valued is here. What is here..."</h3>
             `
-        },
-        {
-            'eventId': 6,
+        },{   eventId: 6,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"What is here is dangerous and repulsive to us. This message..."</h3>
             `
-        },
-        {
-            'eventId': 7,
-            'img': 'event-text',
-            'eventDesc': `
+        },{   eventId: 7,
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"This message is a warning..."</h3>
             `
-        },
-        {
-            'eventId': 8,
+        },{   eventId: 8,
             'img': 'event-text',
             'eventDesc': `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"...warning about danger..."</h3>
             `
         },
+        //Physics event
+        // {   eventId: 9,
+        //     type: 'physics-quiz',
+        //     eventDesc: `A collection of matter within a defined contiguous boundary in three-dimensional space is called ____.`,
+        //     answers: ['Physical object', 'Geometric shape', 'Model', 'Matter']
+        // },
     ]
 
     function nextStage(){
@@ -770,6 +777,9 @@ class MapObj{
 
         //Generate a mapObj for this stage
         gs.mapObj = new MapObj 
+
+        //Clear maps array to generate new dungeon
+        gs.maps = [] 
 
         initGame()
     }

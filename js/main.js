@@ -16,6 +16,7 @@
             saveGame()
         }
         
+        //Map
         mapRef = gs.mapObj.tiles
         genMap()
 
@@ -721,6 +722,7 @@
                     }
                 
                 //DEF: resolve.
+                    //Def break logic
                     if(gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
                         
                         changeStat('def', -gs.plObj.dmgDone, 'enemy')
@@ -731,7 +733,6 @@
                     }
 
                     //Reduce dmg by def
-                    // if(gs.plObj.piercing) return //skip def calc if piercing state
                     gs.plObj.dmgDone -= gs.enObj.def
 
                     //Set positive damage to 0 (if def is greater than dmg)
@@ -881,7 +882,7 @@
         function changeStat(stat, value, target){
             if(target == 'player'){
                 //TREE: resolve on stat gain passives
-                value += resolveOnStatChangePassives(stat)
+                value += resolveOnStatChangePassives(stat, value)
             
                 // console.log(passiveMod + value);
                 gs.plObj[stat] += (value)
