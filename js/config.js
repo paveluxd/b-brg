@@ -45,9 +45,4 @@ let config = {
             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
             // {tileType:'monument-1', tileId:`2-2`, loreEvent: 8},
         ],
-
-        //Rewards
-        flatItemReward:  2, //Base rewards
-        flatFoodReward:  3, //Food per round +1 per enemy
-        flatCoinsReward: 6,
 }

@@ -15,8 +15,8 @@ let gs //game state object
 
             //Rewards
             this.flatItemReward  = 2 // Base rewards.
-            this.flatFoodReward  = 1 // Food per round +1 per enemy.
-            this.flatCoinsReward = 6 
+            this.flatFoodReward  = 2 // Food per round +1 per enemy.
+            this.flatCoinsReward = 5 
             
             //Stats for end game screen.
             this.turnCounter = 0 //Calc turns for win stats.
