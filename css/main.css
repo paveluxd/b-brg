@@ -738,7 +738,7 @@ body{
         }
         .ghost-trigger{
             animation-name: ghostfx;
-            animation-duration: 2s;
+            animation-duration: 4s;
             animation-iteration-count: 1;
         } @keyframes ghostfx {
 

@@ -92,6 +92,11 @@
 
             //Enemy intent indicator
             el('intent').innerHTML = `${gs.enObj.action.desc}`
+
+            //Add reflect indicator
+            if(gs.enObj.reflect){
+                el('intent').innerHTML += `<span style="color:yellow;">(Reflects attacks)</span>`
+            }
         }
 
         //Modify map stat indicator
@@ -325,6 +330,14 @@
                         <img src="./img/enemy/minion/${rng(2,1)}-torso.svg">
                         <img src="./img/enemy/minion/${rng(2,1)}-front-arm.svg">
                         <img src="./img/enemy/minion/${rng(2,1)}-head.svg">
+                    `
+                }else if(gs.enObj.profile.profileId == 'gladiator'){
+                    enemySpriteParts = `
+                        <img src="./img/enemy/gladiator/${rng(1,1)}-back-arm.svg">
+                        <img src="./img/enemy/gladiator/${rng(1,1)}-legs.svg">
+                        <img src="./img/enemy/gladiator/${rng(1,1)}-torso.svg">
+                        <img src="./img/enemy/gladiator/${rng(1,1)}-front-arm.svg">
+                        <img src="./img/enemy/gladiator/${rng(1,1)}-head.svg">
                     `
                 }
 

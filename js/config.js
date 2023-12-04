@@ -12,16 +12,17 @@ let config = {
         basePassieSkillPoints: 0,
 
     //Game
-        // testCombat: true, //Initiates combat at the start (for testing).
+        testCombat: true, //Initiates combat at the start (for testing).
         showScreen: '', 
-        // clearLs: true,
-        // showCombatInfoLog: true,
+        clearLs: true,
+        showCombatInfoLog: true,
 
     //Items
         startingItems: [
             'club',
             'shield',
             'bandages',
+            'axe',
         ],
 
         coins: rng(12,6),
@@ -29,6 +30,7 @@ let config = {
 
     //Enemy
         eneLife: 8, //8
+        forceEnemyProfile: 'gladiator',
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.

@@ -750,7 +750,11 @@
                     resolveOnHitPassives()
 
                 //Resolve stat change
-                    changeStat('life', -gs.plObj.dmgDone, 'enemy')           
+                    changeStat('life', -gs.plObj.dmgDone, 'enemy') 
+                //Resolve reflect
+                    if(gs.enObj.reflect){
+                        changeStat('life', Math.ceil(-gs.plObj.dmgDone * 1), 'player') 
+                    }          
 
                 //Reset piercing buff after attack was performed
                     gs.plObj.piercing = false
