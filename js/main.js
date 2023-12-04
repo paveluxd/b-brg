@@ -1102,7 +1102,7 @@
         screen(config.showScreen)
     }
 
-    if(config.showCombatInfoLog == false){
+    if(config.showCombatInfoLog != true){
         el('log').classList.add('hide')
     }
     // el('map').scrollTo(0, 9999); // Sets map position to view unit.

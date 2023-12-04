@@ -9,7 +9,7 @@ let config = {
 
     //Progression
         expRequiredPerLvl: 2,
-        basePassieSkillPoints: 2,
+        basePassieSkillPoints: 0,
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
@@ -48,6 +48,6 @@ let config = {
 
         //Rewards
         flatItemReward:  2, //Base rewards
-        flatFoodReward:  2, //Food per round +1 per enemy
+        flatFoodReward:  3, //Food per round +1 per enemy
         flatCoinsReward: 6,
 }
