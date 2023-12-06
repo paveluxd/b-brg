@@ -14,6 +14,8 @@ class MapObj{
         //Set map dimensions
         this.xAxis = config.mapX + gs.stage
         this.yAxis = config.mapY + gs.stage
+
+        
         
         //Generates unique map id
         this.mapId = "map" + Math.random().toString(8).slice(2)
@@ -33,6 +35,8 @@ class MapObj{
             forests       = ''.split(', ')
         }
 
+        //Cap map width at 3
+        if(this.xAxis > 3){this.xAxis = 3}
 
         //Ref array for all tile objects
         this.tiles = []
@@ -112,14 +116,14 @@ class MapObj{
             //Map position is set in last main.js
             let overrides = [
                 {//Player
-                    tileId:`1-1`, 
+                    tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
                     tileType: `entrance-1`, 
                     playerUnit: true, 
                     enemyUnit: false, 
                     flip: false
                 }, 
                 {//Exit
-                    tileId:`${this.xAxis}-${this.yAxis}`, 
+                    tileId:`${Math.round(this.xAxis/2)}-1`, 
                     tileType: 'exit-1', 
                     enemyUnit: true, 
                     enemyQuant: config.exitDefenders + gs.stage,
@@ -130,13 +134,13 @@ class MapObj{
             if(type == 'dungeon'){
                 overrides = [
                     {//Player
-                        tileId:`1-1`, 
+                        tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`,
                         tileType: `dungeon-exit`, 
                         playerUnit: true, 
                         enemyUnit: false, 
                     }, 
                     {//Exit
-                        tileId:`${this.xAxis}-${this.yAxis}`,  
+                        tileId:`${Math.round(this.xAxis/2)}-1`, 
                         enemyUnit: true, 
                         enemyQuant: 1,
                         enemyQuant: config.exitDefenders + gs.stage,
@@ -191,79 +195,74 @@ class MapObj{
 //MAP UI
     //Adds images and builds the map elem
     function genMap(){
-
-        // console.table(mapRef)
-        let map = el('map-container')
-        map.innerHTML = ``
-
         //Sets map size & description (+1 due to border)
-        el('map-container').setAttribute('style', 
-        `
-            min-width:${120 * gs.mapObj.xAxis +1}px; min-height:${120 * gs.mapObj.yAxis}px;
-                width:${120 * gs.mapObj.xAxis +1}px;     height:${120 * gs.mapObj.yAxis}px;
-            max-width:${120 * gs.mapObj.xAxis +1}px; max-height:${120 * gs.mapObj.yAxis}px;
-        `)
-
-        //Add unit
-        let unit = document.createElement('div')
-        unit.id = 'map-unit'
-        map.append(unit)
+            el('map-container').setAttribute('style',`
+                max-width:${120 * gs.mapObj.xAxis +1}px;
+            `)
+            //+32 padding +1 border
+            // el('map-frame').setAttribute('style', `
+            //     max-height:${120 * gs.mapObj.yAxis + 2 + 400}px;
+            // `)
 
         //Gen tiles
+        let tiles = ``
+
         mapRef.forEach(tile => {
-
-            let tileElem = document.createElement('button')
-            tileElem.id = tile.tileId
-            tileElem.classList.add('map-tile')
-            
             //Tile bg image
-            tileElem.innerHTML = `<img src="./img/map/${tile.tileType}.svg">`
+                let img = `<img src="./img/map/${tile.tileType}.svg">`
+                //Flip tile image
+                if(tile.flip){
+                    img = `<img style='transform: scale(-1, 1);' src="./img/map/${tile.tileType}.svg">`
+                }
 
-            //Player unit image
-            if(tile.playerUnit){
+            //Add unit images
+                let unit = ``
+                if      (tile.playerUnit){ //Player unit image
+                    unit = `
+                        <div id="player-unit" class="map-unit">
+                            <img src="./img/map/player-unit-flag.svg" id="player-unit-flag">
+                            <img src="./img/map/player-unit-body.svg" id="player-unit-body">
+                            <img src="./img/map/player-unit-arms.svg" id="player-unit-arms">
+                        </div>
+                    `
+                    gs.playerLocationTile = tile
+                }else if(tile.boss){ //Boss unit
+                    unit = `
+                        <img src="./img/map/boss-unit-1.svg" class="map-unit">
+                    `
+                }else if(tile.enemyUnit && tile.enemyQuant == 1){ //Ene unit image
+                    unit = `
+                        <img src="./img/map/enemy-unit-${rng(3)}.svg" class="map-unit"> 
+                        <p class="unit-quant">${tile.enemyQuant}</p>
+                    `
+                }else if(tile.enemyUnit){
+                    unit = `
+                        <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
+                        <p class="unit-quant">${tile.enemyQuant}</p>
+                    `
+                }
 
-                tileElem.innerHTML += `
-                    <div id="player-unit" class="map-unit">
-                        <img src="./img/map/player-unit-flag.svg" id="player-unit-flag">
-                        <img src="./img/map/player-unit-body.svg" id="player-unit-body">
-                        <img src="./img/map/player-unit-arms.svg" id="player-unit-arms">
-                    </div>
-                `
-                gs.playerLocationTile = tile
-            }
-            //Boss unit
-            else if(tile.boss){
-                tileElem.innerHTML += `
-                    <img src="./img/map/boss-unit-1.svg" class="map-unit">
-                `
-            }
-            //Ene unit image
-            else if(tile.enemyUnit && tile.enemyQuant === 1){
 
-                tileElem.innerHTML += `
-                    <img src="./img/map/enemy-unit-${rng(3)}.svg" class="map-unit"> 
-                    <p class="unit-quant">${tile.enemyQuant}</p>
-                `
-
-            } else if(tile.enemyUnit){
-
-                tileElem.innerHTML += `
-                    <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
-                    <p class="unit-quant">${tile.enemyQuant}</p>
-                `
-
-            }
-
-            //50% flip image
-            if(tile.flip){
-                tileElem.firstChild.setAttribute('style', 'transform: scale(-1, 1);') 
-            }
-
-            //Events
-            map.append(tileElem)
+            tiles += `
+                <button id='${tile.tileId}' class='map-tile'>
+                    ${img}
+                    ${unit}
+                </button>
+            `
         })
 
+        el('map-container').innerHTML = `
+            <div style='min-height:320px; width: 100%'></div>
+            ${tiles}
+            <div style='min-height:320px; width: 100%''></div>
+        `
+
         resolveMove()
+
+        //Scroll map to the bottom to unit
+        setTimeout(function(){
+            el('player-unit').scrollIntoView({block:'end'})
+        }, 1000);
     }
     
     //Moves unit
@@ -317,13 +316,13 @@ class MapObj{
             //     el('map').scrollBy(-120,0)
             // }
             // //Bottom
-            // else if(startIdRef[1] < targetIdRef[1]){
-            //     el('map').scrollBy(0,120)
-            // }
-            // //Top
-            // else if(startIdRef[1] > targetIdRef[1]){
-            //     el('map').scrollBy(0,-120)
-            // }
+            if(startIdRef[1] < targetIdRef[1]){
+                el('map-frame').scrollBy(0,120)
+            }
+            //Top
+            else if(startIdRef[1] > targetIdRef[1]){
+                el('map-frame').scrollBy(0,-120)
+            }
 
         //Stats for end game scores
         gs.turnCounter++
@@ -360,7 +359,7 @@ class MapObj{
 
                 //Remove existing unit
                     //Remove unit image
-                    el(tile.tileId).childNodes[2].remove() 
+                    el(tile.tileId).childNodes[3].remove() 
 
                     //Remove unit quantity
                     if(el(tile.tileId).querySelector('.unit-quant') != undefined){
@@ -380,15 +379,15 @@ class MapObj{
             if(
                 tile.tileId == gs.playerLocationTile.tileId || //Player tile
 
-                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]+1}` || //+1 row
-                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]-1}` || //-1 row
-                tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]}` || //+1 col
-                tile.tileId === `${tileIdRef[0]-1}-${tileIdRef[1]}`    //-1 col
+                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]+1}`|| //+1 row
+                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]-1}`|| //-1 row
+                tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]}`|| //+1 col
+                tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]}`||   //-1 col
 
-                // tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]+1}` ||
-                // tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]-1}` ||
-                // tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]-1}` ||
-                // tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]+1}`    
+                tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]+1}` ||
+                tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]-1}` ||
+                tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]-1}` ||
+                tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]+1}`    
             ){
 
                 //Clear all events

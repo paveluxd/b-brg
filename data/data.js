@@ -29,7 +29,7 @@ let gs //game state object
                 this.merchantQuant = 10
 
                 //Enemies
-                this.enemySpawnFrequency = 30 //30%
+                this.enemySpawnFrequency = config.enSpawnFrequency //30%
                 this.dungeonEnemySpawnFrequency = 70
                 this.enemyPartyCap = 2       
         }

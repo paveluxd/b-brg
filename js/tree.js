@@ -225,7 +225,7 @@
         },{id:'t5', name:'dice',
             desc:'gain 1 to base dice'       ,passiveStats:[{stat:'dice-mod',  value:1}],
         },{id:'t6', name:'slots',
-            desc:'gain 1 equipment slots'   ,
+            desc:'gain 1 equipment slot'   ,
             passiveStats:[{stat:'slots', value:1}],
         },
 

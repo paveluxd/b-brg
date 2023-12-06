@@ -8,107 +8,107 @@
         syncTree()
 
         //Combat screen: Log stats at the top
-        if(gs.inCombat){
+            if(gs.inCombat){
 
-            //Top left log
-            el('log').innerHTML = `
-                Enc: ${gs.encounter}/${gs.playerLocationTile.enemyQuant}<br>
-                Ene: lvl ${gs.enObj.level} ${gs.enObj.profile.profileId}<br>
-                ` 
-                // Loc: ${gs.playerLocationTile.tileId}
-                // Tur: ${gs.combatTurn}<br>
-                // Lvl: ${gs.plObj.lvl} / Exp:${gs.plObj.exp}
+                //Top left log
+                el('log').innerHTML = `
+                    Enc: ${gs.encounter}/${gs.playerLocationTile.enemyQuant}<br>
+                    Ene: lvl ${gs.enObj.level} ${gs.enObj.profile.profileId}<br>
+                    ` 
+                    // Loc: ${gs.playerLocationTile.tileId}
+                    // Tur: ${gs.combatTurn}<br>
+                    // Lvl: ${gs.plObj.lvl} / Exp:${gs.plObj.exp}
 
-            //Enemy floating number
-            //gs.enemyAction -> Previous action
+                //Enemy floating number
+                //gs.enemyAction -> Previous action
 
-            if(gs.enObj.dmgTaken > 0){//Attack
-                floatText('en',`-${gs.enObj.dmgTaken} life`)
-            }else if(gs.enObj.action.key === 'fortify'){
-                floatText('en',`+${gs.enObj.action.stat} def`)
-            }else if(gs.enObj.action.key === 'empower'){
-                floatText('en',`+${gs.enObj.action.stat} power`)
-            }else if(gs.enObj.action.key === 'rush'){
-                floatText('en',`+${gs.enObj.action.stat} dice`)
-            }else if(gs.enObj.action.key === 'sleep'){
-                floatText('en',`Zzzzz`)
-            }else if(gs.enObj.action.key === 'block'){
-                floatText('en',`Blocked ${gs.enObj.action.stat}`)
-            }else if(gs.enObj.action.key === 'recover'){
-                floatText('en',`Recovered ${gs.enObj.action.stat} ${gs.enObj.action.actionVal}`)
-            }
-
-            gs.enemyAction = []
-            
-            //Player floating number
-            if(gs.plObj.dmgTaken > 0){
-                floatText('pl',`-${gs.plObj.dmgTaken} life`)
-            }
-
-            //Player stats
-            el('p-life').innerHTML  =`${gs.plObj.life}`
-            el('p-def').innerHTML   =`${gs.plObj.def}`
-            el('p-dice').innerHTML  =`${gs.plObj.roll}<span>/${gs.plObj.dice}</span>`
-            el('p-power').innerHTML =`${gs.plObj.power}`  
-
-            //Life 5 ico indication
-                //Pl   
-                if      (gs.plObj.life / gs.plObj.flatLife < 0.2){
-                    el('p-life-icon').setAttribute('src', './img/ico/life-20.svg')
-                }else if(gs.plObj.life / gs.plObj.flatLife < 0.4){
-                    el('p-life-icon').setAttribute('src', './img/ico/life-40.svg')
-                }else if(gs.plObj.life / gs.plObj.flatLife < 0.6){
-                    el('p-life-icon').setAttribute('src', './img/ico/life-60.svg')
-                }else if(gs.plObj.life / gs.plObj.flatLife < 0.8){
-                    el('p-life-icon').setAttribute('src', './img/ico/life-80.svg')
-                }else{
-                    el('p-life-icon').setAttribute('src', './img/ico/life.svg')
-                } 
-                //Ene
-                if      (gs.enObj.life / gs.enObj.flatLife < 0.2){
-                    el('e-life-icon').setAttribute('src', './img/ico/life-20.svg')
-                }else if(gs.enObj.life / gs.enObj.flatLife < 0.4){
-                    el('e-life-icon').setAttribute('src', './img/ico/life-40.svg')
-                }else if(gs.enObj.life / gs.enObj.flatLife < 0.6){
-                    el('e-life-icon').setAttribute('src', './img/ico/life-60.svg')
-                }else if(gs.enObj.life / gs.enObj.flatLife < 0.8){
-                    el('e-life-icon').setAttribute('src', './img/ico/life-80.svg')
-                }else{
-                    el('e-life-icon').setAttribute('src', './img/ico/life.svg')
+                if(gs.enObj.dmgTaken > 0){//Attack
+                    floatText('en',`-${gs.enObj.dmgTaken} life`)
+                }else if(gs.enObj.action.key === 'fortify'){
+                    floatText('en',`+${gs.enObj.action.stat} def`)
+                }else if(gs.enObj.action.key === 'empower'){
+                    floatText('en',`+${gs.enObj.action.stat} power`)
+                }else if(gs.enObj.action.key === 'rush'){
+                    floatText('en',`+${gs.enObj.action.stat} dice`)
+                }else if(gs.enObj.action.key === 'sleep'){
+                    floatText('en',`Zzzzz`)
+                }else if(gs.enObj.action.key === 'block'){
+                    floatText('en',`Blocked ${gs.enObj.action.stat}`)
+                }else if(gs.enObj.action.key === 'recover'){
+                    floatText('en',`Recovered ${gs.enObj.action.stat} ${gs.enObj.action.actionVal}`)
                 }
 
-            //Control stat vis
-                // if(gs.enObj.poisonStacks > 0){
-                //     el('poison-stat').classList.remove('hide')
-                // }else{
-                //     el('poison-stat').classList.add('hide')
-                // }
+                gs.enemyAction = []
+                
+                //Player floating number
+                if(gs.plObj.dmgTaken > 0){
+                    floatText('pl',`-${gs.plObj.dmgTaken} life`)
+                }
 
-            //Enemy stats
-                el('life').innerHTML    =`${gs.enObj.life}`
-                el('def').innerHTML     =`${gs.enObj.def}`
-                el('dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
-                el('power').innerHTML   =`${gs.enObj.power}`        
+                //Player stats
+                el('p-life').innerHTML  =`${gs.plObj.life}`
+                el('p-def').innerHTML   =`${gs.plObj.def}`
+                el('p-dice').innerHTML  =`${gs.plObj.roll}<span>/${gs.plObj.dice}</span>`
+                el('p-power').innerHTML =`${gs.plObj.power}`  
 
-            //Enemy intent indicator
-            el('intent').innerHTML = `${gs.enObj.action.desc}`
+                //Life 5 ico indication
+                    //Pl   
+                    if      (gs.plObj.life / gs.plObj.flatLife < 0.2){
+                        el('p-life-icon').setAttribute('src', './img/ico/life-20.svg')
+                    }else if(gs.plObj.life / gs.plObj.flatLife < 0.4){
+                        el('p-life-icon').setAttribute('src', './img/ico/life-40.svg')
+                    }else if(gs.plObj.life / gs.plObj.flatLife < 0.6){
+                        el('p-life-icon').setAttribute('src', './img/ico/life-60.svg')
+                    }else if(gs.plObj.life / gs.plObj.flatLife < 0.8){
+                        el('p-life-icon').setAttribute('src', './img/ico/life-80.svg')
+                    }else{
+                        el('p-life-icon').setAttribute('src', './img/ico/life.svg')
+                    } 
+                    //Ene
+                    if      (gs.enObj.life / gs.enObj.flatLife < 0.2){
+                        el('e-life-icon').setAttribute('src', './img/ico/life-20.svg')
+                    }else if(gs.enObj.life / gs.enObj.flatLife < 0.4){
+                        el('e-life-icon').setAttribute('src', './img/ico/life-40.svg')
+                    }else if(gs.enObj.life / gs.enObj.flatLife < 0.6){
+                        el('e-life-icon').setAttribute('src', './img/ico/life-60.svg')
+                    }else if(gs.enObj.life / gs.enObj.flatLife < 0.8){
+                        el('e-life-icon').setAttribute('src', './img/ico/life-80.svg')
+                    }else{
+                        el('e-life-icon').setAttribute('src', './img/ico/life.svg')
+                    }
 
-            //Add reflect indicator
-            if(gs.enObj.reflect){
-                el('intent').innerHTML += `<span style="color:yellow;">(Reflects attacks)</span>`
+                //Control stat vis
+                    // if(gs.enObj.poisonStacks > 0){
+                    //     el('poison-stat').classList.remove('hide')
+                    // }else{
+                    //     el('poison-stat').classList.add('hide')
+                    // }
+
+                //Enemy stats
+                    el('life').innerHTML    =`${gs.enObj.life}`
+                    el('def').innerHTML     =`${gs.enObj.def}`
+                    el('dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
+                    el('power').innerHTML   =`${gs.enObj.power}`        
+
+                //Enemy intent indicator
+                el('intent').innerHTML = `${gs.enObj.action.desc}`
+
+                //Add reflect indicator
+                if(gs.enObj.reflect){
+                    el('intent').innerHTML += `<span style="color:yellow;">(Reflects ${gs.enObj.reflect}%)</span>`
+                }
             }
-        }
 
         //Modify map stat indicator
-        ['food', 'power','life','coins'].forEach(stat => {
-            el(`pl-${stat}`).innerHTML = gs.plObj[stat]
-        })
+            ['food', 'power','life','coins'].forEach(stat => {
+                el(`pl-${stat}`).innerHTML = gs.plObj[stat]
+            })
 
         //Modify inventroy slide heading.
-        el('inventorySlideDesc').innerHTML = `
-            Inventory capacity: ${gs.plObj.inventory.length} / ${gs.plObj.inventorySlots}<br>
-            Equipped items: ${calcEquippedItems()} / ${gs.plObj.equipmentSlots}
-        `
+            el('inventorySlideDesc').innerHTML = `
+                Inventory capacity: ${gs.plObj.inventory.length} / ${gs.plObj.inventorySlots}<br>
+                Equipped items: ${calcEquippedItems()} / ${gs.plObj.equipmentSlots}
+            `
     }
 
     //Manage slider tabs
@@ -227,7 +227,7 @@
 
                 <div class='stat'>
                     <img src="./img/ico/placeholder.svg">
-                    <p>Sill points:  ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}</p>
+                    <p>Skill points:  ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}</p>
                 </div>
 
                 <div class='stat'>

@@ -26,6 +26,7 @@
 
         resolvePlayerStats()
         syncUi()
+        
     }
 
 //INITITATE COMBAT
@@ -752,8 +753,10 @@
                 //Resolve stat change
                     changeStat('life', -gs.plObj.dmgDone, 'enemy') 
                 //Resolve reflect
-                    if(gs.enObj.reflect){
-                        changeStat('life', Math.ceil(-gs.plObj.dmgDone * 1), 'player') 
+                    if(gs.enObj.reflect > 0){
+                        //Math floor because it's a negative number
+                        //Ceil to round down
+                        changeStat('life', Math.ceil(-gs.plObj.dmgDone * (gs.enObj.reflect / 100)), 'player') 
                     }          
 
                 //Reset piercing buff after attack was performed
@@ -1094,7 +1097,7 @@
     //Checks if LS save exists
     loadGame()
     initGame()
-
+    
     //Configs for testing
     if(config.testCombat == true){
         initiateCombat() //Disable if not testing combat
@@ -1109,4 +1112,5 @@
     if(config.showCombatInfoLog != true){
         el('log').classList.add('hide')
     }
-    // el('map').scrollTo(0, 9999); // Sets map position to view unit.
+   
+    

@@ -172,7 +172,7 @@
                 }
 
                 this.stat = 'life'
-                this.actionVal = gs.enObj.roll * 2
+                this.actionVal = gs.enObj.roll * 1
                 this.desc = `${ico('life-buff')}Will heal for ${this.actionVal}`
 
             }
@@ -465,7 +465,7 @@
             powerMod: 0.5,
             defMod:   0.5,
             diceMod:  0.5,
-            reflect: true,
+            reflect: 50,
             actionPool: [
                 'attack',
                 'final strike',

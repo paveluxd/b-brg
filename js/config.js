@@ -1,7 +1,7 @@
 let config = {
     //Player
-        life:      32, //32
-        power:      0,
+        life:      232, //32
+        power:      20,
         def:        0,
         dice:       6,
         inventory: 80,
@@ -12,8 +12,8 @@ let config = {
         basePassieSkillPoints: 0,
 
     //Game
-        testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: '', 
+        // testCombat: true, //Initiates combat at the start (for testing).
+        showScreen: 'map', 
         clearLs: true,
         showCombatInfoLog: true,
 
@@ -30,14 +30,15 @@ let config = {
 
     //Enemy
         eneLife: 8, //8
-        forceEnemyProfile: 'gladiator',
+        forceEnemyProfile: 'minion',
+        enSpawnFrequency: 10,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
-        mapX:            2,
-        mapY:            2,
+        mapX:            3, //1
+        mapY:            12, //2
         exitDefenders:   1,
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
