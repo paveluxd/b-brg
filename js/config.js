@@ -1,6 +1,6 @@
 let config = {
     //Player
-        life:      32, //32
+        life:      36, //32
         power:      0,
         def:        0,
         dice:       6,
@@ -28,7 +28,7 @@ let config = {
         food:  rng(4,2),
 
     //Enemy
-        eneLife: 8, //8
+        eneLife: 7, //8
         // forceEnemyProfile: 'minion',
         enSpawnFrequency: 30,
 

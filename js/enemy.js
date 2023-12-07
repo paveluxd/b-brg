@@ -126,7 +126,7 @@
             //Buff
             else if (key == 'fortify'){//+ def
 
-                this.rate = 2
+                this.rate = 3
                 this.stat = 'def'
                 this.actionVal = Math.ceil((gs.enObj.roll) * 0.6)
 
@@ -378,6 +378,7 @@
             diceMod:  1,
             actionPool: [
                 'attack', 
+                'combo',
 
                 'block', 
 
@@ -413,6 +414,7 @@
             actionPool: [
                 'attack', 
                 'charge', 
+                'combo',
 
                 'block', 
                 'recover', 
@@ -463,7 +465,7 @@
         },
         gladiator: {
             profileId: 'gladiator',
-            lifeMod:  2.5,
+            lifeMod:  2,
             powerMod: 0.5,
             defMod:   0.5,
             diceMod:  0.5,
