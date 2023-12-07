@@ -14,8 +14,8 @@ let config = {
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
         showScreen: '', 
-        clearLs: true,
-        showCombatInfoLog: true,
+        // clearLs: true,
+        // showCombatInfoLog: true,
 
     //Items
         startingItems: [
