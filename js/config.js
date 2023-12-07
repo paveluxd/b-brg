@@ -22,7 +22,6 @@ let config = {
             'club',
             'shield',
             'bandages',
-            'axe',
         ],
 
         coins: rng(12,6),
