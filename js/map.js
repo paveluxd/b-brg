@@ -1,15 +1,15 @@
-//MAP
-//Background image ids
-let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
-let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
-let tileSetCommon = 'casino, blacksmith, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
-let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
-let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7, road-1'.split(', ')
-
-let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, campfire, monument, lake, house, dungeon'
 
 class MapObj{
     constructor(type){
+        //MAP
+        //Background image ids
+        let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
+        let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
+        let tileSetCommon = 'casino, blacksmith, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
+        let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
+        let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7, road-1'.split(', ')
+        
+        let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, campfire, monument, lake, house, dungeon'
         
         //Set map dimensions
         this.xAxis = config.mapX + gs.stage
@@ -356,7 +356,6 @@ class MapObj{
         gs.playerLocationTile.tileId.split('-').forEach(val =>{
             tileIdRef.push(parseInt(val))
         })
-        console.log(0);
 
         //Adds movement events to map tiles
         mapRef.forEach(tile => {
