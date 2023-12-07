@@ -1,7 +1,7 @@
 let config = {
     //Player
-        life:      232, //32
-        power:      20,
+        life:      32, //32
+        power:      0,
         def:        0,
         dice:       6,
         inventory: 80,
@@ -31,7 +31,7 @@ let config = {
     //Enemy
         eneLife: 8, //8
         // forceEnemyProfile: 'minion',
-        enSpawnFrequency: 10,
+        enSpawnFrequency: 30,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
