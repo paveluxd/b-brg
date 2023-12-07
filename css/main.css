@@ -303,6 +303,7 @@ body{
     #map-container{
         display: flex;
         flex-wrap: wrap;
+        align-content: flex-start;
         
         /* border-right: 1px dashed var(--map-frame) !important;
         border-top: 1px dashed var(--map-frame) !important; */
@@ -725,7 +726,6 @@ body{
                 position: absolute;
             }
         }
-
         #enemy-sprite{
             z-index: 2; 
         }

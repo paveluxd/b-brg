@@ -13,7 +13,7 @@ let config = {
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'map', 
+        showScreen: '', 
         clearLs: true,
         showCombatInfoLog: true,
 
@@ -30,7 +30,7 @@ let config = {
 
     //Enemy
         eneLife: 8, //8
-        forceEnemyProfile: 'minion',
+        // forceEnemyProfile: 'minion',
         enSpawnFrequency: 10,
 
     //Combat UI
@@ -38,7 +38,7 @@ let config = {
 
     //Map
         mapX:            3, //1
-        mapY:            12, //2
+        mapY:            2, //2
         exitDefenders:   1,
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},

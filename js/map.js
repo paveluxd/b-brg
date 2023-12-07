@@ -252,10 +252,18 @@ class MapObj{
         })
 
         el('map-container').innerHTML = `
-            <div style='min-height:320px; width: 100%'></div>
+            <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext.svg"></img>
             ${tiles}
-            <div style='min-height:320px; width: 100%''></div>
+            <img style="height:320px; width: 360px;" src="./img/map/bot-ext.svg"></img>
         `
+
+        if(gs.mapObj.mapId.includes('dungeon')){
+            el('map-container').innerHTML = `
+            <div id="top-ext" style="height:320px; width: 360px;"></div>
+            ${tiles}
+            <div style="height:320px; width: 360px;"></div>
+        `
+        }
 
         resolveMove()
 
@@ -348,6 +356,7 @@ class MapObj{
         gs.playerLocationTile.tileId.split('-').forEach(val =>{
             tileIdRef.push(parseInt(val))
         })
+        console.log(0);
 
         //Adds movement events to map tiles
         mapRef.forEach(tile => {
@@ -366,32 +375,32 @@ class MapObj{
                         el(tile.tileId).querySelector('.unit-quant').remove() 
                     }
                 tile.enemyUnit = false
-                
                 gs.playerLocationTile = tile
             }
             else if(tile.playerUnit){
                 el(tile.tileId).append(el('player-unit'))
-
                 gs.playerLocationTile = tile
             }
 
             //Add event if adjacent
             if(
-                tile.tileId == gs.playerLocationTile.tileId || //Player tile
+                tile.tileId == gs.playerLocationTile.tileId          || //Player tile
 
-                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]+1}`|| //+1 row
-                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]-1}`|| //-1 row
-                tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]}`|| //+1 col
-                tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]}`||   //-1 col
+                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]+1}`   || //+1 row
+                tile.tileId == `${tileIdRef[0]}-${tileIdRef[1]-1}`   || //-1 row
+                tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]}`   || //+1 col
+                tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]}`   ||   //-1 col
 
                 tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]+1}` ||
                 tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]-1}` ||
                 tile.tileId == `${tileIdRef[0]+1}-${tileIdRef[1]-1}` ||
                 tile.tileId == `${tileIdRef[0]-1}-${tileIdRef[1]+1}`    
             ){
-
                 //Clear all events
                 el(tile.tileId).removeAttribute("onmousedown")
+                if(!gs.playerLocationTile.tileType.startsWith('exit')){ //Temporary event for top-ext.
+                    el('top-ext').removeAttribute("onmousedown")
+                }
 
                 //Combat event
                 if(tile.enemyUnit && tile.tileId != gs.playerLocationTile.tileId){
@@ -400,14 +409,14 @@ class MapObj{
                 //Portal event
                 else if(tile.tileType.startsWith('exit')){
                     el(tile.tileId).setAttribute('onmousedown', 'nextStage()')
+                    el('top-ext').setAttribute('onmousedown', 'nextStage()')
                 }
                 //POI event
                 else if(!tile.tileType.startsWith('empty') || !tile.tileType.startsWith('forest')){
                     if(tile == gs.playerLocationTile){
-                        el(tile.tileId).setAttribute('onmousedown', 'mapEvent()')
+                        el(tile.tileId).setAttribute('onmousedown', 'mapEvent()') 
                     }
                 }
-
                 //Move event
                 if(tile.tileId != gs.playerLocationTile.tileId){
                     el(tile.tileId).setAttribute("onmousedown", `movePlayerUnit(this), ${el(tile.tileId).getAttribute('onmousedown')}`)
@@ -771,6 +780,7 @@ class MapObj{
     ]
 
     function nextStage(){
+        
         //Increase stage on exit entrance
         gs.stage++
 
@@ -781,4 +791,5 @@ class MapObj{
         gs.maps = [] 
 
         initGame()
+            
     }

@@ -10,7 +10,9 @@
                 this.profile = eneProfilesRef[rarr(Object.keys(eneProfilesRef))]
 
                 //For testing combat
-                this.profile = eneProfilesRef[config.forceEnemyProfile]
+                if(config.forceEnemyProfile != undefined) {
+                    this.profile = eneProfilesRef[config.forceEnemyProfile]
+                }   
             }
 
             //Set stats
