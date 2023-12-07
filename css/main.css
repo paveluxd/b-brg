@@ -9,7 +9,7 @@
     --grey:      rgb(126, 126, 126);
     --light-bg:  rgb(227, 236, 241);
     --intent:    rgb(165, 164, 142);
-    --map-border:rgba(0, 0, 0, 0.15);
+    --map-frame:rgba(0, 0, 0, 0.15);
     --dungeon-border: rgba(255, 255, 255, 0.10);
     --map-bg:    #646562;
 
@@ -229,6 +229,8 @@ body{
     .tab-container{
         max-width: 400px;
         width: calc(100% - 16px);
+
+        height: 64px;
         
         /*Centers tabs*/
         position: fixed; 
@@ -286,38 +288,55 @@ body{
 /* Map */
     #map{
         background-color: var(--map-bg);
+
         width: 100%;
         height: 100%;
+        min-width: 362px;
+
         position: relative;
         overflow: scroll;
-        
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     #map-container{
         display: flex;
-        flex-wrap: wrap;        
-        border-right: 1px dashed var(--map-border) !important;
-        border-top: 1px dashed var(--map-border) !important;
+        flex-wrap: wrap;
+        align-content: flex-start;
         
+        /* border-right: 1px dashed var(--map-frame) !important;
+        border-top: 1px dashed var(--map-frame) !important; */
     }
-    .map-border{
-        padding: 96px 96px 148px 96px;
-        width: fit-content;
+
+    .map-frame{
+
+        min-width:100%;
+        /* min-width: 361px; */
+        height: 100%;
+
+        /* padding: 200px 0px 140px 0px; */
+        /* margin: auto; */
+        display: flex;
+        justify-content: center;
+
+        overflow: scroll;
     }
     .map-tile{
         width: 120px;
         height: 120px;
 
         border: none;
-        /* box-shadow: inset 2px 2px 0px var(--map-border); */
-        border-left: 1px dashed var(--map-border) !important;
-        border-bottom: 1px dashed var(--map-border) !important;
+        /* box-shadow: inset 2px 2px 0px var(--map-frame); */
+        border-left: 1px dashed var(--map-frame) !important;
+        border-bottom: 1px dashed var(--map-frame) !important;
         background-color: var(--w0);
 
         position: relative;
         /* transition: all 200ms; */
     }
     .map-tile:hover{
-        background-color: var(--b10);
+        background-color: var(--w0);
     }
     .map-tile:active, .map-tile:focus{
         background-color: var(--w0);
@@ -347,17 +366,17 @@ body{
         color: var(--b50);
     }
     #map, #map *{
-        touch-action:pan-x pan-y !important;
+        touch-action: pan-y !important;
         overscroll-behavior-y: none;
         overscroll-behavior-x: none;
     }
     .dungeon{
         background-color: rgb(67, 67, 67) !important;
 
-        #map-container{    
+        /* #map-container{    
             border-right: 1px dashed var(--dungeon-border) !important;
             border-top: 1px dashed var(--dungeon-border) !important;
-        }
+        } */
 
         .map-tile{
             border-left: 1px dashed var(--dungeon-border) !important;
@@ -369,6 +388,14 @@ body{
     #player-unit{ 
         width: 18px;
         height: 32px;
+        /* left: 4px; */
+        /* right: calc(50% - 8px); */
+
+        /* Required for auto-scrolling possition */
+        padding-bottom: 150px; 
+        bottom: -114px;
+
+        pointer-events: none;
 
         & * {
             position: absolute;
@@ -699,7 +726,6 @@ body{
                 position: absolute;
             }
         }
-
         #enemy-sprite{
             z-index: 2; 
         }
@@ -738,7 +764,7 @@ body{
         }
         .ghost-trigger{
             animation-name: ghostfx;
-            animation-duration: 2s;
+            animation-duration: 4s;
             animation-iteration-count: 1;
         } @keyframes ghostfx {
 
@@ -1126,7 +1152,7 @@ body{
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        bottom: 76px;
+        top: 8px;
 
         display: flex;
         justify-content: space-between;

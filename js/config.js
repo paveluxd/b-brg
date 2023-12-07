@@ -14,14 +14,15 @@ let config = {
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
         showScreen: '', 
-        // clearLs: true,
-        // showCombatInfoLog: true,
+        clearLs: true,
+        showCombatInfoLog: true,
 
     //Items
         startingItems: [
             'club',
             'shield',
             'bandages',
+            'axe',
         ],
 
         coins: rng(12,6),
@@ -29,13 +30,15 @@ let config = {
 
     //Enemy
         eneLife: 8, //8
+        // forceEnemyProfile: 'minion',
+        enSpawnFrequency: 30,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
-        mapX:            2,
-        mapY:            2,
+        mapX:            3, //1
+        mapY:            2, //2
         exitDefenders:   1,
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},

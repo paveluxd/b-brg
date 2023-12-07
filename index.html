@@ -50,7 +50,7 @@
 
 <body>
 <!-- State screen -->
-    <div id="state-screen" class="modal state-screen " onclick="screen('map')">
+    <div id="state-screen" class="modal state-screen " onclick="initGame()">
         <div class="modal-container">
             <img src="./img/bg/start.svg" class="illustration">
             <p class="body-14">
@@ -101,7 +101,7 @@
             </button>
         </div>
 
-        <div class="map-border">
+        <div id="map-frame" class="map-frame">
             <div id="map-container"></div>
         </div>
     </div>

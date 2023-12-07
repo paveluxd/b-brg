@@ -18,14 +18,44 @@
         
         //Map
         mapRef = gs.mapObj.tiles
-        genMap()
 
-        //Gen remaining UI
-        // genTabs()              //merge ui
-        spriteBuilder('player')//create player sprite
+        //Lock screen
+        document.body.classList.add('lock-actions', 'darken')
+    
+        //Run gen reward after delay
+        window.setTimeout(
+            function(){
+                //Unlock screen
+                document.body.classList.remove('lock-actions', 'darken')
 
-        resolvePlayerStats()
-        syncUi()
+                genMap()
+        
+                //Gen remaining UI
+                // genTabs()              //merge ui
+                spriteBuilder('player')//create player sprite
+        
+                resolvePlayerStats()
+                syncUi()
+                screen("map")
+
+                //Configs for testing
+                if(config.testCombat == true){
+                    initiateCombat() //Disable if not testing combat
+
+                    el('map').classList.add('hide')
+                }
+
+                if(config.showScreen != false){
+                    screen(config.showScreen)
+                }
+
+                if(config.showCombatInfoLog != true){
+                    el('log').classList.add('hide')
+                }
+            },
+            1000
+        )
+        
     }
 
 //INITITATE COMBAT
@@ -750,7 +780,13 @@
                     resolveOnHitPassives()
 
                 //Resolve stat change
-                    changeStat('life', -gs.plObj.dmgDone, 'enemy')           
+                    changeStat('life', -gs.plObj.dmgDone, 'enemy') 
+                //Resolve reflect
+                    if(gs.enObj.reflect > 0){
+                        //Math floor because it's a negative number
+                        //Ceil to round down
+                        changeStat('life', Math.ceil(-gs.plObj.dmgDone * (gs.enObj.reflect / 100)), 'player') 
+                    }          
 
                 //Reset piercing buff after attack was performed
                     gs.plObj.piercing = false
@@ -1089,20 +1125,3 @@
 
     //Checks if LS save exists
     loadGame()
-    initGame()
-
-    //Configs for testing
-    if(config.testCombat == true){
-        initiateCombat() //Disable if not testing combat
-
-        el('map').classList.add('hide')
-    }
-
-    if(config.showScreen != false){
-        screen(config.showScreen)
-    }
-
-    if(config.showCombatInfoLog != true){
-        el('log').classList.add('hide')
-    }
-    // el('map').scrollTo(0, 9999); // Sets map position to view unit.

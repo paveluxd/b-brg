@@ -3,15 +3,6 @@
         constructor(){
             this.level = gs.stage //tileIdRef[1] prev. value.
             
-            //Misc
-            this.poisonStacks = 0
-            this.crit = false
-            this.state = ''        //Used for stun, fear etc.
-            this.forcedAction = '' //For items that force acions
-
-            this.actionRef = []
-            this.acctionMod = ''
-
             //Choose enemy profile
             if (gs.playerLocationTile.boss){
                 this.profile = bossProfilesRef[rarr(Object.keys(bossProfilesRef))]
@@ -19,7 +10,9 @@
                 this.profile = eneProfilesRef[rarr(Object.keys(eneProfilesRef))]
 
                 //For testing combat
-                // this.profile = eneProfilesRef['minion']
+                if(config.forceEnemyProfile != undefined) {
+                    this.profile = eneProfilesRef[config.forceEnemyProfile]
+                }   
             }
 
             //Set stats
@@ -56,7 +49,15 @@
             this.rollChange  = 0
             this.rollChangeMarker = false
 
-            
+            //Misc
+            this.poisonStacks = 0
+            this.crit = false
+            this.state = ''                     //Used for stun, fear etc.
+            this.forcedAction = ''              //For items that force acions
+            this.reflect = this.profile.reflect //Reflect mod
+
+            this.actionRef = []
+            this.acctionMod = ''
         }
     }
 
@@ -173,7 +174,7 @@
                 }
 
                 this.stat = 'life'
-                this.actionVal = gs.enObj.roll * 2
+                this.actionVal = gs.enObj.roll * 1
                 this.desc = `${ico('life-buff')}Will heal for ${this.actionVal}`
 
             }
@@ -460,11 +461,31 @@
                 'drain', 
             ]
         },
+        gladiator: {
+            profileId: 'gladiator',
+            lifeMod:  2.5,
+            powerMod: 0.5,
+            defMod:   0.5,
+            diceMod:  0.5,
+            reflect: 50,
+            actionPool: [
+                'attack',
+                'final strike',
+
+                'block', 
+
+                'recover',
+
+                'sleep',
+
+                'wound'
+            ]
+        },
         
     }
 
     let bossProfilesRef = {
-        mech: {   
+        boss: {   
             profileId: 'mech-boss',
             lifeMod: 3,
             powerMod: 2,
