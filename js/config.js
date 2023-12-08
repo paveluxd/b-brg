@@ -1,3 +1,4 @@
+//Confign for posting
 let config = {
     //Player
         life:      36, //32
@@ -12,10 +13,8 @@ let config = {
         basePassieSkillPoints: 0,
 
     //Game
-        // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: '', 
-        // clearLs: true,
-        // showCombatInfoLog: true,
+        showCombatInfoLog: true,
+        fadeTime: 400,
 
     //Items
         startingItems: [
@@ -29,7 +28,6 @@ let config = {
 
     //Enemy
         eneLife: 7, //8
-        // forceEnemyProfile: 'minion',
         enSpawnFrequency: 30,
 
     //Combat UI
@@ -39,12 +37,59 @@ let config = {
         mapX:            3, //1
         mapY:            2, //2
         exitDefenders:   1,
-        mandatoryTiles: [
-            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
-            // {tileType: 'dungeon-1', enemyUnit: false},
-            // {tileType: 'enchanter-1', enemyUnit: false},
-            // {tileType: 'merchant-1'},
-            // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-            // {tileType:'monument-1', tileId:`2-2`, loreEvent: 8},
-        ],
+        mandatoryTiles: [],
 }
+
+// Test config
+// let config = {
+//     //Player
+//         life:      36, //32
+//         power:      0,
+//         def:        0,
+//         dice:       6,
+//         inventory: 80,
+//         slots:      5,
+
+//     //Progression
+//         expRequiredPerLvl: 2,
+//         basePassieSkillPoints: 0,
+
+//     //Game
+//         // testCombat: true, //Initiates combat at the start (for testing).
+//         // showScreen: 'combat', 
+//         // clearLs: true,
+//         showCombatInfoLog: true,
+//         fadeTime: 400,
+
+//     //Items
+//         startingItems: [
+//             'club',
+//             'carabiner',
+//             'shield',
+//             // 'bandages',
+//         ],
+
+//         coins: rng(12,6),
+//         food:  rng(4,2),
+
+//     //Enemy
+//         eneLife: 7, //8
+//         // forceEnemyProfile: 'minion',
+//         enSpawnFrequency: 30,
+
+//     //Combat UI
+//         bgCounter: 3, //1 per saved combat bg for rng.
+
+//     //Map
+//         mapX:            3, //1
+//         mapY:            2, //2
+//         exitDefenders:   1,
+//         mandatoryTiles: [
+//             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
+//             // {tileType: 'dungeon-1', enemyUnit: false},
+//             // {tileType: 'enchanter-1', enemyUnit: false},
+//             // {tileType: 'merchant-1'},
+//             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
+//             // {tileType:'monument-1', tileId:`2-2`, loreEvent: 8},
+//         ],
+// }

@@ -45,7 +45,7 @@
                     el('map').classList.add('hide')
                 }
 
-                if(config.showScreen != false){
+                if(config.showScreen != undefined){
                     screen(config.showScreen)
                 }
 
@@ -53,7 +53,7 @@
                     el('log').classList.add('hide')
                 }
             },
-            1000
+            config.fadeTime
         )
         
     }
@@ -133,9 +133,13 @@
                 gs.previousAction = gs.sourceAction 
             }
 
+            //Find action
             gs.sourceAction = findObj(gs.plObj.actions, 'actionId', buttonElem.getAttribute('actionId')) //Get action id from button elem
             let actionMod = gs.sourceAction.actionMod
             let paKey = gs.sourceAction.keyId
+
+            //Find item by action
+            gs.sourceItem = findItemByAction(gs.sourceAction)
 
             //LOGIC: player
             //Attacks
@@ -646,6 +650,25 @@
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${actionMod + gs.plObj.power} dmg.`)
     
+            }else if(paKey =='a67'){// pull 'carabiner'
+                
+                //Set carabiner variable
+                gs.plObj.carabiner = []
+
+                //Find item by action and unequip it
+                gs.sourceItem.equipped = false
+
+                //Open choose one window
+                chooseOne()
+                
+                console.log(gs.sourceItem);
+
+                //Save carabiner item to restore eq after the fight
+                gs.plObj.carabiner.push(gs.sourceItem.itemId)
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.`)
+    
             }
 
             //PASSIVES post-action: Player passive effects.
@@ -986,6 +1009,20 @@
 
                     //Lock screen
                     document.body.classList.add('lock-actions', 'darken')
+
+                    //a67 pull 'carabiner': restore equipment as at the start of the combat
+                    if(gs.plObj.carabiner != undefined){
+                        console.log(gs.plObj.carabiner);
+
+                        //Unequip equipped item
+                        equipUnequipItem(gs.plObj.carabiner[1])
+
+                        //Equip carabiner
+                        equipUnequipItem(gs.plObj.carabiner[0])
+
+                        //Reset variable
+                        gs.plObj.carabiner = undefined
+                    }
     
                     //Run gen reward after delay
                     window.setTimeout(
@@ -1000,7 +1037,7 @@
                             //Reset flat stats
                             resetFlatStats()
                         },
-                        1000
+                        config.fadeTime
                     )
 
                     //Save game on win

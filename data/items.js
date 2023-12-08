@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "carabiner",
+    "actions": "pull",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
     "itemName": "red cross kit",
     "actions": "first aid",
     "passiveStats": "",

@@ -1,5 +1,16 @@
 let actionsRef = [
   {
+    "actionName": "pull",
+    "tags": "utility",
+    "desc": "unequip this to equip an item from the inventory (extra action)",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 20,
+    "cooldown": "",
+    "keyId": 67,
+    "actionType": "extra-action"
+  },
+  {
     "actionName": "first aid",
     "tags": "passive",
     "desc": "restore 6 life at the end of the fight",
