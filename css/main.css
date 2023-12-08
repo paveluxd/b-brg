@@ -1188,7 +1188,7 @@ body{
 /* Utility */
     .hide         {display: none !important;}
     .lock-actions {pointer-events: none;}
-    .darken       {filter:brightness(0.5);}
+    .darken       {filter:brightness(0);}
     .flip         {transform: scaleX(-1);}
     .grow         {flex-grow: 1;}
     .italic       {font-style: italic;}

@@ -164,6 +164,39 @@
         el(elemId).classList.remove('hide') 
     }
 
+    //Screen that offers a choice of item, action etc
+    //So far only for a67 carabiner
+    function chooseOne(argument, choiceId){
+
+        //Clear container
+        el('choose-one-body').innerHTML = ``
+
+        gs.plObj.inventory.forEach(item => {
+            if(item.equipped) return
+
+            let chooseOneItemCard = genItemCard(item, 'item-to-choose')
+            el('choose-one-body').append(chooseOneItemCard)
+        })
+
+        //Open a screen
+        screen('choose-one')
+
+        //Resolve the choice
+        if(argument == 'resolve'){
+            //Save equipped item to reequip at the end of the combat
+            gs.plObj.carabiner.push(choiceId)
+
+            //Equip item
+            equipUnequipItem(choiceId)
+
+            //Close screen
+            screen('combat')
+
+            //Regen action cards
+            syncActionTiles()
+        }
+    }
+
 
 //CHARACTER
     function syncCharPage(){

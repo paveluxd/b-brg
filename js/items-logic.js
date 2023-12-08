@@ -124,7 +124,7 @@ function calcCost(type, itemId){
                 }
                 //Else unequip
                 else if(item.passiveStats.length === 0){
-                    equipItem(item.itemId)
+                    equipUnequipItem(item.itemId)
                 }
             }
 
@@ -369,7 +369,7 @@ function calcCost(type, itemId){
             if(event == 'reward'){
                 //Add item to players inventory & auto-equip
                 gs.plObj.inventory.push(targetItem)
-                equipItem(targetItem.itemId)
+                equipUnequipItem(targetItem.itemId)
     
                 //Move inventory list back to it's page
                 el('inventory').childNodes[1].append(el('inventory-list'))
@@ -389,7 +389,7 @@ function calcCost(type, itemId){
 
                 gs.plObj.inventory.push(targetItem)
 
-                equipItem(targetItem.itemId)
+                equipUnequipItem(targetItem.itemId)
             }
 
         })
@@ -427,7 +427,7 @@ function calcCost(type, itemId){
         }
     }
     //Equip/unequip item.
-    function equipItem(itemId){
+    function equipUnequipItem(itemId){
 
         //Find item by id
         let item = findItemById(itemId)
@@ -644,7 +644,7 @@ function calcCost(type, itemId){
             let cardId = item.itemId
 
             //Top container on click
-            let                   clickAttr =`onclick="genItemModal('${item.itemId}')"`
+            let clickAttr =`onclick="genItemModal('${item.itemId}')"`
             if(type == 'reward'){
 
                 clickAttr =`onclick="genItemModal('${item.itemId}', 'reward')"`
@@ -693,7 +693,7 @@ function calcCost(type, itemId){
                             <img src="./img/ico/item-x.svg"> <p>Drop</p>
                         </button>`
 
-            let btn2 = `<button class="equip-button body-12" onclick="equipItem('${item.itemId}'), this.classList.toggle('equipped')">
+            let btn2 = `<button class="equip-button body-12" onclick="equipUnequipItem('${item.itemId}'), this.classList.toggle('equipped')">
                             <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
                         </button>`
 
@@ -720,7 +720,7 @@ function calcCost(type, itemId){
                             <p>Sell for ${item.cost}</p> <img src="./img/ico/coin.svg">
                         </button>`
 
-                // btn1 = `<button class="equip-button body-12" onclick="equipItem('${item.itemId}'),  this.classList.toggle('equipped')">
+                // btn1 = `<button class="equip-button body-12" onclick="equipUnequipItem('${item.itemId}'),  this.classList.toggle('equipped')">
                 //             <p>Equip</p> <img src="./img/ico/item-equip-no.svg">
                 //         </button>`
                 cardId += '-to-sell'//Adjust id to avoid conflicts
@@ -739,11 +739,20 @@ function calcCost(type, itemId){
                         </button>`
                 cardId += '-to-repair'//Adjust id to avoid conflicts
             }
+            else if(type == 'item-to-choose'){
+
+                btn2 = `<button class="drop-button body-12" onclick="chooseOne('resolve', '${item.itemId}')">
+                            <p>Choose</p>
+                        </button>`
+
+                cardId += '-to-choose'//Adjust id to avoid conflicts
+
+            }
 
             //Update equip state for inventory item
             if(['item-to-enhance', 'item-to-repair', 'item-to-sell'].indexOf(type) > -1 == false){
                 if(item.equipped){ 
-                    btn2 = `<button class="equip-button body-12 equipped" onclick="equipItem('${item.itemId}'), this.classList.toggle('equipped')">
+                    btn2 = `<button class="equip-button body-12 equipped" onclick="equipUnequipItem('${item.itemId}'), this.classList.toggle('equipped')">
                                 <p>Equip</p> <img src="./img/ico/item-equip-yes.svg">
                             </button>`
                 }

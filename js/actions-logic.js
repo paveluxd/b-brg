@@ -94,7 +94,9 @@
         
         //Add button per player item
         gs.plObj.actions.forEach(action => {
+
             if(action.actionType == 'passive') return //Skip passives
+
             let actionCard = genActionCard(action)
 
             if(action.tags.includes('attack')){//Adds action at the start of the actions set
@@ -103,15 +105,8 @@
             else{
                 el('cards-row').append(actionCard)
             }
-        })
 
-        //Add empty item slots
-            // let emptySlots = gs.plObj.actionSlots - gs.plObj.actions.length
-            // let button = document.createElement('button')
-            // button.innerHTML = `[ ]x${emptySlots}`
-            // button.disabled = true
-            // button.classList.add('action', 'empty-slot')
-            // el('cards-row').append(button)    
+        })   
     }
 
     //Gen a single combat action card
