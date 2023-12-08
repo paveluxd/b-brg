@@ -1,7 +1,7 @@
 //Confign for posting
 let config = {
     //Player
-        life:      36, //32
+        life:      40, //32
         power:      0,
         def:        0,
         dice:       6,
@@ -23,32 +23,33 @@ let config = {
             'bandages',
         ],
 
-        coins: rng(12,6),
-        food:  rng(4,2),
+        coins: 0,
+        food:  6,
 
     //Enemy
-        eneLife: 7, //8
-        enSpawnFrequency: 30,
+        eneLife: 8, //8
+        enSpawnFrequency: 40,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
-        mapX:            3, //1
-        mapY:            2, //2
-        exitDefenders:   1,
-        mandatoryTiles: [],
+        mapX:             3,  //1
+        mapY:            12, //Vertical
+        exitDefenders:    3,
+        enemyPartyCap:    3, //25% item reward per enemy
+        mandatoryTiles:  [],
 }
 
 // Test config
-// let config = {
+// config = {
 //     //Player
-//         life:      36, //32
-//         power:      0,
-//         def:        0,
-//         dice:       6,
-//         inventory: 80,
-//         slots:      5,
+//         life:      999, //32
+//         power:      10,
+//         def:         0,
+//         dice:        6,
+//         inventory:  80,
+//         slots:       5,
 
 //     //Progression
 //         expRequiredPerLvl: 2,
@@ -57,7 +58,7 @@ let config = {
 //     //Game
 //         // testCombat: true, //Initiates combat at the start (for testing).
 //         // showScreen: 'combat', 
-//         // clearLs: true,
+//         clearLs: true,
 //         showCombatInfoLog: true,
 //         fadeTime: 400,
 
@@ -66,24 +67,26 @@ let config = {
 //             'club',
 //             'carabiner',
 //             'shield',
+//             'bow'
 //             // 'bandages',
 //         ],
 
-//         coins: rng(12,6),
-//         food:  rng(4,2),
+//         coins: 0, //rng(12,6),
+//         food:  6, //rng(4,2),
 
 //     //Enemy
-//         eneLife: 7, //8
-//         // forceEnemyProfile: 'minion',
-//         enSpawnFrequency: 30,
+//         eneLife: 8, //8
+//         // forceEnemyProfile: 'gladiator',
+//         enSpawnFrequency: 40,
 
 //     //Combat UI
 //         bgCounter: 3, //1 per saved combat bg for rng.
 
 //     //Map
-//         mapX:            3, //1
-//         mapY:            2, //2
-//         exitDefenders:   1,
+//         mapX:             3, //1
+//         mapY:            12, //Vertical
+//         exitDefenders:    3,
+//         enemyPartyCap:    3, //25% item reward per enemy
 //         mandatoryTiles: [
 //             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
 //             // {tileType: 'dungeon-1', enemyUnit: false},

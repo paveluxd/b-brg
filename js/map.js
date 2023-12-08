@@ -12,18 +12,16 @@ class MapObj{
         let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, campfire, monument, lake, house, dungeon'
         
         //Set map dimensions
-        this.xAxis = config.mapX + gs.stage
-        this.yAxis = config.mapY + gs.stage
+        this.xAxis = config.mapX //+ gs.stage
+        this.yAxis = config.mapY //+ gs.stage
 
-        
-        
         //Generates unique map id
         this.mapId = "map" + Math.random().toString(8).slice(2)
 
         //Dungeon setup
         if(type == 'dungeon'){
-            this.xAxis = rng(1 + gs.stage,2)
-            this.yAxis = rng(3 + gs.stage,3)
+            this.xAxis = rng(1 + gs.stage, 2)
+            this.yAxis = rng(3 + gs.stage, 3)
 
             //Generates unique map id
             this.mapId = "dungeon" + Math.random().toString(8).slice(2)
@@ -93,7 +91,7 @@ class MapObj{
                 }
 
                 if (rollForEne < rollTarget){ 
-                    let eneQuant = rng(gs.enemyPartyCap)
+                    let eneQuant = rng(config.enemyPartyCap)
                     tile.enemyUnit = true
                     tile.enemyQuant = eneQuant
                     gs.totalEnemies += eneQuant //Counts total enemies

@@ -2,7 +2,7 @@
     class EnemyObj {
         constructor(){
             this.level = gs.stage //tileIdRef[1] prev. value.
-            
+            console.log(this.level);
             //Choose enemy profile
             if (gs.playerLocationTile.boss){
                 this.profile = bossProfilesRef[rarr(Object.keys(bossProfilesRef))]
@@ -23,7 +23,7 @@
             })
 
             // mod(0.5) -> Get +1 every 2 stages
-            this.life        = 0 + Math.round((config.eneLife   + this.level) * this.profile.lifeMod )
+            this.life        = config.eneLife + Math.round((3 * this.level) * this.profile.lifeMod )
             this.flatLife    = this.life
             this.dmgDone     = 0 // For dmg calc.
             this.dmgTaken    = 0 // For dmg calc.
@@ -40,7 +40,7 @@
             this.defChange   = 0
             this.defChangeMarker = false
 
-            this.dice        = 4 + Math.round((0.2 * this.level) * this.profile.diceMod)
+            this.dice        = 3 + Math.ceil(this.level * this.profile.diceMod)
             this.flatDice    = this.dice 
             this.diceChange  = 0
             this.diceChangeMarker = false
@@ -377,14 +377,8 @@
             defMod:   1,
             diceMod:  1,
             actionPool: [
-                'attack', 
-                'combo',
-
-                'block', 
-
-                'recover',
-
-                'sleep'
+                'attack',
+                'block'
             ]
         },
         assasin: {
@@ -392,24 +386,23 @@
             lifeMod:  1,
             powerMod: 2,
             defMod:   1,
-            diceMod:  2,
+            diceMod:  1,
             actionPool: [
                 'attack', 
                 'combo',  
                 'final strike',
 
                 'recover', 
-
                 'empower', 
                 'rush',
             ]
         },
         tank: {
             profileId: 'tank',
-            lifeMod:  1.5,
+            lifeMod:  2.5,
             powerMod: 0.5,
             defMod:   3.5,
-            diceMod:  0.5,
+            diceMod:  0.25,
 
             actionPool: [
                 'attack', 
@@ -444,13 +437,12 @@
         },
         mage: {
             profileId: 'mage',
-            lifeMod:    1,
-            powerMod: 0.5,
-            defMod:   0.5,
-            diceMod:  0.5,
+            lifeMod:  1,
+            powerMod: 1,
+            defMod:   1,
+            diceMod:  1,
             actionPool: [
                 'attack',
-
                 'block', 
 
                 'recover',
@@ -465,11 +457,11 @@
         },
         gladiator: {
             profileId: 'gladiator',
-            lifeMod:  2,
+            lifeMod:  1.5,
             powerMod: 0.5,
             defMod:   0.5,
             diceMod:  0.5,
-            reflect: 50,
+            reflect:  100,
             actionPool: [
                 'attack',
                 'final strike',
@@ -477,7 +469,6 @@
                 'block', 
 
                 'recover',
-
                 'sleep',
 
                 'wound'
@@ -489,7 +480,7 @@
     let bossProfilesRef = {
         boss: {   
             profileId: 'mech-boss',
-            lifeMod: 3,
+            lifeMod:  3,
             powerMod: 2,
             defMod:   2,
             diceMod:  2,

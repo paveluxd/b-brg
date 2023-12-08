@@ -95,7 +95,7 @@
 
                 //Add reflect indicator
                 if(gs.enObj.reflect){
-                    el('intent').innerHTML += `<span style="color:yellow;">(Reflects ${gs.enObj.reflect}%)</span>`
+                    el('intent').innerHTML += `<span class="italic" style="color:yellow;">Reflects if damaged for more than ${gs.enObj.dice}</span>`
                 }
             }
 
