@@ -3,7 +3,7 @@ let gs //game state object
 //Game
     class GameState {
         constructor(){
-            this.stage = 0
+            this.stage = 1
             
             //Encounter
             this.inCombat = false
@@ -14,9 +14,9 @@ let gs //game state object
             this.enemyAction = [] // Last enemy action.
 
             //Rewards
-            this.flatItemReward  = 2 // Base rewards.
+            this.flatItemReward  = 3 // Base rewards.
             this.flatFoodReward  = 2 // Food per round +1 per enemy.
-            this.flatCoinsReward = 5 
+            this.flatCoinsReward = 3 
             
             //Stats for end game screen.
             this.turnCounter = 0 //Calc turns for win stats.

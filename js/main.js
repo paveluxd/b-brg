@@ -805,7 +805,7 @@
                 //Resolve stat change
                     changeStat('life', -gs.plObj.dmgDone, 'enemy') 
                 //Resolve reflect
-                    if(gs.enObj.reflect > 0){
+                    if(gs.enObj.reflect > 0 && gs.plObj.dmgDone > gs.enObj.dice){
                         //Math floor because it's a negative number
                         //Ceil to round down
                         changeStat('life', Math.ceil(-gs.plObj.dmgDone * (gs.enObj.reflect / 100)), 'player') 
@@ -1029,7 +1029,7 @@
                         function(){
     
                             //Open reward screen
-                            genRewards(gs.flatItemReward + gs.playerLocationTile.enemyQuant)
+                            genRewards(gs.flatItemReward)
     
                             //Unlock screen
                             document.body.classList.remove('lock-actions', 'darken')
