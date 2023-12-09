@@ -295,8 +295,8 @@
                 //Calc
                 gs.plObj.dmgDone += 2 + gs.plObj.power
 
-                //Apply 2 poison stacks
-                gs.enObj.poisonStacks += actionMod
+                //Apply poison stacks
+                gs.enObj.appliedPoisonStacks += actionMod
 
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
@@ -364,7 +364,7 @@
             }else if(paKey =='a16'){// barrier
                 
                 gs.plObj.protection = ['Barrier']
-                gs.sourceAction.cooldown = 0
+                gs.sourceAction.cooldown = -1
     
             }else if(paKey =='a18'){// preparation "boots" (keep 50% of roll)
     
@@ -486,7 +486,7 @@
                 changeStat('power', -1, 'player') 
     
                 gs.plObj.piercing = true
-                gs.sourceAction.cooldown = 0
+                gs.sourceAction.cooldown = -1
 
             }else if(paKey =='a38'){// static "cape"
     
@@ -574,7 +574,7 @@
                 //Resolve stat change
                 changeStat('roll', -1, 'player')
                 
-                gs.sourceAction.cooldown = 0
+                gs.sourceAction.cooldown = -1
      
             }else if(paKey =='a52'){// hook/swap
             
@@ -613,7 +613,9 @@
 
                 //Marker
                 gs.enObj.forcedAction = 'block'
-                gs.sourceAction.cooldown = 0
+
+                //Trigger cd
+                gs.sourceAction.cooldown = -1
                 
                 //Set variable cooldown.  
                 let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
@@ -621,6 +623,21 @@
 
                 //Log
                 gs.logMsg.push(`fear: enamy will block during the next turn (fear reacharge:${referenceActionObj.cooldown})`)
+
+            }else if(paKey =='a68'){// "stress" "wizards hand"
+
+                //Save action to prevent
+                gs.enObj.bannedAction = gs.enObj.action.key 
+
+                //Trigger cd
+                gs.sourceAction.cooldown = -1
+                
+                //Set variable cooldown.  
+                let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
+                referenceActionObj.cooldown = rng(actionMod,3)
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc} (${referenceActionObj.cooldown}).`)
 
             }else if(paKey =='a57'){// "heal" "book of order"
 
@@ -650,7 +667,8 @@
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${actionMod + gs.plObj.power} dmg.`)
     
-            }else if(paKey =='a67'){// pull 'carabiner'
+            }
+             else if(paKey =='a67'){// pull 'carabiner'
                 
                 //Set carabiner variable
                 gs.plObj.carabiner = []
@@ -670,6 +688,7 @@
                 gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.`)
     
             }
+            
 
             //PASSIVES post-action: Player passive effects.
             gs.plObj.actions.forEach(action => {
@@ -769,7 +788,7 @@
                             poisonStackCount = 2
                         }
                 
-                        gs.enObj.poisonStacks += poisonStackCount
+                        gs.enObj.appliedPoisonStacks += poisonStackCount
                         gs.plObj.poisonBuff = 'triggered' //For potion
                         gs.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
                     }
@@ -1054,55 +1073,78 @@
             // NEXT TURN.
             else if (gs.sourceAction.actionType !== "extra-action" || gs.plObj.roll < 1){
                 //Check if player can attack
-                checkIfPlayerCanAttack()
+                    checkIfPlayerCanAttack()
 
-                //POISON: resolve stacks
-                if(gs.enObj.poisonStacks > 0){
+                //POISON: resolve poison stacks
+                    if(gs.enObj.poisonStacks > 0){
+                        //Reduce random stat by 1 per posion stack
+                        for(i = 0; i < gs.enObj.poisonStacks; i++){
+                            let statRoll = rng(5)
+                                
+                            if       (statRoll == 2){
+                                changeStat('def', -1, 'enemy')
+                                gs.logMsg.push(`poison: -1 def. ${gs.enObj.poisonStacks - 1} stacks remaining`)
 
-                    //Reduce random stat by 1 per posion stack
-                    for(i = 0; i < gs.enObj.poisonStacks; i++){
-                        let statRoll = rng(5)
-                            
-                        if       (statRoll == 2){
-                            changeStat('def', -1, 'enemy')
-                            gs.logMsg.push(`poison: -1 def. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+                            }else if (statRoll == 3){
+                                changeStat('power', -1, 'enemy')
+                                gs.logMsg.push(`poison: -1 power. ${gs.enObj.poisonStacks - 1} stacks remaining`)
 
-                        }else if (statRoll == 3){
-                            changeStat('power', -1, 'enemy')
-                            gs.logMsg.push(`poison: -1 power. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+                            }else if (statRoll == 4 && gs.enObj.dice > 3){
+                                changeStat('dice', -1, 'enemy')
+                                gs.logMsg.push(`poison: -1 dice. ${gs.enObj.poisonStacks - 1} stacks remaining`)
 
-                        }else if (statRoll == 4 && gs.enObj.dice > 3){
-                            changeStat('dice', -1, 'enemy')
-                            gs.logMsg.push(`poison: -1 dice. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+                            }else if (statRoll == 5){ //20% to increase poison stacks
+                                gs.enObj.poisonStacks += 1
+                                gs.logMsg.push(`poison: +1 stack. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+                            }else {
+                                changeStat('life', -1, 'enemy')
+                                gs.logMsg.push(`poison: -1 life. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+                            }
+                        }
 
-                        }else if (statRoll == 5){ //20% to increase poison stacks
-                            gs.enObj.poisonStacks += 1
-                            gs.logMsg.push(`poison: +1 stack. ${gs.enObj.poisonStacks - 1} stacks remaining`)
-                        }else {
-                            changeStat('life', -1, 'enemy')
-                            gs.logMsg.push(`poison: -1 life. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+                        //Reduce poison stacks
+                        gs.enObj.poisonStacks -= 1
+
+                        //Removes poison buff if it was triggered during this turn.
+                        if(gs.plObj.poisonBuff == 'triggered'){
+                            gs.plObj.poisonBuff = false
+                            gs.logMsg.push(`poison buff removed`)
                         }
                     }
-
-                    //Reduce poison stacks
-                    gs.enObj.poisonStacks -= 1
-
-                    //Removes poison buff if it was triggered during this turn.
-                    if(gs.plObj.poisonBuff == 'triggered'){
-                        gs.plObj.poisonBuff = false
-                        gs.logMsg.push(`poison buff removed`)
+                    //Delay poison by 1 sturn via applied poison stacks
+                    if(gs.enObj.appliedPoisonStacks > 0){
+                        gs.enObj.poisonStacks += gs.enObj.appliedPoisonStacks
+                        gs.enObj.appliedPoisonStacks = 0
                     }
-                }
 
                 //COODLOWN: Increase turn cooldowns
-                gs.plObj.actions.forEach(action => {
-                    if(typeof action.cooldown != 'undefined' && action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown){
-                        action.cooldown++
-                    }
-                })
+                    gs.plObj.actions.forEach(action => {
+                        if(
+                            typeof action.cooldown != 'undefined' &&                                     //if it's an item with cd
+                            action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown //if current cd value is less that ref cd value
+                        ){
+                            action.cooldown++ //increase cd value
+
+                            //a68 stress 'wizards hand'
+                            //Check cd to reset the banned action
+                            if(gs.enObj.bannedAction == undefined) return
+                            if(action.keyId != 'a68') return
+                            if(action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown) return
+                            
+                            gs.enObj.bannedAction = undefined
+                        }
+                    })
+                    //a68 stress 'wizards hand'
+                    //Check action existance to reset banned action
+                    // if(
+                    //     gs.enObj.bannedAction != undefined &&
+                    //     findByProperty(gs.plObj.actions, 'keyId', 'a68') == undefined //see if item is equipped
+                    // ){
+                    //     gs.enObj.bannedAction = undefined //if not, reset banned actions
+                    // }
         
                 //Player turn roll.
-                gs.plObj.roll = rng(gs.plObj.dice) + gs.plObj.rollBonus 
+                    gs.plObj.roll = rng(gs.plObj.dice) + gs.plObj.rollBonus 
 
                 //PASSIVE: post roll passives.
                 resolvePostRollPassives()

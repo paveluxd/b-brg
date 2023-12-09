@@ -11,12 +11,28 @@
     - Ctrl + G         -> go to a particular line of code.
 
 **Update notes**
-- Added carabiner to the game.
-- Gladiators reflect now reflects only if he is damaged for more than his dice value.
-- 1st stage now has 12 rows instead of 2.
-- Winning an encounter now always offers 3 items as a reward.
-- Enemy party size increased to 3.
-- Starting gold is set to 0.
-- Rebalancing of enemy base life and life gained per stage.
-- Most enemies without dice penalty will gain 1 extra dice point per stage.
-- Enemies spawn 10% more frequently.
+- Added *Wizards hand* item.
+- Fixed an bug when item cooldown would recover one turn early.
+- Added some status indicators for poison, action prevention etc.
+- *Poison potion* action charges increased from 3 to 12.
+- *Poison* now triggers 1 turn later to resolve the indication issue.
+- *Extra actions* are now reffered to as *Instant* actions.
+- *Water potion* is now instant.
+- Added *Shatter* and *Shock* enemy actions, these will consume players negative def or power to deal damage.
+- Added simple stage backgraound changes to make things appear a bit less repetetive.
+
+
+To-do ideas
+- Do art per stage
+- Bosses
+- Skins for assasins/balanced
+- Bosses at the end of the stage
+- Boss profiles
+- Fix spell books
+- Balance assasin
+- Balance d12 combos bow, shield?
+- Fix exp curve
+
+- +1 exp when you use a scroll
+- Use order to reorder actions in action bar
+- Do burning dot shit
