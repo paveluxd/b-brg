@@ -1,17 +1,11 @@
 :root {
-    --grass-base: linear-gradient(180deg, #273534 0%, #3C4442 100%);
     --green:     rgb(0, 240, 96);
-    --green50:   rgba(0, 240, 96,0.5);
-    --green-bg:  #576557;
     --orange:    rgb(255, 102, 54);
     --yellow:    rgb(255,230,0);
     
     --grey:      rgb(126, 126, 126);
-    --light-bg:  rgb(227, 236, 241);
-    --intent:    rgb(165, 164, 142);
     --map-frame:rgba(0, 0, 0, 0.15);
     --dungeon-border: rgba(255, 255, 255, 0.10);
-    --map-bg:    #646562;
 
     --black:     rgb(0, 0, 0);
     --b80:       rgb(0, 0, 0, 0.8);
@@ -25,6 +19,11 @@
     --w20:       rgb(255, 255, 255, 0.20);
     --w10:       rgb(255, 255, 255, 0.10);
     --w0:        rgb(255, 255, 255,0);
+
+    /* Map */
+    --stage-bg-1:    #646562;
+    --stage-bg-2:    #BFBFBF;
+    --stage-bg-3:    #747474;
 
     --shadow: 2px 2px 4px var(--b20);
 
@@ -172,6 +171,7 @@ body{
     .state-screen{
         z-index: 3 !important;
         margin: auto;
+        cursor: pointer;
     }
     .state-screen .modal-container {
         text-align: center;
@@ -287,7 +287,7 @@ body{
 
 /* Map */
     #map{
-        background-color: var(--map-bg);
+        background-color: var(--stage-bg-1);
 
         width: 100%;
         height: 100%;
@@ -729,7 +729,6 @@ body{
         #enemy-sprite{
             z-index: 2; 
         }
-
         #player-sprite img:nth-child(2),#player-sprite img:nth-child(3),#player-sprite img:nth-child(6),
         #enemy-sprite img:nth-child(2),#enemy-sprite img:nth-child(5){
             animation: player-char-idle 0.8s steps(2) infinite alternate;
@@ -742,7 +741,6 @@ body{
                 transform: translateY(4px);
             }
         }
-
         
     /*Entrance anim*/
         .enemyEntrance{
@@ -788,13 +786,10 @@ body{
 
             
             & div{
-                max-width: 160px;
-                /* text-wrap: nowrap; */
+                max-width: 180px;
                 background-color: var(--b80);
-                /* backdrop-filter: blur(1px);
-                -webkit-backdrop-filter: blur(1px); */
 
-                padding: 8px 12px;
+                padding: 8px 8px;
 
                 display: flex;
                 flex-direction: column;
@@ -805,13 +800,11 @@ body{
                 line-height: 16px;
                 color: white;
 
-                gap: 4px;
-                /* border-radius: 4px; */
-
                 & img{
                     width: 16px;
                     height: 16px;
                     margin-top: 0px;
+                    margin-bottom: 4px;
                 }
             }
 
@@ -820,6 +813,57 @@ body{
                 width: 12px;
                 height: 12px;
             }
+        }
+        #status-fx{
+            font-size: 12px;
+            line-height: 12px;
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2px;
+
+            margin-top: 4px;
+
+            & span {
+                background-color: var(--w10);
+                border-radius: 3px;
+                
+                padding: 0px 5px;
+                height: 18px;
+                display: flex;
+                
+                align-items: center;
+                background-color: black;
+            }
+
+            #action-tag{
+                color: var(--w70);
+                order: 1;
+            }
+            #poison-tag{
+                color: var(--green);
+                order: 4;
+                padding: 2px 5px 2px 0px;
+            }
+            #ban-tag{
+                color: var(--orange);
+                order: 3;
+            }
+            #reflect-tag{
+                color: var(--yellow);
+                order: 2;
+            }
+
+            & img {
+                /* transform: translate(2px, 4px); */
+                height: 14px !important;
+                width: 14px !important;
+                margin-bottom: 0px !important;
+            }
+        }
+        #status-fx:empty{
+            margin-top: 0px;
         }
 
     /* Boss */

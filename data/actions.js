@@ -1,8 +1,19 @@
 let actionsRef = [
   {
+    "actionName": "stress",
+    "tags": "utility",
+    "desc": "enemy won't repeat this turns action while this is on cooldown (3-6 turns)",
+    "passiveStats": "",
+    "actionMod": 6,
+    "actionCharge": 12,
+    "cooldown": 6,
+    "keyId": 68,
+    "actionType": "variable cooldown"
+  },
+  {
     "actionName": "pull",
     "tags": "utility",
-    "desc": "unequip this to equip an item from the inventory (extra action)",
+    "desc": "unequip this to equip an item from the inventory (instant)",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 20,
@@ -112,7 +123,7 @@ let actionsRef = [
   {
     "actionName": "cut",
     "tags": "",
-    "desc": "deal 1 dmg (cost 3 dice roll, extra action)",
+    "desc": "deal 1 dmg (cost 3 dice roll, instant)",
     "passiveStats": "",
     "actionMod": 1,
     "actionCharge": 24,
@@ -145,7 +156,7 @@ let actionsRef = [
   {
     "actionName": "lance",
     "tags": "spell",
-    "desc": "deal dmg equal to power (cost 1 power, extra action)",
+    "desc": "deal dmg equal to power (cost 1 power, instant)",
     "passiveStats": "",
     "actionMod": 2,
     "actionCharge": 6,
@@ -156,7 +167,7 @@ let actionsRef = [
   {
     "actionName": "backstab",
     "tags": "attack",
-    "desc": "deal 2 dmg, gain 1 power (cost 5 dice roll, extra action)",
+    "desc": "deal 2 dmg, gain 1 power (cost 5 dice roll, instant)",
     "passiveStats": "",
     "actionMod": 2,
     "actionCharge": 12,
@@ -255,7 +266,7 @@ let actionsRef = [
   {
     "actionName": "roll",
     "tags": "utility",
-    "desc": "reroll your dice (extra action)",
+    "desc": "reroll your dice (instant)",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 6,
@@ -310,7 +321,7 @@ let actionsRef = [
   {
     "actionName": "slow",
     "tags": "curse",
-    "desc": "reduce targets dice roll by 4 (extra action)",
+    "desc": "reduce targets dice roll by 4 (instant)",
     "passiveStats": "",
     "actionMod": 4,
     "actionCharge": 6,
@@ -453,7 +464,7 @@ let actionsRef = [
   {
     "actionName": "precision",
     "tags": "buff",
-    "desc": "your next attack ignores def (cost 1 power, extra action)",
+    "desc": "your next attack ignores def (cost 1 power, instant)",
     "passiveStats": "",
     "actionMod": 1,
     "actionCharge": 3,
@@ -475,7 +486,7 @@ let actionsRef = [
   {
     "actionName": "adrenaline shot",
     "tags": "buff",
-    "desc": "increase dice roll by 4 (extra action)",
+    "desc": "increase dice roll by 4 (instant)",
     "passiveStats": "",
     "actionMod": 4,
     "actionCharge": 6,
@@ -497,10 +508,10 @@ let actionsRef = [
   {
     "actionName": "weapon poison",
     "tags": "enchantment",
-    "desc": "next time you deal dmg, all hits during that turn poison",
+    "desc": "next time you deal dmg, all hits during that turn will poison",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 3,
+    "actionCharge": 12,
     "cooldown": "",
     "keyId": 41,
     "actionType": ""
@@ -585,7 +596,7 @@ let actionsRef = [
   {
     "actionName": "defensive stance",
     "tags": "utility",
-    "desc": "once per turn, reduce dice roll by 1 (extra action)",
+    "desc": "once per turn, reduce dice roll by 1 (instant)",
     "passiveStats": "",
     "actionMod": 1,
     "actionCharge": 60,
@@ -607,7 +618,7 @@ let actionsRef = [
   {
     "actionName": "swap",
     "tags": "utility",
-    "desc": "swap dice rolls (extra action)",
+    "desc": "swap dice rolls (instant)",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 12,

@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "wizards hand",
+    "actions": "stress",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
     "itemName": "carabiner",
     "actions": "pull",
     "passiveStats": "",

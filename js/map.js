@@ -72,20 +72,21 @@ class MapObj{
             }
 
             //Prevent repears of unique tiles
-            let tileTypePrefix = tile.tileType.split('-')[0];
-            if(uniqueTiles.includes(tileTypePrefix)){
-                if(placedUniqueTiles.includes(tileTypePrefix)){
-                    tile.tileType = tileSetBase[rng((tileSetBase.length - 1), 0)]
-                }else{
-                    placedUniqueTiles += `${tileTypePrefix}, `
+                let tileTypePrefix = tile.tileType.split('-')[0];
+                if(uniqueTiles.includes(tileTypePrefix)){
+                    if(placedUniqueTiles.includes(tileTypePrefix)){
+                        tile.tileType = tileSetBase[rng((tileSetBase.length - 1), 0)]
+                    }else{
+                        placedUniqueTiles += `${tileTypePrefix}, `
+                    }
                 }
-            }
 
             //Add player & enemies
                 //Add enemy units 30%
                 let rollForEne = rng(100)
                 let rollTarget = gs.enemySpawnFrequency //move to config?
 
+                //Dungeon spawn frequency
                 if(type == 'dungeon'){
                     rollTarget = gs.dungeonEnemySpawnFrequency
                 }
@@ -129,6 +130,7 @@ class MapObj{
                 },
             ]
 
+        //Dungeon overrides
             if(type == 'dungeon'){
                 overrides = [
                     {//Player
@@ -147,7 +149,7 @@ class MapObj{
                 ]
             }
 
-            //Adds mandatory tiles from config
+        //Adds mandatory tiles from config
             config.mandatoryTiles.forEach(tile => {
                 if(type == 'dungeon') return
                 overrides.push(tile)
@@ -203,65 +205,80 @@ class MapObj{
             // `)
 
         //Gen tiles
-        let tiles = ``
+            let tiles = ``
+            mapRef.forEach(tile => {
+                //Tile bg image
+                    let img = `<img src="./img/map/${tile.tileType}.svg">`
+                    //Flip tile image
+                    if(tile.flip){
+                        img = `<img style='transform: scale(-1, 1);' src="./img/map/${tile.tileType}.svg">`
+                    }
 
-        mapRef.forEach(tile => {
-            //Tile bg image
-                let img = `<img src="./img/map/${tile.tileType}.svg">`
-                //Flip tile image
-                if(tile.flip){
-                    img = `<img style='transform: scale(-1, 1);' src="./img/map/${tile.tileType}.svg">`
+                //Add unit images
+                    let unit = ``
+                    if      (tile.playerUnit){ //Player unit image
+                        unit = `
+                            <div id="player-unit" class="map-unit">
+                                <img src="./img/map/player-unit-flag.svg" id="player-unit-flag">
+                                <img src="./img/map/player-unit-body.svg" id="player-unit-body">
+                                <img src="./img/map/player-unit-arms.svg" id="player-unit-arms">
+                            </div>
+                        `
+                        gs.playerLocationTile = tile
+                    }else if(tile.boss){ //Boss unit
+                        unit = `
+                            <img src="./img/map/boss-unit-1.svg" class="map-unit">
+                        `
+                    }else if(tile.enemyUnit && tile.enemyQuant == 1){ //Ene unit image
+                        unit = `
+                            <img src="./img/map/enemy-unit-${rng(3)}.svg" class="map-unit"> 
+                            <p class="unit-quant">${tile.enemyQuant}</p>
+                        `
+                    }else if(tile.enemyUnit){
+                        unit = `
+                            <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
+                            <p class="unit-quant">${tile.enemyQuant}</p>
+                        `
+                    }
+
+
+                tiles += `
+                    <button id='${tile.tileId}' class='map-tile'>
+                        ${img}
+                        ${unit}
+                    </button>
+                `
+            })
+
+        //Map containers
+            //Set stage decoration elems
+            //Repeat stage decorations after the 2nd one
+                if (gs.stage > 2){
+                    //Set map bg color
+                    el('map').setAttribute('style', `background-color:var(--stage-bg-3);`)
+
+                    el('map-container').innerHTML = `
+                        <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext-2.svg"></img>
+                        ${tiles}
+                        <img              style="height:320px; width: 360px;" src="./img/map/bot-ext-2.svg"></img>
+                    `
+                }else{
+                    el('map').setAttribute('style', `background-color:var(--stage-bg-${gs.stage});`)
+
+                    el('map-container').innerHTML = `
+                        <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext-${gs.stage}.svg"></img>
+                        ${tiles}
+                        <img              style="height:320px; width: 360px;" src="./img/map/bot-ext-${gs.stage}.svg"></img>
+                    `
                 }
-
-            //Add unit images
-                let unit = ``
-                if      (tile.playerUnit){ //Player unit image
-                    unit = `
-                        <div id="player-unit" class="map-unit">
-                            <img src="./img/map/player-unit-flag.svg" id="player-unit-flag">
-                            <img src="./img/map/player-unit-body.svg" id="player-unit-body">
-                            <img src="./img/map/player-unit-arms.svg" id="player-unit-arms">
-                        </div>
-                    `
-                    gs.playerLocationTile = tile
-                }else if(tile.boss){ //Boss unit
-                    unit = `
-                        <img src="./img/map/boss-unit-1.svg" class="map-unit">
-                    `
-                }else if(tile.enemyUnit && tile.enemyQuant == 1){ //Ene unit image
-                    unit = `
-                        <img src="./img/map/enemy-unit-${rng(3)}.svg" class="map-unit"> 
-                        <p class="unit-quant">${tile.enemyQuant}</p>
-                    `
-                }else if(tile.enemyUnit){
-                    unit = `
-                        <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
-                        <p class="unit-quant">${tile.enemyQuant}</p>
+            //Dungeon
+                if(gs.mapObj.mapId.includes('dungeon')){
+                    el('map-container').innerHTML = `
+                        <div id="top-ext" style="height:320px; width: 360px;"></div>
+                        ${tiles}
+                        <div              style="height:320px; width: 360px;"></div>
                     `
                 }
-
-
-            tiles += `
-                <button id='${tile.tileId}' class='map-tile'>
-                    ${img}
-                    ${unit}
-                </button>
-            `
-        })
-
-        el('map-container').innerHTML = `
-            <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext.svg"></img>
-            ${tiles}
-            <img style="height:320px; width: 360px;" src="./img/map/bot-ext.svg"></img>
-        `
-
-        if(gs.mapObj.mapId.includes('dungeon')){
-            el('map-container').innerHTML = `
-            <div id="top-ext" style="height:320px; width: 360px;"></div>
-            ${tiles}
-            <div style="height:320px; width: 360px;"></div>
-        `
-        }
 
         resolveMove()
 
@@ -787,6 +804,5 @@ class MapObj{
         //Clear maps array to generate new dungeon
         gs.maps = [] 
 
-        initGame()
-            
+        initGame()         
     }

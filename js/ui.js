@@ -22,21 +22,21 @@
                 //Enemy floating number
                 //gs.enemyAction -> Previous action
 
-                if(gs.enObj.dmgTaken > 0){//Attack
-                    floatText('en',`-${gs.enObj.dmgTaken} life`)
-                }else if(gs.enObj.action.key === 'fortify'){
-                    floatText('en',`+${gs.enObj.action.stat} def`)
-                }else if(gs.enObj.action.key === 'empower'){
-                    floatText('en',`+${gs.enObj.action.stat} power`)
-                }else if(gs.enObj.action.key === 'rush'){
-                    floatText('en',`+${gs.enObj.action.stat} dice`)
-                }else if(gs.enObj.action.key === 'sleep'){
-                    floatText('en',`Zzzzz`)
-                }else if(gs.enObj.action.key === 'block'){
-                    floatText('en',`Blocked ${gs.enObj.action.stat}`)
-                }else if(gs.enObj.action.key === 'recover'){
-                    floatText('en',`Recovered ${gs.enObj.action.stat} ${gs.enObj.action.actionVal}`)
-                }
+                // if(gs.enObj.dmgTaken > 0){//Attack
+                //     floatText('en',`-${gs.enObj.dmgTaken} life`)
+                // }else if(gs.enObj.action.key === 'fortify'){
+                //     floatText('en',`+${gs.enObj.action.stat} def`)
+                // }else if(gs.enObj.action.key === 'empower'){
+                //     floatText('en',`+${gs.enObj.action.stat} power`)
+                // }else if(gs.enObj.action.key === 'rush'){
+                //     floatText('en',`+${gs.enObj.action.stat} dice`)
+                // }else if(gs.enObj.action.key === 'sleep'){
+                //     floatText('en',`Zzzzz`)
+                // }else if(gs.enObj.action.key === 'block'){
+                //     floatText('en',`Blocked ${gs.enObj.action.stat}`)
+                // }else if(gs.enObj.action.key === 'recover'){
+                //     floatText('en',`Recovered ${gs.enObj.action.stat} ${gs.enObj.action.actionVal}`)
+                // }
 
                 gs.enemyAction = []
                 
@@ -91,12 +91,52 @@
                     el('power').innerHTML   =`${gs.enObj.power}`        
 
                 //Enemy intent indicator
-                el('intent').innerHTML = `${gs.enObj.action.desc}`
+                    // console.log(gs.enObj.action);
+                    el('intent').innerHTML = `${gs.enObj.action.desc} <p id="status-fx"></p>`
 
                 //Add reflect indicator
-                if(gs.enObj.reflect){
-                    el('intent').innerHTML += `<span class="italic" style="color:yellow;">Reflects if damaged for more than ${gs.enObj.dice}</span>`
-                }
+                    if(gs.enObj.action.key == 'sleep'){ //Sleep
+                        el('status-fx').innerHTML += `
+                            <span id='action-tag'>
+                                Will idle 
+                            </span>
+                        `
+                    }else if(gs.enObj.action.key == 'combo'){ //Combo
+                        el('status-fx').innerHTML += `
+                            <span id='action-tag'>
+                                Multistrike x3
+                            </span>
+                        `
+                    }
+                    else if(gs.enObj.action.key == 'charge'){ //Combo
+                        el('status-fx').innerHTML += `
+                            <span id='action-tag'>
+                                ${gs.enObj.action.actionVal} turns
+                            </span>
+                        `
+                    }
+                    if(gs.enObj.reflect){ //Reflect
+                        el('status-fx').innerHTML += `
+                            <span id='reflect-tag'>
+                                Reflects ${gs.enObj.dice}+
+                            </span>
+                        `
+                    }
+                    if(gs.enObj.bannedAction != undefined){ //Banned action
+                        el('status-fx').innerHTML += `
+                            <span id='ban-tag'>
+                                Can't ${gs.enObj.bannedAction}
+                            </span>
+                        `
+                    }
+                    if(gs.enObj.poisonStacks > 0){ //Poison
+                        el('status-fx').innerHTML += `
+                            <span id='poison-tag'>
+                                <img src='./img/ico/poison.svg'>
+                                ${gs.enObj.poisonStacks} 
+                            </span>
+                        `
+                    }
             }
 
         //Modify map stat indicator

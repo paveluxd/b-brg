@@ -1,7 +1,7 @@
 //Confign for posting
 let config = {
     //Player
-        life:      40, //32
+        life:      40, //40
         power:      0,
         def:        0,
         dice:       6,
@@ -47,7 +47,7 @@ let config = {
 //         life:      999, //32
 //         power:      10,
 //         def:         0,
-//         dice:        6,
+//         dice:       12,
 //         inventory:  80,
 //         slots:       5,
 
@@ -60,15 +60,14 @@ let config = {
 //         // showScreen: 'combat', 
 //         clearLs: true,
 //         showCombatInfoLog: true,
-//         fadeTime: 400,
+//         fadeTime: 40,
 
 //     //Items
 //         startingItems: [
-//             'club',
-//             'carabiner',
+//             'sickle',
 //             'shield',
-//             'bow'
-//             // 'bandages',
+//             'dagger pair',
+//             'dagger',
 //         ],
 
 //         coins: 0, //rng(12,6),
@@ -76,7 +75,8 @@ let config = {
 
 //     //Enemy
 //         eneLife: 8, //8
-//         // forceEnemyProfile: 'gladiator',
+//         // forceEnemyProfile: 'mage',
+//         // forceEnemyAction: 'sleep',
 //         enSpawnFrequency: 40,
 
 //     //Combat UI
