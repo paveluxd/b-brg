@@ -45,7 +45,7 @@ let config = {
 // config = {
 //     //Player
 //         life:      999, //32
-//         power:       0,
+//         power:       10,
 //         def:         0,
 //         dice:       12,
 //         inventory:  80,
@@ -58,7 +58,7 @@ let config = {
 //     //Game
 //         // testCombat: true, //Initiates combat at the start (for testing).
 //         // showScreen: 'combat', 
-//         clearLs: true,
+//         // clearLs: true,
 //         showCombatInfoLog: true,
 //         fadeTime: 40,
 
@@ -75,9 +75,9 @@ let config = {
 
 //     //Enemy
 //         eneLife: 58, //8
-//         forceEnemyProfile: 'assasin',
+//         forceEnemyProfile: 'assassin',
 //         // forceEnemyAction: 'sleep',
-//         enSpawnFrequency: 40,
+//         enSpawnFrequency: 10,
 
 //     //Combat UI
 //         bgCounter: 3, //1 per saved combat bg for rng.
@@ -89,7 +89,7 @@ let config = {
 //         enemyPartyCap:    3, //25% item reward per enemy
 //         mandatoryTiles: [
 //             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
-//             // {tileType: 'dungeon-1', enemyUnit: false},
+//             // {tileId:`11-3`, tileType: 'dungeon-1', enemyUnit: false},
 //             // {tileType: 'enchanter-1', enemyUnit: false},
 //             // {tileType: 'merchant-1'},
 //             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},

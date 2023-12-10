@@ -9,7 +9,7 @@
 
 **To-do ideas**
 - Do art per stage
-- Skins for assasins/balanced
+- Skins for assassins/balanced
 - Bosses at the end of the stage
 - Boss profiles
 - Fix spell books

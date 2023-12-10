@@ -412,6 +412,14 @@
                         <img src="./img/enemy/gladiator/${rng(1,1)}-front-arm.svg">
                         <img src="./img/enemy/gladiator/${rng(1,1)}-head.svg">
                     `
+                }else if(gs.enObj.profile.profileId == 'assassin'){
+                    enemySpriteParts = `
+                        <img src="./img/enemy/assassin/${rng(2,1)}-back-arm.svg">
+                        <img src="./img/enemy/assassin/${rng(3,1)}-legs.svg">
+                        <img src="./img/enemy/assassin/${rng(3,1)}-torso.svg">
+                        <img src="./img/enemy/assassin/${rng(2,1)}-front-arm.svg">
+                        <img src="./img/enemy/assassin/${rng(2,1)}-head.svg">
+                    `
                 }
 
                 el('enemy-sprite').innerHTML = ` 
