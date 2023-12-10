@@ -453,8 +453,8 @@
                     // 'sleep',
             ]
         },
-        assasin: {
-            profileId: 'assasin',
+        assassin: {
+            profileId: 'assassin',
             lifeMod:  1,
             powerMod: 2,
             defMod:   1,
