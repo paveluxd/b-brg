@@ -13,7 +13,7 @@ let config = {
         basePassieSkillPoints: 0,
 
     //Game
-        showCombatInfoLog: true,
+        // showCombatInfoLog: true,
         fadeTime: 400,
 
     //Items
@@ -24,7 +24,7 @@ let config = {
         ],
 
         coins: 0,
-        food:  6,
+        food:  4,
 
     //Enemy
         eneLife: 8, //8
@@ -45,7 +45,7 @@ let config = {
 // config = {
 //     //Player
 //         life:      999, //32
-//         power:      10,
+//         power:       0,
 //         def:         0,
 //         dice:       12,
 //         inventory:  80,
@@ -67,15 +67,15 @@ let config = {
 //             'sickle',
 //             'shield',
 //             'dagger pair',
-//             'dagger',
+//             'wizards hand',
 //         ],
 
 //         coins: 0, //rng(12,6),
 //         food:  6, //rng(4,2),
 
 //     //Enemy
-//         eneLife: 8, //8
-//         // forceEnemyProfile: 'mage',
+//         eneLife: 58, //8
+//         forceEnemyProfile: 'assasin',
 //         // forceEnemyAction: 'sleep',
 //         enSpawnFrequency: 40,
 

@@ -347,11 +347,6 @@
 
             }
 
-        //Check if banned action
-
-        //Log: next enemy action.
-        // console.log(gs.enObj.action);
-
         //FORCED ACTIONS
             if(gs.enObj.forcedAction != ''){
 
@@ -364,7 +359,15 @@
         
         //Resolve undefined actions due to lack of rate.
             if(gs.enObj.action == undefined) {
+                //Pick the random lowest rate action
+
                 gs.enObj.action = rarr(gs.enObj.actionRef.filter(action => action.rate == 1))
+
+                //If there ara no rate 1 actions, pick random action
+                //Due to wizards hand
+                if(gs.enObj.action == undefined){
+                    gs.enObj.action = rarr(gs.enObj.actionRef)
+                }
             }
     }
 
