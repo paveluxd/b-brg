@@ -50,6 +50,7 @@ body{
     color: var(--black);
 
     transition: filter 1s;
+    background-color: white;
 }
 /* html * {
     outline: 1px solid red;
