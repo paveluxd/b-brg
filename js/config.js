@@ -57,10 +57,11 @@ config = {
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'tree', 
-        clearLs: true,
+        // showScreen: 'combat', 
+        // clearLs: true,
         showCombatInfoLog: true,
-        fadeTime: 100,
+        fadeTime: 40,
+
 
     //Items
         startingItems: [
@@ -68,10 +69,6 @@ config = {
             'shield',
             'dagger pair',
             'wizards hand',
-            'carabiner',
-            'adrenaline pen',
-            'book of moon',
-            'red cross kit'
         ],
 
         coins: 0, //rng(12,6),
