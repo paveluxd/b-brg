@@ -30,13 +30,6 @@
     --screen-ref-width: 320px;
     --item-card-max-width: 320px;
     --action-card-max-width: 172px;
-
-    /* TREE */
-    --tree-path: #dab547;
-    --tree-node: #f9d774;
-    --tree-rows:           13;
-    --tree-columns:        29;
-    --tree-cell:           64px;
 }
 
 html{
@@ -1156,96 +1149,46 @@ body{
 /* Skill tree */
     #tree, #tree *{ 
         touch-action: auto !important;
-        /* height: auto; */
-        
     }
-
-    #tree{
-        z-index: 1;
-        background-color: #ffffff;
-    }
-
     #skill-tree{
-        height:            calc(var(--tree-cell) * var(--tree-rows));
-        width:             calc(var(--tree-cell) * var(--tree-columns));
-
-        display:               grid;
-        grid-template-columns: repeat(var(--tree-columns),1fr);
-        grid-template-rows:    repeat(var(--tree-rows),   1fr);
-
-        margin: 24px 24px 92px 24px;
-    }
-
-    .tree-tile{
-        width:  var(--tree-cell);
-        height: var(--tree-cell);
-
-        font-size: 10px;
-        line-height: 100%;
-
-        position: relative;
-
         display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--w0);
+        flex-wrap: wrap;
 
-    }
-    .tree-tile img {
-        background-color: var(--tree-node);
-        z-index: 2;
-    }
+        width: 480px;
 
-    .tree-tile p{
-        position: absolute;
-        top: 0;
-        left: 0; 
+        border-right: 1px dashed var(--b20) !important;
+        border-top: 1px dashed var(--b20) !important;
 
-        z-index: 3;
-        color: red;
-    }
+        & button{
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
 
-    .tree-path{
-        height: 100%;
-        width: 8px;
-        background-color: var(--tree-path);
-    }
+            flex-direction: row;
+            gap: 8px;
+            padding: 8px;
 
-    .RR, .LL, .TT, .DD, .RD, .LD, .RT, .LT{
-        position: absolute;
-        height: 8px;
-        width: 50%;
-        transform: translateX(50%);
-        z-index: 1;
-        background-color: var(--tree-path);
-    }
-    .LL{
-        transform: translateX(-50%);
-    }
-    .TT, .DD{
-        height: 50%;
-        width: 8px;
-        transform: translateY(-50%);
-        background-color: var(--tree-path);
-    }
-    .DD{
-        transform: translateY(50%);
-    }
-    .LD{
-        transform: rotate(-45deg) translate(-92%);
-    }
-    .RD{
-        transform: rotate(45deg)  translate(92%);
-    }
-    .LT{
-        transform: rotate(45deg)  translate(-92%);
-    }
-    .RT{
-        transform: rotate(-45deg) translate(92%);
-    }
+            width: calc(50% - 1px);
+            height: 92px;
 
-    #skill-tree .allocated-tree-node{
-        background-color: var(--b10);
+            text-align: left;
+            font-size: 12px;
+            line-height: 18px;
+
+            border-left: 1px dashed var(--b20) !important;
+            border-bottom: 1px dashed var(--b20) !important;
+        }
+
+        & div{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0px;
+        }
+
+        .allocated-tree-node{
+            background-color: var(--b10);
+        }
     }
 
 /* Alert */

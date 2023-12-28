@@ -9,6 +9,7 @@
 
         //Combat screen: Log stats at the top
             if(gs.inCombat){
+
                 //Top left log
                 el('log').innerHTML = `
                     Enc: ${gs.encounter}/${gs.playerLocationTile.enemyQuant}<br>
