@@ -42,57 +42,61 @@ let config = {
 }
 
 // Test config
-// config = {
-//     //Player
-//         life:      999, //32
-//         power:       10,
-//         def:         0,
-//         dice:       12,
-//         inventory:  80,
-//         slots:       5,
+config = {
+    //Player
+        life:       40, //40
+        power:       0,
+        def:         0,
+        dice:        6,
+        inventory:  80,
+        slots:       5,
 
-//     //Progression
-//         expRequiredPerLvl: 2,
-//         basePassieSkillPoints: 0,
+    //Progression
+        expRequiredPerLvl: 2,
+        basePassieSkillPoints: 0,
 
-//     //Game
-//         // testCombat: true, //Initiates combat at the start (for testing).
-//         // showScreen: 'combat', 
-//         // clearLs: true,
-//         showCombatInfoLog: true,
-//         fadeTime: 40,
+    //Game
+        // testCombat: true, //Initiates combat at the start (for testing).
+        showScreen: 'tree', 
+        clearLs: true,
+        showCombatInfoLog: true,
+        fadeTime: 100,
 
-//     //Items
-//         startingItems: [
-//             'sickle',
-//             'shield',
-//             'dagger pair',
-//             'wizards hand',
-//         ],
+    //Items
+        startingItems: [
+            'sickle',
+            'shield',
+            'dagger pair',
+            'wizards hand',
+            'carabiner',
+            'adrenaline pen',
+            'book of moon',
+            'red cross kit'
+        ],
 
-//         coins: 0, //rng(12,6),
-//         food:  6, //rng(4,2),
+        coins: 0, //rng(12,6),
+        food:  6, //rng(4,2),
 
-//     //Enemy
-//         eneLife: 58, //8
-//         forceEnemyProfile: 'assassin',
-//         // forceEnemyAction: 'sleep',
-//         enSpawnFrequency: 10,
+    //Enemy
+        eneLife: 58, //8
+        forceEnemyProfile: 'assassin',
+        // forceEnemyAction: 'sleep',
+        enSpawnFrequency: 10,
 
-//     //Combat UI
-//         bgCounter: 3, //1 per saved combat bg for rng.
+    //Combat UI
+        bgCounter: 3, //1 per saved combat bg for rng.
 
-//     //Map
-//         mapX:             3, //1
-//         mapY:            12, //Vertical
-//         exitDefenders:    3,
-//         enemyPartyCap:    3, //25% item reward per enemy
-//         mandatoryTiles: [
-//             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
-//             // {tileId:`11-3`, tileType: 'dungeon-1', enemyUnit: false},
-//             // {tileType: 'enchanter-1', enemyUnit: false},
-//             // {tileType: 'merchant-1'},
-//             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-//             // {tileType:'monument-1', tileId:`2-2`, loreEvent: 8},
-//         ],
-// }
+    //Map
+        mapX:             3, //1
+        mapY:            12, //Vertical
+        exitDefenders:    3,
+        enemyPartyCap:    3, //25% item reward per enemy
+        mandatoryTiles: [
+            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
+            // {tileId:`11-3`, tileType: 'dungeon-1', enemyUnit: false},
+            // {tileType: 'enchanter-1', enemyUnit: false},
+            // {tileType: 'merchant-1'},
+            // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
+            // {tileType:'monument-1', tileId:`2-2`, loreEvent: 8},
+        ],
+}
