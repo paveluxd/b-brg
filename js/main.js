@@ -48,6 +48,10 @@
                 if(config.showCombatInfoLog != true){
                     el('log').classList.add('hide')
                 }
+
+                if(config.showScreen != undefined){
+                    screen(config.showScreen)
+                }
             },
             config.fadeTime
         )
@@ -1197,12 +1201,10 @@
         localStorage.clear();
         console.log('Local storage cleared.');
     }
+
     if(config.showScreen != undefined){
-        initGame()
-        screen(config.showScreen)
+       initGame()
     }
 
     //Checks if LS save exists
     loadGame()
-
-    

@@ -44,10 +44,10 @@ let config = {
 // Test config
 config = {
     //Player
-        life:      999, //32
-        power:       10,
+        life:       40, //40
+        power:       0,
         def:         0,
-        dice:       12,
+        dice:        6,
         inventory:  80,
         slots:       5,
 
@@ -61,6 +61,7 @@ config = {
         // clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,
+
 
     //Items
         startingItems: [
