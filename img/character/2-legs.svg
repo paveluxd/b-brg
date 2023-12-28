@@ -3,9 +3,9 @@
 <path fill-rule="evenodd" clip-rule="evenodd" d="M88 127L81 68H60.9999V120L67 127H88Z" fill="#263464"/>
 <path d="M60.9999 120L55 127H67L60.9999 120Z" fill="black"/>
 <path d="M60.9999 120V68H81L88 127H67M60.9999 120L55 127H67M60.9999 120L67 127" stroke="black" stroke-width="2"/>
-<path d="M55.4142 81L58 78.4142L60.5858 81L58 83.5858L55.4142 81Z" fill="black" stroke="black" stroke-width="2"/>
-<path d="M63.4142 81L66 78.4142L68.5858 81L66 83.5858L63.4142 81Z" fill="black" stroke="black" stroke-width="2"/>
-<path d="M71.4142 81L74 78.4142L76.5858 81L74 83.5858L71.4142 81Z" fill="black" stroke="black" stroke-width="2"/>
+<path d="M58 78.4142L60.5858 81L58 83.5858L55.4142 81L58 78.4142Z" fill="black" stroke="black" stroke-width="2"/>
+<path d="M66 78.4142L68.5858 81L66 83.5858L63.4142 81L66 78.4142Z" fill="black" stroke="black" stroke-width="2"/>
+<path d="M74 78.4142L76.5858 81L74 83.5858L71.4142 81L74 78.4142Z" fill="black" stroke="black" stroke-width="2"/>
 <path d="M81 79.4142V82.5858L79.4142 81L81 79.4142Z" stroke="black" stroke-width="2"/>
 <path opacity="0.3" d="M35 144H86L89 128H31L35 144Z" fill="url(#paint0_linear_3512_16119)"/>
 <defs>
