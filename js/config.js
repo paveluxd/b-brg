@@ -58,7 +58,7 @@ config = {
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
         // showScreen: 'combat', 
-        // clearLs: true,
+        clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,
 
