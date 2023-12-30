@@ -23,6 +23,9 @@ let gs //game state object
             this.enemyCounter = 0
             this.totalEnemies = config.exitDefenders + this.stage
             this.totalCombatTurns = 0
+
+            //Skill tree
+            this.treeObj = {}
             
             //Map
                 //Merchant config.

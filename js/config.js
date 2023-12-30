@@ -57,7 +57,7 @@ config = {
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
-        // showScreen: 'combat', 
+        showScreen: 'tree', 
         clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,
@@ -65,6 +65,7 @@ config = {
 
     //Items
         startingItems: [
+            'sword',
             'sickle',
             'shield',
             'dagger pair',
@@ -75,7 +76,7 @@ config = {
         food:  6, //rng(4,2),
 
     //Enemy
-        eneLife: 58, //8
+        eneLife: 8, //8
         forceEnemyProfile: 'assassin',
         // forceEnemyAction: 'sleep',
         enSpawnFrequency: 10,

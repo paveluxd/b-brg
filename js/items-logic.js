@@ -837,7 +837,7 @@ function calcCost(type, itemId){
 
         //Gen button
             let btn = `
-                <button  onclick="removeItem('${itemId}'), toggleModal('item-modal')">
+                <button  class="tab" onclick="removeItem('${itemId}'), toggleModal('item-modal')">
                     <img src="./img/ico/unequip.svg">
                     Destroy item
                 </button>
@@ -845,7 +845,7 @@ function calcCost(type, itemId){
             //Swap button if reward
             if(source == 'reward'){
                 btn = `
-                    <button onclick="resolveChoosingOfferedItem('${itemId}', 'reward'), screen('map')">
+                    <button class="tab" onclick="resolveChoosingOfferedItem('${itemId}', 'reward'), screen('map')">
                         <img src="./img/ico/equip.svg">
                         Pick item
                     </button>
@@ -859,7 +859,7 @@ function calcCost(type, itemId){
             <div id="item-modal-tabs" class="tab-container">
                 ${btn}
         
-                <button onclick="toggleModal('item-modal')">
+                <button class="tab" onclick="toggleModal('item-modal')">
                     <img src="./img/ico/tab-hide.svg">
                     Close
                 </button>
