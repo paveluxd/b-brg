@@ -1,6 +1,6 @@
 //TREE
     //Spend tree points
-    function addTreeNode(nodeId){
+    function addTreeNode(nodeId, treeElem){
         if(gs.plObj.treePoints > 0){
             let node = findByProperty(treeRef, 'id', nodeId)
 
@@ -8,6 +8,9 @@
             gs.plObj.treeNodes.push(node)    
             
             gs.plObj.treePoints--
+
+            //Find node in gs.treeObj
+            gs.treeObj[treeElem].allocated = true
 
             resolvePlayerStats()
             syncUi()
@@ -18,11 +21,13 @@
     }
 
     //UI
-    function syncTree(){
+    function generateSkillTree(){
 
         //Update points counter
         // el('skill-points-indicator').innerHTML = `Skill tree point: ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}`
         
+        el('skill-tree').innerHTML = ``
+
         let treeRows      = 13
         let treeColumns   = 29
         let column        = 0
@@ -31,172 +36,190 @@
         let imgPath       = ''
         let imgDirections = ''
         let nodeType
+        let nodeRef
+        let node
 
 
         //Add overrides from treeStructure
-        treeStructure.forEach(tile => {
+            treeStructure.forEach(tile => {
 
-            nodeType = undefined
-            let tileContent = tile.split('_') //split tree structure string
+                nodeType = undefined
+                let tileContent = tile.split('_') //split tree structure string
 
-            //Create tile object
-            gs.treeObj[prefix + tileContent[0]] = {}
-            let node                   = gs.treeObj[prefix + tileContent[0]]
-            node.tileColumn            = parseInt(tileContent[0].split('-')[0])
-            node.tileRow               = parseInt(tileContent[0].split('-')[1])
-            node.tileType              = tileContent[1]
-            node.tileConnectors        = tileContent[2].split('-')
+                //Create tile object
+                //Check if node record exist and avoid overriding it
+                if(gs.treeObj[prefix + tileContent[0]] == undefined){
 
-            //Find refrence node
-            let nodeRef                = findByProperty(treeRef, 'id', node.tileType)
-            if(nodeRef == undefined){ 
-                nodeRef = {name:'pas'}
-            }else{
-                imgPath = nodeRef.id
-            }
+                    gs.treeObj[prefix + tileContent[0]] = {}
 
-            if(node.tileType == 'ver'){
-                nodeType = 'vertical-path'
-            }
+                    console.log(node);
+                    node                = gs.treeObj[prefix + tileContent[0]]
+                    node.tileColumn     = parseInt(tileContent[0].split('-')[0])
+                    // console.log(gs.treeObj[prefix + tileContent[0]]);
+                    node.tileRow        = parseInt(tileContent[0].split('-')[1])
+                    node.tileType       = tileContent[1]
+                    node.tileConnectors = tileContent[2].split('-')
+                }else{
+                    console.log(1);
+                    node = gs.treeObj[prefix + tileContent[0]]
+                }
 
-            //Add directional connectors
-            if(node.tileConnectors.length > 0){
-                // console.log(tileConnectors, tileColumn,tileRow);
-                imgDirections = ''
-                
-                node.tileConnectors.forEach(direction => {
-                    imgDirections += `<div class='${direction}'></div>`
-                })
+                //Find refrence node
+                nodeRef = findByProperty(treeRef, 'id', node.tileType)
+                if(nodeRef == undefined){ 
+                    nodeRef = {name:'pas'}
+                }else{
+                    imgPath = nodeRef.id
+                }
 
-            }
+                if(node.tileType == 'ver'){
+                    nodeType = 'vertical-path'
+                }
 
-            // console.log(tileContent, tileColumn, tileRow, tileType, tileConnectors);
-            createTreeCell(node.tileColumn,node.tileRow,nodeType)
-        })
+                //Add directional connectors
+                if(node.tileConnectors.length > 0){
+                    // console.log(tileConnectors, tileColumn,tileRow);
+                    imgDirections = ''
+                    
+                    node.tileConnectors.forEach(direction => {
+                        imgDirections += `<div class='${direction}'></div>`
+                    })
+
+                }
+
+                // console.log(tileContent, tileColumn, tileRow, tileType, tileConnectors);
+                createTreeCell(node.tileColumn, node.tileRow, nodeType)
+            })
 
         //Build base tree
-        //Remove intersections
-        for(i=0; i < treeRows * treeColumns; i++){
+            //Remove intersections
+            for(i=0; i < treeRows * treeColumns; i++){
 
-            //Cell creation trigger
-            let createCell = false
+                //Cell creation trigger
+                let createCell = false
 
-            //Set row Y id
-            column++
-            if(column > treeColumns){column = 1}
+                //Set row Y id
+                column++
+                if(column > treeColumns){column = 1}
 
-            //Set column X id
-            if(i % treeColumns == 0){row ++}
+                //Set column X id
+                if(i % treeColumns == 0){row ++}
 
-            //Set tile images
-            //Rows 
-            let refRows = [1,5,9,13]
-            imgPath = ``
-            if(
-                refRows.includes(row) ||
-                [3].includes(column) && [2].includes(row)
-            ){
-                createCell = true
-                nodeType = 'horizontal-path'
+                //Set tile images
+                //Rows 
+                let refRows = [1,5,9,13]
+                imgPath = ``
+                if(
+                    refRows.includes(row) ||
+                    [3].includes(column) && [2].includes(row)
+                ){
+                    createCell = true
+                    nodeType = 'horizontal-path'
+                }
+
+                //Columns 
+                let refColumns = [1,5,9,13,17,21,25,29]
+                if(
+                    refColumns.includes(column) ||
+                    [2,4].includes(column) && [3].includes(row) ||
+                    [18,20].includes(column) && [2].includes(row)
+                ){
+                    createCell = true
+                    nodeType = 'vertical-path'
+                }
+
+                //Clears
+                if(
+                    [3,  6,7,8,  11,  14,15,16,  19,  22,23,24,  27].includes(column) && row == 1 || //1st row
+                    [2,3,4].includes(column) && row == 5 ||                                          //Guardian 2nd row
+                    [17,18,20,21].includes(column) && [1,2,3].includes(row) ||                       //Wanderer
+                    [24].includes(column) && [5].includes(row)
+                ){
+                    createCell = false
+                }
+
+                //Abort if cell exists
+                if(el(`${prefix}${column}-${row}`) != undefined){
+                    createCell = false
+                }
+
+                //Set cell content
+                if(createCell) {createTreeCell(column, row, nodeType)}
             }
-
-            //Columns 
-            let refColumns = [1,5,9,13,17,21,25,29]
-            if(
-                refColumns.includes(column) ||
-                [2,4].includes(column) && [3].includes(row) ||
-                [18,20].includes(column) && [2].includes(row)
-            ){
-                createCell = true
-                nodeType = 'vertical-path'
-            }
-
-            //Clears
-            if(
-                [3,  6,7,8,  11,  14,15,16,  19,  22,23,24,  27].includes(column) && row == 1 || //1st row
-                [2,3,4].includes(column) && row == 5 ||                                          //Guardian 2nd row
-                [17,18,20,21].includes(column) && [1,2,3].includes(row) ||                       //Wanderer
-                [24].includes(column) && [5].includes(row)
-            ){
-                createCell = false
-            }
-
-            //Abort if cell exists
-            if(el(`${prefix}${column}-${row}`) != undefined){
-                createCell = false
-            }
-
-            //Set cell content
-            if(createCell) {createTreeCell(column, row, nodeType)}
-        }
 
         //Creates tree tile elem
-        function createTreeCell(column, row, node){
+            function createTreeCell(column, row, node){
 
-            //Show ids for testing
-            // let cellContent = `
-            //     <p>x${column}<br>y${row}</p> 
-            //     <img class="btn--ico" src="./img/ico/${imgPath}.svg">
-            //     ${imgDirections}
-            // `
+                //Show ids for testing
+                // let cellContent = `
+                //     <p>x${column}<br>y${row}</p> 
+                //     <img class="btn--ico" src="./img/ico/${imgPath}.svg">
+                //     ${imgDirections}
+                // `
 
-            if(node == 'vertical-path' || node == 'horizontal-path'){
+                if(node == 'vertical-path' || node == 'horizontal-path'){
 
-                //Set elem to a particular grid tile
-                if(node == 'horizontal-path'){
-                    el('skill-tree').innerHTML += `
-                        <div id="${prefix}${column}-${row}" class='tree-tile'>
-                            <div class="tree-path" style="transform: rotate(90deg)"></div>
-                        </div>
-                    `
-                } else {
-                    el('skill-tree').innerHTML += `
-                        <div id="${prefix}${column}-${row}" class='tree-tile'>
-                            <div class="tree-path"></div>
-                        </div>
-                    `
-                }
-
-                el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
-
-            } else if(node == 'empty'){
-                el('skill-tree').innerHTML += `
-                    <div id="${prefix}${column}-${row}" class='tree-tile'>
-                    
-                    </div>
-                `
-                el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
-
-            } else {
-
-                let cellContent = `
-                    <img class="btn--ico" src="./img/tree/${imgPath}.svg"> 
-                    ${imgDirections}
-                `
-    
-                //Creates new tile
-                if(el(`${prefix}${column}-${row}`) == undefined){
-    
-                    let elemType = 'button'
-                    if(node == 'div'){elemType = 'div'}
-                 
-                    el('skill-tree').innerHTML += `
-                        <${elemType} id="${prefix}${column}-${row}" class='tree-tile'>
-                            ${cellContent}
-                        </${elemType}>
-                    `
-    
                     //Set elem to a particular grid tile
+                    if(node == 'horizontal-path'){
+                        el('skill-tree').innerHTML += `
+                            <div id="${prefix}${column}-${row}" class='tree-tile'>
+                                <div class="tree-path" style="transform: rotate(90deg)"></div>
+                            </div>
+                        `
+                    } else {
+                        el('skill-tree').innerHTML += `
+                            <div id="${prefix}${column}-${row}" class='tree-tile'>
+                                <div class="tree-path"></div>
+                            </div>
+                        `
+                    }
+
                     el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
-                    el(`${prefix}${column}-${row}`).setAttribute('onclick', `nodePreview(this)`)
-                }
-    
-                //Updates existing tile
-                else{
-                    el(`${prefix}${column}-${row}`).innerHTML = cellContent
+
+                } else if(node == 'empty'){
+                    el('skill-tree').innerHTML += `
+                        <div id="${prefix}${column}-${row}" class='tree-tile'>
+                        
+                        </div>
+                    `
+                    el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
+
+                } else {
+
+                    let cellContent = `
+                        <img class="btn--ico" src="./img/tree/${imgPath}.svg"> 
+                        ${imgDirections}
+                    `
+        
+                    //Creates new tile
+                    if(el(`${prefix}${column}-${row}`) == undefined){
+        
+                        let elemType = 'button'
+                        if(node == 'div'){elemType = 'div'}
+                    
+                        el('skill-tree').innerHTML += `
+                            <${elemType} id="${prefix}${column}-${row}" class='tree-tile'>
+                                ${cellContent}
+                            </${elemType}>
+                        `
+        
+                        //Set elem to a particular grid tile
+                        el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
+                        el(`${prefix}${column}-${row}`).setAttribute('onclick', `nodePreview(this)`)
+                    }
+        
+                    //Updates existing tile
+                    else{
+                        el(`${prefix + column}-${row}`).innerHTML = cellContent
+                    }
+
+                    //Highlight allocated nodes
+                    if(gs.treeObj[`${prefix}${column}-${row}`].allocated){
+                        // console.log(el(`${prefix + column}-${row}`).childNodes[1]);
+                        el(`${prefix + column}-${row}`).childNodes[1].classList.add('node-allocated')
+                    }
                 }
             }
-        }
 
 
         //Build tree object for playerObj
@@ -222,25 +245,39 @@
 
     //Trigger node preview
         function nodePreview(nodeElem){
-            console.log(nodeElem.id, gs.treeObj);
+            // console.log(nodeElem.id, gs.treeObj);
 
             //Find related node
             let node = findByProperty(treeRef, 'id', gs.treeObj[nodeElem.id].tileType)
 
-            console.log(node, gs.treeObj[nodeElem.id].tileType);
+            // console.log(nodeElem.id);
+
 
             el('tree-node-popup').innerHTML = `
                 <div>
                     <h4>${upp(node.name)}</h4>
                     <p> ${upp(node.desc)}.</p>
                 </div>
-                <button class="btn--ico">
+                <button class="btn--ico" onclick="addTreeNode('${node.id}', '${nodeElem.id}')">
                     <img src="./img/ico/add.svg">
                 </button>
             `
 
+            //Check if node is allocated
+            
+            if(gs.treeObj[nodeElem.id].allocated){
+
+                el('tree-node-popup').innerHTML = `
+                    <div>
+                        <h4>${upp(node.name)}</h4>
+                        <p> ${upp(node.desc)}.</p>
+                    </div>
+                `
+            } 
+            
+
             el('tree-node-popup').classList.remove('hide')
-            console.log(nodeElem);
+            // console.log(nodeElem);
         }
 
     //Resolve tree passive checks
@@ -653,7 +690,6 @@
 
             },
             
-
         // WANDERER d8
             // sq1
             {  id:'T10', name:'careful use',
@@ -670,7 +706,6 @@
             },
 
             // sq2
-            
 
             // sq3
             {  id:'T08', name:'leech',
@@ -688,11 +723,9 @@
             },
 
         // SCHOLAR d10
-            // sq1
-            
+            // sq1  
 
             // sq2
-
 
             // sq3
             {  id:'T11', name:'librarian',
@@ -700,9 +733,6 @@
                 val:25,
 
             },
-
-
-
 
             //Prototype
             {  id:'T00', name:'def break',

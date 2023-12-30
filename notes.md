@@ -24,6 +24,7 @@
 - Add sharpening stone to repair weapons.
 - Add trap tile that requires agility roll or minigame.
 - Fractional stat bonuses on items.
+- Add rounding to stats with fraction, and show it in UI.
 
 **Bugs**
 -

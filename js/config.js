@@ -53,7 +53,7 @@ config = {
 
     //Progression
         expRequiredPerLvl: 2,
-        basePassieSkillPoints: 0,
+        basePassieSkillPoints: 11,
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).

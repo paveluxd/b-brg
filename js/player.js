@@ -64,7 +64,8 @@ class PlayerObj {
             this.treeNodes      = []
             this.treePoints     = config.basePassieSkillPoints
         //Misc
-            this.offeredItemsArr     = [] //Stores rewards
+            this.offeredItemsArr= [] //Stores rewards
+            this.class          = 'guardian'
     }
 }
 

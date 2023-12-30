@@ -1280,9 +1280,11 @@ body{
             transform: rotate(-45deg) translate(92%);
         }
 
-        #skill-tree .allocated-tree-node{
-            background-color: var(--b10);
+        #skill-tree .node-allocated{
+            border: 2px solid var(--heading-yellow);
+            box-shadow: 0px 0px 6px 0px var(--heading-yellow);
         }
+
 
 /* Alert */
     #alert{
