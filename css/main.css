@@ -54,10 +54,10 @@ body{
         align-items: center;
         gap: 2px;
 
-        & img {
-            width: 16px;
-            height: 16px;
-        }
+    }
+    .stat img {
+        width: 16px;
+        height: 16px;
     }
 
 /* Overrides */
@@ -165,11 +165,12 @@ body{
         padding: 0px;
         margin: auto;
 
-        & p{ 
-            max-width: 288px;
-            margin: 0;
-        }
     }
+    .state-screen .modal-container p{ 
+        max-width: 288px;
+        margin: 0;
+    }
+
     .illustration{
         height: 312px;
         width: 312px;
@@ -255,13 +256,13 @@ body{
         color: white;
         width:50%;
 
-        & div{
-            gap: 2px;
-            display: flex;  
-            flex-direction: column;
-            align-items: center;
-        } 
     }
+    #stat-indicator div{
+        gap: 2px;
+        display: flex;  
+        flex-direction: column;
+        align-items: center;
+    } 
 
 /* Alert */
     #alert{
@@ -288,14 +289,14 @@ body{
         cursor: pointer;
         transition: all 300ms;
 
-        & p {
-        margin: 12px 0 12px 12px; 
-        }
+    }
+    #alert p {
+    margin: 12px 0 12px 12px; 
+    }
 
-        & img {
-            margin: 8px;
-            background-color: var(--w0);
-        }
+    #alert img {
+        margin: 8px;
+        background-color: var(--w0);
     }
     #alert:hover{
         background-color: var(--b80);

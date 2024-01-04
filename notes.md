@@ -5,7 +5,7 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- 
+- Fixed various bugs in Safari browser, now the game should be playable.
 
 
 **To-do ideas**
