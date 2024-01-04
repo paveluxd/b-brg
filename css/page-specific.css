@@ -840,7 +840,6 @@
         /* height: auto; */
         
     }
-
     #skill-tree{
         height:            calc(var(--tree-cell) * var(--tree-rows));
         width:             calc(var(--tree-cell) * var(--tree-columns));
@@ -871,7 +870,7 @@
 
     }
 
-/* Tree rendering */
+    /* Tree rendering */
     .tree-tile{
         width:  var(--tree-cell);
         height: var(--tree-cell);
@@ -912,6 +911,7 @@
         width: 8px;
         background-color: var(--btn-border);
     }
+ 
     .RR, .LL, .TT, .DD, .RD, .LD, .RT, .LT{
         position: absolute;
         height: 8px;
@@ -944,7 +944,10 @@
         transform: rotate(-45deg) translate(92%);
     }
 
-    #skill-tree .node-allocated{
+    .node-allocated img{
         border: 2px solid var(--heading-yellow);
         box-shadow: 0px 0px 6px 0px var(--heading-yellow);
+    }
+    .node-allocated div, .active-path div{
+        background-color: var(--heading-yellow); 
     }
