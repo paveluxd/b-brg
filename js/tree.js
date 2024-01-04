@@ -1,6 +1,7 @@
 //TREE
     //Spend tree points
-    function addTreeNode(nodeId, treeElem){
+    function addTreeNode(nodeId, treeHtmlElemId){
+        //Allocate new node
         if(gs.plObj.treePoints > 0){
             let node = findByProperty(treeRef, 'id', nodeId)
 
@@ -9,18 +10,32 @@
             
             gs.plObj.treePoints--
 
-            //Find node in gs.treeObj
-            gs.treeObj[treeElem].allocated = true
+            allocateTreeNode(treeHtmlElemId)
 
             resolvePlayerStats()
             syncUi()
         }
+        //Not enough points
         else{
-            showAlert(`All your passive skill points are allocated.`)
+            showAlert(`All passive skill points are allocated.`)
         }
     }
 
+    function allocateTreeNode(nodeElemId){
+        //Find node in gs.treeObj
+        gs.treeObj[nodeElemId].allocated = true
+
+        //Update node html elem
+        el(nodeElemId).childNodes[1].classList.add('node-allocated')
+
+        //Highlight connectors
+
+        //Highlight adjacent nodes
+    }
+
     //UI
+    let prefix        = 'treenode_'
+
     function generateSkillTree(){
 
         //Update points counter
@@ -32,67 +47,69 @@
         let treeColumns   = 29
         let column        = 0
         let row           = 0
-        let prefix        = 'treenode_'
-        let imgPath       = ''
-        let imgDirections = ''
         let nodeType
         let nodeRef
         let node
 
+        //Preallocate class node
+        if(gs.plObj.class == 'guardian'){
 
-        //Add overrides from treeStructure
+            // allocateTreeNode(`${prefix}3-1`)
+
+            gs.treeObj[`${prefix}3-1`] = {
+                tileColumn: 3,
+                tileRow: 1,
+                tileType: 'sta',
+                tileConnectors: ['RR','LL'],
+                allocated: true
+            }
+
+            createTreeCell(3, 1, 'sta')
+
+        }else if(gs.plObj.class == 'crusader'){
+
+            allocateTreeNode(`${prefix}11-1`)
+
+        }else if(gs.plObj.class == 'wanderer'){
+
+            allocateTreeNode(`${prefix}19-1`)
+
+        }
+
+        //Build from treeStructure
             treeStructure.forEach(tile => {
 
                 nodeType = undefined
-                let tileContent = tile.split('_') //split tree structure string
+                let tileContent = tile.split('_') // 11-4_lif_TT-RR-DD-LL
 
-                //Create tile object
-                //Check if node record exist and avoid overriding it
-                if(gs.treeObj[prefix + tileContent[0]] == undefined){
+                //Create tile object 
+                gs.treeObj[prefix + tileContent[0]] = {}
+                
+                node                = gs.treeObj[prefix + tileContent[0]] // this assignment also causes obj to be updated in gs.treeObj
+                node.tileColumn     = parseInt(tileContent[0].split('-')[0])
+                node.tileRow        = parseInt(tileContent[0].split('-')[1])
+                node.tileType       = tileContent[1]
+                node.tileConnectors = tileContent[2].split('-')
 
-                    gs.treeObj[prefix + tileContent[0]] = {}
-
-                    console.log(node);
-                    node                = gs.treeObj[prefix + tileContent[0]]
-                    node.tileColumn     = parseInt(tileContent[0].split('-')[0])
-                    // console.log(gs.treeObj[prefix + tileContent[0]]);
-                    node.tileRow        = parseInt(tileContent[0].split('-')[1])
-                    node.tileType       = tileContent[1]
-                    node.tileConnectors = tileContent[2].split('-')
-                }else{
-                    console.log(1);
-                    node = gs.treeObj[prefix + tileContent[0]]
-                }
-
+                
                 //Find refrence node
                 nodeRef = findByProperty(treeRef, 'id', node.tileType)
+
+                //Add placeholder img if there is no record in nodeRef
                 if(nodeRef == undefined){ 
-                    nodeRef = {name:'pas'}
+                    nodeRef = {name:'pas'} 
                 }else{
-                    imgPath = nodeRef.id
+                    node.imgPath = nodeRef.id
                 }
 
-                if(node.tileType == 'ver'){
-                    nodeType = 'vertical-path'
+                if(node.tileType == 'ver'){ 
+                    nodeType = 'vertical-path' 
                 }
 
-                //Add directional connectors
-                if(node.tileConnectors.length > 0){
-                    // console.log(tileConnectors, tileColumn,tileRow);
-                    imgDirections = ''
-                    
-                    node.tileConnectors.forEach(direction => {
-                        imgDirections += `<div class='${direction}'></div>`
-                    })
-
-                }
-
-                // console.log(tileContent, tileColumn, tileRow, tileType, tileConnectors);
                 createTreeCell(node.tileColumn, node.tileRow, nodeType)
             })
 
         //Build base tree
-            //Remove intersections
             for(i=0; i < treeRows * treeColumns; i++){
 
                 //Cell creation trigger
@@ -108,7 +125,7 @@
                 //Set tile images
                 //Rows 
                 let refRows = [1,5,9,13]
-                imgPath = ``
+
                 if(
                     refRows.includes(row) ||
                     [3].includes(column) && [2].includes(row)
@@ -144,22 +161,17 @@
                 }
 
                 //Set cell content
-                if(createCell) {createTreeCell(column, row, nodeType)}
+                if(createCell){
+                    createTreeCell(column, row, nodeType)
+                }
             }
 
         //Creates tree tile elem
             function createTreeCell(column, row, node){
 
-                //Show ids for testing
-                // let cellContent = `
-                //     <p>x${column}<br>y${row}</p> 
-                //     <img class="btn--ico" src="./img/ico/${imgPath}.svg">
-                //     ${imgDirections}
-                // `
-
+                //Gen path tile
                 if(node == 'vertical-path' || node == 'horizontal-path'){
 
-                    //Set elem to a particular grid tile
                     if(node == 'horizontal-path'){
                         el('skill-tree').innerHTML += `
                             <div id="${prefix}${column}-${row}" class='tree-tile'>
@@ -176,27 +188,43 @@
 
                     el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
 
-                } else if(node == 'empty'){
+                } 
+                
+                //Gen empty tile
+                else if(node == 'empty'){
                     el('skill-tree').innerHTML += `
-                        <div id="${prefix}${column}-${row}" class='tree-tile'>
-                        
-                        </div>
+                        <div id="${prefix}${column}-${row}" class='tree-tile'></div>
                     `
                     el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
 
-                } else {
+                } 
+                
+                //Gen node
+                else {
+                    //Find matching obj in gs.treeObj
+                    let treeObjNode = gs.treeObj[`${prefix}${column}-${row}`]
 
-                    let cellContent = `
-                        <img class="btn--ico" src="./img/tree/${imgPath}.svg"> 
-                        ${imgDirections}
-                    `
+                    //Set cell content
+                        //Add directional connectors  
+                        let directionLineElems = ''             
+                        treeObjNode.tileConnectors.forEach(direction => {
+                            directionLineElems  += `<div class='${direction}'></div>`
+                        })
+                        
+
+                        let cellContent = `
+                            <img class="btn--ico" src="./img/tree/${treeObjNode.imgPath}.svg"> 
+                            ${directionLineElems}
+                        `
         
                     //Creates new tile
                     if(el(`${prefix}${column}-${row}`) == undefined){
-        
+                        
+                        //Set elem type
                         let elemType = 'button'
                         if(node == 'div'){elemType = 'div'}
                     
+                        //Set content
                         el('skill-tree').innerHTML += `
                             <${elemType} id="${prefix}${column}-${row}" class='tree-tile'>
                                 ${cellContent}
@@ -205,6 +233,8 @@
         
                         //Set elem to a particular grid tile
                         el(`${prefix}${column}-${row}`).setAttribute('style',`grid-column-start:${column}; grid-row-start:${row}`)
+
+                        //Add onclick event
                         el(`${prefix}${column}-${row}`).setAttribute('onclick', `nodePreview(this)`)
                     }
         
@@ -215,69 +245,213 @@
 
                     //Highlight allocated nodes
                     if(gs.treeObj[`${prefix}${column}-${row}`].allocated){
-                        // console.log(el(`${prefix + column}-${row}`).childNodes[1]);
                         el(`${prefix + column}-${row}`).childNodes[1].classList.add('node-allocated')
                     }
                 }
             }
 
-
-        //Build tree object for playerObj
-        //Manage node states via prop
-        //Move allocated nodes to playerObj?
-
-        
-        //Disables nodes in player Obj
-        // gs.plObj.treeNodes.forEach(node => {
-        //     el(node.id).disabled = true
-        // })
-
-        // // Adjust tree icon if there are unspent skill tree points.
-        // if(gs.plObj.treePoints > 0){
-        //     el('map-character-btn').innerHTML = `<img src="./img/ico/character-active.svg">Character`
-        //     el('tree-btn').innerHTML = `<img src="./img/ico/tree-active.svg">Tree`
-        // } 
-        // else {
-        //     el('map-character-btn').innerHTML = `<img src="./img/ico/character.svg">Character`
-        //     el('tree-btn').innerHTML = `<img src="./img/ico/tree.svg">Tree`
-        // }   
+        // Adjust tab tree icon if there are unspent skill tree points.
+            if(gs.plObj.treePoints > 0){
+                el('map-character-btn').innerHTML = `<img src="./img/ico/character-active.svg">Character`
+                el('tree-btn').innerHTML = `<img src="./img/ico/tree-active.svg">Tree`
+            } 
+            else {
+                el('map-character-btn').innerHTML = `<img src="./img/ico/character.svg">Character`
+                el('tree-btn').innerHTML = `<img src="./img/ico/tree.svg">Tree`
+            }   
     }
 
-    //Trigger node preview
+    //Trigger node pop-up
         function nodePreview(nodeElem){
-            // console.log(nodeElem.id, gs.treeObj);
 
             //Find related node
-            let node = findByProperty(treeRef, 'id', gs.treeObj[nodeElem.id].tileType)
+                let node = findByProperty(treeRef, 'id', gs.treeObj[nodeElem.id].tileType)
+                let objNode = gs.treeObj[nodeElem.id]
 
-            // console.log(nodeElem.id);
+            //See if adjacent nodes are allocated
+                let adjacentNodeIsAllocated = false
+                let nodeConnectors = gs.treeObj[nodeElem.id].tileConnectors
+                let adjacentNode, newColumnVal, newRowVal
 
+                nodeConnectors.forEach(connector => {
+                    //Find next node
+                    if(        connector == 'TT'){
 
-            el('tree-node-popup').innerHTML = `
-                <div>
-                    <h4>${upp(node.name)}</h4>
-                    <p> ${upp(node.desc)}.</p>
-                </div>
-                <button class="btn--ico" onclick="addTreeNode('${node.id}', '${nodeElem.id}')">
-                    <img src="./img/ico/add.svg">
-                </button>
-            `
+                        newColumnVal = objNode.tileColumn
+                        newRowVal    = objNode.tileRow - 1
 
-            //Check if node is allocated
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newRowVal--
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    } else if (connector == 'RR' && adjacentNodeIsAllocated == false){
+
+                        newColumnVal = objNode.tileColumn + 1
+                        newRowVal    = objNode.tileRow
+
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newColumnVal++
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    } else if (connector == 'DD' && adjacentNodeIsAllocated == false){
+
+                        newColumnVal = objNode.tileColumn
+                        newRowVal    = objNode.tileRow + 1
+
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newRowVal++
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    } else if (connector == 'LL' && adjacentNodeIsAllocated == false){
+
+                        newColumnVal = objNode.tileColumn - 1
+                        newRowVal    = objNode.tileRow
+
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newColumnVal--
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    } 
+                      else if (connector == 'RD' && adjacentNodeIsAllocated == false){
+
+                        newColumnVal = objNode.tileColumn + 1
+                        newRowVal    = objNode.tileRow + 1
+
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newColumnVal++
+                            newRowVal++
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    } else if (connector == 'LD' && adjacentNodeIsAllocated == false){
+
+                        newColumnVal = objNode.tileColumn - 1
+                        newRowVal    = objNode.tileRow + 1
+
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newColumnVal--
+                            newRowVal++
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    } else if (connector == 'RT' && adjacentNodeIsAllocated == false){
+
+                        newColumnVal = objNode.tileColumn + 1
+                        newRowVal    = objNode.tileRow - 1
+
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newColumnVal++
+                            newRowVal--
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    } else if (connector == 'LT' && adjacentNodeIsAllocated == false){
+
+                        newColumnVal = objNode.tileColumn - 1
+                        newRowVal    = objNode.tileRow - 1
+
+                        adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`]
+
+                        while(adjacentNode == undefined){
+                            newColumnVal--
+                            newRowVal--
+                            adjacentNode = gs.treeObj[`${prefix}${newColumnVal}-${newRowVal}`] 
+                        }
+
+                        if(adjacentNode.allocated){
+                            adjacentNodeIsAllocated = true
+                        }
+
+                        // console.log(el(`${prefix}${newColumnVal}-${newRowVal}`));
+
+                    }
+                                    
+                })
+
+            //Update pop-up content
+                if(gs.treeObj[nodeElem.id].allocated || adjacentNodeIsAllocated == false){
+
+                    el('tree-node-popup').innerHTML = `
+                        <div>
+                            <h4>${upp(node.name)}</h4>
+                            <p> ${upp(node.desc)}.</p>
+                        </div>
+                    `
+                } 
+                else {
+
+                    el('tree-node-popup').innerHTML = `
+                        <div>
+                            <h4>${upp(node.name)}</h4>
+                            <p> ${upp(node.desc)}.</p>
+                        </div>
+                        <button class="btn--ico" onclick="addTreeNode('${node.id}', '${nodeElem.id}')">
+                            <img src="./img/ico/add.svg">
+                        </button>
+                    `
+                }
             
-            if(gs.treeObj[nodeElem.id].allocated){
-
-                el('tree-node-popup').innerHTML = `
-                    <div>
-                        <h4>${upp(node.name)}</h4>
-                        <p> ${upp(node.desc)}.</p>
-                    </div>
-                `
-            } 
-            
-
             el('tree-node-popup').classList.remove('hide')
-            // console.log(nodeElem);
         }
 
     //Resolve tree passive checks
@@ -448,7 +622,7 @@
 
             // GUARDIAN 
             //      1                        2                        3                        4                        5
-            /* 1*/ '1-1_T17_RR-DD'        , /*--------------------*/ '3-1_sta_RR-LL'        , /*--------------------*/ '5-1_T03_DD-LL'        ,
+            /* 1*/ '1-1_T17_RR-DD'        , /*--------------------*/ /*--------------------*/ /*--------------------*/ '5-1_T03_DD-LL'        ,
             /* 2*/ /*--------------------*/ '2-2_tra_RR-DD'        , /*--------------------*/ '4-2_T05_DD-LL'        , /*--------------------*/
             /* 3*/ /*--------------------*/ /*--------------------*/ /*--------------------*/ /*--------------------*/ /*--------------------*/
             /* 4*/ '1-4_def_TT-RR-DD'     , '2-4_def_TT-LL-RD'     , /*--------------------*/ '4-4_def_TT-RR-LD'     , '5-4_def_TT-DD-LL'     ,
@@ -481,7 +655,7 @@
 
             // CRUSADER 
             //      9                        10                       11                       12                       13
-            /* 1*/ '9-1_T07_RR-DD'        , /*--------------------*/ '11-1_sta_RR-LL'       , /*--------------------*/ '13-1_tra_DD-LL'       ,
+            /* 1*/ '9-1_T07_RR-DD'        , /*--------------------*/ /*--------------------*/ /*--------------------*/ '13-1_tra_DD-LL'       ,
             /* 2*/ '9-2_lif_TT-DD'        , /*--------------------*/ /*--------------------*/ /*--------------------*/ /*--------------------*/
             /* 3*/ /*--------------------*/ /*--------------------*/ '11-3_tra_DD'          , /*--------------------*/ /*--------------------*/
             /* 4*/ /*--------------------*/ '10-4_tra_RR'          , '11-4_lif_TT-RR-DD-LL' , '12-4_T01_LL'          , /*--------------------*/
@@ -514,7 +688,7 @@
 
             // WANDERER
             //      17                       18                       19                       20                       21
-            /* 1*/ /*--------------------*/ '18-1_T16_RR-DD'       , '19-1_sta_RR-LL'       , '20-1_T10_DD-LL'       , /*--------------------*/
+            /* 1*/ /*--------------------*/ '18-1_T16_RR-DD'       , /*--------------------*/ '20-1_T10_DD-LL'       , /*--------------------*/
             /* 2*/ /*--------------------*/ '18-2_ver_TT-DD'       , /*--------------------*/ '20-2_ver_TT-DD'       , /*--------------------*/
             /* 3*/ '17-3_tra_RR-DD'       , '18-3_tra_TT-DD-LL'    , /*--------------------*/ '20-3_tra_TT-RR-DD'    , '21-3_pas_DD-LL'       ,
             /* 4*/ /*--------------------*/ '18-4_T06_TT-DD'       , /*--------------------*/ '20-4_pas_TT-DD'       , /*--------------------*/
@@ -549,7 +723,7 @@
             //      25                       26                       27                       28                       29
             /* 1*/ '25-1_tra_RR-DD'       , /*--------------------*/ /*--------------------*/ /*--------------------*/ '29-1_tra_LL-DD'       ,
             /* 2*/ /*--------------------*/ /*--------------------*/ /*--------------------*/ /*--------------------*/ /*--------------------*/                                                                                                                                       
-            /* 3*/ '25-3_tra_TT-DD'       , /*--------------------*/ '27-3_key_DD'          , /*--------------------*/ '29-3_tra_TT-DD'       ,       
+            /* 3*/ '25-3_tra_TT-DD'       , /*--------------------*/ '27-3_tra_DD'          , /*--------------------*/ '29-3_tra_TT-DD'       ,       
             /* 4*/ /*--------------------*/ /*--------------------*/ '27-4_tra_TT-DD'       , /*--------------------*/ /*--------------------*/                                                                                                                                           
             /* 5*/ '25-5_tra_TT-RR-DD'    , /*--------------------*/ '27-5_tra_TT-RR-LL'    , /*--------------------*/ '29-5_tra_TT-DD-LL'    , 
 

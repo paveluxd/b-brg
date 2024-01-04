@@ -5,7 +5,7 @@
         syncActionTiles()
         syncCharPage()
         syncItemCards()
-        generateSkillTree()
+        // generateSkillTree()
 
         //Combat screen: Log stats at the top
             if(gs.inCombat){

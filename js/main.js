@@ -35,6 +35,7 @@
                 spriteBuilder('player')//create player sprite
         
                 resolvePlayerStats()
+                generateSkillTree()
                 syncUi()
                 screen("map")
 
