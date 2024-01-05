@@ -1203,9 +1203,9 @@
         console.log('Local storage cleared.');
     }
 
+    //Checks if LS save exists
+    loadGame()
+
     if(config.showScreen != undefined){
        initGame()
     }
-
-    //Checks if LS save exists
-    loadGame()

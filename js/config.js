@@ -65,11 +65,9 @@ config = {
 
     //Items
         startingItems: [
-            'sword',
-            'sickle',
+            'club',
             'shield',
-            'dagger pair',
-            'wizards hand',
+            'bandages'
         ],
 
         coins: 0, //rng(12,6),
@@ -77,9 +75,9 @@ config = {
 
     //Enemy
         eneLife: 8, //8
-        forceEnemyProfile: 'assassin',
+        // forceEnemyProfile: 'assassin',
         // forceEnemyAction: 'sleep',
-        enSpawnFrequency: 10,
+        enSpawnFrequency: 40,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.

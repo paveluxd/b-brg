@@ -1,3 +1,6 @@
+let prefix = 'treenode_'
+
+
 //Spend tree points
 //Adds tree node obj to playerObj
     function addTreeNode(nodeId, treeHtmlElemId){
@@ -13,6 +16,7 @@
             allocateTreeNode(treeHtmlElemId)
 
             resolvePlayerStats()
+            saveGame()
             syncUi()
         }
         //Not enough points
@@ -20,6 +24,7 @@
             showAlert(`All passive skill points are allocated.`)
         }
     }
+
 
 //Changes state of a tree node in UI
     function allocateTreeNode(nodeElemId){
@@ -29,51 +34,54 @@
         //Add class to highlight allocated node and paths
         el(nodeElemId).classList.add('node-allocated')
 
-        let nodeColumn = nodeElemId.split('_')[1].split('-')[0] * 1
-        let nodeRow = nodeElemId.split('_')[1].split('-')[1] * 1
-
-        console.log(nodeElemId, nodeColumn, nodeRow);
-
-        //Highlight connectors
+        //Highlight connectors for each direction
         gs.treeObj[nodeElemId].tileConnectors.forEach(connector => {
-            if(connector == 'TT'){
-                console.log('TT');
-                setPathClass(nodeColumn, nodeRow - 1)
-    
-            }else if(connector =='RR'){
-                console.log('RR');
-                setPathClass(nodeColumn + 1, nodeRow)
-                
-            }else if(connector =='DD'){
-                console.log('DD');
-                setPathClass(nodeColumn, nodeRow + 1)
-
-            }else if(connector =='LL'){
-                console.log('LL');
-                setPathClass(nodeColumn - 1, nodeRow)
-
-            }
-
-            function setPathClass(column, row){
-
-                let elem = el(`${prefix}${column}-${row}`)
-
-                if(elem.classList.contains('path')){
-                    elem.classList.add('active-path')
-                }
-
-                //Repeat until path is over.
-            }
+            highlightPath(nodeElemId, connector)
         })
-
 
         //Highlight adjacent nodes
     }
 
+    //Add class to highlight the path
+    function highlightPath(elemId, direction){
+
+        let treeElem = el(findAdjacentTile(elemId, direction))
+        let n = 1
+
+        //Repeats untill all paths are highlighted
+        while(n < 5 && treeElem.classList.contains('path')){
+            n++
+            treeElem.classList.add('active-path')
+            treeElem = el(findAdjacentTile(treeElem.id, direction))
+        }
+    }
+
+    //Returns id of an adjacent cell based on direction
+    function findAdjacentTile(tileId, direction){
+        let column = tileId.split('_')[1].split('-')[0] * 1
+        let row    = tileId.split('_')[1].split('-')[1] * 1
+
+        if      (direction == 'TT'){
+            return `${prefix}${column    }-${row - 1}`
+        }else if(direction == 'RR'){
+            return `${prefix}${column + 1}-${row    }`
+        }else if(direction == 'DD'){
+            return `${prefix}${column    }-${row + 1}`
+        }else if(direction == 'LL'){
+            return `${prefix}${column - 1}-${row    }`
+        }else if(direction == 'RD'){
+            return `${prefix}${column + 1}-${row + 1}`
+        }else if(direction == 'LD'){
+            return `${prefix}${column - 1}-${row + 1}`
+        }else if(direction == 'RT'){
+            return `${prefix}${column + 1}-${row - 1}`
+        }else if(direction == 'LT'){
+            return `${prefix}${column - 1}-${row - 1}`
+        }
+    }
+
 
 //Tree UI
-    let prefix = 'treenode_'
-
     function generateSkillTree(){
 
         //Update points counter
@@ -89,33 +97,37 @@
         let node
 
         
+        //Build saved tree from gs.treeObj
+            if(Object.keys(gs.treeObj).length > 0){
+                Object.keys(gs.treeObj).forEach(node => {
+                    console.log(gs.treeObj[node]);
+                    let treeNode = gs.treeObj[node]
+                    createTreeCell(treeNode.tileColumn, treeNode.tileRow, treeNode.tileType)
+                })
+            }
+        //Build new from treeStructure
+            else{
+                treeStructure.forEach(tile => {
+    
+                    nodeType = undefined
+    
+                    //Split data string
+                    let tileContent = tile.split('_') // 11-4_lif_TT-RR-DD-LL
 
-        //Build from treeStructure
-            treeStructure.forEach(tile => {
-
-                nodeType = undefined
-
-                //Split data string
-                let tileContent = tile.split('_') // 11-4_lif_TT-RR-DD-LL
-
-                //Create tile object 
-                gs.treeObj[prefix + tileContent[0]] = {}
-                
-                //Set tile object properties
-                node                = gs.treeObj[prefix + tileContent[0]] // this causes gs.treeObj obj to be updated
-                node.tileColumn     = parseInt(tileContent[0].split('-')[0])
-                node.tileRow        = parseInt(tileContent[0].split('-')[1])
-                node.tileType       = tileContent[1]            //'T12'
-                node.tileConnectors = tileContent[2].split('-') //creates array of tile connector markers TT,BB etc.
-                node.imgPath        = tileContent[1]            //sets tile image
-                
-                //Override node if paths were added in treeStructure
-                if(node.tileType == 'ver'){ 
-                    nodeType = 'vertical-path' 
-                }
-
-                createTreeCell(node.tileColumn, node.tileRow, nodeType)
-            })
+                    //Create tile object 
+                    gs.treeObj[prefix + tileContent[0]] = {}
+                    
+                    //Set tile object properties
+                    node                = gs.treeObj[prefix + tileContent[0]] // this causes gs.treeObj obj to be updated
+                    node.tileColumn     = parseInt(tileContent[0].split('-')[0])
+                    node.tileRow        = parseInt(tileContent[0].split('-')[1])
+                    node.tileType       = tileContent[1]            //'T12'
+                    node.tileConnectors = tileContent[2].split('-') //creates array of tile connector markers TT,BB etc.
+                    node.imgPath        = tileContent[1]            //sets tile image
+    
+                    createTreeCell(node.tileColumn, node.tileRow, nodeType)
+                })
+            }
 
         //Build base tree
             for(i=0; i < treeRows * treeColumns; i++){
@@ -135,8 +147,8 @@
                 let refRows = [1,5,9,13]
 
                 if(
-                    refRows.includes(row) ||
-                    [3].includes(column) && [2].includes(row)
+                       refRows.includes(row)
+                    || [3].includes(column) && [2].includes(row)
                 ){
                     createCell = true
                     nodeType = 'horizontal-path'
@@ -145,9 +157,9 @@
                 //Columns 
                 let refColumns = [1,5,9,13,17,21,25,29]
                 if(
-                    refColumns.includes(column) ||
-                    [2,4].includes(column) && [3].includes(row) ||
-                    [18,20].includes(column) && [2].includes(row)
+                        refColumns.includes(column) 
+                    || [2,4].includes(column) && [3].includes(row) 
+                    || [18,20].includes(column) && [2].includes(row)
                 ){
                     createCell = true
                     nodeType = 'vertical-path'
@@ -155,10 +167,10 @@
 
                 //Clears
                 if(
-                    [6,7,8, 14,15,16, 22,23,24,  27].includes(column) && row == 1 || //1st row
-                    [2,3,4].includes(column) && row == 5 ||                                          //Guardian 2nd row
-                    [17,18,20,21].includes(column) && [1,2,3].includes(row) ||                       //Wanderer
-                    [24].includes(column) && [5].includes(row)
+                       [6,7,8, 14,15,16, 22,23,24,  27].includes(column) && row == 1 //1st row
+                    || [2,3,4].includes(column) && row == 5                          //Guardian 2nd row
+                    || [17,21].includes(column) && [1,2,3].includes(row)             //Wanderer
+                    || [24].includes(column) && [5].includes(row)
                 ){
                     createCell = false
                 }
@@ -220,6 +232,10 @@
 
         //Creates tree tile elem
             function createTreeCell(column, row, node){
+                //Override node if paths were added in treeStructure
+                if(node == 'ver'){ 
+                    node = 'vertical-path'
+                }
 
                 //Gen path tile
                 if(node == 'vertical-path' || node == 'horizontal-path'){
@@ -254,6 +270,7 @@
                 //Gen node
                 else {
                     //Find matching obj in gs.treeObj
+                    // console.log(`${prefix}${column}-${row}`);
                     let treeObjNode = gs.treeObj[`${prefix}${column}-${row}`]
 
                     //Set cell content
@@ -294,11 +311,6 @@
                     else{
                         el(`${prefix + column}-${row}`).innerHTML = cellContent
                     }
-
-                    //Highlight allocated nodes
-                    if(gs.treeObj[`${prefix}${column}-${row}`].allocated){
-                        allocateTreeNode(`${prefix + column}-${row}`)
-                    }
                 }
             }
 
@@ -310,7 +322,14 @@
             else {
                 el('map-character-btn').innerHTML = `<img src="./img/ico/character.svg">Character`
                 el('tree-btn').innerHTML = `<img src="./img/ico/tree.svg">Tree`
-            }   
+            }
+
+        //Highlight allocated nodes
+            Object.keys(gs.treeObj).forEach(node => {
+                if(gs.treeObj[node].allocated){
+                    allocateTreeNode(node)
+                }
+            })
     }
 
 
@@ -508,7 +527,7 @@
     }
 
 
-//Resolve tree passive checks
+//Resolve passive checks
     //On-hit check
     function resolveOnHitPassives(){
         gs.plObj.treeNodes.forEach(node => {
@@ -743,7 +762,7 @@
         // WANDERER
         //      17                       18                       19                       20                       21
         /* 1*/ /*--------------------*/ '18-1_T16_RR-DD'       , /*--------------------*/ '20-1_T10_DD-LL'       , /*--------------------*/
-        /* 2*/ /*--------------------*/ '18-2_ver_TT-DD'       , /*--------------------*/ '20-2_ver_TT-DD'       , /*--------------------*/
+        /* 2*/ /*--------------------*/ /*--------------------*/ /*--------------------*/ /*--------------------*/, /*--------------------*/
         /* 3*/ '17-3_tra_RR-DD'       , '18-3_tra_TT-DD-LL'    , /*--------------------*/ '20-3_tra_TT-RR-DD'    , '21-3_pas_DD-LL'       ,
         /* 4*/ /*--------------------*/ '18-4_T06_TT-DD'       , /*--------------------*/ '20-4_pas_TT-DD'       , /*--------------------*/
         /* 5*/ '17-5_inv_TT-RR-DD-LL' , '18-5_inv_TT-RR-LL'    , /*--------------------*/ '20-5_dic_TT-RR-LL'    , '21-5_dic_TT-RR-DD-LL' ,
@@ -792,8 +811,7 @@
         /*13*/ '25-13_tra_TT-RR-LL-RT', /*--------------------*/ /*--------------------*/ /*--------------------*/ '29-13_tra_TT-LT-LL'   , 
     ]
 
-
-//Tree nodes
+//Tree node references
 //* name: should match .svg icon name
     let treeRef = [
     //PLACEHOLDERS
