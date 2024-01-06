@@ -60,7 +60,7 @@ class PlayerObj {
         //Progression
             this.exp            = 0
             this.lvl            = 1
-            this.lvlUpExp       = config.expRequiredPerLvl
+            this.lvlUpExp       = Math.ceil(config.expBase * (this.lvl * config.expMult) ** config.expExpo)
             this.treeNodes      = []
             this.treePoints     = config.basePassieSkillPoints
         //Misc
@@ -124,18 +124,12 @@ function resolveExpAndLvl(){
     //Lvl up
     if(gs.plObj.exp >= gs.plObj.lvlUpExp){
         gs.plObj.lvl++
-        gs.plObj.lvlUpExp =  Math.ceil(gs.plObj.lvlUpExp * 1.5)
+        gs.plObj.lvlUpExp =  Math.ceil(config.expBase * (gs.plObj.lvl * config.expMult) ** config.expExpo)
         gs.plObj.exp = 0
     }
 
-    //Recalc player lvl
-    // gs.plObj.lvl = Math.floor(gs.plObj.exp / config.expRequiredPerLvl + 1) 
-
-    // //Calc exp until lvl up
-    // gs.plObj.lvlUpExp = (gs.plObj.lvl - 1) * config.expRequiredPerLvl + config.expRequiredPerLvl
-
-    //Calc available tree points
-
     //-1 for initial lvl 1
     gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length - 1
+
+    lvlupUiIndication()
 }

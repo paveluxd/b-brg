@@ -6,6 +6,10 @@
 
 **Update notes**
 - Fixed various bugs in Safari browser, now the game should be playable.
+- Temporary adjsuted exp curve to be linear for testing.
+- Reduced life gain from the first aid kit (from 6 to 3).
+- Varioius UI updates.
+- Removed flat power bonus from items.
 
 
 **To-do ideas**
@@ -13,7 +17,6 @@
 - Boss profiles.
 - Remove spell books.
 - Balance d12 combos bow, shield?
-- Fix exp curve.
 - Passive: +1 exp when you use a scroll.
 - Use 'order' to reorder actions in action bar.
 - Do burning dot shit.

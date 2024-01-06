@@ -9,7 +9,9 @@ let config = {
         slots:      5,
 
     //Progression
-        expRequiredPerLvl: 2,
+        expBase: 1,
+        expMult: 1,
+        expExpo: 1,
         basePassieSkillPoints: 0,
 
     //Game
@@ -45,14 +47,16 @@ let config = {
 config = {
     //Player
         life:       40, //40
-        power:       0,
+        power:       10,
         def:         0,
         dice:        6,
         inventory:  80,
         slots:       5,
 
     //Progression
-        expRequiredPerLvl: 2,
+        expBase: 1,
+        expMult: 1,
+        expExpo: 1,
         basePassieSkillPoints: 11,
 
     //Game
@@ -93,6 +97,6 @@ config = {
             // {tileType: 'enchanter-1', enemyUnit: false},
             // {tileType: 'merchant-1'},
             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-            // {tileType:'monument-1', tileId:`2-2`, loreEvent: 8},
+            // {tileType:'lake-1', tileId:`12-2`},
         ],
 }

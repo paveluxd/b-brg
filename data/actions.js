@@ -24,9 +24,9 @@ let actionsRef = [
   {
     "actionName": "first aid",
     "tags": "passive",
-    "desc": "restore 6 life at the end of the fight",
+    "desc": "restore 3 life at the end of the fight",
     "passiveStats": "",
-    "actionMod": 6,
+    "actionMod": 3,
     "actionCharge": 1,
     "cooldown": "",
     "keyId": 66,

@@ -1206,6 +1206,28 @@
     //Checks if LS save exists
     loadGame()
 
-    if(config.showScreen != undefined){
-       initGame()
+    if(config.showScreen != undefined){ 
+        initGame() 
     }
+
+    //Preloads images
+    let imgUrls = [
+        //map
+
+        //bg
+        './img/bg/combat-1.svg',
+        './img/bg/combat-2.svg',
+        './img/bg/combat-3.svg',
+        './img/bg/dungeon-1.svg',
+        './img/bg/end.svg',
+        './img/bg/lake.svg',
+        './img/bg/chest.svg',
+        './img/bg/victory.svg',
+
+        //units
+
+    ]
+
+    imgUrls.forEach(url => {
+        new Image().src = url;
+    })
