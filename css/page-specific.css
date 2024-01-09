@@ -280,7 +280,7 @@
         position: relative;
         /* left: 50%; */
     }
-    #combat .bg-cover{
+    .bg-cover{
         position: absolute;
         left: 50%;
         z-index: 1;

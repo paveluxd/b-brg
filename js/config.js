@@ -5,26 +5,33 @@ let config = {
         power:      0,
         def:        0,
         dice:       6,
-        inventory: 80,
+        inventory: 40,
         slots:      5,
+        class:      'guardian',
 
     //Progression
-        expBase: 1,
+        expBase: 2,
         expMult: 1,
-        expExpo: 1,
+        expExpo: 0.8,
         basePassieSkillPoints: 0,
 
     //Game
         // showCombatInfoLog: true,
         fadeTime: 400,
 
-    //Items
-        startingItems: [
+    //Starting items
+        stGuardian: [
             'club',
             'shield',
+        ],
+        stCrusader: [
+            'sword',
             'bandages',
         ],
-
+        stWanderer: [
+            'bow',
+            'cape',
+        ],
         coins: 0,
         food:  4,
 
@@ -41,39 +48,49 @@ let config = {
         exitDefenders:    3,
         enemyPartyCap:    3, //25% item reward per enemy
         mandatoryTiles:  [],
+
+    //Items
+        chargeFloor: 0.5     //Lowes % for item action charge
 }
 
 // Test config
 config = {
     //Player
         life:       40, //40
-        power:       10,
+        power:       0,
         def:         0,
         dice:        6,
-        inventory:  80,
+        inventory:  40,
         slots:       5,
+        class:      'wanderer',
 
     //Progression
-        expBase: 1,
+        expBase: 2,
         expMult: 1,
-        expExpo: 1,
-        basePassieSkillPoints: 11,
+        expExpo: 0.8,
+        basePassieSkillPoints: 99,
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'tree', 
-        clearLs: true,
+        // showScreen: 'tree', 
+        // clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,
 
 
-    //Items
-        startingItems: [
+    //Starting items
+        stGuardian: [
             'club',
             'shield',
-            'bandages'
         ],
-
+        stCrusader: [
+            'sword',
+            'bandages',
+        ],
+        stWanderer: [
+            'bow',
+            'cape',
+        ],
         coins: 0, //rng(12,6),
         food:  6, //rng(4,2),
 
@@ -99,4 +116,7 @@ config = {
             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
             // {tileType:'lake-1', tileId:`12-2`},
         ],
+
+    //Items
+        chargeFloor: 0.5     //Lowes % for item action charge
 }

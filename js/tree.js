@@ -87,7 +87,7 @@ let prefix = 'treenode_'
         
         el('skill-tree').innerHTML = ``
 
-        let treeRows      = 13
+        let treeRows      = 9
         let treeColumns   = 21
         let column        = 0
         let row           = 0
@@ -142,7 +142,7 @@ let prefix = 'treenode_'
 
                 //Set tile images
                 //Rows 
-                let refRows = [1,5,9,13]
+                let refRows = [1,5,9] //add 13 to extend
 
                 if(
                        refRows.includes(row)
@@ -184,7 +184,7 @@ let prefix = 'treenode_'
                 }
             }
 
-        //Preallocate class node
+        //Preallocate initial class node
             if      (gs.plObj.class == 'guardian'){
 
                 gs.treeObj[`${prefix}3-1`] = {
@@ -210,8 +210,7 @@ let prefix = 'treenode_'
                 }
 
                 createTreeCell(11, 1)
-                el(`${prefix}10-1`).childNodes[1].classList.add('tree-path-active')
-                el(`${prefix}12-1`).childNodes[1].classList.add('tree-path-active')
+
 
             }else if(gs.plObj.class == 'wanderer'){
 
@@ -309,9 +308,8 @@ let prefix = 'treenode_'
                         el(`${prefix + column}-${row}`).innerHTML = cellContent
                     }
 
-                    console.log(treeObjNode.imgPath)
-
                     //Add class for small travel nodes
+                    // console.log(treeObjNode.imgPath)
                     if(['pow','def','tra','lif','inv','slo','dic','cha'].indexOf(treeObjNode.imgPath) > -1){
                         el(`${prefix}${column}-${row}`).classList.add('compact-node')
                     }
@@ -539,7 +537,7 @@ let prefix = 'treenode_'
     //On-hit check
     function resolveOnHitPassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't8'){//leech
+            if(node.id == 'T8'){//leech
                 restoreLife(node.val)
 
                 //Log
@@ -550,7 +548,7 @@ let prefix = 'treenode_'
     //On-action use
     function resolveOnUsePassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't10'){
+            if(node.id == 'T10'){
                 if(rng(100) < node.val){
 
                     //Check item type (due to itemless actions)
@@ -560,7 +558,7 @@ let prefix = 'treenode_'
                     gs.sourceAction.actionCharge++
                 }
             }
-            if(node.id == 't11'){
+            if(node.id == 'T11'){
                 if(rng(100) < node.val){
 
                     //Check item type (due to itemless actions)
@@ -571,7 +569,7 @@ let prefix = 'treenode_'
                     gs.sourceAction.actionCharge += 2
                 }
             }
-            if(node.id == 't12'){
+            if(node.id == 'T12'){
                 
                 if(!gs.sourceAction.tags.includes('block')) return
                 if(gs.plObj.roll != gs.enObj.roll) return
@@ -584,7 +582,7 @@ let prefix = 'treenode_'
                 gs.logMsg.push(`${node.name}: ${node.desc}`) 
                 
             }
-            if(node.id == 't13'){
+            if(node.id == 'T13'){
                 
                 if(!gs.sourceAction.tags.includes('attack')) return
                 if(gs.plObj.roll != gs.enObj.roll) return
@@ -603,7 +601,7 @@ let prefix = 'treenode_'
     //End of combat check
     function resolveEndOfCombatPassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't7'){//recovery
+            if(node.id == 'T7'){//recovery
 
                 restoreLife(node.val)
 
@@ -615,7 +613,7 @@ let prefix = 'treenode_'
     //On death
     function resolveOnDeathPassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 't9' && node.activated != true){//recovery
+            if(node.id == 'T9' && node.activated != true){//recovery
 
                 gs.plObj.life = node.val
 
@@ -632,7 +630,7 @@ let prefix = 'treenode_'
         let val = 0
 
         gs.plObj.treeNodes.forEach(node => {
-            if    (node.id == 't14' && stat == 'exp' && rng(100) < node.chance){//scholar
+            if    (node.id == 'T14' && stat == 'exp' && rng(100) < node.chance){//scholar
 
                 //Calc
                 gs.plObj.exp += node.val
@@ -640,7 +638,7 @@ let prefix = 'treenode_'
                 //Log
                 gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
             }
-            else if(node.id == 't15' && stat == 'def' && value > 0){//bastion
+            else if(node.id == 'T15' && stat == 'def' && value > 0){//bastion
                 //Set return value
                 val = node.val
 
@@ -654,7 +652,7 @@ let prefix = 'treenode_'
     //On dice roll
     function resolvePostRollTreePassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if    (node.id == 't16' && gs.plObj.roll == 1){//scholar
+            if    (node.id == 'T16' && gs.plObj.roll == 1){//scholar
                 let negativeStats = []
 
                 //Check if player has a negative stat
@@ -697,87 +695,87 @@ let prefix = 'treenode_'
 
         // GUARDIAN 
         //      1                          2                          3                          4                          5
-        /* 1*/ '1-1_T17_R-D'            , /*----------------------*/ /*----------------------*/ /*----------------------*/ '5-1_T03_D-L'           ,
+        /* 1*/ '1-1_T17_R-D'            , /*----------------------*/ '3-1_def_R-L'           , /*----------------------*/ '5-1_T03_D-L'           ,
         /* 2*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/
         /* 3*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/
         /* 4*/ /*----------------------*/ /*----------------------*/ '3-4_T12_D'              , /*----------------------*/ /*----------------------*/
         /* 5*/ '1-5_def_T-R-D'          , /*----------------------*/ '3-5_def_T-R-L'          , /*----------------------*/ '5-5_def_T-R-D-L-LD'     ,
         
         /* 6*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '4-6_def_RT-LD'          , /*----------------------*/
-        /* 7*/ '1-7_T18_T-D'            , /*----------------------*/ '3-7_pas_RT'             , '4-7_def_R-D'            , '5-7_def_T-L-D'          ,
-        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '4-8_pas_T'              , /*----------------------*/
-        /* 9*/ '1-9_def_T-R-D'          , /*----------------------*/ '3-9_def_R-D-L'          , /*----------------------*/ '5-9_def_T-R-D-L'        ,
+        /* 7*/ '1-7_def_T-D-R'          , '2-7_T18_L'              , '3-7_T24_RT'             , '4-7_def_R-D'            , '5-7_def_T-L-D'          ,
+        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '4-8_T37_T'              , /*----------------------*/
+        /* 9*/ '1-9_pow_T-R'            , /*----------------------*/ '3-9_pow_L-R'            , /*----------------------*/ '5-9_pow_T-R-L'          ,
 
-        /*10*/ /*----------------------*/ /*----------------------*/ '3-10_T19_T'             , /*----------------------*/ /*----------------------*/
-        /*11*/ /*----------------------*/ '2-11_T15_D'             , /*----------------------*/ '4-11_T15_D'             , /*----------------------*/
-        /*12*/ /*----------------------*/ '2-12_pow_LD-T'          , /*----------------------*/ '4-12_pow_RD-T'          , /*----------------------*/
-        /*13*/ '1-13_pow_T-RT-R'        , /*----------------------*/ /*----------------------*/ /*----------------------*/ '5-13_pow_T-R-L-LT'      ,
+        // /*10*/ /*----------------------*/ /*----------------------*/ '3-10_T19_T'             , /*----------------------*/ /*----------------------*/
+        // /*11*/ /*----------------------*/ '2-11_T15_D'             , /*----------------------*/ '4-11_T25_D'             , /*----------------------*/
+        // /*12*/ /*----------------------*/ '2-12_pow_LD-T'          , /*----------------------*/ '4-12_pow_RD-T'          , /*----------------------*/
+        // /*13*/ '1-13_pow_T-RT-R'        , /*----------------------*/ /*----------------------*/ /*----------------------*/ '5-13_pow_T-R-L-LT'      ,
     
 
         // Guardian - Crusader intersection 
         //                                 6                          7                          8
-        /* 5*/ /*                      */ /*----------------------*/ '7-5_pas_R-L'            , /*----------------------*/ /*                      */
-        /* 6*/ /*                      */ /*----------------------*/ '7-6_pas_R'              , '8-6_inv_RT-L'           , /*                      */
+        /* 5*/ /*                      */ /*----------------------*/ '7-5_T05_R-L'            , /*----------------------*/ /*                      */
+        /* 6*/ /*                      */ /*----------------------*/ '7-6_T20_R'              , '8-6_inv_RT-L'           , /*                      */
         /* 7*/ /*                      */ /*----------------------*/ /*----------------------*/ '8-7_inv_D-R'            , /*                      */
-        /* 8*/ /*                      */ /*----------------------*/ /*----------------------*/ '8-8_pas_T'              , /*                      */
-        /* 9*/ /*                      */ /*----------------------*/ '7-9_inv_R-D-L'          , /*----------------------*/ /*                      */
+        /* 8*/ /*                      */ /*----------------------*/ /*----------------------*/ '8-8_T29_T'              , /*                      */
+        /* 9*/ /*                      */ /*----------------------*/ '7-9_pow_R-L'            , /*----------------------*/ /*                      */
 
-        /*10*/ /*                      */ /*----------------------*/ '7-10_T20_T'             , /*----------------------*/ /*                      */
-        /*11*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
-        /*12*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
-        /*13*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
+        // /*10*/ /*                      */ /*----------------------*/ '7-10_T20_T'             , /*----------------------*/ /*                      */
+        // /*11*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
+        // /*12*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
+        // /*13*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
 
 
         // CRUSADER 
         //      9                          10                         11                         12                         13
-        /* 1*/ '9-1_T07_R-D'            , /*----------------------*/ /*----------------------*/ /*----------------------*/ '13-1_tra_D-L'           ,
+        /* 1*/ '9-1_T01_R-D'            , /*----------------------*/ '11-1_lif_R-L'           , /*----------------------*/ '13-1_T07_D-L'           ,
         /* 2*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/
         /* 3*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/
         /* 4*/ /*----------------------*/ /*----------------------*/ '11-4_T13_D'             , /*----------------------*/ /*----------------------*/
         /* 5*/ '9-5_lif_T-R-D-L-RD-LD'  , /*----------------------*/ '11-5_lif_T-R-L'         , /*----------------------*/ '13-5_lif_T-R-D-L-LD'    ,
 
-        /* 6*/ /*----------------------*/ '10-6_lif_LT-R'          , '11-6_pas_L'             , '12-6_lif_RT-LD'         , /*----------------------*/
-        /* 7*/ '9-7_lif_T-D-L'          , /*----------------------*/ '11-7_pas_RT'            , '12-7_lif_R-D'           , '13-7_lif_T-D-L'         ,
-        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '12-8_pas_T'             , /*----------------------*/
-        /* 9*/ '9-9_lif_T-R-D-L'        , /*----------------------*/ '11-9_lif_R-D-L'         , /*----------------------*/ '13-9_lif_T-R-D-L'       ,
+        /* 6*/ /*----------------------*/ '10-6_lif_LT-R'          , '11-6_T34_L'             , '12-6_lif_RT-LD'         , /*----------------------*/
+        /* 7*/ '9-7_lif_T-D-L'          , /*----------------------*/ '11-7_T28_RT'            , '12-7_lif_R-D'           , '13-7_lif_T-D-L'         ,
+        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '12-8_T30_T'             , /*----------------------*/
+        /* 9*/ '9-9_lif_T-R-L'          , /*----------------------*/ /*----------------------*/ /*----------------------*/ '13-9_lif_T-R-L'         ,
 
-        /*10*/ /*----------------------*/ /*----------------------*/ '11-10_T09_T'            , /*----------------------*/ /*----------------------*/
-        /*11*/ /*----------------------*/ '10-11_T13_D'            , /*----------------------*/ '12-11_pas_D'            , /*----------------------*/
-        /*12*/ /*----------------------*/ '10-12_cha_T-LD'         , /*----------------------*/ '12-12_cha_T-RD'         , /*----------------------*/
-        /*13*/ '9-13_cha_T-R-L-RT'      , /*----------------------*/ /*----------------------*/ /*----------------------*/ '13-13_cha_T-R-L-LT'     ,
+        // /*10*/ /*----------------------*/ /*----------------------*/ '11-10_T04_T'            , /*----------------------*/ /*----------------------*/
+        // /*11*/ /*----------------------*/ '10-11_T09_D'            , /*----------------------*/ '12-11_T21_D'            , /*----------------------*/
+        // /*12*/ /*----------------------*/ '10-12_cha_T-LD'         , /*----------------------*/ '12-12_cha_T-RD'         , /*----------------------*/
+        // /*13*/ '9-13_cha_T-R-L-RT'      , /*----------------------*/ /*----------------------*/ /*----------------------*/ '13-13_cha_T-R-L-LT'     ,
 
 
         // Crusader - Wanderer intersection 
         //                                 14                        15                          16
-        /* 5*/ /*                      */ /*----------------------*/ '15-5_pas_R-L'           , /*----------------------*/ /*                      */ 
-        /* 6*/ /*                      */ /*----------------------*/ '15-6_pas_R'             , '16-6_inv_L-RT'          , /*                      */
+        /* 5*/ /*                      */ /*----------------------*/ '15-5_T38_R-L'           , /*----------------------*/ /*                      */ 
+        /* 6*/ /*                      */ /*----------------------*/ '15-6_T06_R'             , '16-6_inv_L-RT'          , /*                      */
         /* 7*/ /*                      */ /*----------------------*/ /*----------------------*/ '16-7_inv_R-D'           , /*                      */
-        /* 8*/ /*                      */ /*----------------------*/ /*----------------------*/ '16-8_pas_T'             , /*                      */
-        /* 9*/ /*                      */ /*----------------------*/ '15-9_inv_R-D-L'         , /*----------------------*/ /*                      */
+        /* 8*/ /*                      */ /*----------------------*/ /*----------------------*/ '16-8_T36_T'             , /*                      */
+        /* 9*/ /*                      */ /*----------------------*/ '15-9_dic_R-L'           , /*----------------------*/ /*                      */
 
-        /*10*/ /*                      */ /*----------------------*/ '15-10_pas_T'            , /*----------------------*/ /*                      */
-        /*11*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
-        /*12*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
-        /*13*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
+        // /*10*/ /*                      */ /*----------------------*/ '15-10_T35_T'            , /*----------------------*/ /*                      */
+        // /*11*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
+        // /*12*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
+        // /*13*/ /*                      */ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*                      */
 
 
         // WANDERER
         //      17                         18                         19                         20                         21
-        /* 1*/ '17-1_T16_R-D'           , /*----------------------*/ /*----------------------*/ /*----------------------*/ '21-1_T10_D-L'           ,
+        /* 1*/ '17-1_T16_R-D'           , /*----------------------*/ '19-1_slo_R-L'           , /*----------------------*/ '21-1_T10_D-L'           ,
         /* 2*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/
         /* 3*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ /*----------------------*/
-        /* 4*/ /*----------------------*/ /*----------------------*/ '19-4_pas_D'             , /*----------------------*/ /*----------------------*/
+        /* 4*/ /*----------------------*/ /*----------------------*/ '19-4_T14_D'             , /*----------------------*/ /*----------------------*/
         /* 5*/ '17-5_slo_T-R-D-L-LD-RD' , /*----------------------*/ '19-5_slo_T-R-L'         , /*----------------------*/ '21-5_slo_T-D-L-LD'      ,
 
-        /* 6*/ /*----------------------*/ '18-6_slo_R-LT'          , '19-6_pas_L'             , '20-6_slo_LD-RT'         , /*----------------------*/
-        /* 7*/ '17-7_slo_T-D-L'         , /*----------------------*/ '19-7_pas_RT'            , '20-7_slo_D-R'           , '21-7_slo_T-D-L'         ,
-        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '20-8_pas_T'             , /*----------------------*/
-        /* 9*/ '17-9_slo_T-R-D-L'       , /*----------------------*/ '19-9_slo_R-D-L'         , /*----------------------*/ '21-9_slo_T-D-L'         ,
+        /* 6*/ /*----------------------*/ '18-6_slo_R-LT'          , '19-6_T26_L'             , '20-6_slo_LD-RT'         , /*----------------------*/
+        /* 7*/ '17-7_slo_T-D-L'         , /*----------------------*/ '19-7_T27_RT'            , '20-7_slo_D-R'           , '21-7_slo_T-D-L'         ,
+        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '20-8_T22_T'             , /*----------------------*/
+        /* 9*/ '17-9_dic_T-R-L'         , /*----------------------*/ '19-9_dic_R-L'           , /*----------------------*/ '21-9_dic_T-L'           ,
 
-        /*10*/ /*----------------------*/ /*----------------------*/ '19-10_pas_T'            , /*----------------------*/ /*----------------------*/
-        /*11*/ /*----------------------*/ '18-11_pas_D'            , /*----------------------*/ '20-11_pas_D'            , /*----------------------*/
-        /*12*/ /*----------------------*/ '18-12_dic_LD-T'         , /*----------------------*/ '20-12_dic_T-RD'         , /*----------------------*/
-        /*13*/ '17-13_dic_T-R-L-RT'     , /*----------------------*/ /*----------------------*/ /*----------------------*/ '21-13_dic_T-L-LT'          ,
+        // /*10*/ /*----------------------*/ /*----------------------*/ '19-10_T23_T'            , /*----------------------*/ /*----------------------*/
+        // /*11*/ /*----------------------*/ '18-11_T08_D'            , /*----------------------*/ '20-11_T31_D'            , /*----------------------*/
+        // /*12*/ /*----------------------*/ '18-12_dic_LD-T'         , /*----------------------*/ '20-12_dic_T-RD'         , /*----------------------*/
+        // /*13*/ '17-13_dic_T-R-L-RT'     , /*----------------------*/ /*----------------------*/ /*----------------------*/ '21-13_dic_T-L-LT'          ,
 
 
         // // Wanderer - Scholar intersection 
@@ -835,15 +833,15 @@ let prefix = 'treenode_'
 
         },{id:'dic', name:'dice' ,
             desc:'add 0.25 to dice',
-            passiveStats:[{stat:'dice',  value:0.25}],
+            passiveStats:[{stat:'dice-mod',  value:0.25}],
 
         },{id:'slo', name:'slot' ,
             desc:'add 0.25 to equipment slot',
-            passiveStats:[{stat:'slot',  value:0.25}],
+            passiveStats:[{stat:'slots',  value:0.25}],
 
         },{id:'pow', name:'power' ,
-            desc:'add 0.2 to base power',
-            passiveStats:[{stat:'power',  value:0.2}],
+            desc:'add 0.25 to base power',
+            passiveStats:[{stat:'power',  value:0.25}],
 
         },{id:'inv', name:'inventory' ,
             desc:'add 3 to inventory capacity',
@@ -858,10 +856,8 @@ let prefix = 'treenode_'
 
         },
 
-        //Passive id counter 21
-
-    // GUARDIAN d4
-        // sq1
+    //GUARDIAN d4
+        //sq1
         {  id:'T17', name:'blunt weapon mastery',
             desc:'mace, club and hammer deal 1 extra damage',
             val:1,
@@ -870,24 +866,16 @@ let prefix = 'treenode_'
             desc:'gain 1 base def',
             passiveStats:[{stat:'def',   value:1}],
 
-        },{id:'T05', name:'dice',
-            desc:'gain 1 to base dice',
-            passiveStats:[{stat:'dice-mod',  value:1}],
-
-        },
-
-        // sq2
-        {  id:'T12',name:'perfect block',
+        },{id:'T12',name:'perfect block',
             desc:'blocking an enemy attack with matching dice roll, will reduce enemy power by 2',
             val:2,
 
-        },{id:'T18',name:'def recovery',
+        },
+        
+        {  id:'T18',name:'def recovery',
             desc:'recover 1 def if def is negative',
 
-        },
-
-        // sq3
-        {  id:'T19',name:'layered defense',
+        },{id:'T19',name:'layered defense',
             desc:'you can equip multiple body armors',
             val:2,
 
@@ -897,20 +885,20 @@ let prefix = 'treenode_'
 
         },
 
-        // transition sq 1
-        {  id:'T02', name:'life %',
+        //Intersection 
+        {  id:'T05', name:'dice',
+            desc:'gain 1 to base dice',
+            passiveStats:[{stat:'dice-mod',  value:1}],
+
+        },{id:'T02', name:'life %',
             desc:'increase base life by 10%',
             passiveStats:[{stat:'life%', value:10}],
 
         },
-        // transition square 2
-        {  id:'T20', name:'life gain',
-            desc:'whenever you gain life, gain 1 extra',
 
-        },
+        
 
-    // CRUSADER d6
-        // sq1
+    //CRUSADER d6
         {  id:'T01', name:'superior life' ,
             desc:'add 6 base life',
             passiveStats:[{stat:'life',  value:6}],
@@ -919,28 +907,32 @@ let prefix = 'treenode_'
             desc:'restore 3 life at end of the combat',
             val:3,
 
-        },
-
-        // sq2
-        {  id:'T13', name:'perfect strike',
+        },{id:'T13', name:'perfect strike',
             desc:'attacking a blocking enemy with matching dice roll, will force enemy to skip the next turn',
 
-        },{id:'T09', name:'reborn',
+        },
+
+        {  id:'T09', name:'reborn',
             desc:'once per encounter, when you reach 0 life, survive with 1 life',
-            val:1,
 
         },
 
-        // sq3
+        //Intersection 
+        {  id:'T38', name:'lower dice',
+            desc:'reduce dice by 1',
+            passiveStats:[{stat:'dice-mod',  value:-1}],
 
-        //Intersection
-        {  id:'T21', name:'power',
-            desc:'if your power is 0, gain 1 power',
+        },{id:'T06', name:'equipment slot',
+            desc:'gain 1 equipment slot',
+            passiveStats:[{stat:'slot', value:1}],
+
+        },{id:'T11', name:'librarian',
+            desc:'25% chance to gain 1 action charge when you use a scroll',
+            val:25,
 
         },
         
-    // WANDERER d8
-        // sq1
+    //WANDERER d8
         {  id:'T10', name:'careful use',
             desc:'25% chance to avoid losing an action charge on action use',
             val:25,
@@ -948,40 +940,26 @@ let prefix = 'treenode_'
         },{id:'T16', name:'close combat',
             desc:'on a die roll of one, restore half of a random negative attribute',
 
-        },{id:'T06', name:'slots',
-            desc:'gain 1 equipment slot'   ,
-            passiveStats:[{stat:'slots', value:1}],
-
-        },
-
-        // sq2
-
-        // sq3
-        {  id:'T08', name:'leech',
-            desc:'restore 1 life whenever you hit an enemy',
-            val:1,
-
-        },
-
-        //Intersection
-        {  id:'T14', name:'scholar',
+        },{id:'T14', name:'scholar',
             desc:'50% chance to gain 1 extra exp point whenever you gain exp',
             val: 1,
             chance: 50,
 
         },
+        {  id:'T26', name:'plague',
+            desc:'each stack of poison you applied has 20% chance to double instead of reducing an attribute',
 
-    // SCHOLAR d10
-        // sq1  
+        },{id:'T08', name:'leech',
+            desc:'restore 1 life whenever you hit an enemy',
+            val:1,
 
-        // sq2
-
-        // sq3
-        {  id:'T11', name:'librarian',
-            desc:'25% chance to gain 1 action charge when you use a scroll',
-            val:25,
-
+        },{id:'T22', name:'stealth',
+            desc:'enemy skips 1st turn',
         },
+        
+
+
+
 
         //Prototype
         {  id:'T00', name:'def break',
@@ -999,5 +977,32 @@ let prefix = 'treenode_'
         },{id:'T00', name:'speed advantage',
             desc:'Enemy skipts every 5th turn',
 
-        }
+        },
+
+        //Archive
+        {  id:'T29', name:'power armor',
+            desc:'gain 1 def whenever you gain power',
+        },{id:'T20', name:'life gain',
+            desc:'whenever you gain life, gain 1 extra',
+
+        },{id:'T29', name:'power armor',
+            desc:'gain 1 def whenever you gain power',
+        },{id:'T25',name:'shield mastery',
+            desc:'your block actions additionally reduce attack damage by 1',
+            val: 1,
+
+        },{id:'T20', name:'life gain',
+            desc:'whenever you gain life, gain 1 extra',
+
+        },{id:'T28', name:'def break',
+            desc:'when attacking an enemy, reduce their def by 1 extra point',
+
+        },{id:'T30', name:'growth',
+            desc:'gain 2 extra life from lesser life nodes',
+        },{id:'T04', name:'sword mastery',
+            desc:'..sword action.. also gains extra damage on roll 5',
+
+        },{id:'T21', name:'static power',
+            desc:'if your power is 0 at the start of the fight, gain 1 power',
+        },
     ]

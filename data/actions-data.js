@@ -115,7 +115,7 @@ let actionsRef = [
     "desc": "deal dmg equal to your dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 60,
+    "actionCharge": 40,
     "cooldown": "",
     "keyId": 5,
     "actionType": ""

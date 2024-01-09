@@ -1227,7 +1227,6 @@
         //units
 
     ]
-
     imgUrls.forEach(url => {
         new Image().src = url;
     })

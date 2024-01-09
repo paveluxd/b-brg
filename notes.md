@@ -10,7 +10,11 @@
 - Reduced life gain from the first aid kit (from 6 to 3).
 - Varioius UI updates.
 - Removed flat power bonus from items.
-
+- Added basic image preloading for backgrounds, now when the game is started, backgrounds should not flicker.
+- Inventrou slots reduced from 80 tp 40.
+- Added three classes. Guardian, Crusader and Wanderer, each with their unique starting items, stats and position on the tree.
+- Bow action charges reuced from 60 to 40.
+- Item action now roll random values.
 
 **To-do ideas**
 - Bosses at the end of the stage.
