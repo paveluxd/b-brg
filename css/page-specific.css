@@ -850,6 +850,7 @@
         grid-template-rows:    repeat(var(--tree-rows),   1fr);
 
         margin: 160px 24px 92px 24px;
+        cursor: grab;
     }
 
     #tree-node-popup{
