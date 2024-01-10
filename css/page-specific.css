@@ -47,6 +47,7 @@
 
         position: relative;
         /* transition: all 200ms; */
+        box-shadow: none;
     }
     .map-tile:hover{
         background-color: var(--w0);
