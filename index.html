@@ -26,7 +26,10 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/variables.css">
     <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/page-specific.css">
+
 
     <!-- Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +39,7 @@
     <!-- Grenze -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon"      sizes="180x180"    href="./favicon/apple-touch-icon.png">
@@ -50,7 +53,7 @@
 
 <body>
 <!-- State screen -->
-    <div id="state-screen" class="modal state-screen " onclick="initGame()">
+    <div id="state-screen" class="modal state-screen " onclick="playerClassSelection()">
         <div class="modal-container">
             <img src="./img/bg/start.svg" class="illustration">
             <p class="body-14">
@@ -63,8 +66,11 @@
 
 <!-- Map -->
     <div id="map" class="hide"> 
+
         <!-- Tab section -->
         <div id="map-tabs" class="tab-container external-tabs" onclick="screen('character')">
+            <!-- Exp bar -->
+
             <!-- Stat indicator -->
             <div id="stat-indicator">
                 
@@ -95,7 +101,7 @@
                 
             </div>
 
-            <button id="map-character-btn" class="">
+            <button id="map-character-btn" class="tab">
                 <img src="./img/ico/Character.svg">
                 Character
             </button>
@@ -107,29 +113,32 @@
     </div>
 
 <!-- CHARACTER SCREEN -->
+        
+
         <div id="character-tabs" class="tab-container external-tabs row hide">
+
             <!-- For combat menu -->
-            <button id="hide-btn" class="hide" onclick="screen('combat')">
+            <button id="hide-btn" class="tab hide" onclick="screen('combat')">
                 <img src="./img/ico/tab-hide.svg">
                 Hide
             </button>
 
-            <button id="map-btn" class="" onclick="screen('map')">
+            <button id="map-btn" class="tab" onclick="screen('map')">
                 <img src="./img/ico/map.svg">
                 Map
             </button>
 
-            <button id="character-btn" class="" onclick="screen('character')">
+            <button id="character-btn" class="tab" onclick="screen('character')">
                 <img src="./img/ico/character.svg">
                 Character
             </button>
 
-            <button  id="inventory-btn" class="" onclick="screen('inventory')">
+            <button  id="inventory-btn" class="tab" onclick="screen('inventory')">
                 <img src="./img/ico/inventory.svg">
                 Inventory
             </button>
 
-            <button id="tree-btn" class="" onclick="screen('tree')">
+            <button id="tree-btn" class="tab" onclick="screen('tree')">
                 <img src="./img/ico/tree.svg">
                 Tree
             </button>
@@ -148,26 +157,17 @@
 
                     <!-- Actions -->
                     <div class ="column" style="gap:8px; align-items:flex-start;">
-                        <p class="body-14 italic b50">Combat actions from equipment</p>
+                        <p class="body-14 italic">Combat actions from equipment</p>
                         <div id="action-list"></div>
                     </div>
 
                     <!-- Passives -->
                     <div class ="column" style="gap:8px; align-items:flex-start;">
-                        <p class="body-14 italic b50">Passives from equipment</p>
+                        <p class="body-14 italic">Passives from equipment</p>
                         <div id="passive-list"></div>
                     </div>
-
-                    <!-- Social media container -->
-                    
-                    <div class="social-container">
-                        <a class="discord"  href="https://discord.gg/AT8KdVbcVT" target="_blank"><img src="./img/ico/discord.svg" alt="">Join game community</a>
-                        <a class="x-social" href="https://twitter.com/pavelmorr" target="_blank"><img src="./img/ico/x-social.svg" alt="">Follow game on X</a>
-                    </div>
-                    
-                    <button style="background-color: var(--b10); border-radius: 4px;" onclick="localStorage.clear(), location.reload();">Start new run</button>
-
-
+          
+                    <button onclick="localStorage.clear(), location.reload();">Start new run</button>
                 </div>
             </div>
         </div>
@@ -182,6 +182,9 @@
         </div>
         <!-- 3. Tree -->
         <div id="tree"      class="screen hide">
+            <!-- Extensions -->
+            <div id="tree-node-popup" class="body-12 hide" onclick="el('tree-node-popup').classList.add('hide')">
+            </div>
 
             <!-- <div class="modal-container"> -->
                 
@@ -291,12 +294,12 @@
 <!-- Reward screen -->
     <div id="reward-tabs" class="tab-container external-tabs hide">
 
-        <button id="rw-rewards-btn" onclick="screen('reward-screen')">
+        <button id="rw-rewards-btn" class="tab" onclick="screen('reward-screen')">
             <img src="./img/ico/tab-reward.svg">
             Rewards
         </button>
 
-        <button id="rw-inventory-btn" onclick="screen('reward-screen-inventory')">
+        <button id="rw-inventory-btn" class="tab" onclick="screen('reward-screen-inventory')">
             <img src="./img/ico/inventory.svg">
             Inventory
         </button>
@@ -324,15 +327,15 @@
 
 <!-- MERCHANT -->
     <div id="merchant-tabs" class="tab-container external-tabs hide">
-        <button onclick="screen('map')">
+        <button class="tab" onclick="screen('map')">
             <img src="./img/ico/leave.svg">
             Leave
         </button>
-        <button onclick="screen('merchant')">
+        <button class="tab" onclick="screen('merchant')">
             <img src="./img/ico/tab-reward.svg">
             Buy
         </button>
-        <button onclick="screen('merchant-sell')">
+        <button class="tab" onclick="screen('merchant-sell')">
             <img src="./img/ico/inventory.svg">
             Sell
         </button>
@@ -356,7 +359,7 @@
     <div id="blacksmith-repair" class="screen hide">
 
         <div id="blacksmith-tabs" class="tab-container">
-            <button onclick="screen('map')">
+            <button class="tab" onclick="screen('map')">
                 <img src="./img/ico/leave.svg">
                 Leave
             </button>
@@ -373,7 +376,7 @@
 <div id="enchanter" class="screen hide">
 
     <div id="enchanter-tabs" class="tab-container">
-        <button onclick="screen('map')">
+        <button class="tab" onclick="screen('map')">
             <img src="./img/ico/leave.svg">
             Leave
         </button>
@@ -399,15 +402,15 @@
     <div id="casino-screen" class="screen state-screen hide">
         <!-- Tabs -->
         <div class="tab-container">
-            <button onclick="screen('map'), syncUi()">
+            <button class="tab" onclick="screen('map'), syncUi()">
                 <img src="./img/ico/leave.svg">
                 Leave
             </button>
-            <button onclick="runCasino(3)">
+            <button class="tab" onclick="runCasino(3)">
                 <img src="./img/ico/coin.svg">
                 Bet 3
             </button>
-            <button onclick="runCasino(6)">
+            <button class="tab" onclick="runCasino(6)">
                 <img src="./img/ico/coin.svg">
                 Bet 6
             </button>
@@ -443,11 +446,11 @@
 <script src="./js/utility.js"></script>
 <script src="./js/config.js"></script>
 
-<script src="./data/items.js"></script>
-<script src="./data/actions.js"></script>
+<script src="./data/items-data.js"></script>
+<script src="./data/actions-data.js"></script>
 <script src="./data/data.js"></script>
 
-<script src="./js/ui.js"></script>
+<script src="./js/misc-ui.js"></script>
 <script src="./js/map.js"></script>
 <script src="./js/tree.js"></script>
 
@@ -457,7 +460,7 @@
 <script src="./js/enemy.js"></script>
 <script src="./js/player.js"></script>
 
-<script src="./js/main.js"></script>
+<script src="./js/main-and-combat.js"></script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-706KLCDSBD"></script>

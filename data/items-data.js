@@ -299,7 +299,7 @@ let itemsRef = [
   {
     "itemName": "robe",
     "actions": "power surge",
-    "passiveStats": "power:1",
+    "passiveStats": "",
     "itemSlot": "body",
     "itemType": "body armor",
     "desc": "full body garment with long sleeves. The sleeves have few belts that can be tied to the back of the jacket to restrict motion",
@@ -353,7 +353,7 @@ let itemsRef = [
   {
     "itemName": "book of order",
     "actions": "heal, barrier",
-    "passiveStats": "power:1",
+    "passiveStats": "",
     "itemSlot": "",
     "itemType": "book",
     "desc": "",

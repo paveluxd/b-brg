@@ -24,9 +24,9 @@ let actionsRef = [
   {
     "actionName": "first aid",
     "tags": "passive",
-    "desc": "restore 6 life at the end of the fight",
+    "desc": "restore 3 life at the end of the fight",
     "passiveStats": "",
-    "actionMod": 6,
+    "actionMod": 3,
     "actionCharge": 1,
     "cooldown": "",
     "keyId": 66,
@@ -115,7 +115,7 @@ let actionsRef = [
     "desc": "deal dmg equal to your dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 60,
+    "actionCharge": 40,
     "cooldown": "",
     "keyId": 5,
     "actionType": ""

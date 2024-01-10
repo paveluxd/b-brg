@@ -27,11 +27,21 @@
                 //Find action by actionName
                 let actionData = findByProperty(actionsRef, 'actionName', actionKey)
 
-                if(typeof actionData[property.key] === 'undefined' || actionData[property.key] === ''){
-                    this[property.key] = property.val //if no prop, set it to extra props vlaue
+                //if no prop, set it to extra props vlaue
+                if(typeof actionData[property.key] == 'undefined' || actionData[property.key] == ''){
+
+                    this[property.key] = property.val 
+
                 }
+                //Randomize AC values
+                else if (property.key == 'actionCharge') {
+
+                    this[property.key] = rng(actionData[property.key], actionData[property.key] * config.chargeFloor)
+
+                } 
+                //if exists in ref, set it as in ref.
                 else {
-                    this[property.key] = actionData[property.key] //if exists in ref, set it as red.
+                    this[property.key] = actionData[property.key] 
                 }
 
                 //Set action charge of all passive items to 1.
