@@ -799,6 +799,10 @@
                     }
                 
                 //DEF: resolve.
+                //I don't remember why def reduction happened before damage calculation, see if it will cause issues in the futer.
+                    //Reduce dmg by def
+                    gs.plObj.dmgDone -= gs.enObj.def
+
                     //Def break logic
                     if(gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
                         
@@ -807,19 +811,16 @@
                         //Deal no dmg if def was broken
                         gs.plObj.dmgDone = gs.enObj.def
                         
-                    }
-
-                    //Reduce dmg by def
-                    gs.plObj.dmgDone -= gs.enObj.def
-
-                    //Set positive damage to 0 (if def is greater than dmg)
-                    if(gs.plObj.dmgDone < 0){gs.plObj.dmgDone = 0}
-
-                    if(!gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
+                    }else if(gs.enObj.def > 0){
                         
                         //Reduce def on hit
                         changeStat('def', -1, 'enemy')
                         
+                    }
+
+                    //Set positive damage to 0 (if def is greater than dmg)
+                    if(gs.plObj.dmgDone < 0){
+                        gs.plObj.dmgDone = 0
                     }
                     
                 
@@ -854,22 +855,10 @@
                 //Resolve enemy actions
                 if      (['attack', 'crit', 'charged strike'].indexOf(gs.enObj.action.key) > -1){
 
-                    //Reduce def on low hit
-                    if(gs.plObj.def > 0){
-                        changeStat('def', -1, 'player')
-                    }
-
-                    //Reduce dmg by def
-                    gs.enObj.dmgDone -= gs.plObj.def
-
-                    //Set positive damage to 0
-                    if (gs.enObj.dmgDone < 0){
-                        gs.enObj.dmgDone = 0
-                    } 
+                    resolveOnHitDef()
 
                     //Resolve dmg
                     changeStat('life', -gs.enObj.dmgDone, 'player')
-                    
 
                 }else if(['combo'].indexOf(gs.enObj.action.key) > -1){
 
@@ -880,13 +869,7 @@
                         //Move to a diff var due to def reducing dmg done 3 times
                         let playerDamageTaken = gs.enObj.dmgDone
 
-                        //Reduce def on low hit
-                        if(gs.plObj.def > 0){
-                            changeStat('def', -1, 'player')
-                        }
-
-                        //Reduce damage by def
-                        playerDamageTaken -= gs.plObj.def
+                        resolveOnHitDef()
 
                         //Set positive damage to 0
                         if (playerDamageTaken < 0){playerDamageTaken = 0} 
@@ -901,15 +884,9 @@
                     changeStat('life', totalDmgTaken, 'player')
 
                 }else if(['final strike'].indexOf(gs.enObj.action.key) > -1 && gs.enObj.life < 0){ //final strike only works if enemy is dead.
-
-                    //Reduce def on low hit
-                    if(gs.plObj.def > 0){
-                        changeStat('def', -1, 'player')
-                    }
-
-                    //Reduce damage by def
-                    gs.enObj.dmgDone -= gs.plObj.def
-
+                    
+                    resolveOnHitDef()
+                    
                     //Resolve dmg
                     changeStat('life', -gs.enObj.dmgDone, 'player')
                 }
@@ -969,6 +946,23 @@
                 })
 
             })
+        }
+
+        //Resolve on hit def
+        function resolveOnHitDef(){
+            
+            //Reduce damage by def
+            gs.enObj.dmgDone -= gs.plObj.def
+
+            //Reduce def on low hit
+            if(gs.plObj.def > 0){
+                changeStat('def', -1, 'player')
+            }
+
+            //Set positive damage to 0
+            if (gs.enObj.dmgDone < 0){
+                gs.enObj.dmgDone = 0
+            } 
         }
 
         //Stat mod

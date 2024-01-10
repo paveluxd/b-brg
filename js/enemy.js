@@ -464,7 +464,6 @@
                 'combo',  
                 'final strike',
 
-                'recover', 
                 'empower', 
                 'rush',
             ]
