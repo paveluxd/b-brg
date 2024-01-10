@@ -73,15 +73,19 @@
                 gs.encounter = 1
             }  
 
-        //3.Generates enemy
-            gs.enObj = new EnemyObj //New enemy per fight 
-            genEneAction()          //Gen before player turn and after. Do it at this stage because it references gs.enObj.
-            spriteBuilder('enemy')
-
-        
-        //4. Reset flat stats
+        //3. Reset flat stats
+        // This was set after enemy generation, moved up due to static power passive.
             resetFlatStats()
 
+        //4.Generates enemy
+            gs.enObj = new EnemyObj //New enemy per fight 
+
+            //PASSIVE: combat start passives
+            resolveStartOfCombatPassives()
+
+            genEneAction()          //Gen before player turn and after. Do it at this stage because it references gs.enObj.
+            spriteBuilder('enemy')
+        
         //Check if player has a weapon
             checkIfPlayerCanAttack()
 
@@ -111,7 +115,7 @@
             screen("combat")
     }
 
-    //1.TURN CALC
+    //1.TURN CALC (ALL ITEMS)
         function turnCalc(buttonElem){
             
             //Set random ghost images
@@ -119,11 +123,11 @@
             el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
 
             //Reset combat state vars
-            gs.combatTurnState = ''
-            gs.plObj.dmgDone = 0
-            gs.plObj.dmgTaken = 0
-            gs.enObj.dmgDone = 0
-            gs.enObj.dmgTaken = 0
+            gs.combatTurnState      = ''
+            gs.plObj.dmgDone        = 0
+            gs.plObj.dmgTaken       = 0
+            gs.enObj.dmgDone        = 0
+            gs.enObj.dmgTaken       = 0
             gs.lifeRestoredByPlayer = 0
 
             //Clear combat log.
@@ -171,7 +175,7 @@
                 //Log
                 gs.logMsg.push(`Hammer attack: reduced enemy def by ${defReduction}.`)
     
-            }else if(paKey =='a3' ){// Spell: shards "book of moon" 
+            }else if(paKey =='a3' ){// shards "book of moon" 
     
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -205,7 +209,7 @@
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
-            }else if(paKey =='a6' ){// EX: cut 'dagger'
+            }else if(paKey =='a6' ){// cut 'dagger'
 
                 //Action cost check
                 if(gs.plObj.roll < 3) return showAlert('Action requires roll greater than 2.')
@@ -253,7 +257,7 @@
                 //Log
                     gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.dmgDone} dmg.`)
     
-            }else if(paKey =='a9' ){// SP/EX: ice lance "book of ice"
+            }else if(paKey =='a9' ){// ice lance "book of ice"
 
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -267,7 +271,7 @@
                 //Log
                 gs.logMsg.push(`Ice lance: dealt ${gs.plObj.power} dmg.`)
     
-            }else if(paKey =='a10'){// EX: backstab "iron dagger"
+            }else if(paKey =='a10'){// backstab "iron dagger"
     
                 //Resolve action cost
                 if(gs.plObj.roll < 5) return showAlert('Action requires roll greater than 5.')
@@ -313,7 +317,7 @@
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${dmg} dmg.`)
     
             }
-             else if(paKey =='a11'){// SP: lightning "book of lightning"
+             else if(paKey =='a11'){// lightning "book of lightning"
     
                 //Action cost
                 if(gs.plObj.power < 2) return showAlert('Not enough power to pay for action cost.')
@@ -336,7 +340,7 @@
                 //Log
                 gs.logMsg.push(`Shield bash: dealt ${gs.plObj.def * gs.plObj.power} dmg.`)
     
-            }else if(paKey =='a13'){// SP: fireball  "book of fire"
+            }else if(paKey =='a13'){// fireball  "book of fire"
     
                 //Dmg
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
@@ -344,7 +348,7 @@
                 //Log
                 gs.logMsg.push(`Fireball: dealt ${actionMod + gs.plObj.power} dmg.`)
     
-            }else if(paKey =='a14'){// SP: pyroblast "book of fire"
+            }else if(paKey =='a14'){// pyroblast "book of fire"
     
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -426,7 +430,7 @@
                 if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
                 gs.enObj.state = 'Skip turn'
                 
-            }else if(paKey =='a26'){// SP: freeze (stun spell) "book of ice"
+            }else if(paKey =='a26'){// freeze (stun spell) "book of ice"
 
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -478,7 +482,7 @@
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: Dodge chance:${dodgePercent} / Dodge roll: ${dodgeRoll}.<br>`)
     
-            }else if(paKey =='a37'){// SP: buff next attack with piercing "leather gloves"
+            }else if(paKey =='a37'){// buff next attack with piercing "leather gloves"
 
                 //Action cost
                 if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
@@ -865,8 +869,12 @@
 
                     //Resolve dmg
                     changeStat('life', -gs.enObj.dmgDone, 'player')
+                    
 
                 }else if(['combo'].indexOf(gs.enObj.action.key) > -1){
+
+                    let totalDmgTaken = 0
+
                     for (let i = 0; i < 3; i ++){
 
                         //Move to a diff var due to def reducing dmg done 3 times
@@ -882,11 +890,16 @@
 
                         //Set positive damage to 0
                         if (playerDamageTaken < 0){playerDamageTaken = 0} 
-
-                        //Resolve dmg
-                        changeStat('life', -playerDamageTaken, 'player')
-
+                        
+                        totalDmgTaken -= playerDamageTaken
                     }
+                    
+                    //Required for reflect passive
+                    gs.enObj.dmgDone = totalDmgTaken * -1
+                    
+                    //Resolve dmg
+                    changeStat('life', totalDmgTaken, 'player')
+
                 }else if(['final strike'].indexOf(gs.enObj.action.key) > -1 && gs.enObj.life < 0){ //final strike only works if enemy is dead.
 
                     //Reduce def on low hit
@@ -900,6 +913,7 @@
                     //Resolve dmg
                     changeStat('life', -gs.enObj.dmgDone, 'player')
                 }
+                resolveAfterBeingHit()
             }
 
             //Player healing
@@ -964,7 +978,7 @@
                 value += resolveOnStatChangePassives(stat, value)
             
                 // console.log(passiveMod + value);
-                gs.plObj[stat] += (value)
+                gs.plObj[stat] += value
 
                 //Trigger floating number
                 gs.plObj[`${stat}ChangeMarker`] = true
@@ -1078,9 +1092,14 @@
 
                 //POISON: resolve poison stacks
                     if(gs.enObj.poisonStacks > 0){
+
                         //Reduce random stat by 1 per posion stack
                         for(i = 0; i < gs.enObj.poisonStacks; i++){
-                            let statRoll = rng(5)
+
+                            //On poison resolution passive check
+                            resolveOnPoisonStackCalculation()
+
+                            let statRoll = rng(6)
                                 
                             if       (statRoll == 2){
                                 changeStat('def', -1, 'enemy')
@@ -1094,12 +1113,10 @@
                                 changeStat('dice', -1, 'enemy')
                                 gs.logMsg.push(`poison: -1 dice. ${gs.enObj.poisonStacks - 1} stacks remaining`)
 
-                            }else if (statRoll == 5){ //20% to increase poison stacks
-                                gs.enObj.poisonStacks += 1
-                                gs.logMsg.push(`poison: +1 stack. ${gs.enObj.poisonStacks - 1} stacks remaining`)
                             }else {
                                 changeStat('life', -1, 'enemy')
                                 gs.logMsg.push(`poison: -1 life. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+
                             }
                         }
 
@@ -1112,7 +1129,8 @@
                             gs.logMsg.push(`poison buff removed`)
                         }
                     }
-                    //Delay poison by 1 sturn via applied poison stacks
+
+                    //Delay poison by 1 turn via appliedPoisonStacks var
                     if(gs.enObj.appliedPoisonStacks > 0){
                         gs.enObj.poisonStacks += gs.enObj.appliedPoisonStacks
                         gs.enObj.appliedPoisonStacks = 0

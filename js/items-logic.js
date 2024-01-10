@@ -98,7 +98,7 @@ function calcCost(type, itemId){
 
         //On action use passives
         //Needed here due to charge recovery passive
-        resolveOnUsePassives()
+        resolveOnChargeResolution()
 
         action.actionCharge--
 

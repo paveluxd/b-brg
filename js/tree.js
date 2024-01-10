@@ -310,7 +310,7 @@ let prefix = 'treenode_'
 
                     //Add class for small travel nodes
                     // console.log(treeObjNode.imgPath)
-                    if(['pow','def','tra','lif','inv','slo','dic','cha'].indexOf(treeObjNode.imgPath) > -1){
+                    if(['pow','def','tra','lif','inv','slo','dic','cha','sta'].indexOf(treeObjNode.imgPath) > -1){
                         el(`${prefix}${column}-${row}`).classList.add('compact-node')
                     }
                 }
@@ -534,11 +534,55 @@ let prefix = 'treenode_'
 
 
 //Resolve passive checks
+    //After item use
+    function resolveAfterBeingHit(){
+        gs.plObj.treeNodes.forEach(node => {
+            if(node.id == 'T24'){
+
+                //Check item type (due to itemless actions)
+                if(gs.sourceAction.tags.includes('block') == false) return
+
+                console.log(gs.plObj.dmgDone, gs.plObj.dmgTaken);
+
+                // gs.plObj.dmgDone += gs.plObj.dmgTaken
+
+                changeStat('life', -gs.enObj.dmgDone, 'enemy')
+
+                //Log
+                gs.logMsg.push(`${node.name}: ${node.desc}`)
+
+            }
+        })
+    }
+
     //On-hit check
     function resolveOnHitPassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 'T8'){//leech
+            if      (node.id == 'T8'){//leech
                 restoreLife(node.val)
+
+                //Log
+                gs.logMsg.push(`${node.name}: ${node.desc}`)
+
+            }else if(node.id == 'T17'){
+
+                //Check item type (due to itemless actions)
+                let item = findItemByAction(gs.sourceAction)
+                if(item == undefined) return
+                if(['club','mace'].includes(item.itemName) == false) return
+
+                gs.plObj.dmgDone += 1
+
+                //Log
+                gs.logMsg.push(`${node.name}: ${node.desc}`)
+
+            }else if(node.id == 'T28'){
+
+                //Check item type (due to itemless actions)
+                if(gs.enObj.def < 1) return
+
+                changeStat('def', -1,'enemy')
+                // gs.enObj.def -= 1
 
                 //Log
                 gs.logMsg.push(`${node.name}: ${node.desc}`) 
@@ -546,9 +590,9 @@ let prefix = 'treenode_'
         })
     }
     //On-action use
-    function resolveOnUsePassives(){
+    function resolveOnChargeResolution(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 'T10'){
+            if     (node.id == 'T10'){//Careful use
                 if(rng(100) < node.val){
 
                     //Check item type (due to itemless actions)
@@ -558,7 +602,7 @@ let prefix = 'treenode_'
                     gs.sourceAction.actionCharge++
                 }
             }
-            if(node.id == 'T11'){
+            else if(node.id == 'T11'){//Librarian
                 if(rng(100) < node.val){
 
                     //Check item type (due to itemless actions)
@@ -569,7 +613,7 @@ let prefix = 'treenode_'
                     gs.sourceAction.actionCharge += 2
                 }
             }
-            if(node.id == 'T12'){
+            else if(node.id == 'T12'){//perfect block
                 
                 if(!gs.sourceAction.tags.includes('block')) return
                 if(gs.plObj.roll != gs.enObj.roll) return
@@ -582,7 +626,7 @@ let prefix = 'treenode_'
                 gs.logMsg.push(`${node.name}: ${node.desc}`) 
                 
             }
-            if(node.id == 'T13'){
+            else if(node.id == 'T13'){//perfect strike
                 
                 if(!gs.sourceAction.tags.includes('attack')) return
                 if(gs.plObj.roll != gs.enObj.roll) return
@@ -598,10 +642,28 @@ let prefix = 'treenode_'
         })
         
     }
+    //Start of combat
+    function resolveStartOfCombatPassives(){
+        gs.plObj.treeNodes.forEach(node => {
+            if(      node.id == 'T22'){//stealth
+                gs.enObj.forcedAction = 'sleep'
+
+                //Log
+                gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+            }else if(node.id == 'T21' && gs.plObj.power == 0){//static power
+
+                console.log(1);
+                changeStat('power', 1, 'player')
+                
+                //Log
+                gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+            }
+        })     
+    }
     //End of combat check
     function resolveEndOfCombatPassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 'T7'){//recovery
+            if(node.id == 'T07'){//recovery
 
                 restoreLife(node.val)
 
@@ -613,7 +675,7 @@ let prefix = 'treenode_'
     //On death
     function resolveOnDeathPassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if(node.id == 'T9' && node.activated != true){//recovery
+            if(node.id == 'T09' && node.activated != true){//recovery
 
                 gs.plObj.life = node.val
 
@@ -645,6 +707,17 @@ let prefix = 'treenode_'
                 //Log
                 gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
             }
+            else if(node.id == 'T29' && stat == 'power' && value > 0){//power armor
+
+                gs.plObj['def'] += 1
+
+                //Trigger floating number
+                gs.plObj[`defChangeMarker`] = true
+                gs.plObj[`defChange`] += 1
+
+                //Log
+                gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+            }
         }) 
 
         return val
@@ -652,7 +725,7 @@ let prefix = 'treenode_'
     //On dice roll
     function resolvePostRollTreePassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if    (node.id == 'T16' && gs.plObj.roll == 1){//scholar
+            if      (node.id == 'T16' && gs.plObj.roll == 1){//scholar
                 let negativeStats = []
 
                 //Check if player has a negative stat
@@ -668,8 +741,31 @@ let prefix = 'treenode_'
 
                 //Log
                 gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
+            }else if(node.id == 'T18'){//def recovery
+
+                //Check if player has a negative stat
+                if(gs.plObj.def > -1) return
+
+                changeStat('def', 1, 'player')
+
+                //Log
+                gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
             }
         }) 
+    }
+    //On poison calculation
+    function resolveOnPoisonStackCalculation(){
+        gs.plObj.treeNodes.forEach(node => {
+            if    (node.id == 'T26'){//plague
+
+                let roll = rng(5)
+
+                if (roll == 5){ //20% to increase poison stacks
+                    gs.enObj.poisonStacks += 1
+                    gs.logMsg.push(`poison: +1 stack. ${gs.enObj.poisonStacks - 1} stacks remaining`)
+                }
+            }
+        })
     }
 
 
@@ -703,7 +799,7 @@ let prefix = 'treenode_'
         
         /* 6*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '4-6_def_RT-LD'          , /*----------------------*/
         /* 7*/ '1-7_def_T-D-R'          , '2-7_T18_L'              , '3-7_T24_RT'             , '4-7_def_R-D'            , '5-7_def_T-L-D'          ,
-        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '4-8_T37_T'              , /*----------------------*/
+        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '4-8_T15_T'              , /*----------------------*/
         /* 9*/ '1-9_pow_T-R'            , /*----------------------*/ '3-9_pow_L-R'            , /*----------------------*/ '5-9_pow_T-R-L'          ,
 
         // /*10*/ /*----------------------*/ /*----------------------*/ '3-10_T19_T'             , /*----------------------*/ /*----------------------*/
@@ -715,7 +811,7 @@ let prefix = 'treenode_'
         // Guardian - Crusader intersection 
         //                                 6                          7                          8
         /* 5*/ /*                      */ /*----------------------*/ '7-5_T05_R-L'            , /*----------------------*/ /*                      */
-        /* 6*/ /*                      */ /*----------------------*/ '7-6_T20_R'              , '8-6_inv_RT-L'           , /*                      */
+        /* 6*/ /*                      */ /*----------------------*/ '7-6_T02_R'              , '8-6_inv_RT-L'           , /*                      */
         /* 7*/ /*                      */ /*----------------------*/ /*----------------------*/ '8-7_inv_D-R'            , /*                      */
         /* 8*/ /*                      */ /*----------------------*/ /*----------------------*/ '8-8_T29_T'              , /*                      */
         /* 9*/ /*                      */ /*----------------------*/ '7-9_pow_R-L'            , /*----------------------*/ /*                      */
@@ -734,9 +830,9 @@ let prefix = 'treenode_'
         /* 4*/ /*----------------------*/ /*----------------------*/ '11-4_T13_D'             , /*----------------------*/ /*----------------------*/
         /* 5*/ '9-5_lif_T-R-D-L-RD-LD'  , /*----------------------*/ '11-5_lif_T-R-L'         , /*----------------------*/ '13-5_lif_T-R-D-L-LD'    ,
 
-        /* 6*/ /*----------------------*/ '10-6_lif_LT-R'          , '11-6_T34_L'             , '12-6_lif_RT-LD'         , /*----------------------*/
+        /* 6*/ /*----------------------*/ '10-6_lif_LT-R'          , '11-6_T09_L'             , '12-6_lif_RT-LD'         , /*----------------------*/
         /* 7*/ '9-7_lif_T-D-L'          , /*----------------------*/ '11-7_T28_RT'            , '12-7_lif_R-D'           , '13-7_lif_T-D-L'         ,
-        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '12-8_T30_T'             , /*----------------------*/
+        /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '12-8_T21_T'             , /*----------------------*/
         /* 9*/ '9-9_lif_T-R-L'          , /*----------------------*/ /*----------------------*/ /*----------------------*/ '13-9_lif_T-R-L'         ,
 
         // /*10*/ /*----------------------*/ /*----------------------*/ '11-10_T04_T'            , /*----------------------*/ /*----------------------*/
@@ -750,7 +846,7 @@ let prefix = 'treenode_'
         /* 5*/ /*                      */ /*----------------------*/ '15-5_T38_R-L'           , /*----------------------*/ /*                      */ 
         /* 6*/ /*                      */ /*----------------------*/ '15-6_T06_R'             , '16-6_inv_L-RT'          , /*                      */
         /* 7*/ /*                      */ /*----------------------*/ /*----------------------*/ '16-7_inv_R-D'           , /*                      */
-        /* 8*/ /*                      */ /*----------------------*/ /*----------------------*/ '16-8_T36_T'             , /*                      */
+        /* 8*/ /*                      */ /*----------------------*/ /*----------------------*/ '16-8_T11_T'             , /*                      */
         /* 9*/ /*                      */ /*----------------------*/ '15-9_dic_R-L'           , /*----------------------*/ /*                      */
 
         // /*10*/ /*                      */ /*----------------------*/ '15-10_T35_T'            , /*----------------------*/ /*                      */
@@ -767,8 +863,8 @@ let prefix = 'treenode_'
         /* 4*/ /*----------------------*/ /*----------------------*/ '19-4_T14_D'             , /*----------------------*/ /*----------------------*/
         /* 5*/ '17-5_slo_T-R-D-L-LD-RD' , /*----------------------*/ '19-5_slo_T-R-L'         , /*----------------------*/ '21-5_slo_T-D-L-LD'      ,
 
-        /* 6*/ /*----------------------*/ '18-6_slo_R-LT'          , '19-6_T26_L'             , '20-6_slo_LD-RT'         , /*----------------------*/
-        /* 7*/ '17-7_slo_T-D-L'         , /*----------------------*/ '19-7_T27_RT'            , '20-7_slo_D-R'           , '21-7_slo_T-D-L'         ,
+        /* 6*/ /*----------------------*/ '18-6_slo_R-LT'          , '19-6_T08_L'             , '20-6_slo_LD-RT'         , /*----------------------*/
+        /* 7*/ '17-7_slo_T-D-L'         , /*----------------------*/ '19-7_T26_RT'            , '20-7_slo_D-R'           , '21-7_slo_T-D-L'         ,
         /* 8*/ /*----------------------*/ /*----------------------*/ /*----------------------*/ '20-8_T22_T'             , /*----------------------*/
         /* 9*/ '17-9_dic_T-R-L'         , /*----------------------*/ '19-9_dic_R-L'           , /*----------------------*/ '21-9_dic_T-L'           ,
 
@@ -859,14 +955,14 @@ let prefix = 'treenode_'
     //GUARDIAN d4
         //sq1
         {  id:'T17', name:'blunt weapon mastery',
-            desc:'mace, club and hammer deal 1 extra damage',
+            desc:'maces, clubs deal 1 extra damage',
             val:1,
 
         },{id:'T03', name:'superior defense',
             desc:'gain 1 base def',
             passiveStats:[{stat:'def',   value:1}],
 
-        },{id:'T12',name:'perfect block',
+        },{id:'T12', name:'perfect block',
             desc:'blocking an enemy attack with matching dice roll, will reduce enemy power by 2',
             val:2,
 
@@ -875,14 +971,12 @@ let prefix = 'treenode_'
         {  id:'T18',name:'def recovery',
             desc:'recover 1 def if def is negative',
 
-        },{id:'T19',name:'layered defense',
-            desc:'you can equip multiple body armors',
-            val:2,
-
         },{id:'T15',name:'bastion',
             desc:'whenever you gain def, gain 1 extra point',
             val: 1,
 
+        },{id:'T24',name:'reflect',
+            desc:'when you block, unblocked dmg is reflected to enemy',
         },
 
         //Intersection 
@@ -894,6 +988,9 @@ let prefix = 'treenode_'
             desc:'increase base life by 10%',
             passiveStats:[{stat:'life%', value:10}],
 
+        },{id:'T29', name:'power armor',
+            desc:'gain 1 def whenever you gain power',
+            val: 1,
         },
 
         
@@ -914,6 +1011,11 @@ let prefix = 'treenode_'
 
         {  id:'T09', name:'reborn',
             desc:'once per encounter, when you reach 0 life, survive with 1 life',
+
+        },{id:'T21', name:'static power',
+            desc:'if your power is 0 at the start of the fight, gain 1 power',
+        },{id:'T28', name:'def break',
+            desc:'when attacking an enemy, reduce their def by 1 extra point',
 
         },
 
@@ -962,10 +1064,7 @@ let prefix = 'treenode_'
 
 
         //Prototype
-        {  id:'T00', name:'def break',
-            desc:'Break 1 extra def on hit',
-
-        },{id:'T00', name:'power armor',
+        {  id:'T00', name:'power armor',
             desc:'Gain 1 extra def per power',
 
         },{id:'T00', name:'absolute barrier',
@@ -985,24 +1084,21 @@ let prefix = 'treenode_'
         },{id:'T20', name:'life gain',
             desc:'whenever you gain life, gain 1 extra',
 
-        },{id:'T29', name:'power armor',
-            desc:'gain 1 def whenever you gain power',
-        },{id:'T25',name:'shield mastery',
+        },{id:'T25', name:'shield mastery',
             desc:'your block actions additionally reduce attack damage by 1',
             val: 1,
 
         },{id:'T20', name:'life gain',
             desc:'whenever you gain life, gain 1 extra',
 
-        },{id:'T28', name:'def break',
-            desc:'when attacking an enemy, reduce their def by 1 extra point',
-
         },{id:'T30', name:'growth',
             desc:'gain 2 extra life from lesser life nodes',
         },{id:'T04', name:'sword mastery',
             desc:'..sword action.. also gains extra damage on roll 5',
 
-        },{id:'T21', name:'static power',
-            desc:'if your power is 0 at the start of the fight, gain 1 power',
-        },
+        },{id:'T19', name:'layered defense',
+            desc:'you can equip multiple body armors',
+            val:2,
+
+        }
     ]

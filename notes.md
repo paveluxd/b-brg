@@ -15,6 +15,7 @@
 - Added three classes. Guardian, Crusader and Wanderer, each with their unique starting items, stats and position on the tree.
 - Bow action charges reuced from 60 to 40.
 - Item action now roll random values.
+- New passives for all classes added to the game.
 
 **To-do ideas**
 - Bosses at the end of the stage.

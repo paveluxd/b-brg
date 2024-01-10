@@ -371,7 +371,7 @@
             }
     }
 
-//From main.js
+//From main-and-combat.js
     //Enemy action logic
     function enemyActionLogic(){
         //State checkd. Deals with stun and extra actions.
