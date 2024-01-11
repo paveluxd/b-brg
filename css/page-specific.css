@@ -898,7 +898,7 @@
         padding: 0;
         height: 48px;
         width: 48px;
-        border-radius: 99px;
+        border-radius: 0px;
     }
     .compact-node img{
         height: 32px;

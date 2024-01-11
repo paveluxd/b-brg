@@ -955,7 +955,7 @@ let prefix = 'treenode_'
     //GUARDIAN d4
         //sq1
         {  id:'T17', name:'blunt weapon mastery',
-            desc:'maces, clubs deal 1 extra damage',
+            desc:'maces and clubs deal 1 extra damage',
             val:1,
 
         },{id:'T03', name:'superior defense',
@@ -968,7 +968,7 @@ let prefix = 'treenode_'
 
         },
         
-        {  id:'T18',name:'def recovery',
+        {  id:'T18',name:'living armor',
             desc:'recover 1 def if def is negative',
 
         },{id:'T15',name:'bastion',
@@ -980,11 +980,11 @@ let prefix = 'treenode_'
         },
 
         //Intersection 
-        {  id:'T05', name:'dice',
+        {  id:'T05', name:'greater dice',
             desc:'gain 1 to base dice',
             passiveStats:[{stat:'dice-mod',  value:1}],
 
-        },{id:'T02', name:'life %',
+        },{id:'T02', name:'greater life',
             desc:'increase base life by 10%',
             passiveStats:[{stat:'life%', value:10}],
 
