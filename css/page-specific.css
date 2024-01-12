@@ -23,16 +23,10 @@
     }
 
     .map-frame{
-
         min-width:100%;
-        /* min-width: 361px; */
         height: 100%;
-
-        /* padding: 200px 0px 140px 0px; */
-        /* margin: auto; */
         display: flex;
         justify-content: center;
-
         overflow: scroll;
     }
     .map-tile{
@@ -40,13 +34,11 @@
         height: 120px;
 
         border: none;
-        /* box-shadow: inset 2px 2px 0px var(--map-frame); */
         border-left: 1px dashed var(--map-frame) !important;
         border-bottom: 1px dashed var(--map-frame) !important;
         background-color: var(--w0);
 
         position: relative;
-        /* transition: all 200ms; */
         box-shadow: none;
     }
     .map-tile:hover{
@@ -849,20 +841,21 @@
         grid-template-columns: repeat(var(--tree-columns),1fr);
         grid-template-rows:    repeat(var(--tree-rows),   1fr);
 
-        margin: 160px 24px 92px 24px;
+        margin: 160px 24px 160px 24px;
         cursor: grab;
     }
 
     #tree-node-popup{
         width: calc(100% - 16px);
         max-width: 400px;
+        min-height: 72px;
 
-        background-color: black;
-        padding: 8px;
+        background-color: var(--b80);
+        padding: 4px 8px;
         color: var(--w80);
 
         position: absolute;
-        top:  8px;
+        bottom:  72px;
         left: 50%;
         transform: translateX(-50%);
 
@@ -870,6 +863,9 @@
         justify-content: space-between;
         z-index: 2;
 
+    }
+    #tree-node-popup button{
+        margin-top: 4px;
     }
 
     /* Tree rendering */

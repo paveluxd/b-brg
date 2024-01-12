@@ -5,7 +5,8 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- 
+- New skill tree icons and UI updates.
+- Visiting a camp now restores ~20% of the max life.
 
 **To-do ideas**
 - Bosses at the end of the stage.
