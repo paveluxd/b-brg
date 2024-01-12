@@ -26,6 +26,7 @@
 <rect y="5" width="2" height="2" fill="black"/>
 <path opacity="0.5" d="M7 10H-2V6H5L7 10Z" stroke="black" stroke-width="2"/>
 </g>
+<rect x="1" y="1" width="42" height="42" stroke="black" stroke-opacity="0.4" stroke-width="2"/>
 </g>
 <defs>
 <linearGradient id="paint0_linear_315_143967" x1="22" y1="0" x2="22" y2="68" gradientUnits="userSpaceOnUse">
