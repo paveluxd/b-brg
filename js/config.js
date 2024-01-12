@@ -12,7 +12,7 @@ let config = {
     //Progression
         expBase: 2,
         expMult: 1,
-        expExpo: 0.8,
+        expExpo: 0.4,
         basePassieSkillPoints: 0,
 
     //Game
@@ -67,7 +67,7 @@ config = {
     //Progression
         expBase: 2,
         expMult: 1,
-        expExpo: 0.8,
+        expExpo: 0.4,
         basePassieSkillPoints: 0,
 
     //Game

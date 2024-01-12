@@ -1009,7 +1009,7 @@ let prefix = 'treenode_'
 
         },
 
-        {  id:'T09', name:'reborn',
+        {  id:'T09', name:'undying',
             desc:'once per encounter, when you reach 0 life, survive with 1 life',
 
         },{id:'T21', name:'static power',
