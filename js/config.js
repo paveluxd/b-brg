@@ -68,11 +68,11 @@ config = {
         expBase: 2,
         expMult: 1,
         expExpo: 0.4,
-        basePassieSkillPoints: 0,
+        basePassieSkillPoints: 99,
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'tree', 
+        showScreen: 'map', 
         clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,
@@ -82,6 +82,7 @@ config = {
         stGuardian: [
             'club',
             'shield',
+            'sickle'
         ],
         stCrusader: [
             'sword',
@@ -112,9 +113,9 @@ config = {
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
             // {tileId:`11-3`, tileType: 'dungeon-1', enemyUnit: false},
             // {tileType: 'enchanter-1', enemyUnit: false},
-            // {tileType: 'merchant-1'},
+            {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-            // {tileType:'lake-1', tileId:`12-2`},
+            // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
         ],
 
     //Items

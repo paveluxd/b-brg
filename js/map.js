@@ -5,11 +5,11 @@ class MapObj{
         //Background image ids
         let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
         let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
-        let tileSetCommon = 'casino, blacksmith, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
+        let tileSetCommon = 'casino, blacksmith, camp-1, camp-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
         let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
         let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7, road-1'.split(', ')
         
-        let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, campfire, monument, lake, house, dungeon'
+        let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, camp, monument, lake, house, dungeon'
         
         //Set map dimensions
         this.xAxis = config.mapX //+ gs.stage
@@ -573,7 +573,7 @@ class MapObj{
             //Open merchant screen
             screen('enchanter')
         }
-        //Lore
+
         else if (eventType.startsWith('monument')){
             
             //Get event id from tile
@@ -718,6 +718,23 @@ class MapObj{
 
             //Load map
             initGame()
+        }else if(eventType.startsWith('camp')){
+
+            if(gs.playerLocationTile.visited == true){
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
+                el('event-desc').innerHTML =`There is nothing in here.`
+                
+            }else{
+                let heal = rng(Math.round(gs.plObj.life / 1.5), gs.plObj.life/2)
+    
+                el('event-cover').setAttribute('src',`./img/bg/camp.svg`)
+                el('event-desc').innerHTML =`You approach a camp and rest,<br> you feel better ( +${heal}<img src='./img/ico/life.svg'>)</b>.`
+                
+                restoreLife(heal)
+            }
+           
+            screen('event-screen')
+            syncUi()
         }else{
             showAlert(`You look around.<br>There is nothing to see here.`)
         }
@@ -728,47 +745,47 @@ class MapObj{
 
     let eventRef =[
         {
-            'eventId': 0,
-            'eventDesc': `
+            eventId: 0,
+            eventDesc: `
                 You notice a monolith, but it is heavily damaged. 
                 Something was depicted on it, but it's very hard to decipher.
             `
         },{
-            'eventId': 1,
+            eventId: 1,
             'eventDesc': `
                 You notice a large dark monolith in the middle of the area.
                 You approach it and see an engraved image...
             `
         },{
-            'eventId': 2,
-            'eventDesc': `
+            eventId: 2,
+            eventDesc: `
                 You notice a large dark monolith in the middle of the area.
                 You approach it and see an engraved image...
             `
         },
         //Monolith
         {     eventId: 3,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"This palce is not a place of honour..."</h3>
             `
         },{   eventId: 4,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"No highly esteemed deed is commemorated here. Nothing valued...</h3>
 
             `
         },{   eventId: 5,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"Nothing valued is here. What is here..."</h3>
             `
         },{   eventId: 6,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"What is here is dangerous and repulsive to us. This message..."</h3>
             `
@@ -779,8 +796,8 @@ class MapObj{
                 <h3>"This message is a warning..."</h3>
             `
         },{   eventId: 8,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"...warning about danger..."</h3>
             `
