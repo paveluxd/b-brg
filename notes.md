@@ -7,18 +7,20 @@
 **Update notes**
 - New skill tree icons and UI updates.
 - Visiting a camp now restores ~20% of the max life.
+- Each game stage now has limited pool of enemy types, each stage introduces new, stronger enemy type.
+- *Wooden shield* item added to the game.
+- *Pendant* item added to the game.
+- Fixed a bug when dungeon will spawn more than 1 boss.
+- Added unique boss units at the end of every stage.
 
 **To-do ideas**
 - Bosses at the end of the stage.
 - Boss profiles.
 - Remove spell books.
-- Balance d12 combos bow, shield?
 - Passive: +1 exp when you use a scroll.
-- Use 'order' to reorder actions in action bar.
-- Do burning dot shit.
+- Do burning dot.
 - Add coin related passive.
 - Item that hits through block enemy action.
-- Remove power stacking.
 - Add treasure items that take N inventory capacity and sell for a lot of coins.
 - Add sharpening stone to repair weapons.
 - Add trap tile that requires agility roll or minigame.

@@ -61,19 +61,16 @@
 
 //INITITATE COMBAT
     function initiateCombat(){
-        //Log to debug the combat issue
-        console.log('Combat initiated.');
-
-        //1.Create cinbat object.
+        console.log('Initiating combat');
+        
+        //1.Reset variables for new encounter.
             gs.inCombat = true
             gs.combatTurn = 1
-
-        //2.Reset variables for new encounter.
             if(typeof gs.encounter !== 'number'){
                 gs.encounter = 1
             }  
 
-        //3. Reset flat stats
+        //2. Reset flat stats
         // This was set after enemy generation, moved up due to static power passive.
             resetFlatStats()
 
@@ -531,6 +528,13 @@
                 //Log
                 gs.logMsg.push(`Blocked ${gs.plObj.roll} dmg.`)
     
+            }else if(paKey =='a69'){// 'defend' 'wooden shield'
+    
+                gs.enObj.dmgDone -= actionMod
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
+    
             }else if(paKey =='a44'){// "restoration" "scroll of restoration"
 
                 let restoredPoints = 0
@@ -592,6 +596,19 @@
     
                 //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
                 recalcEneAction()
+
+            }else if(paKey =='a70'){// pendant/charge
+            
+                let powerRef = gs.plObj.power
+                gs.plObj.power = gs.enObj.power
+                gs.enObj.power = powerRef
+    
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
+    
+                //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
+                recalcEneAction()
+                
             }else if(paKey =='a53'){// "transmute" "alchemists paKey"
                 
                 //Condition check

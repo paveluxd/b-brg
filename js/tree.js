@@ -997,8 +997,8 @@ let prefix = 'treenode_'
 
     //CRUSADER d6
         {  id:'T01', name:'superior life' ,
-            desc:'add 6 base life',
-            passiveStats:[{stat:'life',  value:6}],
+            desc:'add 12 base life',
+            passiveStats:[{stat:'life',  value:12}],
 
         },{id:'T07', name:'recovery',
             desc:'restore 3 life at end of the combat',

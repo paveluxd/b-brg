@@ -91,6 +91,7 @@ class MapObj{
                     rollTarget = gs.dungeonEnemySpawnFrequency
                 }
 
+                //If roll passes the treshold enemy spawn value -> add enemy to tile
                 if (rollForEne < rollTarget){ 
                     let eneQuant = rng(config.enemyPartyCap)
                     tile.enemyUnit = true
@@ -113,82 +114,102 @@ class MapObj{
 
         //MANDATORY TILES
             //Map position is set in last main-and-combat.js
-            let overrides = [
-                {//Player
-                    tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
-                    tileType: `entrance-1`, 
-                    playerUnit: true, 
-                    enemyUnit: false, 
-                    flip: false
-                }, 
-                {//Exit
-                    tileId:`${Math.round(this.xAxis/2)}-1`, 
-                    tileType: 'exit-1', 
-                    enemyUnit: true, 
-                    enemyQuant: config.exitDefenders + gs.stage,
-                    flip: false
-                },
-            ]
-
-        //Dungeon overrides
-            if(type == 'dungeon'){
-                overrides = [
+                let overrides = [
                     {//Player
-                        tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`,
-                        tileType: `dungeon-exit`, 
+                        tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
+                        tileType: `entrance-1`, 
                         playerUnit: true, 
                         enemyUnit: false, 
+                        flip: false
                     }, 
                     {//Exit
                         tileId:`${Math.round(this.xAxis/2)}-1`, 
+                        tileType: 'exit-1', 
                         enemyUnit: true, 
                         enemyQuant: 1,
-                        enemyQuant: config.exitDefenders + gs.stage,
+                        flip: false,
                         boss: true,
                     },
                 ]
-            }
 
-        //Adds mandatory tiles from config
-            config.mandatoryTiles.forEach(tile => {
-                if(type == 'dungeon') return
-                overrides.push(tile)
-            })
-
-            overrides.forEach(reqTile => {
-            
-                //Find tile by id
-                let tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
-                // console.log(reqTile, tile);
-
-                //If tiles overlap, pick new random id.
-                //Inf loop will check for new random id
-                if(tile == undefined || tile.required){
-                    while(true){
-
-                        //Picks random tile on the map
-                        reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
-                        tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
-
-                        //Checks if tile is not required
-                        if(!tile.required){
-                            break;
-                        }
-                    }
+            //Dungeon overrides
+                if(type == 'dungeon'){
+                    console.log(1);
+                    overrides = [
+                        {//Player
+                            tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`,
+                            tileType: `dungeon-exit`, 
+                            playerUnit: true, 
+                            enemyUnit: false, 
+                        }, 
+                        {//Exit (boss tile)
+                            tileId:`${Math.round(this.xAxis/2)}-1`, 
+                            enemyUnit: true, 
+                            enemyQuant: 1,
+                            boss: true,
+                        },
+                    ]
                 }
 
-                //Add required tile for loop above
-                tile.required = true
-
-                //Set properties
-                //Gets all props and checks for defined ones.
-                //***Add this for all other class object overrides.
-                Object.getOwnPropertyNames(reqTile).forEach(property =>{
-                    if(reqTile[property] != undefined){
-                        tile[property] = reqTile[property]
-                    }
+            //Adds mandatory tiles from config
+                config.mandatoryTiles.forEach(tile => {
+                    if(type == 'dungeon') return //why dungeon was excluded?
+                    overrides.push(tile) //add mandatory tile to required tiles arr
                 })
-            })
+
+            //Add mandatory tiles from stage profile
+                //Resolve undefined arr
+                let mandatoryTilesRefArr
+                if(
+                    typeof stageProfileRef[`stage${gs.stage}`] == 'undefined' ||
+                    typeof stageProfileRef[`stage${gs.stage}`].mandatoryTiles == 'undefined'
+                ){
+                    mandatoryTilesRefArr = stageProfileRef.genericMap.mandatoryTiles
+                }else{
+                    mandatoryTilesRefArr = stageProfileRef[`stage${gs.stage}`].mandatoryTiles
+                }
+
+                // console.log(mandatoryTilesRefArr, stageProfileRef.genericMap.mandatoryTiles);
+                mandatoryTilesRefArr.forEach(tile => {
+                    if(type == 'dungeon') return //why dungeon was excluded?
+                    overrides.push(tile) //add mandatory tile to required tiles arr
+                })
+
+            //Add all mandatory tiles from overrides arr
+                overrides.forEach(reqTile => {
+                
+                    //Find tile by id
+                    let tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
+                    // console.log(reqTile, tile);
+
+                    //If mandatory tiles overlap, picks new random tile id.
+                    //Inf loop will check for new random id
+                    if(tile == undefined || tile.required){
+                        while(true){
+
+                            //Picks random tile on the map
+                            reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
+                            tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
+
+                            //Checks if tile is not required
+                            if(!tile.required){
+                                break;//Stops the loop
+                            }
+                        }
+                    }
+
+                    //Add required tile for loop above
+                    tile.required = true
+
+                    //Set properties
+                    //Gets all props and checks for defined ones.
+                    //***Add this for all other class object overrides.
+                    Object.getOwnPropertyNames(reqTile).forEach(property =>{
+                        if(reqTile[property] != undefined){
+                            tile[property] = reqTile[property]
+                        }
+                    })
+                })
     }
 }
 
@@ -638,12 +659,12 @@ class MapObj{
             let roll = rng(5)
 
             if(gs.playerLocationTile.visited == true || roll == 5){
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`There is nothing in here.`
             }
             else if(roll == 4){
                 let item = new ItemObj()
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty. You look around and find <b>${item.itemName}</b>.`
 
                 //Add item to the inventory.
@@ -651,14 +672,14 @@ class MapObj{
             }
             else if(roll == 3){
                 let heal = rng(Math.round(gs.plObj.life/3))
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty and find a <b>medical kit (+${heal}<img src='./img/ico/life.svg'>)</b>.`
                 
                 restoreLife(heal)
             }
             else {
                 let dmg = rng(Math.round(gs.plObj.life/2))
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You enter an empty house, and step into a <b>spike trap hole (-${dmg} <img src='./img/ico/life.svg'>)</b>.`
 
                 gs.plObj.life -= dmg
@@ -822,4 +843,51 @@ class MapObj{
         gs.maps = [] 
 
         initGame()         
+    }
+
+    //Stage profiles
+    let stageProfileRef = {
+        genericMap:{
+            mandatoryTiles:[
+                {tileType: 'camp-1', tileId:`1-12`,enemyUnit: false},
+            ]
+        },
+        stage1:{
+            boss:['reaper'],
+            enemy:['minion','balanced'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },
+        stage2:{
+            boss:['protector'],
+            enemy:['tank','balanced'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },
+        stage3:{
+            boss:['mech'],
+            enemy:['tank','assassin'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },
+        stage4:{
+            boss:['destiny'],
+            enemy:['mage','assasin'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },stage5:{
+            boss:['valc'],
+            enemy:['mage','assasin','gladiator']
+        },
+        stage5:{
+            boss:['meat'],
+            enemy:['mage','assasin','gladiator', 'tank']
+        },
+        stage6:{
+            enemy:['mage','assasin','gladiator', 'tank']
+        },
     }

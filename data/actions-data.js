@@ -1,5 +1,27 @@
 let actionsRef = [
   {
+    "actionName": "transfer",
+    "tags": "utility",
+    "desc": "swap your power with enemy",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 12,
+    "cooldown": "",
+    "keyId": 70,
+    "actionType": ""
+  },
+  {
+    "actionName": "defend",
+    "tags": "block, defensive",
+    "desc": "reduce incoming dmg by 3",
+    "passiveStats": "",
+    "actionMod": 3,
+    "actionCharge": 30,
+    "cooldown": "",
+    "keyId": 69,
+    "actionType": ""
+  },
+  {
     "actionName": "stress",
     "tags": "utility",
     "desc": "enemy won't repeat this turns action while this is on cooldown (3-6 turns)",
