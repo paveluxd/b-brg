@@ -186,7 +186,7 @@ function calcCost(type, itemId){
 
             //Gen item per quant value in function
             for(i = 0; i < quant; i++){ 
-                console.log(gs.enObj.profile);
+                // console.log(gs.enObj.profile);
 
                 //Mod rewards if boss unit
                 if(typeof gs.enObj !== 'undefined' && Object.keys(profileRef.boss).includes(gs.enObj.profile.profileId)){

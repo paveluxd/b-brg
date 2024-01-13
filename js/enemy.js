@@ -628,8 +628,8 @@
                 defMod:   2,
                 diceMod:  2,
                 statOverrides: [
-                    'def-3',
-                    'power-0',
+                    'def-2',
+                    'power-2',
                     'life-20',
                     'dice-6'
                 ],
