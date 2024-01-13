@@ -14,7 +14,7 @@ let gs //game state object
             this.enemyAction = [] // Last enemy action.
 
             //Rewards
-            this.flatItemReward  = 3 // Base rewards.
+            this.flatItemReward  = 4 // Base rewards.
             this.flatFoodReward  = 2 // Food per round +1 per enemy.
             this.flatCoinsReward = 3 
             
@@ -29,7 +29,7 @@ let gs //game state object
             
             //Map
                 //Merchant config.
-                this.merchantQuant = 10
+                this.merchantQuant = config.merchantQuant
 
                 //Enemies
                 this.enemySpawnFrequency = config.enSpawnFrequency //30%

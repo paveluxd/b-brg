@@ -164,6 +164,7 @@ function calcCost(type, itemId){
 //Dealing with offered items
     //Gen list
     function genOfferedItemList(quant, event) {
+        console.log(quant,event);
 
         gs.plObj.offeredItemsArr = []
         let generatedReward
@@ -173,22 +174,26 @@ function calcCost(type, itemId){
         if(quant == "all"){//all items for testing
             itemsRef.forEach(item => {
                 generatedReward =  new ItemObj(item.itemName)
-                gs.plObj.offeredItemsArr.push(generatedReward.itemName)
-                
+                gs.plObj.offeredItemsArr.push(generatedReward)
 
+                //Gen item html card elem
+                let rewardElem = genItemCard(generatedReward, 'item-to-buy')
+    
                 //Add card to container
-                el('merchant-container').append(genItemCard(generatedReward, 'item-to-buy'))
+                el('merchant-container').append(rewardElem)
             })
         }else{
 
             //Gen item per quant value in function
             for(i = 0; i < quant; i++){ 
-    
+                // console.log(gs.enObj.profile);
+
                 //Mod rewards if boss unit
-                if(gs.enObj.profile.profileId.includes('boss')){
-                    generatedReward =  new ItemObj(...[,,], 'corrupted')
+                if(typeof gs.enObj !== 'undefined' && Object.keys(profileRef.boss).includes(gs.enObj.profile.profileId)){
+                    generatedReward = new ItemObj(...[,,], 'corrupted')
+                    quant = 2 //Bosses drop 1 corrupted items
                 }else{
-                    generatedReward =  new ItemObj()
+                    generatedReward = new ItemObj()
                 }
     
                 //Add item to reward pool, to find them after item card is selected from html
@@ -638,16 +643,19 @@ function calcCost(type, itemId){
 
     //Item details modal
     function genItemModal(itemId, source){
+        
         let itemModal = el('item-modal')
-
+        
         //Find item object
         let itemObj = findByProperty(gs.plObj.inventory, 'itemId', itemId)
-
+        
         //Search reward pool if reward
         if(source == 'reward' || source == 'merchant'){
             itemObj = findByProperty(gs.plObj.offeredItemsArr, 'itemId', itemId)
-        }
 
+            console.log(itemId, source, itemObj);
+        }
+        
         //Get actions
         let actionSet = ``
 

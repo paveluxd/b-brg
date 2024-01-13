@@ -1,5 +1,14 @@
 let itemsRef = [
   {
+    "itemName": "pendant",
+    "actions": "transfer",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "",
+    "desc": "A set of small steel trinkets on a thin rope.",
+    "itemRarity": ""
+  },
+  {
     "itemName": "wizards hand",
     "actions": "stress",
     "passiveStats": "",
@@ -182,6 +191,14 @@ let itemsRef = [
   {
     "itemName": "spiked shield",
     "actions": "bash",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "off-hand",
+    "desc": "",
+    "itemRarity": ""
+  },{
+    "itemName": "wooden shield",
+    "actions": "defend",
     "passiveStats": "",
     "itemSlot": "",
     "itemType": "off-hand",

@@ -50,14 +50,15 @@ let config = {
         mandatoryTiles:  [],
 
     //Items
-        chargeFloor: 0.5     //Lowes % for item action charge
+        chargeFloor: 0.5,     //Lowes % for item action charge
+        merchantQuant: 10,
 }
 
 // Test config
 // config = {
 //     //Player
-//         life:       40, //40
-//         power:       0,
+//         life:       400, //40
+//         power:       10,
 //         def:         0,
 //         dice:        6,
 //         inventory:  40,
@@ -82,7 +83,7 @@ let config = {
 //         stGuardian: [
 //             'club',
 //             'shield',
-//             'sickle'
+//             'pendant',
 //         ],
 //         stCrusader: [
 //             'sword',
@@ -92,7 +93,7 @@ let config = {
 //             'bow',
 //             'cape',
 //         ],
-//         coins: 0, //rng(12,6),
+//         coins: 90, //rng(12,6),
 //         food:  6, //rng(4,2),
 
 //     //Enemy
@@ -106,18 +107,19 @@ let config = {
 
 //     //Map
 //         mapX:             3, //1
-//         mapY:            12, //Vertical
+//         mapY:             6, //Vertical
 //         exitDefenders:    3,
 //         enemyPartyCap:    3, //25% item reward per enemy
 //         mandatoryTiles: [
 //             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
-//             // {tileId:`11-3`, tileType: 'dungeon-1', enemyUnit: false},
+//             // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
 //             // {tileType: 'enchanter-1', enemyUnit: false},
-//             {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
+//             // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
 //             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
 //             // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
 //         ],
 
 //     //Items
-//         chargeFloor: 0.5     //Lowes % for item action charge
+//         chargeFloor: 0.5,     //Lowes % for item action charge
+//         merchantQuant: 'all',
 // }

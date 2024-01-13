@@ -3,17 +3,18 @@
         constructor(){
             this.level = gs.stage //tileIdRef[1] prev. value.
             
-            //Choose enemy profile
-            if (gs.playerLocationTile.boss){
-                this.profile = bossProfilesRef[rarr(Object.keys(bossProfilesRef))]
-            } else {
-                this.profile = eneProfilesRef[rarr(Object.keys(eneProfilesRef))]
-
-                //For testing combat
-                if(config.forceEnemyProfile != undefined) {
-                    this.profile = eneProfilesRef[config.forceEnemyProfile]
-                }   
+            //Set enemy profile
+            if (gs.playerLocationTile.boss){   
+                this.profile = pickEnemyProfile('boss')
+            } 
+            else {
+                this.profile = pickEnemyProfile('enemy')
             }
+
+            //TESTING: Add specific enemy
+            if(config.forceEnemyProfile != undefined) {
+                this.profile = profileRef['enemy'][config.forceEnemyProfile]
+            }   
 
             //Set stats
             //Get column value to scale mobs
@@ -52,14 +53,50 @@
             //Misc
             this.appliedPoisonStacks = 0
             this.poisonStacks = 0
-            this.crit = false
-            this.state = ''                     //Used for stun, fear etc.
+            this.crit         = false
+            this.state        = ''                     //Used for stun, fear etc.
             this.forcedAction = ''              //For items that force acions
-            this.reflect = this.profile.reflect //Reflect mod
+            this.reflect      = this.profile.reflect //Reflect mod
 
-            this.actionRef = []
-            this.acctionMod = ''
+            this.actionRef    = []
+            this.acctionMod   = ''
+
+            //Override stats from profile obj
+            if(typeof this.profile.statOverrides !== 'undefined'){
+
+                this.profile.statOverrides.forEach(stat =>{
+                    let statArr = stat.split('-')
+                    this[statArr[0]] = statArr[1] * 1
+                })
+
+            }
+
+        } 
+    }
+    
+    //Pick boss or enemy profile
+    function pickEnemyProfile(enemyType) {
+        //enemy type is 'boss' or 'enemy'
+
+        let profile
+
+        //If undefined pick from all profiles
+        if(
+                typeof stageProfileRef[`stage${gs.stage}`] == 'undefined'
+            ||  typeof stageProfileRef[`stage${gs.stage}`][enemyType] == 'undefined'
+        ){
+
+            profile =  profileRef[enemyType][rarr(Object.keys(profileRef[enemyType]))]
+
         }
+        //Pick from map ref obj
+        else{
+
+            profile = profileRef[enemyType][rarr(stageProfileRef[`stage${gs.stage}`][enemyType])]
+
+        }
+
+        return profile
     }
 
     class EnemyActionObj {
@@ -419,203 +456,315 @@
         gs.logMsg.push(`enemy action recalculated`)
     }
 
-    let eneProfilesRef = {
-        balanced: {
-            profileId: 'balanced',
-            lifeMod:  1,
-            powerMod: 1,
-            defMod:   1,
-            diceMod:  1,
-            actionPool: [
-                //Attack
-                    'attack',
-                    // 'final strike', 
-                    // 'combo', 
-                    // 'charge', 
-                
-                //Def
-                    'block', 
-
-                
-                //Hex
-                    'wound',  'shatter',
-                    'weaken', 'shock',
-                    // 'slow', 
-                    // 'drain', 
-                
-                //Buff
-                    // 'fortify', 
-                    // 'empower', 
-                    // 'rush',
-                    // 'recover',
-
-                //Misc
-                    // 'sleep',
-            ]
-        },
-        assassin: {
-            profileId: 'assassin',
-            lifeMod:  1,
-            powerMod: 2,
-            defMod:   1,
-            diceMod:  1,
-            actionPool: [
-                'attack', 
-                'combo',  
-                'final strike',
-
-                'empower', 
-                'rush',
-            ]
-        },
-        tank: {
-            profileId: 'tank',
-            lifeMod:  2.5,
-            powerMod: 0.5,
-            defMod:   3.5,
-            diceMod:  0.25,
-
-            actionPool: [
-                //Attack
-                    'attack',
-                    // 'final strike', 
-                    'combo', 
-                    'charge',                 
-                //Def
-                    'block',                 
-                //Hex
-                    'wound',  'shatter',
-                    // 'weaken', 'shock',
-                    // 'slow', 
-                    // 'drain',                 
-                //Buff
-                    'fortify', 
-                    // 'empower', 
-                    // 'rush',
-                    'recover',
-                //Misc
-                    'sleep',
-            ]
-        },
-        minion: {
-            profileId: 'minion',
-            lifeMod:    1,
-            powerMod: 0.5,
-            defMod:   0.5,
-            diceMod:  0.5,
-            actionPool: [
-                //Attack
-                    'attack',
-                    'final strike', 
-                    // 'combo', 
-                    // 'charge', 
-                //Def
-                    'block', 
-
-                //Hex
-                    // 'wound',  'shatter',
-                    // 'weaken', 'shock',
-                    // 'slow', 
-                    // 'drain', 
-                //Buff
-                    // 'fortify', 
-                    // 'empower', 
-                    // 'rush',
-                    'recover',
-                //Misc
-                    'sleep',
-            ]
-        },
-        mage: {
-            profileId: 'mage',
-            lifeMod:  1,
-            powerMod: 1,
-            defMod:   1,
-            diceMod:  1,
-            actionPool: [
-                //Attack
-                    'attack',
-                    // 'final strike', 
-                    // 'combo', 
-                    // 'charge', 
-                //Def
-                    'block', 
-
-                //Hex
-                    'wound',  'shatter',
-                    'weaken', 'shock',
-                    'slow', 
-                    'drain', 
-                //Buff
-                    // 'fortify', 
-                    // 'empower', 
-                    'rush',
-                    'recover',
-                //Misc
-                    'sleep',
-            ]
-        },
-        gladiator: {
-            profileId: 'gladiator',
-            lifeMod:  1.5,
-            powerMod: 0.5,
-            defMod:   0.5,
-            diceMod:  0.5,
-            reflect:  100,
-            actionPool: [
-                //Attack
-                    'attack',
-                    'final strike', 
-                    // 'combo', 
-                    // 'charge', 
-                //Def
-                    'block', 
-
-                //Hex
-                    'wound',  'shatter',
-                    // 'weaken', 'shock',
-                    // 'slow', 
-                    // 'drain', 
-                //Buff
-                    // 'fortify', 
-                    // 'empower', 
-                    // 'rush',
-                    // 'recover',
-                //Misc
-                    'sleep',
-            ]
-        },
-        
-    }
-
-    let bossProfilesRef = {
-        boss: {   
-            profileId: 'mech-boss',
-            lifeMod:  3,
-            powerMod: 2,
-            defMod:   2,
-            diceMod:  2,
-            actionPool: [
-                //Attack
-                    'attack',
-                    'final strike', 
-                    'combo', 
-                    'charge', 
-                //Def
-                    'block', 
-
-                //Hex
-                    'wound',  'shatter',
-                    'weaken', 'shock',
-                    'slow', 
-                    'drain', 
-                //Buff
-                    'fortify', 
+    let profileRef = {
+        enemy: {
+              balanced:  {
+                profileId: 'balanced',
+                lifeMod:  1,
+                powerMod: 1,
+                defMod:   1,
+                diceMod:  1,
+                actionPool: [
+                    //Attack
+                        'attack',
+                        // 'final strike', 
+                        // 'combo', 
+                        // 'charge', 
+                    
+                    //Def
+                        'block', 
+    
+                    
+                    //Hex
+                        'wound',  'shatter',
+                        'weaken', 'shock',
+                        // 'slow', 
+                        // 'drain', 
+                    
+                    //Buff
+                        // 'fortify', 
+                        // 'empower', 
+                        // 'rush',
+                        // 'recover',
+    
+                    //Misc
+                        // 'sleep',
+                ]
+            },assassin:  {
+                profileId: 'assassin',
+                lifeMod:  1,
+                powerMod: 2,
+                defMod:   1,
+                diceMod:  1,
+                actionPool: [
+                    'attack', 
+                    'combo',  
+                    'final strike',
+    
                     'empower', 
                     'rush',
-                    'recover',
-                //Misc
-                    'sleep',
-            ]
+                ]
+            },tank:      {
+                profileId: 'tank',
+                lifeMod:  2.5,
+                powerMod: 0.5,
+                defMod:   3.5,
+                diceMod:  0.25,
+    
+                actionPool: [
+                    //Attack
+                        'attack',
+                        // 'final strike', 
+                        'combo', 
+                        'charge',                 
+                    //Def
+                        'block',                 
+                    //Hex
+                        'wound',  'shatter',
+                        // 'weaken', 'shock',
+                        // 'slow', 
+                        // 'drain',                 
+                    //Buff
+                        'fortify', 
+                        // 'empower', 
+                        // 'rush',
+                        'recover',
+                    //Misc
+                        'sleep',
+                ]
+            },minion:    {
+                profileId: 'minion',
+                lifeMod:    1,
+                powerMod: 0.5,
+                defMod:   0.5,
+                diceMod:  0.5,
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'final strike', 
+                        // 'combo', 
+                        // 'charge', 
+                    //Def
+                        'block', 
+    
+                    //Hex
+                        // 'wound',  'shatter',
+                        // 'weaken', 'shock',
+                        // 'slow', 
+                        // 'drain', 
+                    //Buff
+                        // 'fortify', 
+                        // 'empower', 
+                        // 'rush',
+                        'recover',
+                    //Misc
+                        'sleep',
+                ]
+            },mage:      {
+                profileId: 'mage',
+                lifeMod:  1,
+                powerMod: 1,
+                defMod:   1,
+                diceMod:  1,
+                actionPool: [
+                    //Attack
+                        'attack',
+                        // 'final strike', 
+                        // 'combo', 
+                        // 'charge', 
+                    //Def
+                        'block', 
+    
+                    //Hex
+                        'wound',  'shatter',
+                        'weaken', 'shock',
+                        'slow', 
+                        'drain', 
+                    //Buff
+                        // 'fortify', 
+                        // 'empower', 
+                        'rush',
+                        'recover',
+                    //Misc
+                        'sleep',
+                ]
+            },gladiator: {
+                profileId: 'gladiator',
+                lifeMod:  1.5,
+                powerMod: 0.5,
+                defMod:   0.5,
+                diceMod:  0.5,
+                reflect:  100,
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'final strike', 
+                        // 'combo', 
+                        // 'charge', 
+                    //Def
+                        'block', 
+    
+                    //Hex
+                        'wound',  'shatter',
+                        // 'weaken', 'shock',
+                        // 'slow', 
+                        // 'drain', 
+                    //Buff
+                        // 'fortify', 
+                        // 'empower', 
+                        // 'rush',
+                        // 'recover',
+                    //Misc
+                        'sleep',
+                ]
+            },
+            
+        },
+        boss: {
+              reaper:    {//stage 1 (strong unit)   
+                profileId: 'reaper',
+                lifeMod:  3,
+                powerMod: 2,
+                defMod:   2,
+                diceMod:  2,
+                statOverrides: [
+                    'def-2',
+                    'power-2',
+                    'life-20',
+                    'dice-6'
+                ],
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'final strike', 
+                        'combo', 
+                        'charge', 
+                    //Def
+                        'block', 
+
+                    //Misc
+                        'sleep',
+                ]
+            },protector: {//stage 2 (pwoer control)  
+                profileId: 'protector',
+                statOverrides: [
+                    'def-0',
+                    'power-5',
+                    'life-20',
+                    'dice-4'
+                ],
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'final strike', 
+                        'combo', 
+                        'charge', 
+                    //Def
+                        'block', 
+    
+                    //Hex
+                        'wound',  'shatter',
+                        'weaken', 'shock',
+                        'slow', 
+                        'drain', 
+                    //Buff
+                        'fortify', 
+                        'empower', 
+                        'rush',
+                        'recover',
+                    //Misc
+                        'sleep',
+                ]
+            },mech:      {//stage 3 (def control)   
+                profileId: 'mech',
+                powerMod: 2,
+                statOverrides: [
+                    'def-10',
+                    'life-30',
+                    'dice-6'
+                ],
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'block',
+                ]
+            },destiny:   {//stage 4 (dice control)   
+                profileId: 'destiny',
+                powerMod: 2,
+                statOverrides: [
+                    'def-5',
+                    'life-60',
+                    'dice-20'
+                ],
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'final strike', 
+                        'combo', 
+                        'charge', 
+                    //Def
+                        'block', 
+    
+                    //Hex
+                        'wound',  'shatter',
+                        'weaken', 'shock',
+                        'slow', 
+                        'drain', 
+                    //Buff
+                        'fortify', 
+                        'empower', 
+                        'rush',
+                        'recover',
+                    //Misc
+                        'sleep',
+                ]
+            },meat:      {//stage 5 (hp check)   
+                profileId: 'meat',
+                statOverrides: [
+                    'def-0',
+                    'power-0',
+                    'life-100',
+                    'dice-6'
+                ],
+                actionPool: [
+                    //Attack
+                        'final strike', 
+                        'combo', 
+                        'charge', 
+                        'block',
+                ]
+            },valc:      {//stage 6 (dice control)   
+                profileId: 'valc',
+                powerMod: 2,
+                statOverrides: [
+                    'def-10',
+                    'pwoer-10',
+                    'life-100',
+                    'dice-10'
+                ],
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'final strike', 
+                        'combo', 
+                        'charge', 
+                    //Def
+                        'block', 
+    
+                    //Hex
+                        'wound',  'shatter',
+                        'weaken', 'shock',
+                        'slow', 
+                        'drain', 
+                    //Buff
+                        'fortify', 
+                        'empower', 
+                        'rush',
+                        'recover',
+                    //Misc
+                        'sleep',
+                ]
+            }
         }
     }
+
