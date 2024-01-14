@@ -5,13 +5,7 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- New skill tree icons and UI updates.
-- Visiting a camp now restores ~20% of the max life.
-- Each game stage now has limited pool of enemy types, each stage introduces new, stronger enemy type.
-- *Wooden shield* item added to the game.
-- *Pendant* item added to the game.
-- Fixed a bug when dungeon will spawn more than 1 boss.
-- Added unique boss units at the end of every stage.
+- 
 
 **To-do ideas**
 - Bosses at the end of the stage.

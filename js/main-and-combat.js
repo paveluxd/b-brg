@@ -292,7 +292,7 @@
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
-            }else if(paKey =='a64'){// sicle
+            }else if(paKey =='a64'){// sickle
 
                 //Calc
                 gs.plObj.dmgDone += 2 + gs.plObj.power
@@ -815,11 +815,7 @@
                         gs.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
                     }
                 
-                //DEF: resolve.
-                //I don't remember why def reduction happened before damage calculation, see if it will cause issues in the futer.
-                    //Reduce dmg by def
-                    gs.plObj.dmgDone -= gs.enObj.def
-
+                //DEF: resolve.                    
                     //Def break logic
                     if(gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
                         
@@ -829,10 +825,15 @@
                         gs.plObj.dmgDone = gs.enObj.def
                         
                     }else if(gs.enObj.def > 0){
+                        //Reduce dmg by def
+                        //Def break dmg should not be reduced by def
+                        gs.plObj.dmgDone -= gs.enObj.def
                         
                         //Reduce def on hit
                         changeStat('def', -1, 'enemy')
                         
+                    }else if(gs.enObj.def < 0){
+                        gs.plObj.dmgDone -= gs.enObj.def
                     }
 
                     //Set positive damage to 0 (if def is greater than dmg)

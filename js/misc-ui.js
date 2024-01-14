@@ -276,8 +276,10 @@
             `
         }
         else if(target == 'enemy'){
-            if(gs.playerLocationTile.boss){
-                console.log(gs.enObj.profile.profileId);
+
+            // console.log(gs.enObj.profile);
+            if(Object.keys(profileRef.boss).includes(gs.enObj.profile.profileId)){
+            // if(gs.playerLocationTile.boss){
 
                 el('enemy-sprite').innerHTML = `
                     <img src="./img/character/shade.svg">

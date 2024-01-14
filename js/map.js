@@ -551,12 +551,9 @@ class MapObj{
             screen('event-screen')
         }else if(eventType.startsWith('merchant')){
 
+            //Generate shop.
             if(gs.playerLocationTile.visited == undefined){
-                //Generate shop.
                 el('merchant-container').innerHTML = ``
-    
-                //Swap for testing
-                // genOfferedItemList("all", 'merchant')
                 genOfferedItemList(gs.merchantQuant, 'merchant')
             }
 
@@ -571,6 +568,7 @@ class MapObj{
 
             //Open merchant screen.
             screen('merchant')
+
         }else if(eventType.startsWith('blacksmith')){
             //Generate items-to-enhance.
             el('items-to-enhance').innerHTML = ``
