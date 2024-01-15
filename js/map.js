@@ -112,7 +112,7 @@ class MapObj{
         }
 
         //MANDATORY TILES
-            //Map position is set in last main.js
+            //Map position is set in last main-and-combat.js
             let overrides = [
                 {//Player
                     tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 

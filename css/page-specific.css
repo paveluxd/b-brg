@@ -47,6 +47,7 @@
 
         position: relative;
         /* transition: all 200ms; */
+        box-shadow: none;
     }
     .map-tile:hover{
         background-color: var(--w0);
@@ -280,7 +281,7 @@
         position: relative;
         /* left: 50%; */
     }
-    #combat .bg-cover{
+    .bg-cover{
         position: absolute;
         left: 50%;
         z-index: 1;
@@ -307,19 +308,56 @@
         display: flex;
         flex-direction: row;
         height: 188px;
-        width: 100%;
+        width: 356px;
         max-width: 603px;
-
         overflow: scroll;
         z-index: 1;
+        margin-left: 4px;
+        margin-right: 4px;
+
+        border: solid 2px #949494;
+        background-color: black;
+
+        padding: 2px;
 
     }
+
+    .action-container-decor{
+        position: absolute;
+        z-index: 2;
+    }
+    .actions-arrow-topLeft{
+        margin-top: -4px;
+        left: 2px;
+        
+    }
+    .actions-arrow-topRight{
+        margin-top: -4px;
+        right: 2px;
+        rotate: 90deg;
+    }
+    .actions-arrow-bottomLeft{
+        bottom: 0px;
+        left: 2px;
+        rotate: 270deg;
+    }
+    .actions-arrow-bottomRight{
+        bottom: 0px;
+        right: 2px;
+        rotate: 180deg;
+    }
+    .actions-scrollDown{
+        left: 50%;
+        transform: translate(-50%, -50%);
+        bottom: -7px;
+    }
+    
     .actions-container #cards-row{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-content: flex-start;
-        gap: 1px;
+        gap: 2px;
 
         width: 100%;
         /* min-width: calc(2 * 180px + 2px); */
@@ -327,6 +365,7 @@
         /* min-width: calc(100vw - 16px); */
 
         /* max-height: 100%; */
+
     }
     
     .action{
@@ -357,18 +396,18 @@
     .action span{
         display: flex;
         justify-content: space-between;
-        padding: 6px 0 0 6px;
+        padding: 0px 0px 0px 53px;
     }
     .action .desc{
-        padding: 0 38px 6px 6px;
+        padding: 0px 0px 0px 53px;
         overflow: hidden;
         position: relative;
         height: 44px;
     }
     .action img{
         position: absolute;
-        right: -8px;
-        bottom: -8px;
+        left: 0px;
+        top: 0px;
     } 
     .action .cooldown-indicator{
         color: var(--white);
@@ -385,11 +424,12 @@
         color: var(--white);
         background-color: black;
 
-        padding: 2px 4px 2px 6px;
+        padding: 2px 15px 2px 15px;
+        text-align: center;
 
         position: absolute;
-        top: 0px;
-        right: 0px;
+        bottom: 0px;
+        left: 0px;
 
         border-radius: 0 0 0 4px;
     }
@@ -849,6 +889,7 @@
         grid-template-rows:    repeat(var(--tree-rows),   1fr);
 
         margin: 160px 24px 92px 24px;
+        cursor: grab;
     }
 
     #tree-node-popup{
@@ -896,6 +937,14 @@
         padding: 0;
         height: 48px;
         width: 48px;
+        border-radius: 99px;
+    }
+    .compact-node img{
+        height: 32px;
+        width:  32px;
+        outline: 2px solid var(--btn-border);
+        border: 2px solid var(--btn-bg);
+        background-color: black;
     }
     .tree-tile p{
         position: absolute;
@@ -908,27 +957,27 @@
 
     .tree-path{
         height: 100%;
-        width: 8px;
+        width: 2px;
         background-color: var(--btn-border);
     }
  
-    .RR, .LL, .TT, .DD, .RD, .LD, .RT, .LT{
+    .R, .L, .T, .D, .RD, .LD, .RT, .LT{
         position: absolute;
-        height: 8px;
+        height: 2px;
         width: 50%;
         transform: translateX(50%);
         background-color: var(--btn-border);
     }
-    .LL{
+    .L{
         transform: translateX(-50%);
     }
-    .TT, .DD{
+    .T, .D{
         height: 50%;
-        width: 8px;
+        width: 2px;
         transform: translateY(-50%);
         background-color: var(--btn-border);
     }
-    .DD{
+    .D{
         transform: translateY(50%);
     }
     .LD{
@@ -947,7 +996,15 @@
     .node-allocated img{
         border: 2px solid var(--heading-yellow);
         box-shadow: 0px 0px 6px 0px var(--heading-yellow);
+        transition: all 300ms;
+    }
+    .compact-node.node-allocated img{
+        outline: none;
+        border: 2px solid var(--heading-yellow);
+        box-shadow: 0px 0px 6px 0px var(--heading-yellow);
     }
     .node-allocated div, .active-path div{
-        background-color: var(--heading-yellow); 
+        background-color: var(--heading-yellow);
+        box-shadow: 0px 0px 6px 0px var(--heading-yellow);
+        transition: all 300ms;
     }

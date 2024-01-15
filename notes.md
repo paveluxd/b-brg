@@ -5,15 +5,13 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- Fixed various bugs in Safari browser, now the game should be playable.
-
+- 
 
 **To-do ideas**
 - Bosses at the end of the stage.
 - Boss profiles.
 - Remove spell books.
 - Balance d12 combos bow, shield?
-- Fix exp curve.
 - Passive: +1 exp when you use a scroll.
 - Use 'order' to reorder actions in action bar.
 - Do burning dot shit.

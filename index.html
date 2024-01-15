@@ -53,14 +53,20 @@
 
 <body>
 <!-- State screen -->
-    <div id="state-screen" class="modal state-screen " onclick="initGame()">
+    <div id="state-screen" class="modal state-screen ">
         <div class="modal-container">
-            <img src="./img/bg/start.svg" class="illustration">
-            <p class="body-14">
-                Mini roguelike for the web.<br>
-                <b>Early access</b> play tester demo.
+
+            <img src="./img/bg/logo.svg">
+
+            <p class="body-14" style="text-shadow: 2px 2px 2px black;">
+                Roguelike for the web.<br>
+                Play tester demo.
             </p>
-            <p class="body-14 italic b50">Tap to play</p>
+            <br><br><br>
+            <button style="width: 200px;" onclick="playerClassSelection()">Play</button>
+            <button style="width: 200px;" onclick="localStorage.clear(), location.reload()">Reset saved game</button>
+
+            <img src="./img/bg/key.svg" class="bg-cover" style="z-index: -1; transform: translate(-50%, 0);">
         </div>
     </div>
 
@@ -191,7 +197,7 @@
                 <!-- <h2>Passive skill tree</h2>
                 <p id="skill-points-indicator" class="body-14"></p> -->
                 
-                <div id="skill-tree" class=""></div>
+                <div id="skill-tree" class="dragscroll"></div>
             <!-- </div> -->
         </div>
 
@@ -284,9 +290,14 @@
                 </div>
             </div>
         </div>
-
+        
         <div id="playerActionContainer" class="actions-container scroll">
-            <div id="cards-row"></div>
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topLeft" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topRight" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomLeft" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomRight" height="10" width="10">
+            <img src="/img/ico/decorative_element_actions_tab_scrolldown.svg" class="action-container-decor actions-scrollDown">
+        <div id="cards-row"></div>
         </div>
   
     </div>
@@ -446,11 +457,11 @@
 <script src="./js/utility.js"></script>
 <script src="./js/config.js"></script>
 
-<script src="./data/items.js"></script>
-<script src="./data/actions.js"></script>
+<script src="./data/items-data.js"></script>
+<script src="./data/actions-data.js"></script>
 <script src="./data/data.js"></script>
 
-<script src="./js/ui.js"></script>
+<script src="./js/misc-ui.js"></script>
 <script src="./js/map.js"></script>
 <script src="./js/tree.js"></script>
 
@@ -460,7 +471,9 @@
 <script src="./js/enemy.js"></script>
 <script src="./js/player.js"></script>
 
-<script src="./js/main.js"></script>
+<script src="./js/main-and-combat.js"></script>
+
+<script src="./js/dragsroll-library/dragscroll.js"></script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-706KLCDSBD"></script>

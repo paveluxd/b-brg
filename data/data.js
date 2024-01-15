@@ -56,12 +56,6 @@ let gs //game state object
         let gameObj = JSON.parse(localStorage.getItem('gameState'))
 
         if (gameObj == undefined){
-            // gs = new GameState
-
-            // gs.plObj = new PlayerObj
-            // //Resolve ititial items
-            // gs.plObj.startingItems.forEach(key => {addItem(key)})
-
             console.log('New game started');
         }
         else {

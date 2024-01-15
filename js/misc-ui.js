@@ -166,7 +166,7 @@
     function screen(elemId){
 
         //For target bug
-        console.log(`Screen() was triggered by:`, elemId);
+        // console.log(`Screen() was triggered by:`, elemId);
 
         //Removes animation classes to prevent trigger when page is opened.
         clearClassOfAll('stat-float')
@@ -234,98 +234,6 @@
             //Regen action cards
             syncActionTiles()
         }
-    }
-
-
-//CHARACTER
-    function syncCharPage(){
-    
-        //Add text
-        el('stat-block').innerHTML =`
-            <section>
-                <div class='stat'>
-                    <img src="./img/ico/life.svg">
-                    <p>Life: ${gs.plObj.life} / ${gs.plObj.flatLife}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/dice.svg">
-                    <p>Dice: d${gs.plObj.flatDice}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/power.svg">
-                    <p>Power: ${gs.plObj.power}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/def.svg">
-                    <p>Def: ${gs.plObj.def}</p>
-                </div>
-            </section>
-
-            <section>
-                <div class='stat'>
-                    <img src="./img/ico/fish.svg">
-                    <p>Food: ${gs.plObj.food}</p>
-                </div>
-                
-                <div class='stat'>
-                    <img src="./img/ico/slots.svg">
-                    <p>Equipment: ${calcEquippedItems()}/${gs.plObj.equipmentSlots}</p>
-                </div>
-                
-                <div class='stat'>
-                    <img src="./img/ico/coin-sm.svg">
-                    <p>Coins: ${gs.plObj.coins}</p>
-                </div>     
-                
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Inventory: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}</p>
-                </div>    
-            </section>
-                
-            <section>
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Level: ${gs.plObj.lvl}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Exp: ${gs.plObj.exp}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Skill points:  ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Next lvl exp:  ${gs.plObj.lvlUpExp}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>World stage:  ${gs.stage}</p>
-                </div>
-            </section>
-        `
-
-        //Add action cards
-        el('action-list').innerHTML = ``
-        el('passive-list').innerHTML = ``
-
-        gs.plObj.actions.forEach(action => {
-            if(action.actionType != 'passive'){
-                el('action-list').append(genActionCard(action, 'card'))
-            } else {
-                el('passive-list').append(genActionCard(action, 'card'))
-            }         
-        })
-
     }
 
 
