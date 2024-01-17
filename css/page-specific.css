@@ -305,45 +305,37 @@
 
 /* Actions */
     .actions-container{
+        position: relative;
         display: flex;
         flex-direction: row;
         height: 188px;
-        width: 356px;
-        max-width: 603px;
+        max-width: 612px;
         overflow: scroll;
         z-index: 1;
         margin-left: 4px;
         margin-right: 4px;
-
-        border: solid 2px #949494;
         background-color: black;
 
-        padding: 2px;
-
     }
+
+    
 
     .action-container-decor{
         position: absolute;
         z-index: 2;
     }
-    .actions-arrow-topLeft{
-        margin-top: -4px;
-        left: 2px;
-        
-    }
     .actions-arrow-topRight{
-        margin-top: -4px;
-        right: 2px;
+        right: 0px;
         rotate: 90deg;
     }
     .actions-arrow-bottomLeft{
         bottom: 0px;
-        left: 2px;
+        left: 0px;
         rotate: 270deg;
     }
     .actions-arrow-bottomRight{
         bottom: 0px;
-        right: 2px;
+        right: 0px;
         rotate: 180deg;
     }
     .actions-scrollDown{
@@ -358,7 +350,8 @@
         justify-content: center;
         align-content: flex-start;
         gap: 2px;
-
+        padding: 2px;
+        border: solid 2px #949494;
         width: 100%;
         /* min-width: calc(2 * 180px + 2px); */
         /* max-width: calc(3 * var(--action-card-max-width)); */
@@ -396,7 +389,7 @@
     .action span{
         display: flex;
         justify-content: space-between;
-        padding: 0px 0px 0px 53px;
+        padding: 6px 0px 0px 53px;
     }
     .action .desc{
         padding: 0px 0px 0px 53px;
