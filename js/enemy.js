@@ -13,7 +13,7 @@
 
             //TESTING: Add specific enemy
             if(config.forceEnemyProfile != undefined) {
-                this.profile = profileRef['enemy'][config.forceEnemyProfile]
+                this.profile = profileRef[config.forceEnemyProfile[0]][config.forceEnemyProfile[1]]
             }   
 
             //Set stats

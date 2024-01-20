@@ -164,7 +164,7 @@ function calcCost(type, itemId){
 //Dealing with offered items
     //Gen list
     function genOfferedItemList(quant, event) {
-        console.log(quant,event);
+        // console.log(quant,event);
 
         gs.plObj.offeredItemsArr = []
         let generatedReward
@@ -189,7 +189,11 @@ function calcCost(type, itemId){
                 // console.log(gs.enObj.profile);
 
                 //Mod rewards if boss unit
-                if(typeof gs.enObj !== 'undefined' && Object.keys(profileRef.boss).includes(gs.enObj.profile.profileId)){
+                if(
+                    typeof gs.enObj !== 'undefined' 
+                    && Object.keys(profileRef.boss).includes(gs.enObj.profile.profileId)
+                    && event != 'merchant' 
+                ){
                     generatedReward = new ItemObj(...[,,], 'corrupted')
                     quant = 2 //Bosses drop 1 corrupted items
                 }else{
@@ -241,6 +245,9 @@ function calcCost(type, itemId){
                 el('inventory').childNodes[1].append(el('inventory-list'))
                 
                 //screen() is ran from the button.
+
+                //Clear offered items
+                gs.plObj.offeredItemsArr = []
             }
             else if(event == 'purchase'){
                 if(resolvePayment(targetItem.cost) == false) return

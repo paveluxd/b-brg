@@ -55,71 +55,75 @@ let config = {
 }
 
 // Test config
-// config = {
-//     //Player
-//         life:       400, //40
-//         power:       10,
-//         def:         0,
-//         dice:        6,
-//         inventory:  40,
-//         slots:       5,
-//         class:      'guardian',
+if(1 == 2){
+config = {
+    //Player
+        life:       400, //40
+        power:       10,
+        def:         4,
+        dice:        6,
+        inventory:  40,
+        slots:       5,
+        class:      'guardian',
 
-//     //Progression
-//         expBase: 2,
-//         expMult: 1,
-//         expExpo: 0.4,
-//         basePassieSkillPoints: 99,
+    //Progression
+        expBase: 2,
+        expMult: 1,
+        expExpo: 0.4,
+        basePassieSkillPoints: 99,
 
-//     //Game
-//         // testCombat: true, //Initiates combat at the start (for testing).
-//         showScreen: 'map', 
-//         clearLs: true,
-//         showCombatInfoLog: true,
-//         fadeTime: 40,
+    //Game
+        // testCombat: true, //Initiates combat at the start (for testing).
+        // showScreen: 'combat', 
+        clearLs: true,
+        showCombatInfoLog: true,
+        fadeTime: 40,
 
 
-//     //Starting items
-//         stGuardian: [
-//             'club',
-//             'shield',
-//             'pendant',
-//         ],
-//         stCrusader: [
-//             'sword',
-//             'bandages',
-//         ],
-//         stWanderer: [
-//             'bow',
-//             'cape',
-//         ],
-//         coins: 90, //rng(12,6),
-//         food:  6, //rng(4,2),
+    //Starting items
+        stGuardian: [
+            'club',
+            'shield',
+            'pendant',
+            'spear',
+            'sickle',
+        ],
+        stCrusader: [
+            'sword',
+            'bandages',
+        ],
+        stWanderer: [
+            'bow',
+            'cape',
+        ],
+        coins: 90, //rng(12,6),
+        food:  6, //rng(4,2),
 
-//     //Enemy
-//         eneLife: 8, //8
-//         // forceEnemyProfile: 'assassin',
-//         // forceEnemyAction: 'wound',
-//         enSpawnFrequency: 40,
+    //Enemy
+        eneLife: 8, //8
+        forceEnemyProfile: ['boss','reaper'],
+        // forceEnemyAction: 'wound',
+        enSpawnFrequency: 40,
 
-//     //Combat UI
-//         bgCounter: 3, //1 per saved combat bg for rng.
+    //Combat UI
+        bgCounter: 3, //1 per saved combat bg for rng.
 
-//     //Map
-//         mapX:             3, //1
-//         mapY:             6, //Vertical
-//         exitDefenders:    3,
-//         enemyPartyCap:    3, //25% item reward per enemy
-//         mandatoryTiles: [
-//             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
-//             // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
-//             // {tileType: 'enchanter-1', enemyUnit: false},
-//             // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
-//             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-//             // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
-//         ],
+    //Map
+        mapX:             3, //1
+        mapY:             6, //Vertical
+        exitDefenders:    3,
+        enemyPartyCap:    3, //25% item reward per enemy
+        mandatoryTiles: [
+            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
+            // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
+            // {tileType: 'enchanter-1', enemyUnit: false},
+            // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
+            // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
+            // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
+        ],
 
-//     //Items
-//         chargeFloor: 0.5,     //Lowes % for item action charge
-//         merchantQuant: 'all',
-// }
+    //Items
+        chargeFloor: 0.5,     //Lowes % for item action charge
+        merchantQuant: 'all',
+}
+}
