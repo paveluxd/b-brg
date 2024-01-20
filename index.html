@@ -12,8 +12,8 @@
     <!-- Share link preview -->
     <meta property="og:title" content="Gates Of Morr" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.gatesofmorr.com" />
-    <meta property="og:image:url" content="https://www.gatesofmorr.com/img/share-image.png" />
+    <meta property="og:url" content="https://www.exitsofmorr.com" />
+    <meta property="og:image:url" content="https://www.exitsofmorr.com/img/share-image.png" />
     <meta property="og:image:type" content="image/png" >
     <meta property="og:image:width" content="1200" >
     <meta property="og:image:height" content="1200" >
@@ -72,45 +72,70 @@
 
 <!-- Map -->
     <div id="map" class="hide"> 
-
+        
         <!-- Tab section -->
+        <div class="exp-bar-container">
+            <div class="exp-bar-dividers">
+
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+                <div class="exp-dividers-bar">|</div>
+            </div>
+            <progress value="10" max="100"></progress>
+        </div>
         <div id="map-tabs" class="tab-container external-tabs" onclick="screen('character')">
             <!-- Exp bar -->
-
-            <!-- Stat indicator -->
-            <div id="stat-indicator">
-                
-                <!-- Food -->
-                <div>
-                    <img src='./img/ico/fish.svg'>
-                    <p id='pl-food' class="mono-m"></p>
+            <!-- Decorative arrow images -->
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topLeft" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topRight" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomLeft" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomRight" height="10" width="10">
+            <div class="tabs-container-wrapper">
+    
+    
+                <!-- Stat indicator -->
+                <div id="stat-indicator">
+                    
+                    <!-- Food -->
+                    <div>
+                        <img src='./img/ico/fish.svg'>
+                        <p id='pl-food' class="mono-m"></p>
+                    </div>
+    
+                    <!-- Power -->
+                    <div>
+                        <img src='./img/ico/power.svg'>
+                        <p id='pl-power' class="mono-m"></p>
+                    </div>
+            
+                    <!-- Life -->
+                    <div>
+                        <img src='./img/ico/life.svg'>
+                        <p id='pl-life' class="mono-m"></p>
+                    </div>
+    
+                    <!-- Coins -->
+                    <div>
+                        <img src='./img/ico/coin-sm.svg'>
+                        <p id='pl-coins' class="mono-m"></p>
+                    </div>
+    
+                    
                 </div>
+    
+                <button id="map-character-btn" class="tab">
+                    <img src="./img/ico/Character.svg">
+                    Character
+                </button>
 
-                <!-- Power -->
-                <div>
-                    <img src='./img/ico/power.svg'>
-                    <p id='pl-power' class="mono-m"></p>
-                </div>
-        
-                <!-- Life -->
-                <div>
-                    <img src='./img/ico/life.svg'>
-                    <p id='pl-life' class="mono-m"></p>
-                </div>
-
-                <!-- Coins -->
-                <div>
-                    <img src='./img/ico/coin-sm.svg'>
-                    <p id='pl-coins' class="mono-m"></p>
-                </div>
-
-                
             </div>
-
-            <button id="map-character-btn" class="tab">
-                <img src="./img/ico/Character.svg">
-                Character
-            </button>
         </div>
 
         <div id="map-frame" class="map-frame">
@@ -187,12 +212,18 @@
             </div>
         </div>
         <!-- 3. Tree -->
-        <div id="tree"      class="dragscroll screen hide">
+        <div id="tree"      class="screen hide">
             <!-- Extensions -->
             <div id="tree-node-popup" class="body-12 hide" onclick="el('tree-node-popup').classList.add('hide')">
             </div>
 
-            <div id="skill-tree" class=""></div>
+            <!-- <div class="modal-container"> -->
+                
+                <!-- <h2>Passive skill tree</h2>
+                <p id="skill-points-indicator" class="body-14"></p> -->
+                
+                <div id="skill-tree" class="dragscroll"></div>
+            <!-- </div> -->
         </div>
 
 <!-- Combat -->
@@ -284,9 +315,14 @@
                 </div>
             </div>
         </div>
-
+        
         <div id="playerActionContainer" class="actions-container scroll">
-            <div id="cards-row"></div>
+            <img src="./img/ico/action-container-decor-arrow.svg" id="actions-arrow-topLeft" class="action-container-decor actions-arrow-topLeft" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topRight" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomLeft" height="10" width="10">
+            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomRight" height="10" width="10">
+            <img src="/img/ico/decorative_element_actions_tab_scrolldown.svg" class="action-container-decor actions-scrollDown">
+        <div id="cards-row"></div>
         </div>
   
     </div>
