@@ -62,14 +62,14 @@ table {
     }
     /* IE, Edge, Firefox */
     * {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+          /* IE and Edge */
+        -ms-overflow-style: none;
+        /* Firefox */
+        scrollbar-width: none;
     }   
 
 /* For anchor links nav */
 *, html{
-    scroll-behavior: smooth !important;
-
     /* Disables gestures */
     touch-action: none; 
 
