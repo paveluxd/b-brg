@@ -450,7 +450,7 @@ function resolveExpAndLvl(){
         clearClassOfAll('char-highlight')
 
         if      (char == 'guardian'){
-            el('char-heading').innerHTML = 'Crusader'
+            el('char-heading').innerHTML = 'Guardian'
             el('char-description').innerHTML = 'Used d4, specializes in defense.'
         }
         else if (char == 'crusader'){

@@ -23,16 +23,10 @@
     }
 
     .map-frame{
-
         min-width:100%;
-        /* min-width: 361px; */
         height: 100%;
-
-        /* padding: 200px 0px 140px 0px; */
-        /* margin: auto; */
         display: flex;
         justify-content: center;
-
         overflow: scroll;
     }
     .map-tile{
@@ -40,13 +34,11 @@
         height: 120px;
 
         border: none;
-        /* box-shadow: inset 2px 2px 0px var(--map-frame); */
         border-left: 1px dashed var(--map-frame) !important;
         border-bottom: 1px dashed var(--map-frame) !important;
         background-color: var(--w0);
 
         position: relative;
-        /* transition: all 200ms; */
         box-shadow: none;
     }
     .map-tile:hover{
@@ -84,6 +76,8 @@
         touch-action: pan-y !important;
         overscroll-behavior-y: none;
         overscroll-behavior-x: none;
+
+        scroll-behavior: smooth;
     }
     .dungeon{
         background-color: rgb(67, 67, 67) !important;
@@ -266,10 +260,9 @@
 /* Combat */
     #combat{
         height: 100%;
-
+        overflow: hidden;
         background-color: rgb(0, 0, 0);
         flex-direction: column;
-        overflow-y: hidden;
         align-items: center;
         position: relative;
  
@@ -305,60 +298,29 @@
 
 /* Actions */
     .actions-container{
-        position: relative;
         display: flex;
         flex-direction: row;
         height: 188px;
-        max-width: 612px;
+        width: 100%;
+        max-width: 603px;
+
         overflow: scroll;
         z-index: 1;
-        margin-left: 4px;
-        margin-right: 4px;
-        background-color: black;
 
     }
-
-    
-
-    .action-container-decor{
-        position: absolute;
-        z-index: 6;
-    }
-    .actions-arrow-topRight{
-        right: 0px;
-        rotate: 90deg;
-    }
-    .actions-arrow-bottomLeft{
-        bottom: 0px;
-        left: 0px;
-        rotate: 270deg;
-    }
-    .actions-arrow-bottomRight{
-        bottom: 0px;
-        right: 0px;
-        rotate: 180deg;
-    }
-    .actions-scrollDown{
-        left: 50%;
-        transform: translate(-50%, -50%);
-        bottom: -7px;
-    }
-    
     .actions-container #cards-row{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         align-content: flex-start;
-        gap: 2px;
-        padding: 2px;
-        border: solid 2px #949494;
+        gap: 1px;
+
         width: 100%;
         /* min-width: calc(2 * 180px + 2px); */
         /* max-width: calc(3 * var(--action-card-max-width)); */
         /* min-width: calc(100vw - 16px); */
 
         /* max-height: 100%; */
-
     }
     
     .action{
@@ -389,18 +351,18 @@
     .action span{
         display: flex;
         justify-content: space-between;
-        padding: 6px 0px 0px 53px;
+        padding: 6px 0 0 6px;
     }
     .action .desc{
-        padding: 0px 0px 0px 53px;
+        padding: 0 38px 6px 6px;
         overflow: hidden;
         position: relative;
         height: 44px;
     }
     .action img{
         position: absolute;
-        left: 0px;
-        top: 0px;
+        right: -8px;
+        bottom: -8px;
     } 
     .action .cooldown-indicator{
         color: var(--white);
@@ -417,12 +379,11 @@
         color: var(--white);
         background-color: black;
 
-        padding: 2px 15px 2px 15px;
-        text-align: center;
+        padding: 2px 4px 2px 6px;
 
         position: absolute;
-        bottom: 0px;
-        left: 0px;
+        top: 0px;
+        right: 0px;
 
         border-radius: 0 0 0 4px;
     }
@@ -871,7 +832,6 @@
     #tree, #tree *{ 
         touch-action: auto !important;
         /* height: auto; */
-        
     }
     #skill-tree{
         height:            calc(var(--tree-cell) * var(--tree-rows));
@@ -881,20 +841,21 @@
         grid-template-columns: repeat(var(--tree-columns),1fr);
         grid-template-rows:    repeat(var(--tree-rows),   1fr);
 
-        margin: 160px 24px 92px 24px;
-        cursor: grab;
+        margin: 160px 24px 160px 24px;
+        cursor: url(/img/ico/cursor-move.svg), auto;
     }
 
     #tree-node-popup{
         width: calc(100% - 16px);
         max-width: 400px;
+        min-height: 72px;
 
-        background-color: black;
-        padding: 8px;
+        background-color: var(--b80);
+        padding: 4px 8px;
         color: var(--w80);
 
         position: absolute;
-        top:  8px;
+        bottom:  72px;
         left: 50%;
         transform: translateX(-50%);
 
@@ -902,6 +863,9 @@
         justify-content: space-between;
         z-index: 2;
 
+    }
+    #tree-node-popup button{
+        margin-top: 4px;
     }
 
     /* Tree rendering */
@@ -930,7 +894,7 @@
         padding: 0;
         height: 48px;
         width: 48px;
-        border-radius: 99px;
+        border-radius: 0px;
     }
     .compact-node img{
         height: 32px;
@@ -1001,6 +965,7 @@
         box-shadow: 0px 0px 6px 0px var(--heading-yellow);
         transition: all 300ms;
     }
+
 
     /* Char selection screen */
     .char-selection{
