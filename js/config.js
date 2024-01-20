@@ -55,7 +55,7 @@ let config = {
 }
 
 // Test config
-if(1 == 2){
+if(1 == 1){
 config = {
     //Player
         life:       400, //40
@@ -74,7 +74,7 @@ config = {
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
-        // showScreen: 'combat', 
+        showScreen: 'tree', 
         clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,
