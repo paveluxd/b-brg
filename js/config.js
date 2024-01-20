@@ -55,7 +55,7 @@ let config = {
 }
 
 // Test config
-if(1 == 2){
+if(1 == 1){
 config = {
     //Player
         life:       400, //40
@@ -79,7 +79,6 @@ config = {
         showCombatInfoLog: true,
         fadeTime: 40,
 
-
     //Starting items
         stGuardian: [
             'club',
@@ -101,7 +100,7 @@ config = {
 
     //Enemy
         eneLife: 8, //8
-        forceEnemyProfile: ['boss','reaper'],
+        // forceEnemyProfile: ['boss','reaper'],
         // forceEnemyAction: 'wound',
         enSpawnFrequency: 40,
 
