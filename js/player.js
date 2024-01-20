@@ -405,17 +405,65 @@ function resolveExpAndLvl(){
     function playerClassSelection(){
         if(typeof gs == 'undefined'){
             el('state-screen').innerHTML = `
-                <div class="modal-container">
-                    <p class="body-14">
-                    Choose a class.
+            <div class="char-selection modal-container">
+
+                <div id='char-text-container'>
+                    <h2 id="char-heading">
+                        Choose a character
+                    </h2>
+                    <p  id="char-description" class="body-14">
+                        Tap the character below
                     </p>
-                    <button onclick="config.class = 'guardian', initGame()">Guardian</button>
-                    <button onclick="config.class = 'crusader', initGame()">Crusader</button>
-                    <button onclick="config.class = 'wanderer', initGame()">Wanderer</button>
                 </div>
+                
+                <div id='characters'>
+                    <button id='guardian-button' onclick="showCharDetails('guardian')">
+                        <img src="./img/bg/char-guardian.svg">
+                    </button>
+                    
+                    <button id='crusader-button' onclick="showCharDetails('crusader')">
+                        <img src="./img/bg/char-crusader.svg">
+                    </button>
+                    
+                    <button id='wanderer-button' onclick="showCharDetails('wanderer')">
+                        <img src="./img/bg/char-wanderer.svg">
+                    </button>
+                </div>
+                
+                <button id="char-select-button" class="hide" onclick="config.class = 'guardian', initGame()">
+                    Continue
+                </button>
+
+                <img class='char-bg' src="./img/bg/char-select.svg">
+
+            </div>
             `
         }
         else{
             initGame()
         }
+    }
+
+    function showCharDetails(char){
+
+        clearClassOfAll('char-highlight')
+
+        if      (char == 'guardian'){
+            el('char-heading').innerHTML = 'Crusader'
+            el('char-description').innerHTML = 'Used d4, specializes in defense.'
+        }
+        else if (char == 'crusader'){
+            el('char-heading').innerHTML = 'Crusader'
+            el('char-description').innerHTML = 'Uses d6, specializes in survival.'
+        }
+        else if (char == 'wanderer'){
+            el('char-heading').innerHTML = 'Wanderer'
+            el('char-description').innerHTML = 'Used d8, specializes in poisons.'
+        }
+
+        el(`${char}-button`).classList.add('char-highlight')
+
+        el('char-select-button').setAttribute('onclick',`config.class = '${char}', initGame()`)
+        el('char-select-button').classList.remove('hide')
+
     }

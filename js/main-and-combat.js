@@ -149,10 +149,9 @@
 
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
     
-                if(gs.plObj.roll === 4){
+                if(gs.plObj.roll == 4){
                     //Resolve stat change
                     changeStat('def', 1, 'player')
-    
                     gs.logMsg.push('Mace: +1 def.')
                 }
     

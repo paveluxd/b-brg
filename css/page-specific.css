@@ -965,3 +965,46 @@
         box-shadow: 0px 0px 6px 0px var(--heading-yellow);
         transition: all 300ms;
     }
+
+    /* Char selection screen */
+    .char-selection{
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        position: relative;
+    }
+    #char-text-container{
+        position: absolute;
+        top: 20%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    #characters{
+        display: flex;
+        transform: translateY(40px);
+    }
+    
+    #characters button{
+        width: 108px;
+        height: auto;
+        border: none;
+        background-color: var(--w0);
+        box-shadow: none;
+        padding: 0;
+    }
+    .char-highlight{
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3)) !important;
+    }
+
+    #char-select-button{
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        max-width: calc(360px - 16px);
+    }
+    .char-bg{
+        z-index: -1;
+        position: absolute;
+    }
+    
