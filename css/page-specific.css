@@ -76,6 +76,8 @@
         touch-action: pan-y !important;
         overscroll-behavior-y: none;
         overscroll-behavior-x: none;
+
+        scroll-behavior: smooth;
     }
     .dungeon{
         background-color: rgb(67, 67, 67) !important;
