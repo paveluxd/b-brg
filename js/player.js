@@ -144,13 +144,8 @@ function resetFlatStats(){
 function resolveExpAndLvl(){
 
     //Add 1 exp for winning
-    gs.plObj.exp++ 
-
-    el('experience_bar').value = gs.plObj.exp;
-    el('experience_bar').max = gs.plObj.lvlUpExp;
-
-
-    
+    gs.plObj.exp++  
+    console.log(gs.plObj.exp)
 
     //TREE: On exp gain passives
     resolveOnStatChangePassives('exp')                            
@@ -160,8 +155,6 @@ function resolveExpAndLvl(){
         gs.plObj.lvl++
         gs.plObj.lvlUpExp =  Math.ceil(config.expBase * (gs.plObj.lvl * config.expMult) ** config.expExpo)
         gs.plObj.exp = 0
-        el('experience_bar').value = 0;
-        el('levelup_display').innerHTML = gs.plObj.lvl
     }
 
     //-1 for initial lvl 1
