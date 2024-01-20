@@ -55,7 +55,7 @@ let config = {
 }
 
 // Test config
-if(1 == 1){
+if(1 == 2){
 config = {
     //Player
         life:       400, //40
