@@ -74,9 +74,11 @@
     <div id="map" class="hide"> 
         
         <!-- Tab section -->
+        
         <div class="exp-bar-container">
+            <progress id="experience_bar" class="experience_bar" value="" max=""></progress>
             <div class="exp-bar-dividers">
-
+                
                 <div class="exp-dividers-bar">|</div>
                 <div class="exp-dividers-bar">|</div>
                 <div class="exp-dividers-bar">|</div>
@@ -88,7 +90,7 @@
                 <div class="exp-dividers-bar">|</div>
                 <div class="exp-dividers-bar">|</div>
             </div>
-            <progress value="10" max="100"></progress>
+            <div id="levelup_display" class="levelup_display">1</div>
         </div>
         <div id="map-tabs" class="tab-container external-tabs" onclick="screen('character')">
             <!-- Exp bar -->

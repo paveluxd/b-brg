@@ -303,6 +303,95 @@
         z-index: 99;
     }
 
+/* Experience */
+.exp-bar-container{
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: calc(100% - 16px);
+    height: 28px;
+    
+    /*Centers tabs*/
+    position: fixed; 
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 70px;
+    
+    z-index: 6;
+    
+    display: flex;
+    align-items: stretch;
+    color: var(--btn-border);
+}
+.exp-bar-dividers{
+    display: flex;
+    position: relative;
+    left: 0.09rem;
+    justify-content: space-between;
+    top: -8px;
+}
+.exp-bar-dividers:nth-last-child(9){
+    right: -2px;
+}
+.exp-dividers-bar{
+    position: relative;
+    bottom: -12px;
+}
+
+/* Experience bar styles for different browsers */
+progress::-moz-progress-bar { color: red; background: var(--w80, rgba(255, 255, 255, 0.80));}
+progress::-webkit-progress-value { color: red;background: var(--w80, rgba(255, 255, 255, 0.80)); }
+progress { color: red;background: var(--w80, rgba(255, 255, 255, 0.80)); }
+
+
+.exp-bar-container progress{
+    position: relative;
+    top: 20px;
+    width: 100%;
+    border: solid 2px var(--btn-border);
+    border-radius: inherit;
+    background-color: #2196F3 !important;
+}
+.tabs-container-wrapper{
+    padding: 2px;
+    max-width: 400px;
+    width: calc(100% - 0px);
+    height: 65px;
+    gap: 2px;
+    
+    /*Centers tabs*/
+    position: relative; 
+
+    z-index: 5;
+
+    display: flex;
+    align-items: stretch;
+
+    border: 2px solid var(--btn-border);
+    background-color: black;
+
+    /* overflow: hidden; */
+    /* background-color: var(--btn-bg); */
+}
+.levelup_display{
+    display: flex;
+    position: absolute;
+    padding-left: 8px;
+    top: 15px;
+    width: 28px;
+    height: 21px;
+    background-image: url(/img/bg/level_display_background.svg);
+
+    font-family: Inter;
+    /* added +2 to fontsize */
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0px;
+    text-align: center;
+
+}
+
+
 /* Actions */
     .actions-container{
         position: relative;
@@ -315,11 +404,8 @@
         margin-left: 4px;
         margin-right: 4px;
         background-color: black;
-
-    }
-
-    
-
+        
+    }   
     .action-container-decor{
         position: absolute;
         z-index: 6;
