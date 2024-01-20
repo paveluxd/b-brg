@@ -55,6 +55,14 @@
             //Static props
             this.flatActionCharge = this.actionCharge
         }
+
+        
+    }
+
+    class Test{
+        combatCacl(item) {
+            console.log(item, 'mace action');
+        }
     }
 
 //Convert action id to strings

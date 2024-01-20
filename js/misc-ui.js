@@ -263,7 +263,7 @@
 
     //Sprite builder
     function spriteBuilder(target){
-        if(target === 'player'){
+        if(target == 'player'){
             el('player-sprite').innerHTML = `
                 <img src="./img/character/shade.svg">
                 <img src="./img/character/${rng(3,1)}-back.svg">
