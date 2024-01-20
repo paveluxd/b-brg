@@ -145,6 +145,7 @@ function resolveExpAndLvl(){
 
     //Add 1 exp for winning
     gs.plObj.exp++  
+    console.log(gs.plObj.exp)
 
     //TREE: On exp gain passives
     resolveOnStatChangePassives('exp')                            

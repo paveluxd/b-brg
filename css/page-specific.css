@@ -322,7 +322,7 @@
 
     .action-container-decor{
         position: absolute;
-        z-index: 2;
+        z-index: 6;
     }
     .actions-arrow-topRight{
         right: 0px;
