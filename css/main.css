@@ -206,6 +206,60 @@ body{
         margin: 0 auto;
         padding: 24px 24px 96px 24px;
     }
+/* Experience display */
+.exp-bar-container{
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: calc(100% - 16px);
+    height: 28px;
+    
+    /*Centers tabs*/
+    position: fixed; 
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 70px;
+    
+    z-index: 6;
+    
+    display: flex;
+    align-items: stretch;
+    color: var(--btn-border);
+}
+.exp-bar-dividers{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    left: 1px;
+   
+}
+.exp-bar-dividers:nth-last-child(9){
+    right: -2px;
+}
+.exp-bar-container progress{
+    width: 100%;
+    border: solid 2px var(--btn-border);
+    background-color:#2196F3;
+}
+.exp-dividers-bar{
+    position: relative;
+    bottom: -12px;
+    font-size: 15px;
+}
+.levelUp_display{
+    position: absolute;
+    top: 16px;
+    padding-left: 9px;
+    width: 28px;
+    z-index: 1;
+    background-position: center;
+    background-image: url(/img/bg/levelUp_background.svg);
+    
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+
+}
 
 /* Tabs */
     .tab-container{
@@ -228,46 +282,6 @@ body{
         /* overflow: hidden; */
        
         /* background-color: var(--btn-bg); */
-    }
-
-    
-    .exp-bar-container{
-        display: flex;
-        flex-direction: column;
-        max-width: 400px;
-        width: calc(100% - 16px);
-        height: 28px;
-        
-        /*Centers tabs*/
-        position: fixed; 
-        left: 50%;
-        transform: translate(-50%);
-        bottom: 70px;
-        
-        z-index: 6;
-        
-        display: flex;
-        align-items: stretch;
-        color: var(--btn-border);
-    }
-    .exp-bar-dividers{
-        display: flex;
-        justify-content: space-between;
-       
-    }
-    .exp-bar-dividers:nth-last-child(9){
-        right: -2px;
-    }
-    .exp-dividers-bar{
-        position: relative;
-        bottom: -12px;
-    }
-    
-    .exp-bar-container progress{
-        width: 100%;
-        border: solid 2px var(--btn-border);
-        border-radius: 100px;
-        background-color:#2196F3 !important;
     }
     
     .tabs-container-wrapper{
