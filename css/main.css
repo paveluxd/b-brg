@@ -261,6 +261,20 @@ body{
 
 }
 
+  #experience-bar::-webkit-progress-bar {
+    background-color: black;
+  }
+  
+  #experience-bar::-moz-progress-bar {
+    background-color: black;
+  }
+  #experience-bar::-webkit-progress-value {
+    background-color: var(--w80);
+  }
+  
+  #experience-bar::-moz-progress-bar-value {
+    background-color: var(--w80);
+  }
 /* Tabs */
     .tab-container{
         flex-direction: row;
