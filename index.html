@@ -63,8 +63,8 @@
                 Play tester demo.
             </p>
             <br><br><br>
-            <button style="width: 200px;" onclick="playerClassSelection()">Play</button>
-            <button style="width: 200px;" onclick="localStorage.clear(), location.reload()">Reset saved game</button>
+            <button id="startGame" class="button_decorative_frame_column" style="width: 200px;" onclick="playerClassSelection()">Play</button>
+            <button class="button_decorative_frame_column" style="width: 200px;" onclick="localStorage.clear(), location.reload()">Reset saved game</button>
 
             <img src="./img/bg/key.svg" class="bg-cover" style="z-index: -1; transform: translate(-50%, 0);">
         </div>
@@ -74,6 +74,7 @@
     <div id="map" class="hide"> 
         
         <!-- Tab section -->
+             <!-- Exp bar -->
         <div class="exp-bar-container">
             <div id="levelUp_display" class="levelUp_display" >1</div>
             <div class="exp-bar-dividers">
@@ -92,12 +93,11 @@
             <progress id="experience-bar" value="" max=""></progress>
         </div>
         <div id="map-tabs" class="tab-container external-tabs" onclick="screen('character')">
-            <!-- Exp bar -->
             <!-- Decorative arrow images -->
-            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topLeft" height="10" width="10">
-            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topRight" height="10" width="10">
-            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomLeft" height="10" width="10">
-            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomRight" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" class="action-container-decor actions-arrow-topLeft" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" class="action-container-decor actions-arrow-topRight" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" class="action-container-decor actions-arrow-bottomLeft" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" class="action-container-decor actions-arrow-bottomRight" height="10" width="10">
             <div class="tabs-container-wrapper">
     
     
@@ -143,11 +143,10 @@
             <div id="map-container"></div>
         </div>
     </div>
-
 <!-- CHARACTER SCREEN -->
         
 
-        <div id="character-tabs" class="tab-container external-tabs row hide">
+        <div id="character-tabs" class="tab-container external-tabs row button_decorative_frame_row hide">
 
             <!-- For combat menu -->
             <button id="hide-btn" class="tab hide" onclick="screen('combat')">
@@ -199,7 +198,7 @@
                         <div id="passive-list"></div>
                     </div>
           
-                    <button onclick="localStorage.clear(), location.reload();">Start new run</button>
+                    <button class="button_decorative_frame_column" onclick="localStorage.clear(), location.reload();">Start new run</button>
                 </div>
             </div>
         </div>
@@ -318,10 +317,10 @@
         </div>
         
         <div id="playerActionContainer" class="actions-container scroll">
-            <img src="./img/ico/action-container-decor-arrow.svg" id="actions-arrow-topLeft" class="action-container-decor actions-arrow-topLeft" height="10" width="10">
-            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-topRight" height="10" width="10">
-            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomLeft" height="10" width="10">
-            <img src="./img/ico/action-container-decor-arrow.svg" class="action-container-decor actions-arrow-bottomRight" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" id="actions-arrow-topLeft" class="action-container-decor actions-arrow-topLeft" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" class="action-container-decor actions-arrow-topRight" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" class="action-container-decor actions-arrow-bottomLeft" height="10" width="10">
+            <img src="./img/bg/decorative_element_top-left.svg" class="action-container-decor actions-arrow-bottomRight" height="10" width="10">
             <img src="/img/ico/decorative_element_actions_tab_scrolldown.svg" class="action-container-decor actions-scrollDown">
         <div id="cards-row"></div>
         </div>

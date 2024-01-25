@@ -436,7 +436,7 @@ function resolveExpAndLvl(){
                     </button>
                 </div>
                 
-                <button id="char-select-button" class="hide" onclick="config.class = 'guardian', initGame()">
+                <button id="char-select-button" class="button_decorative_frame_column hide" onclick="config.class = 'guardian', initGame()">
                     Continue
                 </button>
 

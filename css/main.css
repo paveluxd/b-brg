@@ -123,7 +123,12 @@ body{
         border: 2px solid var(--btn-border);
         color: var(--w80);
 
-        box-shadow: 0px 4px 4px 0px var(--b20);
+
+        padding-block-end: 0px;
+        padding-block-start: 0px;
+        padding-inline-end: 0px;
+        padding-inline-start: 0px;
+
     }
 
     button:hover{
@@ -139,6 +144,58 @@ body{
     }
     .btn--ico{
         width: var(--btn-size);
+    }
+
+    
+
+    /* Buttons class that are positioned inside div with direction row  */
+    .button_decorative_frame_row::before{
+        position: absolute;
+        display: flex;
+        content: url(/img/bg/decorative_element_top-left.svg);
+        background: url(/img/bg/decorative_element_bottom-left.svg) right center no-repeat;
+        background-position: bottom;
+        top: -8px;
+        left: -2px;
+        padding-bottom: 50px;
+        
+    }
+    .button_decorative_frame_row::after{
+        position: absolute;
+        display: flex;
+        content: url(/img/bg/decorative_element_top-right.svg);
+        background: url(/img/bg/decorative_element_bottom_right.svg) right center no-repeat;
+        background-position: bottom;
+        top: -8px;
+        right: -2px;
+        padding-bottom: 50px;
+        
+    }
+
+    /* Buttons class that are positioned inside div with direction column */
+    .button_decorative_frame_column::before{
+        position: relative;
+        display: flex;
+        width: inherit;
+        content: url(/img/bg/decorative_element_top-right.svg);
+        background: url(/img/bg/decorative_element_top-left.svg) right center no-repeat;
+        background-position: left;
+        top: -6px;
+        left: 0px;
+        padding-left: 97.5%;
+        
+    }
+    .button_decorative_frame_column::after{
+        position: relative;
+        display: flex;
+        width: inherit;
+        content: url(/img/bg/decorative_element_bottom_right.svg);
+        background: url(/img/bg/decorative_element_bottom-left.svg) right center no-repeat;
+        background-position: left;
+        top: 6px;
+        right: 2px;
+        padding-left: 98.5%;
+        
     }
 
 /* Screens */
@@ -243,12 +300,12 @@ body{
 }
 .exp-dividers-bar{
     position: relative;
-    bottom: -12px;
-    font-size: 15px;
+    bottom: -13px;
+    font-size: 13px;
 }
 .levelUp_display{
     position: absolute;
-    top: 16px;
+    top: 18px;
     padding-left: 9px;
     width: 28px;
     z-index: 1;
@@ -293,6 +350,8 @@ body{
         display: flex;
         align-items: stretch;
 
+        
+
         /* overflow: hidden; */
        
         /* background-color: var(--btn-bg); */
@@ -320,6 +379,11 @@ body{
         /* background-color: var(--btn-bg); */
     }
 
+    #character-tabs{
+        border: solid 2px var(--btn-border);
+        padding: 2px;
+        background-color: black;
+    }
     .tab{
         height: auto;
         flex: 1 0 0px;
