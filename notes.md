@@ -11,13 +11,10 @@
 - Bosses at the end of the stage.
 - Boss profiles.
 - Remove spell books.
-- Balance d12 combos bow, shield?
 - Passive: +1 exp when you use a scroll.
-- Use 'order' to reorder actions in action bar.
-- Do burning dot shit.
+- Do burning dot.
 - Add coin related passive.
 - Item that hits through block enemy action.
-- Remove power stacking.
 - Add treasure items that take N inventory capacity and sell for a lot of coins.
 - Add sharpening stone to repair weapons.
 - Add trap tile that requires agility roll or minigame.

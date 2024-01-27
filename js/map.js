@@ -5,11 +5,11 @@ class MapObj{
         //Background image ids
         let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
         let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
-        let tileSetCommon = 'casino, blacksmith, campfire-1, campfire-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
+        let tileSetCommon = 'casino, blacksmith, camp-1, camp-2, merchant-1, merchant-2, lake-1, lake-2, lake-3, dungeon-1'.split(', ') //dungeon, 
         let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
         let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7, road-1'.split(', ')
         
-        let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, campfire, monument, lake, house, dungeon'
+        let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, camp, monument, lake, house, dungeon'
         
         //Set map dimensions
         this.xAxis = config.mapX //+ gs.stage
@@ -91,6 +91,7 @@ class MapObj{
                     rollTarget = gs.dungeonEnemySpawnFrequency
                 }
 
+                //If roll passes the treshold enemy spawn value -> add enemy to tile
                 if (rollForEne < rollTarget){ 
                     let eneQuant = rng(config.enemyPartyCap)
                     tile.enemyUnit = true
@@ -113,82 +114,102 @@ class MapObj{
 
         //MANDATORY TILES
             //Map position is set in last main-and-combat.js
-            let overrides = [
-                {//Player
-                    tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
-                    tileType: `entrance-1`, 
-                    playerUnit: true, 
-                    enemyUnit: false, 
-                    flip: false
-                }, 
-                {//Exit
-                    tileId:`${Math.round(this.xAxis/2)}-1`, 
-                    tileType: 'exit-1', 
-                    enemyUnit: true, 
-                    enemyQuant: config.exitDefenders + gs.stage,
-                    flip: false
-                },
-            ]
-
-        //Dungeon overrides
-            if(type == 'dungeon'){
-                overrides = [
+                let overrides = [
                     {//Player
-                        tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`,
-                        tileType: `dungeon-exit`, 
+                        tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
+                        tileType: `entrance-1`, 
                         playerUnit: true, 
                         enemyUnit: false, 
+                        flip: false
                     }, 
                     {//Exit
                         tileId:`${Math.round(this.xAxis/2)}-1`, 
+                        tileType: 'exit-1', 
                         enemyUnit: true, 
                         enemyQuant: 1,
-                        enemyQuant: config.exitDefenders + gs.stage,
+                        flip: false,
                         boss: true,
                     },
                 ]
-            }
 
-        //Adds mandatory tiles from config
-            config.mandatoryTiles.forEach(tile => {
-                if(type == 'dungeon') return
-                overrides.push(tile)
-            })
-
-            overrides.forEach(reqTile => {
-            
-                //Find tile by id
-                let tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
-                // console.log(reqTile, tile);
-
-                //If tiles overlap, pick new random id.
-                //Inf loop will check for new random id
-                if(tile == undefined || tile.required){
-                    while(true){
-
-                        //Picks random tile on the map
-                        reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
-                        tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
-
-                        //Checks if tile is not required
-                        if(!tile.required){
-                            break;
-                        }
-                    }
+            //Dungeon overrides
+                if(type == 'dungeon'){
+                    console.log(1);
+                    overrides = [
+                        {//Player
+                            tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`,
+                            tileType: `dungeon-exit`, 
+                            playerUnit: true, 
+                            enemyUnit: false, 
+                        }, 
+                        {//Exit (boss tile)
+                            tileId:`${Math.round(this.xAxis/2)}-1`, 
+                            enemyUnit: true, 
+                            enemyQuant: 1,
+                            boss: true,
+                        },
+                    ]
                 }
 
-                //Add required tile for loop above
-                tile.required = true
-
-                //Set properties
-                //Gets all props and checks for defined ones.
-                //***Add this for all other class object overrides.
-                Object.getOwnPropertyNames(reqTile).forEach(property =>{
-                    if(reqTile[property] != undefined){
-                        tile[property] = reqTile[property]
-                    }
+            //Adds mandatory tiles from config
+                config.mandatoryTiles.forEach(tile => {
+                    if(type == 'dungeon') return //why dungeon was excluded?
+                    overrides.push(tile) //add mandatory tile to required tiles arr
                 })
-            })
+
+            //Add mandatory tiles from stage profile
+                //Resolve undefined arr
+                let mandatoryTilesRefArr
+                if(
+                    typeof stageProfileRef[`stage${gs.stage}`] == 'undefined' ||
+                    typeof stageProfileRef[`stage${gs.stage}`].mandatoryTiles == 'undefined'
+                ){
+                    mandatoryTilesRefArr = stageProfileRef.genericMap.mandatoryTiles
+                }else{
+                    mandatoryTilesRefArr = stageProfileRef[`stage${gs.stage}`].mandatoryTiles
+                }
+
+                // console.log(mandatoryTilesRefArr, stageProfileRef.genericMap.mandatoryTiles);
+                mandatoryTilesRefArr.forEach(tile => {
+                    if(type == 'dungeon') return //why dungeon was excluded?
+                    overrides.push(tile) //add mandatory tile to required tiles arr
+                })
+
+            //Add all mandatory tiles from overrides arr
+                overrides.forEach(reqTile => {
+                
+                    //Find tile by id
+                    let tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
+                    // console.log(reqTile, tile);
+
+                    //If mandatory tiles overlap, picks new random tile id.
+                    //Inf loop will check for new random id
+                    if(tile == undefined || tile.required){
+                        while(true){
+
+                            //Picks random tile on the map
+                            reqTile.tileId = `${rng(this.xAxis)}-${rng(this.yAxis)}`
+                            tile = findByProperty(this.tiles, 'tileId', reqTile.tileId)
+
+                            //Checks if tile is not required
+                            if(!tile.required){
+                                break;//Stops the loop
+                            }
+                        }
+                    }
+
+                    //Add required tile for loop above
+                    tile.required = true
+
+                    //Set properties
+                    //Gets all props and checks for defined ones.
+                    //***Add this for all other class object overrides.
+                    Object.getOwnPropertyNames(reqTile).forEach(property =>{
+                        if(reqTile[property] != undefined){
+                            tile[property] = reqTile[property]
+                        }
+                    })
+                })
     }
 }
 
@@ -530,12 +551,9 @@ class MapObj{
             screen('event-screen')
         }else if(eventType.startsWith('merchant')){
 
+            //Generate shop.
             if(gs.playerLocationTile.visited == undefined){
-                //Generate shop.
                 el('merchant-container').innerHTML = ``
-    
-                //Swap for testing
-                // genOfferedItemList("all", 'merchant')
                 genOfferedItemList(gs.merchantQuant, 'merchant')
             }
 
@@ -550,6 +568,7 @@ class MapObj{
 
             //Open merchant screen.
             screen('merchant')
+
         }else if(eventType.startsWith('blacksmith')){
             //Generate items-to-enhance.
             el('items-to-enhance').innerHTML = ``
@@ -573,7 +592,7 @@ class MapObj{
             //Open merchant screen
             screen('enchanter')
         }
-        //Lore
+
         else if (eventType.startsWith('monument')){
             
             //Get event id from tile
@@ -638,12 +657,12 @@ class MapObj{
             let roll = rng(5)
 
             if(gs.playerLocationTile.visited == true || roll == 5){
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`There is nothing in here.`
             }
             else if(roll == 4){
                 let item = new ItemObj()
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty. You look around and find <b>${item.itemName}</b>.`
 
                 //Add item to the inventory.
@@ -651,14 +670,14 @@ class MapObj{
             }
             else if(roll == 3){
                 let heal = rng(Math.round(gs.plObj.life/3))
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty and find a <b>medical kit (+${heal}<img src='./img/ico/life.svg'>)</b>.`
                 
                 restoreLife(heal)
             }
             else {
                 let dmg = rng(Math.round(gs.plObj.life/2))
-                el('event-cover').setAttribute('src',`./img/map/house-placeholder.svg`)
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You enter an empty house, and step into a <b>spike trap hole (-${dmg} <img src='./img/ico/life.svg'>)</b>.`
 
                 gs.plObj.life -= dmg
@@ -718,6 +737,23 @@ class MapObj{
 
             //Load map
             initGame()
+        }else if(eventType.startsWith('camp')){
+
+            if(gs.playerLocationTile.visited == true){
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
+                el('event-desc').innerHTML =`There is nothing in here.`
+                
+            }else{
+                let heal = rng(Math.round(gs.plObj.life / 1.5), gs.plObj.life/2)
+    
+                el('event-cover').setAttribute('src',`./img/bg/camp.svg`)
+                el('event-desc').innerHTML =`You approach a camp and rest,<br> you feel better ( +${heal}<img src='./img/ico/life.svg'>)</b>.`
+                
+                restoreLife(heal)
+            }
+           
+            screen('event-screen')
+            syncUi()
         }else{
             showAlert(`You look around.<br>There is nothing to see here.`)
         }
@@ -728,47 +764,47 @@ class MapObj{
 
     let eventRef =[
         {
-            'eventId': 0,
-            'eventDesc': `
+            eventId: 0,
+            eventDesc: `
                 You notice a monolith, but it is heavily damaged. 
                 Something was depicted on it, but it's very hard to decipher.
             `
         },{
-            'eventId': 1,
+            eventId: 1,
             'eventDesc': `
                 You notice a large dark monolith in the middle of the area.
                 You approach it and see an engraved image...
             `
         },{
-            'eventId': 2,
-            'eventDesc': `
+            eventId: 2,
+            eventDesc: `
                 You notice a large dark monolith in the middle of the area.
                 You approach it and see an engraved image...
             `
         },
         //Monolith
         {     eventId: 3,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"This palce is not a place of honour..."</h3>
             `
         },{   eventId: 4,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"No highly esteemed deed is commemorated here. Nothing valued...</h3>
 
             `
         },{   eventId: 5,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"Nothing valued is here. What is here..."</h3>
             `
         },{   eventId: 6,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"What is here is dangerous and repulsive to us. This message..."</h3>
             `
@@ -779,8 +815,8 @@ class MapObj{
                 <h3>"This message is a warning..."</h3>
             `
         },{   eventId: 8,
-            'img': 'event-text',
-            'eventDesc': `
+            img: 'event-text',
+            eventDesc: `
                 You find a monolith, it is mostly damaged, but you manage to decipher a phrase...<br>
                 <h3>"...warning about danger..."</h3>
             `
@@ -805,4 +841,51 @@ class MapObj{
         gs.maps = [] 
 
         initGame()         
+    }
+
+    //Stage profiles
+    let stageProfileRef = {
+        genericMap:{
+            mandatoryTiles:[
+                {tileType: 'camp-1', tileId:`1-12`,enemyUnit: false},
+            ]
+        },
+        stage1:{
+            boss:['reaper'],
+            enemy:['minion','balanced'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },
+        stage2:{
+            boss:['protector'],
+            enemy:['tank','balanced'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },
+        stage3:{
+            boss:['mech'],
+            enemy:['tank','assassin'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },
+        stage4:{
+            boss:['destiny'],
+            enemy:['mage','assasin'],
+            mandatoryTiles:[
+                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+            ]
+        },stage5:{
+            boss:['valc'],
+            enemy:['mage','assasin','gladiator']
+        },
+        stage5:{
+            boss:['meat'],
+            enemy:['mage','assasin','gladiator', 'tank']
+        },
+        stage6:{
+            enemy:['mage','assasin','gladiator', 'tank']
+        },
     }

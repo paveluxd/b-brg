@@ -61,24 +61,29 @@
 
 //INITITATE COMBAT
     function initiateCombat(){
-        //Log to debug the combat issue
-        console.log('Combat initiated.');
-
-        //1.Create cinbat object.
+        console.log('Initiating combat');
+        
+        //1.Reset variables for new encounter.
             gs.inCombat = true
             gs.combatTurn = 1
-
-        //2.Reset variables for new encounter.
             if(typeof gs.encounter !== 'number'){
                 gs.encounter = 1
             }  
 
-        //3. Reset flat stats
+        //2. Reset flat stats
+        // This was set after enemy generation, moved up due to static power passive.
+            resetFlatStats()
+
+        //4. Reset flat stats
         // This was set after enemy generation, moved up due to static power passive.
             resetFlatStats()
 
         //4.Generates enemy
             gs.enObj = new EnemyObj //New enemy per fight 
+
+            //PASSIVE: combat start passives
+            resolveStartOfCombatPassives()
+
 
             //PASSIVE: combat start passives
             resolveStartOfCombatPassives()
@@ -152,10 +157,9 @@
 
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
     
-                if(gs.plObj.roll === 4){
+                if(gs.plObj.roll == 4){
                     //Resolve stat change
                     changeStat('def', 1, 'player')
-    
                     gs.logMsg.push('Mace: +1 def.')
                 }
     
@@ -295,7 +299,7 @@
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
-            }else if(paKey =='a64'){// sicle
+            }else if(paKey =='a64'){// sickle
 
                 //Calc
                 gs.plObj.dmgDone += 2 + gs.plObj.power
@@ -531,6 +535,13 @@
                 //Log
                 gs.logMsg.push(`Blocked ${gs.plObj.roll} dmg.`)
     
+            }else if(paKey =='a69'){// 'defend' 'wooden shield'
+    
+                gs.enObj.dmgDone -= actionMod
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
+    
             }else if(paKey =='a44'){// "restoration" "scroll of restoration"
 
                 let restoredPoints = 0
@@ -592,6 +603,19 @@
     
                 //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
                 recalcEneAction()
+
+            }else if(paKey =='a70'){// pendant/charge
+            
+                let powerRef = gs.plObj.power
+                gs.plObj.power = gs.enObj.power
+                gs.enObj.power = powerRef
+    
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
+    
+                //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
+                recalcEneAction()
+                
             }else if(paKey =='a53'){// "transmute" "alchemists paKey"
                 
                 //Condition check
@@ -798,11 +822,7 @@
                         gs.logMsg.push(`Applied ${poisonStackCount} poison stacks. Poison was triggered.`)
                     }
                 
-                //DEF: resolve.
-                //I don't remember why def reduction happened before damage calculation, see if it will cause issues in the futer.
-                    //Reduce dmg by def
-                    gs.plObj.dmgDone -= gs.enObj.def
-
+                //DEF: resolve.                    
                     //Def break logic
                     if(gs.sourceAction.tags.includes('breaks def') && gs.enObj.def > 0){
                         
@@ -812,15 +832,15 @@
                         gs.plObj.dmgDone = gs.enObj.def
                         
                     }else if(gs.enObj.def > 0){
+                        //Reduce dmg by def
+                        //Def break dmg should not be reduced by def
+                        gs.plObj.dmgDone -= gs.enObj.def
                         
                         //Reduce def on hit
                         changeStat('def', -1, 'enemy')
                         
-                    }
-
-                    //Set positive damage to 0 (if def is greater than dmg)
-                    if(gs.plObj.dmgDone < 0){
-                        gs.plObj.dmgDone = 0
+                    }else if(gs.enObj.def < 0){
+                        gs.plObj.dmgDone -= gs.enObj.def
                     }
                     
                 

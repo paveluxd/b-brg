@@ -12,7 +12,7 @@ let config = {
     //Progression
         expBase: 2,
         expMult: 1,
-        expExpo: 0.8,
+        expExpo: 0.4,
         basePassieSkillPoints: 0,
 
     //Game
@@ -23,32 +23,14 @@ let config = {
         stGuardian: [
             'club',
             'shield',
-            "woolen bag",
-            "axe",
-            "spear",
-            "bow",
-            "dagger",
-            "mace",
         ],
         stCrusader: [
             'sword',
             'bandages',
-            "woolen bag",
-            "axe",
-            "spear",
-            "bow",
-            "dagger",
-            "mace",
         ],
         stWanderer: [
             'bow',
             'cape',
-            "woolen bag",
-            "axe",
-            "spear",
-            "bow",
-            "dagger",
-            "mace"
         ],
         coins: 0,
         food:  4,
@@ -68,15 +50,17 @@ let config = {
         mandatoryTiles:  [],
 
     //Items
-        chargeFloor: 0.5     //Lowes % for item action charge
+        chargeFloor: 0.5,     //Lowes % for item action charge
+        merchantQuant: 10,
 }
 
 // Test config
+if(1 == 2){
 config = {
     //Player
-        life:       40, //40
-        power:       0,
-        def:         0,
+        life:       400, //40
+        power:       10,
+        def:         4,
         dice:        6,
         inventory:  40,
         slots:       5,
@@ -85,21 +69,23 @@ config = {
     //Progression
         expBase: 2,
         expMult: 1,
-        expExpo: 0.8,
-        basePassieSkillPoints: 0,
+        expExpo: 0.4,
+        basePassieSkillPoints: 99,
 
     //Game
-        //testCombat: true, //Initiates combat at the start (for testing).
+        // testCombat: true, //Initiates combat at the start (for testing).
         showScreen: 'tree', 
-        // clearLs: true,
+        clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,
-
 
     //Starting items
         stGuardian: [
             'club',
             'shield',
+            'pendant',
+            'spear',
+            'sickle',
         ],
         stCrusader: [
             'sword',
@@ -109,12 +95,12 @@ config = {
             'bow',
             'cape',
         ],
-        coins: 0, //rng(12,6),
+        coins: 90, //rng(12,6),
         food:  6, //rng(4,2),
 
     //Enemy
         eneLife: 8, //8
-        // forceEnemyProfile: 'assassin',
+        // forceEnemyProfile: ['boss','reaper'],
         // forceEnemyAction: 'wound',
         enSpawnFrequency: 40,
 
@@ -123,18 +109,20 @@ config = {
 
     //Map
         mapX:             3, //1
-        mapY:            12, //Vertical
+        mapY:             6, //Vertical
         exitDefenders:    3,
         enemyPartyCap:    3, //25% item reward per enemy
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
-            // {tileId:`11-3`, tileType: 'dungeon-1', enemyUnit: false},
+            // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
             // {tileType: 'enchanter-1', enemyUnit: false},
-            // {tileType: 'merchant-1'},
+            // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
             // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-            // {tileType:'lake-1', tileId:`12-2`},
+            // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
         ],
 
     //Items
-        chargeFloor: 0.5     //Lowes % for item action charge
+        chargeFloor: 0.5,     //Lowes % for item action charge
+        merchantQuant: 'all',
+}
 }

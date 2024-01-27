@@ -263,7 +263,7 @@
 
     //Sprite builder
     function spriteBuilder(target){
-        if(target === 'player'){
+        if(target == 'player'){
             el('player-sprite').innerHTML = `
                 <img src="./img/character/shade.svg">
                 <img src="./img/character/${rng(3,1)}-back.svg">
@@ -276,10 +276,14 @@
             `
         }
         else if(target == 'enemy'){
-            if(gs.playerLocationTile.boss){
+
+            // console.log(gs.enObj.profile);
+            if(Object.keys(profileRef.boss).includes(gs.enObj.profile.profileId)){
+            // if(gs.playerLocationTile.boss){
+
                 el('enemy-sprite').innerHTML = `
                     <img src="./img/character/shade.svg">
-                    <img src="./img/enemy/boss/${rng(3,1)}.svg">
+                    <img src="./img/enemy/boss/${gs.enObj.profile.profileId}.svg">
                     <img id='e-ghost' src="">
                 ` 
 
@@ -287,15 +291,9 @@
             }
             else{
 
-                let enemySpriteParts = `
-                    <img src="./img/enemy/balanced/${rng(3,1)}-back-arm.svg">
-                    <img src="./img/enemy/balanced/${rng(2,1)}-legs.svg">
-                    <img src="./img/enemy/balanced/${rng(2,1)}-torso.svg">
-                    <img src="./img/enemy/balanced/${rng(3,1)}-front-arm.svg">
-                    <img src="./img/enemy/balanced/${rng(5,1)}-head.svg">
-                `
+                let enemySpriteParts
 
-                if(gs.enObj.profile.profileId == 'mage'){
+                if      (gs.enObj.profile.profileId == 'mage'){
                     enemySpriteParts = `
                         <img src="./img/enemy/mage/${rng(2,1)}-back-arm.svg">
                         <img src="./img/enemy/mage/${rng(2,1)}-legs.svg">
@@ -327,11 +325,19 @@
                         <img src="./img/enemy/assassin/${rng(2,1)}-front-arm.svg">
                         <img src="./img/enemy/assassin/${rng(2,1)}-head.svg">
                     `
+                }else{ //sets balanced enemy profile
+                    enemySpriteParts = `
+                        <img src="./img/enemy/balanced/${rng(3,1)}-back-arm.svg">
+                        <img src="./img/enemy/balanced/${rng(2,1)}-legs.svg">
+                        <img src="./img/enemy/balanced/${rng(2,1)}-torso.svg">
+                        <img src="./img/enemy/balanced/${rng(3,1)}-front-arm.svg">
+                        <img src="./img/enemy/balanced/${rng(5,1)}-head.svg">
+                    `
                 }
 
                 el('enemy-sprite').innerHTML = ` 
                     <img src="./img/character/shade.svg">
-                    ${enemySpriteParts}
+                        ${enemySpriteParts}
                     <img id='e-ghost' src="">
                 ` 
                 el('e-img-column').classList.remove('boss')

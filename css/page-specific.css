@@ -23,16 +23,10 @@
     }
 
     .map-frame{
-
         min-width:100%;
-        /* min-width: 361px; */
         height: 100%;
-
-        /* padding: 200px 0px 140px 0px; */
-        /* margin: auto; */
         display: flex;
         justify-content: center;
-
         overflow: scroll;
     }
     .map-tile{
@@ -40,13 +34,11 @@
         height: 120px;
 
         border: none;
-        /* box-shadow: inset 2px 2px 0px var(--map-frame); */
         border-left: 1px dashed var(--map-frame) !important;
         border-bottom: 1px dashed var(--map-frame) !important;
         background-color: var(--w0);
 
         position: relative;
-        /* transition: all 200ms; */
         box-shadow: none;
     }
     .map-tile:hover{
@@ -84,6 +76,8 @@
         touch-action: pan-y !important;
         overscroll-behavior-y: none;
         overscroll-behavior-x: none;
+
+        scroll-behavior: smooth;
     }
     .dungeon{
         background-color: rgb(67, 67, 67) !important;
@@ -266,10 +260,9 @@
 /* Combat */
     #combat{
         height: 100%;
-
+        overflow: hidden;
         background-color: rgb(0, 0, 0);
         flex-direction: column;
-        overflow-y: hidden;
         align-items: center;
         position: relative;
  
@@ -871,7 +864,6 @@
     #tree, #tree *{ 
         touch-action: auto !important;
         /* height: auto; */
-        
     }
     #skill-tree{
         height:            calc(var(--tree-cell) * var(--tree-rows));
@@ -881,20 +873,21 @@
         grid-template-columns: repeat(var(--tree-columns),1fr);
         grid-template-rows:    repeat(var(--tree-rows),   1fr);
 
-        margin: 160px 24px 92px 24px;
-        cursor: grab;
+        margin: 160px 24px 160px 24px;
+        cursor: url(/img/ico/cursor-move.svg), auto;
     }
 
     #tree-node-popup{
         width: calc(100% - 16px);
         max-width: 400px;
+        min-height: 72px;
 
-        background-color: black;
-        padding: 8px;
+        background-color: var(--b80);
+        padding: 4px 8px;
         color: var(--w80);
 
         position: absolute;
-        top:  8px;
+        bottom:  72px;
         left: 50%;
         transform: translateX(-50%);
 
@@ -902,6 +895,9 @@
         justify-content: space-between;
         z-index: 2;
 
+    }
+    #tree-node-popup button{
+        margin-top: 4px;
     }
 
     /* Tree rendering */
@@ -930,7 +926,7 @@
         padding: 0;
         height: 48px;
         width: 48px;
-        border-radius: 99px;
+        border-radius: 0px;
     }
     .compact-node img{
         height: 32px;
@@ -1001,3 +997,47 @@
         box-shadow: 0px 0px 6px 0px var(--heading-yellow);
         transition: all 300ms;
     }
+
+
+    /* Char selection screen */
+    .char-selection{
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        position: relative;
+    }
+    #char-text-container{
+        position: absolute;
+        top: 20%;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    #characters{
+        display: flex;
+        transform: translateY(40px);
+    }
+    
+    #characters button{
+        width: 108px;
+        height: auto;
+        border: none;
+        background-color: var(--w0);
+        box-shadow: none;
+        padding: 0;
+    }
+    .char-highlight{
+        background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.3)) !important;
+    }
+
+    #char-select-button{
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        max-width: calc(360px - 16px);
+    }
+    .char-bg{
+        z-index: -1;
+        position: absolute;
+    }
+    
