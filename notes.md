@@ -5,7 +5,9 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- 
+- Fixed bug when pages with background images would scroll.
+- Fixed a bug where navigation on the tree page via mouse click & drag on desktop would not work.
+- Added character selection screen.
 
 **To-do ideas**
 - Bosses at the end of the stage.
