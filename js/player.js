@@ -397,12 +397,15 @@ function resolveExpAndLvl(){
         //Add action cards
         el('action-list').innerHTML = ``
         el('passive-list').innerHTML = ``
-
+        
+        
         gs.plObj.actions.forEach(action => {
             if(action.actionType != 'passive'){
                 el('action-list').append(genActionCard(action, 'card'))
+                el('pasives_from_equipment_title').classList.add('hide')
             } else {
                 el('passive-list').append(genActionCard(action, 'card'))
+                el('pasives_from_equipment_title').classList.remove('hide')
             }         
         })
 
@@ -437,7 +440,8 @@ function resolveExpAndLvl(){
                 </div>
                 
                 <button id="char-select-button" class="button_decorative_frame_column hide" onclick="config.class = 'guardian', initGame()">
-                    Continue
+                <img src="img/ico/leave.svg" >    
+                Continue
                 </button>
 
                 <img class='char-bg' src="./img/bg/char-select.svg">
