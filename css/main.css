@@ -208,6 +208,71 @@ body{
         padding: 24px 24px 96px 24px;
     }
 
+/* Experience Bar */
+.exp-bar-container{
+    flex-direction: column;
+    max-width: 400px;
+    width: calc(100% - -4px);
+    height: 28px;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 60px;
+    z-index: 6;
+    display: flex;
+    align-items: stretch;
+    color: var(--btn-border);
+}
+.exp-bar-dividers{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    left: 1px;
+   
+}
+.exp-bar-dividers:nth-last-child(9){
+    right: -2px;
+}
+.exp-bar-container progress{
+    width: 100%;
+    border: solid 2px var(--btn-border);
+    background-color:#2196F3;
+}
+.exp-dividers-bar{
+    position: relative;
+    bottom: -13px;
+    font-size: 13px;
+}
+.levelUp_display{
+    position: absolute;
+    top: 18px;
+    padding-left: 9px;
+    width: 28px;
+    z-index: 1;
+    background-position: center;
+    background-image: url(/img/bg/levelUp_background.svg);
+    
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+
+}
+
+  #experience-bar::-webkit-progress-bar {
+    background-color: black;
+  }
+  
+  #experience-bar::-moz-progress-bar {
+    background-color: black;
+  }
+  #experience-bar::-webkit-progress-value {
+    background-color: var(--w80);
+  }
+  
+  #experience-bar::-moz-progress-bar-value {
+    background-color: var(--w80);
+  }
+
 /* Tabs */
     .tab-container{
         max-width: 400px;
