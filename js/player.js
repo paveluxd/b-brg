@@ -145,17 +145,17 @@ function resolveExpAndLvl(){
 
     //Add 1 exp for winning
     gs.plObj.exp++  
-
+    
     //TREE: On exp gain passives
     resolveOnStatChangePassives('exp')                            
-
+    
     //Lvl up
     if(gs.plObj.exp >= gs.plObj.lvlUpExp){
         gs.plObj.lvl++
         gs.plObj.lvlUpExp =  Math.ceil(config.expBase * (gs.plObj.lvl * config.expMult) ** config.expExpo)
         gs.plObj.exp = 0
     }
-
+    
     //-1 for initial lvl 1
     gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length - 1
 
@@ -430,7 +430,7 @@ function resolveExpAndLvl(){
                     </button>
                 </div>
                 
-                <button id="char-select-button" class="hide" onclick="config.class = 'guardian', initGame()">
+                <button id="char-select-button" class="btn-frame hide" onclick="config.class = 'guardian', initGame()">
                     Continue
                 </button>
 

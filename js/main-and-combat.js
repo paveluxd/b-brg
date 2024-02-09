@@ -1227,6 +1227,7 @@
     
 
 //GAME START
+    //Clear LS if config
     if(config.clearLs == true){
         localStorage.clear();
         console.log('Local storage cleared.');

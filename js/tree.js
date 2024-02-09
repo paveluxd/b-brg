@@ -279,7 +279,7 @@ let prefix = 'treenode_'
                     
 
                     let cellContent = `
-                        <img class="btn--ico" src="./img/tree/${treeObjNode.imgPath}.svg"> 
+                        <img class="btn--ico btn-frame" src="./img/tree/${treeObjNode.imgPath}.svg"> 
                         ${directionLineElems}
                     `
         
@@ -523,7 +523,7 @@ let prefix = 'treenode_'
                         <h4>${upp(node.name)}</h4>
                         <p> ${upp(node.desc)}.</p>
                     </div>
-                    <button class="btn--ico" onclick="addTreeNode('${node.id}', '${nodeElem.id}')">
+                    <button class="btn--ico btn-frame" onclick="addTreeNode('${node.id}', '${nodeElem.id}')">
                         <img src="./img/ico/add.svg">
                     </button>
                 `
