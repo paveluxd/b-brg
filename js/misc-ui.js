@@ -148,6 +148,9 @@
                 Inventory capacity: ${gs.plObj.inventory.length} / ${gs.plObj.inventorySlots}<br>
                 Equipped items: ${calcEquippedItems()} / ${gs.plObj.equipmentSlots}
             `
+        //Update exp bar indicator
+            el('.exp-progress').setAttribute('style',`width:${gs.plObj.exp / gs.plObj.lvlUpExp * 100}%`)
+            el('.lvl-indicator').innerHTML = gs.plObj.lvl
     }
 
     //Manage slider tabs

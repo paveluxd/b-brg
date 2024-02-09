@@ -5,9 +5,13 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- Fixed bug when pages with background images would scroll.
-- Fixed a bug where navigation on the tree page via mouse click & drag on desktop would not work.
-- Added character selection screen.
+- Added illustrations to character creation screen.
+- Fixed bug when pages with background images would scroll beyond content area.
+- Fixed a bug where click and drag navigation on the tree page would not work.
+- Fixed a bug when new version of the game would fail to start due to saved games.
+- Added decorative elements to buttons.
+- Fixed various minor visual bugs in UI.
+- Added exp and lvl indicators to the map screen.
 
 **To-do ideas**
 - Bosses at the end of the stage.

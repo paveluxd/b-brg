@@ -1,5 +1,7 @@
 //Confign for posting
 let config = {
+        version:    1,
+
     //Player
         life:      40, //40
         power:      0,
@@ -57,6 +59,8 @@ let config = {
 // Test config
 if(1 == 2){
 config = {
+        version:    1,
+
     //Player
         life:       400, //40
         power:       10,
@@ -74,7 +78,7 @@ config = {
 
     //Game
         // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'tree', 
+        showScreen: 'map', 
         clearLs: true,
         showCombatInfoLog: true,
         fadeTime: 40,

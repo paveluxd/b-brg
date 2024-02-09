@@ -4,6 +4,7 @@ let gs //game state object
     class GameState {
         constructor(){
             this.stage = 1
+            this.version = config.version
             
             //Encounter
             this.inCombat = false
@@ -57,6 +58,9 @@ let gs //game state object
 
         if (gameObj == undefined){
             console.log('New game started');
+        }
+        else if(gameObj.version !== config.version){
+            console.log('Version diff');
         }
         else {
             gs = gameObj

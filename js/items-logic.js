@@ -732,7 +732,7 @@ function calcCost(type, itemId){
             }
 
         itemModal.innerHTML = `
-            <div id="item-modal-tabs" class="tab-container">
+            <div id="item-modal-tabs" class="tab-container btn-frame ">
                 ${btn}
         
                 <button class="tab" onclick="toggleModal('item-modal')">

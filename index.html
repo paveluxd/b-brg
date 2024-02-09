@@ -53,20 +53,19 @@
 
 <body>
 <!-- State screen -->
-    <div id="state-screen" class="modal state-screen ">
-        <div class="modal-container">
+    <div id="state-screen" class="modal state-screen background-key">
+        <div class="modal-container main-screen-container">
 
-            <img src="./img/bg/logo.svg">
+            <img class="logo" src="./img/bg/logo.svg">
+    
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <button class="btn-ico-txt btn-frame" style="width: 176px;" onclick="playerClassSelection()"> <img src="./img/ico/leave.svg">Play</button>
+                <a href="https://discord.gg/AT8KdVbcVT" target="_blank" style="text-decoration: none;">
+                    <button class="btn-ico-txt btn-frame" style="width: 176px;" ><img src="./img/ico/discord.svg">Discord</button>
+                </a>
+                <button class="btn-ico-txt btn-frame" style="width: 176px;" onclick="localStorage.clear(), location.reload()"> <img src="./img/ico/repair.svg">Reset runs</button>
+            </div>
 
-            <p class="body-14" style="text-shadow: 2px 2px 2px black;">
-                Roguelike for the web.<br>
-                Play tester demo.
-            </p>
-            <br><br><br>
-            <button style="width: 200px;" onclick="playerClassSelection()">Play</button>
-            <button style="width: 200px;" onclick="localStorage.clear(), location.reload()">Reset saved game</button>
-
-            <img src="./img/bg/key.svg" class="bg-cover" style="z-index: -1; transform: translate(-50%, 0);">
         </div>
     </div>
 
@@ -74,8 +73,23 @@
     <div id="map" class="hide"> 
 
         <!-- Tab section -->
-        <div id="map-tabs" class="tab-container external-tabs" onclick="screen('character')">
+        <div id="map-tabs" class="tab-container external-tabs btn-frame" onclick="screen('character')">
             <!-- Exp bar -->
+            <div class="lvl-indicator mono-m">1</div>
+            <div class="exp-bar">
+                <div class="exp-progress" style="width: 0%;"></div>
+                <div class="spacer-bar">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
 
             <!-- Stat indicator -->
             <div id="stat-indicator">
@@ -121,13 +135,7 @@
 <!-- CHARACTER SCREEN -->
         
 
-        <div id="character-tabs" class="tab-container external-tabs row hide">
-
-            <!-- For combat menu -->
-            <button id="hide-btn" class="tab hide" onclick="screen('combat')">
-                <img src="./img/ico/tab-hide.svg">
-                Hide
-            </button>
+        <div id="character-tabs" class="tab-container external-tabs row hide btn-frame">
 
             <button id="map-btn" class="tab" onclick="screen('map')">
                 <img src="./img/ico/map.svg">
@@ -173,7 +181,7 @@
                         <div id="passive-list"></div>
                     </div>
           
-                    <button onclick="localStorage.clear(), location.reload();">Start new run</button>
+                    <button class="btn-frame" onclick="localStorage.clear(), location.reload();">Start new run</button>
                 </div>
             </div>
         </div>
@@ -292,7 +300,7 @@
     </div>
 
 <!-- Reward screen -->
-    <div id="reward-tabs" class="tab-container external-tabs hide">
+    <div id="reward-tabs" class="tab-container btn-frame  external-tabs hide">
 
         <button id="rw-rewards-btn" class="tab" onclick="screen('reward-screen')">
             <img src="./img/ico/tab-reward.svg">
@@ -326,7 +334,7 @@
     </div>
 
 <!-- MERCHANT -->
-    <div id="merchant-tabs" class="tab-container external-tabs hide">
+    <div id="merchant-tabs" class="tab-container btn-frame  external-tabs hide">
         <button class="tab" onclick="screen('map')">
             <img src="./img/ico/leave.svg">
             Leave
@@ -358,7 +366,7 @@
 <!-- BLACKSMITH -->
     <div id="blacksmith-repair" class="screen hide">
 
-        <div id="blacksmith-tabs" class="tab-container">
+        <div id="blacksmith-tabs" class="tab-container btn-frame ">
             <button class="tab" onclick="screen('map')">
                 <img src="./img/ico/leave.svg">
                 Leave
@@ -375,7 +383,7 @@
 <!-- ENCHANTER -->
 <div id="enchanter" class="screen hide">
 
-    <div id="enchanter-tabs" class="tab-container">
+    <div id="enchanter-tabs" class="tab-container btn-frame ">
         <button class="tab" onclick="screen('map')">
             <img src="./img/ico/leave.svg">
             Leave
@@ -401,7 +409,7 @@
 <!-- CASINO-->
     <div id="casino-screen" class="screen state-screen hide">
         <!-- Tabs -->
-        <div class="tab-container">
+        <div class="tab-container btn-frame ">
             <button class="tab" onclick="screen('map'), syncUi()">
                 <img src="./img/ico/leave.svg">
                 Leave

@@ -38,6 +38,7 @@
 
     /* SCREEN */
     --screen-bg:      #464B51;
+    --main-screen-bg:   #1d1d1d;
 
     /* TREE */
     --tree-rows:      9;
@@ -45,7 +46,8 @@
     --tree-cell:      64px;
 
     /* BUTTON */
-    --btn-size:       52px;
+    --btn-size:       48px;
     --btn-bg:         #2F3138;
+    --btn-bg-hover:   #23242b;
     --btn-border:     #949494;
 }
