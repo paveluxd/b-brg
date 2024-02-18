@@ -60,15 +60,21 @@ body{
 
 /* Overrides */
     h2{
-        color: var(--heading-yellow);
         font-family: 'Grenze', serif;
+        /* font-family: "UnifrakturMaguntia", cursive; */
         font-size: 36px;
-
+        
         line-height: 100%;
-        text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.25);
-        font-weight: 400;
+        font-weight: normal;
+        /* letter-spacing: 1px; */
         font-style: normal;
         font-feature-settings: 'clig' off, 'liga' off;
+
+        /* margin-top: 8px; */
+        
+        color: var(--heading-yellow);
+        /* color: rgb(255, 255, 255); */
+        text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.25);  
     }
     h3{
         font-weight: 600;
@@ -122,27 +128,23 @@ body{
         border: none;
         color: var(--w80);
 
-        
-
         text-decoration: none;
         font-size: 14px;
 
         position: relative;
-
     }
     .btn-frame{
         border: 2px solid var(--black);
         outline: 2px solid var(--btn-border);
         box-shadow: 0px 4px 4px 0px var(--b20);
     }
-
     .btn-frame::before, .btn-frame::after{
         position: absolute;
-        height: calc(100% + 8px);
+        height: calc(100% + 9px);
         font-size: 0;
-        z-index:4;
+        z-index:2;
 
-        top: -4px;
+        top: -5px;
         left: -4px;
         content:    url(/img/ui/top-left.svg);
         background: url(/img/ui/bot-left.svg) no-repeat bottom;
@@ -161,6 +163,7 @@ body{
 
     button:hover, .btn:hover , .btn-ico-txt:hover{
         background-color: var(--btn-bg-hover);
+        z-index: 1 !important;
     }
     button:active, .btn:active, .btn-ico-txt:active{
         background-color: var(--black);
@@ -217,7 +220,7 @@ body{
         position: absolute;
         
         background-color: var(--screen-bg);
-        z-index: 3;
+        z-index: 4;
 
         width: 100%;
         height: 100%;
@@ -247,11 +250,13 @@ body{
         width: calc(100% - 16px);
         height: 64px;
         
-        /*Centers tabs*/
         position: fixed; 
-        left: 50%;
-        transform: translate(-50%);
         bottom: 8px;
+
+        transform: translateX(-50%);
+        left: 50%;
+        justify-self: center;
+        
 
         z-index: 5;
 
@@ -271,12 +276,6 @@ body{
         flex: 1 0 0px;
         /* border: none; */
         border-left: 2px solid black;
-    }
-
-    .tab-container button:active, .tab-container button:hover{
-        /* border: none; */
-        z-index: 4;
-        
     }
     .active{
         background-color: var(--black);
@@ -305,18 +304,16 @@ body{
         height: 8px;
         background-color: black;
         position: absolute;
-        top: -9px;
+        top: -10px;
         left: -4px;
         border: 2px solid var(--btn-border);
         box-shadow: 0 2px 0 black;
-        z-index: 3;
+        z-index: 2;
     }
-
     .exp-bar .exp-progress{
         height: 100%;
         background-color: white;
     }
-
     .exp-bar .spacer-bar{
         display: flex;
         position: absolute;

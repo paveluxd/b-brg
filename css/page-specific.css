@@ -70,7 +70,7 @@
     }
     .unit-quant{
         position: absolute;
-        bottom: 25px;
+        bottom: 22px;
         right: 9px;
         z-index: 2;
 
@@ -162,36 +162,36 @@
         gap: 32px;
         overflow: visible;
         
-        .casino-card-container{
-            display: flex;
-            width: 360px;
-            height: 160px;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            gap: 4px;
-            overflow: visible;
-        }
-        .casino-card{
-            width: 112px;
-            height: 160px;
-        }
-        #card-0{
-            transform:rotate(-8deg);
-        }
-        #card-2{
+    }
+    #casino-screen .modal-container .casino-card-container{
+        display: flex;
+        width: 360px;
+        height: 160px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        gap: 4px;
+        overflow: visible;
+    }
+    #casino-screen .modal-container .casino-card{
+        width: 112px;
+        height: 160px;
+    }
+    #casino-screen .modal-container #card-0{
+        transform:rotate(-8deg);
+    }
+    #casino-screen .modal-container #card-2{
 
-            transform:rotate(12deg);
-        }
-        #casino-coins, #casino-outcome{
-            color: rgb(135, 116, 59);
-            font-family: 'Grenze', sans-serif;
-            font-weight: 400;
-            font-size: 28px;
-        }
-        #casino-outcome{
-            color: rgb(66, 66, 66);
-        }
+        transform:rotate(12deg);
+    }
+    #casino-screen .modal-container #casino-coins, #casino-screen .modal-container #casino-outcome{
+        color: rgb(135, 116, 59);
+        font-family: 'Grenze', sans-serif;
+        font-weight: 400;
+        font-size: 28px;
+    }
+    #casino-screen .modal-container #casino-outcome{
+        color: rgb(66, 66, 66);
     }
 
 /*Character screen*/
@@ -291,7 +291,6 @@
     .bg-cover{
         position: absolute;
         left: 50%;
-        z-index: 1;
         transform: translate(-50%, -24px);
     }
     #combat #log{
@@ -314,27 +313,22 @@
     .actions-container{
         display: flex;
         flex-direction: row;
-        height: 188px;
-        width: 100%;
-        max-width: 603px;
+        
+        height: 208px;
+        width: 352px;
 
         overflow: scroll;
         z-index: 1;
-
+        margin-bottom: 4px;
     }
+
     .actions-container #cards-row{
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         align-content: flex-start;
-        gap: 1px;
-
+        gap: 2px;
         width: 100%;
-        /* min-width: calc(2 * 180px + 2px); */
-        /* max-width: calc(3 * var(--action-card-max-width)); */
-        /* min-width: calc(100vw - 16px); */
-
-        /* max-height: 100%; */
+        background-color: black;
     }
     
     .action{
@@ -353,7 +347,7 @@
 
         position: relative;
         overflow: hidden;
-    
+        
     }
     .action h3 {
         color: var(--heading-yellow);;
@@ -577,29 +571,25 @@
 
 /* Boss */
     .boss #intent-indicator{
-        bottom: -22px !important;
+        /* bottom: -22px !important;
         background-color: black;
-        border-bottom: 1px solid var(--w20);
-
+        border-bottom: 1px solid var(--w20); */
     }
     .boss #intent-indicator div{
-        min-width: 180px !important;
+        /* min-width: 180px !important;
         flex-direction: row !important;
         padding: 4px 4px !important;
         font-size: 13px !important;
-        line-height: 16px !important;
-        /* align-items: flex-start !important; */
-        /* text-align: left !important; */
-        /* justify-content: flex-start !important; */
+        line-height: 16px !important; */
     }
     .boss #intent-indicator svg{
-        display: none;
+        /* display: none; */
     }
 
     .boss .stat-group{
-        background-color: black;
+        /* background-color: black;
         min-width: 180px !important;
-        bottom: -62px !important;
+        bottom: -62px !important; */
     }
     /* Remove idle anim */
     .boss  #enemy-sprite img:nth-child(2){
@@ -787,6 +777,21 @@
         border-radius: 0 0 0 4px;
         right: 0;
         top: 0;
+    }
+
+    #inventory-stats{
+        background-color: black;
+        padding: 6px 12px 5px 12px;
+        position: fixed;
+        bottom: 74px;
+        width: calc(100% - 16px);
+        max-width: 400px;
+        transform: translateX(-50%);
+        left: 50%;
+
+        border-radius: 4px 4px 0px 0px;
+        color: var(--w70);
+        z-index: 5;
     }
 
 /* Item details modal */
@@ -991,9 +996,11 @@
     #char-text-container{
         position: absolute;
         top: 20%;
+
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        align-items: center;
+        gap: 8px;
     }
     #characters{
         display: flex;

@@ -1,6 +1,6 @@
 //Confign for posting
 let config = {
-        version:    1,
+        version:    2,
 
     //Player
         life:      40, //40
@@ -59,15 +59,15 @@ let config = {
 // Test config
 if(1 == 2){
 config = {
-        version:    1,
+        version:    2,
 
     //Player
-        life:       400, //40
+        life:       100, //40
         power:       10,
         def:         4,
         dice:        6,
         inventory:  40,
-        slots:       5,
+        slots:       15,
         class:      'guardian',
 
     //Progression
@@ -77,19 +77,21 @@ config = {
         basePassieSkillPoints: 99,
 
     //Game
-        // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'map', 
+        testCombat: true, //Initiates combat at the start (for testing).
+        showScreen: 'combat', 
         clearLs: true,
-        showCombatInfoLog: true,
+        // showCombatInfoLog: true,
         fadeTime: 40,
+        // stage: 4,
 
     //Starting items
         stGuardian: [
             'club',
             'shield',
-            'pendant',
-            'spear',
-            'sickle',
+            'club',
+            'shield',
+            'club',
+
         ],
         stCrusader: [
             'sword',
@@ -104,7 +106,7 @@ config = {
 
     //Enemy
         eneLife: 8, //8
-        // forceEnemyProfile: ['boss','reaper'],
+        // forceEnemyProfile: ['boss','bossc'],
         // forceEnemyAction: 'wound',
         enSpawnFrequency: 40,
 

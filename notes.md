@@ -5,18 +5,15 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- Added illustrations to character creation screen.
-- Fixed bug when pages with background images would scroll beyond content area.
-- Fixed a bug where click and drag navigation on the tree page would not work.
-- Fixed a bug when new version of the game would fail to start due to saved games.
-- Added decorative elements to buttons.
-- Fixed various minor visual bugs in UI.
-- Added exp and lvl indicators to the map screen.
+- Removed scrolls and books from the game.
+- Removed most sci-fi units and items.
+- Various minor visual UI fixes. 
+- Game logo was updated.
+- Added floating inventory capacity indicator.
+- Added new illustration for bosses.
+- Addede simple combat guide screen that explains base stats.
 
 **To-do ideas**
-- Bosses at the end of the stage.
-- Boss profiles.
-- Remove spell books.
 - Passive: +1 exp when you use a scroll.
 - Do burning dot.
 - Add coin related passive.
@@ -34,15 +31,12 @@
 - Holy 
     - Heal -> bangages
     - Barrier -> shield
-
 - Lightning
     - 1-20 -> x-bow (cd-1 turn)?
     - Stun (cost 1p) -> chain
-
 - Fire
     - Fireball -> Burn: torch
     - Pyroblast -> Blast: power x roll (cost 1p) -> gunpoweder bomb?
-
 - Book of moon
     - Lance (dmg equal to powe (cost 1p)) -> spear?
     - Shards ==(3 x empty slot) -> ?

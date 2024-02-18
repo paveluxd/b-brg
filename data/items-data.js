@@ -152,15 +152,15 @@ let itemsRef = [
     "desc": "",
     "itemRarity": ""
   },
-  {
-    "itemName": "exoskeleton",
-    "actions": "overload",
-    "passiveStats": "",
-    "itemSlot": "",
-    "itemType": "equipment",
-    "desc": "",
-    "itemRarity": ""
-  },
+  // {
+  //   "itemName": "exoskeleton",
+  //   "actions": "overload",
+  //   "passiveStats": "",
+  //   "itemSlot": "",
+  //   "itemType": "equipment",
+  //   "desc": "",
+  //   "itemRarity": ""
+  // },
   {
     "itemName": "wizards head",
     "actions": "fear",
@@ -224,7 +224,7 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
-    "itemName": "scroll of inferno",
+    "itemName": "bomb assembly kit",
     "actions": "inferno",
     "passiveStats": "",
     "itemSlot": "",
@@ -233,7 +233,7 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
-    "itemName": "curse of wounds",
+    "itemName": "acid vial",
     "actions": "wound",
     "passiveStats": "",
     "itemSlot": "",
@@ -367,42 +367,42 @@ let itemsRef = [
     "desc": "",
     "itemRarity": ""
   },
-  {
-    "itemName": "book of order",
-    "actions": "heal, barrier",
-    "passiveStats": "",
-    "itemSlot": "",
-    "itemType": "book",
-    "desc": "",
-    "itemRarity": ""
-  },
-  {
-    "itemName": "book of fire",
-    "actions": "fireball, pyroblast",
-    "passiveStats": "",
-    "itemSlot": "",
-    "itemType": "book",
-    "desc": "",
-    "itemRarity": ""
-  },
-  {
-    "itemName": "book of lightning",
-    "actions": "lightning, shock",
-    "passiveStats": "",
-    "itemSlot": "",
-    "itemType": "book",
-    "desc": "",
-    "itemRarity": ""
-  },
-  {
-    "itemName": "book of moon",
-    "actions": "lance, shards",
-    "passiveStats": "",
-    "itemSlot": "",
-    "itemType": "book",
-    "desc": "",
-    "itemRarity": ""
-  },
+  // {
+  //   "itemName": "book of order",
+  //   "actions": "heal, barrier",
+  //   "passiveStats": "",
+  //   "itemSlot": "",
+  //   "itemType": "book",
+  //   "desc": "",
+  //   "itemRarity": ""
+  // },
+  // {
+  //   "itemName": "book of fire",
+  //   "actions": "fireball, pyroblast",
+  //   "passiveStats": "",
+  //   "itemSlot": "",
+  //   "itemType": "book",
+  //   "desc": "",
+  //   "itemRarity": ""
+  // },
+  // {
+  //   "itemName": "book of lightning",
+  //   "actions": "lightning, shock",
+  //   "passiveStats": "",
+  //   "itemSlot": "",
+  //   "itemType": "book",
+  //   "desc": "",
+  //   "itemRarity": ""
+  // },
+  // {
+  //   "itemName": "book of moon",
+  //   "actions": "lance, shards",
+  //   "passiveStats": "",
+  //   "itemSlot": "",
+  //   "itemType": "book",
+  //   "desc": "",
+  //   "itemRarity": ""
+  // },
   {
     "itemName": "adrenaline pen",
     "actions": "adrenaline shot",
@@ -467,12 +467,12 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
-    "itemName": "scroll of restoration",
+    "itemName": "sal ammoniac",
     "actions": "restoration",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable, scroll",
-    "desc": "",
+    "itemType": "consumable",
+    "desc": "smelling salts have been used on people feeling faint, or who have fainted. They are usually administered by others but may be self-administered",
     "itemRarity": ""
   },
   {
@@ -494,16 +494,16 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
-    "itemName": "curse of slowness",
+    "itemName": "caltrops",
     "actions": "slow",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable, scroll",
+    "itemType": "consumable",
     "desc": "",
     "itemRarity": ""
   },
   {
-    "itemName": "curse of weakness",
+    "itemName": "beladonna darts",
     "actions": "weaken",
     "passiveStats": "",
     "itemSlot": "",
@@ -521,11 +521,11 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
-    "itemName": "scroll of fortification",
+    "itemName": "papaver somniferum",
     "actions": "fortify",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable, scroll",
+    "itemType": "consumable",
     "desc": "",
     "itemRarity": ""
   },

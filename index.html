@@ -41,6 +41,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+    <!-- "UnifrakturMaguntia" 'UnifrakturCook' -->
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+
     <!-- Favicon -->
     <link rel="apple-touch-icon"      sizes="180x180"    href="./favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32"      href="./favicon/favicon-32x32.png">
@@ -58,12 +62,11 @@
 
             <img class="logo" src="./img/bg/logo.svg">
     
-            <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 2px;">
                 <button class="btn-ico-txt btn-frame" style="width: 176px;" onclick="playerClassSelection()"> <img src="./img/ico/leave.svg">Play</button>
                 <a href="https://discord.gg/AT8KdVbcVT" target="_blank" style="text-decoration: none;">
                     <button class="btn-ico-txt btn-frame" style="width: 176px;" ><img src="./img/ico/discord.svg">Discord</button>
                 </a>
-                <button class="btn-ico-txt btn-frame" style="width: 176px;" onclick="localStorage.clear(), location.reload()"> <img src="./img/ico/repair.svg">Reset runs</button>
             </div>
 
         </div>
@@ -132,9 +135,7 @@
         </div>
     </div>
 
-<!-- CHARACTER SCREEN -->
-        
-
+<!-- CHARACTER SCREEN -->   
         <div id="character-tabs" class="tab-container external-tabs row hide btn-frame">
 
             <button id="map-btn" class="tab" onclick="screen('map')">
@@ -189,7 +190,8 @@
         <div id="inventory" class="screen hide">
             <div class="modal-container">
                 
-                <h2 id="inventory-heading"></h2>
+                <h2>Inventory</h2>
+                <p id="inventory-stats" class="body-14"></p>
                 
                 <div id="inventory-list" class="item-list"></div>
             </div>
@@ -207,7 +209,68 @@
     <div id="combat" class="screen hide">
         <!-- Game info -->
         <p id="log"></p>
+
         
+        <!-- Combat guide -->
+        <button 
+            onclick="el('combat-guide-page').classList.toggle('hide')" 
+            style="
+                z-index: 1;
+                background-color: var(--w);
+                position: fixed;
+                top: 0px;
+                left: 0px;
+            "
+        >
+
+            <img src="./img/ico/info.svg" alt="">
+
+        </button>
+
+        <div id="combat-guide-page" class="modal body-14" style="background-color: var(--b80);">
+            <div class="modal-container">
+
+                <h2>Combat guide</h2>
+                <br>
+
+                <div>
+                    <div class="stat">
+                        <img src="./img/ico/dice.svg" alt="">
+                        <p>4/6</p>
+                    </div>
+                    <h3>Dice roll (4) / Dice size (d6)</h3>
+                    <p>At the start of each turn you and enemy roll dice that affects your actions.</p>
+                </div>
+                <br>
+
+                <div>
+                    <img src="./img/ico/power.svg" alt="">
+                    <h3>Power</h3>
+                    <p>Modifies certain actions. For example power may increases attack damage or block value.</p>
+                </div>
+                <br>
+
+                <div>
+                    <img src="./img/ico/def.svg" alt="">
+                    <h3>Defence</h3>
+                    <p>Reduces incoming damage. On hit target looses 1 point of defence.</p>
+                </div>
+
+                <button 
+                    class="btn-ico-txt btn-frame" 
+                    onclick="el('combat-guide-page').classList.toggle('hide')"
+                    style="
+                        position: fixed;
+                        bottom: 24px;
+                        width: 120px;
+                    "
+                >
+                    <img src="./img/ico/tab-hide.svg" alt="">
+                    Hide
+                </button>
+            </div>
+        </div>
+
         <!-- Units images -->
         <div class="column grow units-container">
             <img id="combat-bg" class="bg-cover" src="./img/bg/combat-2.svg" alt="">

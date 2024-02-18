@@ -28,6 +28,11 @@
                 //Unlock screen
                 document.body.classList.remove('lock-actions', 'darken')
 
+                //Set custom stage for testing
+                if(config.stage != undefined){
+                    gs.stage = config.stage
+                }
+
                 genMap()
         
                 //Gen remaining UI
@@ -458,7 +463,7 @@
                 //Log
                 gs.logMsg.push(`Bandages: +${actionMod}  life.`)  
                  
-            }else if(paKey =='a34'){// scroll of fortification
+            }else if(paKey =='a34'){// papaver somniferum
 
                 //Resolve stat change
                 changeStat('def', actionMod, 'player')
@@ -534,7 +539,7 @@
                 //Log
                 gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
     
-            }else if(paKey =='a44'){// "restoration" "scroll of restoration"
+            }else if(paKey =='a44'){// "restoration" "sal ammoniac"
 
                 let restoredPoints = 0
     
@@ -619,7 +624,7 @@
                 //Log
                 gs.logMsg.push(`transmute: added ${gs.plObj.roll} coins`)
     
-            }else if(paKey =='a54'){// "inferno" "scroll of inferno"
+            }else if(paKey =='a54'){// "inferno" "bomb assembly kit"
     
                 //Dmg
                 gs.plObj.dmgDone += gs.plObj.power * gs.plObj.coins
