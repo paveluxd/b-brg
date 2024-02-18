@@ -621,8 +621,8 @@
             
         },
         boss: {
-              reaper:    {//stage 1 (strong unit)   
-                profileId: 'reaper',
+              bossa:    {//stage 1 (strong unit)   
+                profileId: 'bossa',
                 lifeMod:  3,
                 powerMod: 2,
                 defMod:   2,
@@ -645,8 +645,8 @@
                     //Misc
                         'sleep',
                 ]
-            },protector: {//stage 2 (pwoer control)  
-                profileId: 'protector',
+            },bossb: {//stage 2 (pwoer control)  
+                profileId: 'bossb',
                 statOverrides: [
                     'def-0',
                     'power-5',
@@ -675,8 +675,8 @@
                     //Misc
                         'sleep',
                 ]
-            },mech:      {//stage 3 (def control)   
-                profileId: 'mech',
+            },bossc:      {//stage 3 (def control)   
+                profileId: 'bossc',
                 powerMod: 2,
                 statOverrides: [
                     'def-10',

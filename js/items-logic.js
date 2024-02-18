@@ -484,7 +484,7 @@ function calcCost(type, itemId){
     function syncItemCards(){
         
         //Set inventory heading
-        el('inventory-heading').innerHTML = `Inventory ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`
+        el('inventory-stats').innerHTML = `Inventory space: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`
         
         //Sync inventory
         el('inventory-list').innerHTML = ''

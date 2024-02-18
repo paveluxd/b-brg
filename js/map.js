@@ -851,41 +851,41 @@ class MapObj{
             ]
         },
         stage1:{
-            boss:['reaper'],
+            boss:['bossa'],
             enemy:['minion','balanced'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage2:{
-            boss:['protector'],
-            enemy:['tank','balanced'],
+            boss:['bossb'],
+            enemy:['tank','balanced','assassin'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage3:{
-            boss:['mech'],
-            enemy:['tank','assassin'],
+            boss:['bossc'],
+            enemy:['tank','assassin','gladiator'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage4:{
             boss:['destiny'],
-            enemy:['mage','assasin'],
+            enemy:['mage','assassin'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },stage5:{
             boss:['valc'],
-            enemy:['mage','assasin','gladiator']
+            enemy:['mage','assassin','gladiator']
         },
         stage5:{
             boss:['meat'],
-            enemy:['mage','assasin','gladiator', 'tank']
+            enemy:['mage','assassin','gladiator', 'tank']
         },
         stage6:{
-            enemy:['mage','assasin','gladiator', 'tank']
+            enemy:['mage','assassin','gladiator', 'tank']
         },
     }

@@ -409,7 +409,7 @@ function resolveExpAndLvl(){
 
                 <div id='char-text-container'>
                     <h2 id="char-heading">
-                        Choose a character
+                        Choose a class
                     </h2>
                     <p  id="char-description" class="body-14">
                         Tap the character below
@@ -450,7 +450,7 @@ function resolveExpAndLvl(){
 
         if      (char == 'guardian'){
             el('char-heading').innerHTML = 'Guardian'
-            el('char-description').innerHTML = 'Used d4, specializes in defense.'
+            el('char-description').innerHTML = 'Uses d4, specializes in defense.'
         }
         else if (char == 'crusader'){
             el('char-heading').innerHTML = 'Crusader'
@@ -458,7 +458,7 @@ function resolveExpAndLvl(){
         }
         else if (char == 'wanderer'){
             el('char-heading').innerHTML = 'Wanderer'
-            el('char-description').innerHTML = 'Used d8, specializes in poisons.'
+            el('char-description').innerHTML = 'Uses d8, specializes in poisons.'
         }
 
         el(`${char}-button`).classList.add('char-highlight')
