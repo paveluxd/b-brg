@@ -5,13 +5,7 @@
 - Alt + Cmd + ->   -> split cursor
 
 **Update notes**
-- Removed scrolls and books from the game.
-- Removed most sci-fi units and items.
-- Various minor visual UI fixes. 
-- Game logo was updated.
-- Added floating inventory capacity indicator.
-- Added new illustration for bosses.
-- Addede simple combat guide screen that explains base stats.
+-
 
 **To-do ideas**
 - Passive: +1 exp when you use a scroll.
