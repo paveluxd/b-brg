@@ -614,8 +614,8 @@
             
         },
         boss: {
-              bossa:     {//stage 1 (strong unit)   
-                profileId: 'bossa',
+              boss1:     {//stage 1 (strong unit)   
+                profileId: 'boss1',
                 lifeMod:  3,
                 powerMod: 2,
                 defMod:   2,
@@ -638,8 +638,8 @@
                     //Misc
                         'sleep',
                 ]
-            },bossb:     {//stage 2 (pwoer control)  
-                profileId: 'bossb',
+            },boss2:     {//stage 2 (pwoer control)  
+                profileId: 'boss2',
                 statOverrides: [
                     'def-0',
                     'power-5',
@@ -668,8 +668,8 @@
                     //Misc
                         'sleep',
                 ]
-            },bossc:     {//stage 3 (def control)   
-                profileId: 'bossc',
+            },boss3:     {//stage 3 (def control)   
+                profileId: 'boss3',
                 powerMod: 2,
                 statOverrides: [
                     'def-10',
@@ -681,8 +681,8 @@
                         'attack',
                         'block',
                 ]
-            },destiny:   {//stage 4 (dice control)   
-                profileId: 'destiny',
+            },boss4:   {//stage 4 (dice control)   
+                profileId: 'boss4',
                 powerMod: 2,
                 statOverrides: [
                     'def-5',
@@ -711,8 +711,8 @@
                     //Misc
                         'sleep',
                 ]
-            },meat:      {//stage 5 (hp check)   
-                profileId: 'meat',
+            },boss5:      {//stage 5 (hp check)   
+                profileId: 'boss5',
                 statOverrides: [
                     'def-0',
                     'power-0',
@@ -726,8 +726,8 @@
                         'charge', 
                         'block',
                 ]
-            },valc:      {//stage 6 (dice control)   
-                profileId: 'valc',
+            },boss6:      {//stage 6 (dice control)   
+                profileId: 'boss6',
                 powerMod: 2,
                 statOverrides: [
                     'def-10',

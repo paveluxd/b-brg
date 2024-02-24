@@ -550,6 +550,17 @@ let actionsRef = [
     "actionType": ""
   },
   {
+    "actionName": "side block",
+    "tags": "block, defensive",
+    "desc": "reduce incoming dmg by this actions charge value",
+    "passiveStats": "",
+    "actionMod": "",
+    "actionCharge": 10,
+    "cooldown": "",
+    "keyId": 71,
+    "actionType": ""
+  },
+  {
     "actionName": "rage",
     "tags": "passive",
     "desc": "you do and take 200% dmg",
