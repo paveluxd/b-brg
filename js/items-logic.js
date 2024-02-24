@@ -359,6 +359,8 @@ function calcCost(type, itemId){
         removeItem(itemId)
 
         showAlert(`${upp(item.itemName)} sold for ${item.cost} coins.`)
+
+        el('merchant-coins-indicator').innerHTML = `You have: ${gs.plObj.coins}<img src="./img/ico/coin.svg">`
     }
     //Enhance item (blacksmith).
     function modifyItem(itemId, type){
