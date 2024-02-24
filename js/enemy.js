@@ -111,7 +111,7 @@
             this.key = key
 
             //Damage
-            if      (key == 'attack'){
+                  if(key == 'attack'){
 
                 this.rate = 1
                 this.actionVal = gs.enObj.roll + gs.enObj.power 
@@ -129,7 +129,7 @@
 
             }else if(key == 'block'){
 
-                this.rate = 1
+                this.rate = 2
                 this.actionVal = gs.enObj.roll
                 this.desc = `${ico("block")}Will block ${this.actionVal} dmg`
 
@@ -157,7 +157,7 @@
             }
             
             //Buff
-            else if (key == 'fortify'){//+ def
+             else if(key == 'fortify'){//+ def
 
                 this.rate = 3
                 this.stat = 'def'
@@ -213,7 +213,7 @@
             }
 
             //Curse
-            else if (key == 'wound'){  //- def
+             else if(key == 'wound'){  //- def
 
                 this.rate = 3
                 this.stat = 'def'
@@ -244,7 +244,7 @@
             }
 
             //Resolve negative stats actions
-            else if(key == 'shatter'){  //Crit when player def is negative
+             else if(key == 'shatter'){  //Crit when player def is negative
                 this.rate = 0
                 this.stat = 'life'
                 this.subStat = 'def'
@@ -257,7 +257,7 @@
 
                 this.desc = `${ico('spell')}Will cast Shatter(${this.actionVal} life)`
             }
-            else if(key == 'shock'){  //Crit when player def is negative
+             else if(key == 'shock'){  //Crit when player def is negative
                 this.rate = 0
                 this.stat = 'life'
                 this.subStat = 'power'
@@ -272,7 +272,7 @@
             }
 
             //Misc
-            else if (key == 'sleep'){
+             else if (key == 'sleep'){
                 let dialogueOptions = [
                     'Surrender!',
                     'Your end nears...',
@@ -297,7 +297,7 @@
                     "Face the truth!",
                     "Your head is mine!",
                 ]
-                this.rate = 3
+                this.rate = 4
                 this.desc = `
                     ${ico("time")}<span class="italic">"${dialogueOptions[rng(dialogueOptions.length -1)]}"</span>
                 `
@@ -306,16 +306,10 @@
             //Debuff player item
             //     // "poi att":  {rate:1,   desc: `Will attack with poison for ${dmgVal}`},
             //     // "fire att": {rate:1,   desc: `Will attack with fire for ${dmgVal}`},
-            //     // "def break":{rate:1,   desc: `Will reduce your def by ${dmgVal}`},
-            //     // "buff":     {rate:1,   desc: `Will use random buff spell`},
-            //     // "debuff":   {rate:1,   desc: `Will use random debuff spell`},
             //     // "recruits": {rate:1,   desc: `Will call reinforcements`},
 
-            //     // "spell":    {rate:1,   desc: `Will cast a <random spell>`},
-            //     // "reflect":  {rate:1,   desc: `Will reflect any spell or attack to character that targets this`},
             //     // "disarm":   {rate:1,   desc: `Will steal item used against it during the next turn`},
             //     // "theft":    {rate:1,   desc: `Will steal random item`},   
-            //     // "command":  {rate:1,   desc: `Will redirect actions of all enemies on you`},
             //     // "consume":  {rate:1,   desc: `Enemy will consume a random consumable from targets inventory`},
             //     // "escape":   {rate:1,   desc: `Will escape`},  
         }
@@ -434,8 +428,7 @@
             //Resolve stat change
             changeStat(gs.enObj.action.stat, -gs.enObj.action.actionVal, 'player')
 
-        }
-        else if('shatter, shock'.slice(', ').indexOf(gs.enObj.action.key) > -1){              
+        }else if('shatter, shock'.slice(', ').indexOf(gs.enObj.action.key) > -1){              
             
             //Resolve stat change
             changeStat(gs.enObj.action.stat, gs.enObj.action.actionVal, 'player')
@@ -617,11 +610,11 @@
                     //Misc
                         'sleep',
                 ]
-            },
+            }
             
         },
         boss: {
-              bossa:    {//stage 1 (strong unit)   
+              bossa:     {//stage 1 (strong unit)   
                 profileId: 'bossa',
                 lifeMod:  3,
                 powerMod: 2,
@@ -645,7 +638,7 @@
                     //Misc
                         'sleep',
                 ]
-            },bossb: {//stage 2 (pwoer control)  
+            },bossb:     {//stage 2 (pwoer control)  
                 profileId: 'bossb',
                 statOverrides: [
                     'def-0',
@@ -675,7 +668,7 @@
                     //Misc
                         'sleep',
                 ]
-            },bossc:      {//stage 3 (def control)   
+            },bossc:     {//stage 3 (def control)   
                 profileId: 'bossc',
                 powerMod: 2,
                 statOverrides: [

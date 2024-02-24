@@ -779,21 +779,6 @@
         top: 0;
     }
 
-    #inventory-stats{
-        background-color: black;
-        padding: 6px 12px 5px 12px;
-        position: fixed;
-        bottom: 74px;
-        width: calc(100% - 16px);
-        max-width: 400px;
-        transform: translateX(-50%);
-        left: 50%;
-
-        border-radius: 4px 4px 0px 0px;
-        color: var(--w70);
-        z-index: 5;
-    }
-
 /* Item details modal */
     #item-modal{
         z-index: 5;      
@@ -869,18 +854,21 @@
         max-width: 400px;
         min-height: 72px;
 
-        background-color: var(--b80);
+        background-color: black;
         padding: 4px 8px;
         color: var(--w80);
 
         position: absolute;
-        bottom:  72px;
+        bottom:  102px;
         left: 50%;
         transform: translateX(-50%);
 
         display: flex;
+        gap: 12px;
         justify-content: space-between;
-        z-index: 2;
+        z-index: 6;
+
+        border-bottom: 1px solid var(--w20);
 
     }
     #tree-node-popup button{

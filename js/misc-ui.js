@@ -143,11 +143,21 @@
                 el(`pl-${stat}`).innerHTML = gs.plObj[stat]
             })
 
-        //Modify inventroy slide heading.
-            el('inventorySlideDesc').innerHTML = `
-                Inventory capacity: ${gs.plObj.inventory.length} / ${gs.plObj.inventorySlots}<br>
-                Equipped items: ${calcEquippedItems()} / ${gs.plObj.equipmentSlots}
+        //Modify inventroy indicator.
+            el('inventory-tab-extension').innerHTML = `
+                <span>
+                    Equipment slots: ${calcEquippedItems()}/${gs.plObj.equipmentSlots}
+                </span>
+                Inventory space: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}
             `
+        
+        //Modify skill tree tab extension
+            el('tree-tab-extension').innerHTML = `
+                <span>
+                    Skill points:  ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}
+                </span>
+            `
+            
         //Update exp bar indicator
             el('.exp-progress').setAttribute('style',`width:${gs.plObj.exp / gs.plObj.lvlUpExp * 100}%`)
             el('.lvl-indicator').innerHTML = gs.plObj.lvl
@@ -370,6 +380,7 @@
                 </div>`
             
             el('state-screen').setAttribute('onclick', "location.reload()")
+            el('state-screen').classList.remove('background-key')
         }
         //Combat death
         else if(type == 'game-end'){
@@ -388,6 +399,7 @@
                 </div>`
             
             el('state-screen').setAttribute('onclick', "location.reload()")
+            el('state-screen').classList.remove('background-key')
         }  
 
         screen('state-screen')    
