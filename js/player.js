@@ -45,7 +45,7 @@ class PlayerObj {
             this.inventory      = [] //Items gained as rewards
         //Equipment slots
             this.baseSlots      = config.slots
-            this.equipmentSlots = this.baseSlots
+            this.equipmentSlots = this.baseSlots //Modified by items
         //Actions
             this.actionSlots    = this.baseSlots
             this.actions        = [] //Actions gained from items
@@ -141,10 +141,9 @@ function resetFlatStats(){
 }
 
 //Exp and lvl
-function resolveExpAndLvl(){
-
+function resolveExpAndLvl(expAmounth){
     //Add 1 exp for winning
-    gs.plObj.exp++  
+    gs.plObj.exp += expAmounth  
     
     //TREE: On exp gain passives
     resolveOnStatChangePassives('exp')                            
@@ -159,6 +158,7 @@ function resolveExpAndLvl(){
     //-1 for initial lvl 1
     gs.plObj.treePoints = gs.plObj.lvl - gs.plObj.treeNodes.length - 1
 
+    //Changes button color when you have skill points
     lvlupUiIndication()
 }
 
@@ -340,7 +340,7 @@ function resolveExpAndLvl(){
 
             <section>
                 <div class='stat'>
-                    <img src="./img/ico/fish.svg">
+                    <img src="./img/ico/food.svg">
                     <p>Food: ${gs.plObj.food}</p>
                 </div>
                 

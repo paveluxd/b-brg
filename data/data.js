@@ -13,11 +13,6 @@ let gs //game state object
             this.logMsg = []      // Combat log messages.
             this.statChange = []  // Stats for UI indicator.
             this.enemyAction = [] // Last enemy action.
-
-            //Rewards
-            this.flatItemReward  = 4 // Base rewards.
-            this.flatFoodReward  = 2 // Food per round +1 per enemy.
-            this.flatCoinsReward = 3 
             
             //Stats for end game screen.
             this.turnCounter = 0 //Calc turns for win stats.

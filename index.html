@@ -62,7 +62,7 @@
 
             <img class="logo" src="./img/bg/logo.svg">
     
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 2px;">
+            <div class="btn-container">
                 <button class="btn-ico-txt btn-frame" style="width: 176px;" onclick="playerClassSelection()"> <img src="./img/ico/leave.svg">Play</button>
                 <a href="https://discord.gg/AT8KdVbcVT" target="_blank" style="text-decoration: none;">
                     <button class="btn-ico-txt btn-frame" style="width: 176px;" ><img src="./img/ico/discord.svg">Discord</button>
@@ -99,7 +99,7 @@
                 
                 <!-- Food -->
                 <div>
-                    <img src='./img/ico/fish.svg'>
+                    <img src='./img/ico/food.svg'>
                     <p id='pl-food' class="mono-m"></p>
                 </div>
 
@@ -136,8 +136,9 @@
     </div>
 
 <!-- CHARACTER SCREEN -->   
+        <!-- Tabs -->
         <div id="character-tabs" class="tab-container external-tabs row hide btn-frame">
-
+            
             <button id="map-btn" class="tab" onclick="screen('map')">
                 <img src="./img/ico/map.svg">
                 Map
@@ -160,50 +161,52 @@
         </div>
 
         <!-- 1. Character -->
-        <div id="character" class="screen hide">
-            <!-- Page contetn -->
-            <div class="modal-container">
-                <div id='character-content' class="column">
+            <div id="character" class="screen hide">
+                <!-- Page contetn -->
+                <div class="modal-container">
+                    <div id='character-content' class="column">
+                        
+                        <h2>Character</h2>
                     
-                    <h2>Character</h2>
-                
-                    <!-- Character stats -->
-                    <div id="stat-block" class = "body-14 stat-block"></div>
+                        <!-- Character stats -->
+                        <div id="stat-block" class = "body-14 stat-block"></div>
 
-                    <!-- Actions -->
-                    <div class ="column" style="gap:8px; align-items:flex-start;">
-                        <p class="body-14 italic">Combat actions from equipment</p>
-                        <div id="action-list"></div>
-                    </div>
+                        <!-- Actions -->
+                        <div class ="column" style="gap:8px; align-items:flex-start;">
+                            <p class="body-14 italic">Combat actions from equipment</p>
+                            <div id="action-list"></div>
+                        </div>
 
-                    <!-- Passives -->
-                    <div class ="column" style="gap:8px; align-items:flex-start;">
-                        <p class="body-14 italic">Passives from equipment</p>
-                        <div id="passive-list"></div>
+                        <!-- Passives -->
+                        <div class ="column" style="gap:8px; align-items:flex-start;">
+                            <p class="body-14 italic">Passives from equipment</p>
+                            <div id="passive-list"></div>
+                        </div>
+                        
+                        <button class="btn-frame" onclick="localStorage.clear(), location.reload();">Start new run</button>
                     </div>
-          
-                    <button class="btn-frame" onclick="localStorage.clear(), location.reload();">Start new run</button>
                 </div>
             </div>
-        </div>
         <!-- 2. Inventory -->
-        <div id="inventory" class="screen hide">
-            <div class="modal-container">
-                
-                <h2>Inventory</h2>
-                <p id="inventory-stats" class="body-14"></p>
-                
-                <div id="inventory-list" class="item-list"></div>
-            </div>
-        </div>
-        <!-- 3. Tree -->
-        <div id="tree"      class="dragscroll screen hide">
-            <!-- Extensions -->
-            <div id="tree-node-popup" class="body-12 hide" onclick="el('tree-node-popup').classList.add('hide')">
-            </div>
+            <div id="inventory" class="screen hide">
+                <div class="modal-container">
+                    <div id="inventory-tab-extension" class=" tab-extension body-14"></div>
 
-            <div id="skill-tree" class=""></div>
-        </div>
+
+                    <h2>Inventory</h2>
+                    <div id="inventory-list" class="item-list"></div>
+                </div>
+            </div>
+        <!-- 3. Tree -->
+            <div id="tree"      class="dragscroll screen hide">
+                <div id="tree-tab-extension" class=" tab-extension body-14"></div>
+
+                <!-- Extensions -->
+                <div id="tree-node-popup" class="body-12 hide" onclick="el('tree-node-popup').classList.add('hide')">
+                </div>
+
+                <div id="skill-tree" class=""></div>
+            </div>
 
 <!-- Combat -->
     <div id="combat" class="screen hide">
@@ -363,6 +366,16 @@
     </div>
 
 <!-- Reward screen -->
+    <div id="reward-type-screen" class="screen hide">
+        <h2  id="combatEndIndicator">Choose a reward type</h2>
+        <button>Experience</button>
+        <button>Gold</button>
+        <button>Food</button>
+        <button onclick="">Item</button>
+    </div>
+    
+    <!-- Item reward -->
+    <!-- Tabs -->
     <div id="reward-tabs" class="tab-container btn-frame  external-tabs hide">
 
         <button id="rw-rewards-btn" class="tab" onclick="screen('reward-screen')">
@@ -379,7 +392,15 @@
     <div id="reward-screen" class="screen hide" >
         <div  id="reward-slide" class="modal-container">
             <h2  id="combatEndIndicator">Victory</h2>
-            <p   id="reward-desc" class="body-14"></p>
+            <p   id="reward-desc" class="body-14"> Pick on of these rewards:</p>
+
+            <!-- Other reward types -->
+            <div class="btn-container">
+                <button id="exp-reward-btn" class="btn-ico-txt btn-frame" onclick="resolveFlatReward('exp'), syncUi(), screen('map')">Gain 1 experience</button>
+                <button id="coins-reward-btn" class="btn-ico-txt btn-frame" onclick="resolveFlatReward('coins'), syncUi(), screen('map')">Coins</button>
+                <button id="food-reward-btn" class="btn-ico-txt btn-frame" onclick="resolveFlatReward('food'), syncUi(), screen('map')">Food</button>
+            </div>
+
             <div id="reward-container" class="item-list"></div>
         </div>
     </div>

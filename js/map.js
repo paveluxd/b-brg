@@ -528,7 +528,7 @@ class MapObj{
                 let numberOfFish = rng(12,4)
                 gs.plObj.food += numberOfFish
                 el('event-cover').setAttribute('src','./img/bg/lake.svg')
-                el('event-desc').innerHTML =`You found ${numberOfFish} <img src="./img/ico/fish.svg">`
+                el('event-desc').innerHTML =`You found ${numberOfFish} <img src="./img/ico/food.svg">`
 
                 syncUi()
             }else{

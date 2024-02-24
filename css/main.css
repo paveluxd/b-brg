@@ -176,6 +176,13 @@ body{
         width: var(--btn-size);
     }
 
+    .btn-container{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-bottom: 2px;
+    }
+
 /* Screens */
     .screen{
         height: 100%;
@@ -341,6 +348,28 @@ body{
         border: 2px solid var(--btn-border);
     }
 
+    /* Misc stat extension */
+    .tab-extension{
+        background-color: black;
+        padding: 6px 24px 5px 24px;
+
+        position: fixed;
+        bottom: 74px;
+
+        width: calc(100% - 16px);
+        max-width: 400px;
+
+        transform: translateX(-50%);
+        left: 50%;
+
+        border-radius: 4px 4px 0px 0px;
+        color: var(--w70);
+        z-index: 5;
+
+        display: flex;
+        justify-content: space-between;
+    }
+
 /* Alert */
     #alert{
         position: absolute;
@@ -388,6 +417,4 @@ body{
     .italic       {font-style: italic;}
     .b50          {color: var(--b50);}
     .w50          {color: var(--w50);}
-    .bold         {font-weight: 600;}
-    .align-left   {text-align: left;}
     b             {font-weight: bold;}

@@ -38,17 +38,16 @@ let config = {
         food:  4,
 
     //Enemy
-        eneLife: 3, //8
+        eneLife: 6, //8
         enSpawnFrequency: 35,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
 
     //Map
-        mapX:             3,  //1
+        mapX:             3, //1
         mapY:            12, //Vertical
-        exitDefenders:    3,
-        enemyPartyCap:    3, //25% item reward per enemy
+        enemyPartyCap:    4, //25% item reward per enemy
         mandatoryTiles:  [],
 
     //Items
@@ -57,55 +56,52 @@ let config = {
 }
 
 // Test config
-if(1 == 2){
+if(0 == 1){
 config = {
         version:    2,
 
     //Player
-        life:       100, //40
-        power:       10,
-        def:         4,
+        life:       40, //40
+        power:       0,
+        def:         0,
         dice:        6,
+        slots:       5,
         inventory:  40,
-        slots:       15,
-        class:      'guardian',
+        class:      'wanderer',
 
     //Progression
         expBase: 2,
         expMult: 1,
         expExpo: 0.4,
-        basePassieSkillPoints: 99,
+        basePassieSkillPoints: 9,
 
     //Game
-        testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'combat', 
+        // testCombat: true, //Initiates combat at the start (for testing).
+        showScreen: 'map', 
         clearLs: true,
         // showCombatInfoLog: true,
-        fadeTime: 40,
         // stage: 4,
 
     //Starting items
         stGuardian: [
             'club',
             'shield',
-            'club',
-            'shield',
-            'club',
 
         ],
         stCrusader: [
-            'sword',
-            'bandages',
+            'club',
+            'wooden shield',   
         ],
         stWanderer: [
             'bow',
             'cape',
+            'bag',
         ],
         coins: 90, //rng(12,6),
         food:  6, //rng(4,2),
 
     //Enemy
-        eneLife: 8, //8
+        eneLife: 6, //8
         // forceEnemyProfile: ['boss','bossc'],
         // forceEnemyAction: 'wound',
         enSpawnFrequency: 40,
@@ -116,7 +112,6 @@ config = {
     //Map
         mapX:             3, //1
         mapY:             6, //Vertical
-        exitDefenders:    3,
         enemyPartyCap:    3, //25% item reward per enemy
         mandatoryTiles: [
             // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},

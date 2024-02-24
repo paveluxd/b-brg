@@ -558,7 +558,7 @@ let prefix = 'treenode_'
     //On-hit check
     function resolveOnHitPassives(){
         gs.plObj.treeNodes.forEach(node => {
-            if      (node.id == 'T8'){//leech
+            if      (node.id == 'T08'){//leech
                 restoreLife(node.val)
 
                 //Log
@@ -1026,7 +1026,7 @@ let prefix = 'treenode_'
 
         },{id:'T06', name:'equipment slot',
             desc:'gain 1 equipment slot',
-            passiveStats:[{stat:'slot', value:1}],
+            passiveStats:[{stat:'slots', value:1}],
 
         },{id:'T11', name:'librarian',
             desc:'25% chance to gain 1 action charge when you use a scroll',

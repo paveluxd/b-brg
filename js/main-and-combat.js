@@ -22,7 +22,7 @@
         //Lock screen
         document.body.classList.add('lock-actions', 'darken')
     
-        //Run gen reward after delay
+        //Run after delay
         window.setTimeout(
             function(){
                 //Unlock screen
@@ -1046,7 +1046,8 @@
                 gs.enemyCounter++
 
                 //Add exerience and recalculate level
-                resolveExpAndLvl()
+                //Moved to reward screen
+                // resolveExpAndLvl()
 
                 //End encounter
                 if(gs.encounter == gs.playerLocationTile.enemyQuant){
@@ -1062,7 +1063,7 @@
 
                     //a67 pull 'carabiner': restore equipment as at the start of the combat
                     if(gs.plObj.carabiner != undefined){
-                        console.log(gs.plObj.carabiner);
+                        // console.log(gs.plObj.carabiner);
 
                         //Unequip equipped item
                         equipUnequipItem(gs.plObj.carabiner[1])
@@ -1074,12 +1075,12 @@
                         gs.plObj.carabiner = undefined
                     }
     
-                    //Run gen reward after delay
+                    //Generate REWARDS after delay
                     window.setTimeout(
                         function(){
     
                             //Open reward screen
-                            genRewards(gs.flatItemReward)
+                            genRewards()
     
                             //Unlock screen
                             document.body.classList.remove('lock-actions', 'darken')
@@ -1204,28 +1205,34 @@
     //3.REWARD
         function genRewards(quant){
             
-            //Clear
+            //Clear item container
             el('reward-container').innerHTML = `` 
             
             //Gen item list
-            genOfferedItemList(quant, 'reward')
+            genOfferedItemList(undefined, 'reward')
 
             //Move inventory list to 2nd slide of reward screen
-            el('inventory-slide').append(el('inventory-list'))
-
-            //Give food & gold per killed enemy
-
-            let coinsReward = rng(gs.flatCoinsReward)
-
-            el('reward-desc').innerHTML = `
-                You defeated the enemy.<br>
-                You get +${gs.flatFoodReward} <img src="./img/ico/fish.svg">, ${coinsReward} coins , and one of these rewards:
-            `
-            gs.plObj.food += gs.flatFoodReward
-            gs.plObj.coins += coinsReward
+            el('inventory-slide').append(el('inventory-list'))   
+            
+            //Update flat reward button labels
+            el('exp-reward-btn').innerHTML   = `<img src='./img/ico/spell.svg'> +${gs.playerLocationTile.enemyQuant} experience`
+            el('coins-reward-btn').innerHTML = `<img src='./img/ico/coin-sm.svg'> +${gs.playerLocationTile.enemyQuant * 2} coins`
+            el('food-reward-btn').innerHTML  = `<img src='./img/ico/food.svg'> +${gs.playerLocationTile.enemyQuant} food`
 
             // toggleModal('reward-screen')         
             screen('reward-screen')        
+        }
+
+        function resolveFlatReward(rewardType){
+            if(rewardType == 'food'){
+                gs.plObj.food  += gs.playerLocationTile.enemyQuant
+            }
+            else if (rewardType == 'coins'){
+                gs.plObj.coins += gs.playerLocationTile.enemyQuant * 2
+            }
+            else if (rewardType == 'exp'){
+                resolveExpAndLvl(gs.playerLocationTile.enemyQuant)
+            }
         }
 
 

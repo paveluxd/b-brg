@@ -169,7 +169,7 @@ function calcCost(type, itemId){
         gs.plObj.offeredItemsArr = []
         let generatedReward
 
-        if(quant == undefined){quant = gs.flatItemReward}//Resolve undefined quant
+        if(quant == undefined){quant = gs.playerLocationTile.enemyQuant}//Resolve undefined quant
 
         if(quant == "all"){//all items for testing
             itemsRef.forEach(item => {
@@ -482,9 +482,6 @@ function calcCost(type, itemId){
 //INVENTORY
     //Move item card generation to a separate function
     function syncItemCards(){
-        
-        //Set inventory heading
-        el('inventory-stats').innerHTML = `Inventory space: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`
         
         //Sync inventory
         el('inventory-list').innerHTML = ''
