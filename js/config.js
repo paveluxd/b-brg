@@ -1,15 +1,17 @@
 //Confign for posting
 let config = {
-        version:    2,
+        version:    3,
 
     //Player
         life:      40, //40
         power:      0,
         def:        0,
         dice:       6,
-        inventory: 99,
+        inventory: 40,
         slots:      5,
         class:      'guardian',
+        coins:      0,
+        food:       12,
 
     //Progression
         expBase: 2,
@@ -18,7 +20,6 @@ let config = {
         basePassieSkillPoints: 0,
 
     //Game
-        // showCombatInfoLog: true,
         fadeTime: 400,
 
     //Starting items
@@ -34,8 +35,7 @@ let config = {
             'bow',
             'cape',
         ],
-        coins: 0,
-        food:  4,
+        
 
     //Enemy
         eneLife: 6, //8
@@ -57,73 +57,60 @@ let config = {
 
 // Test config
 if(0 == 1){
-config = {
-        version:    2,
-
-    //Player
-        life:       40, //40
-        power:       0,
-        def:         0,
-        dice:        6,
-        slots:       5,
-        inventory:  40,
-        class:      'wanderer',
+    config.power = 0
+    config.def   = 0
+    config.dice  = 6
+    config.slots = 9
+    config.class = 'wanderer'
+    config.coins = 90
+    config.food  = 12
 
     //Progression
-        expBase: 2,
-        expMult: 1,
-        expExpo: 0.4,
-        basePassieSkillPoints: 9,
+    config.basePassieSkillPoints = 9
 
     //Game
-        // testCombat: true, //Initiates combat at the start (for testing).
-        showScreen: 'map', 
-        clearLs: true,
-        // showCombatInfoLog: true,
-        // stage: 4,
+    config.testCombat        = true //Initiates combat at the start (for testing).
+    config.showScreen        = 'combat' 
+    config.clearLs           = true
+    // config.showCombatInfoLog = true
+    // config.stage             = 4
 
     //Starting items
-        stGuardian: [
+    config.stGuardian = [
             'club',
             'shield',
 
-        ],
-        stCrusader: [
-            'club',
-            'wooden shield',   
-        ],
-        stWanderer: [
-            'bow',
-            'cape',
-            'bag',
-        ],
-        coins: 90, //rng(12,6),
-        food:  6, //rng(4,2),
-
+    ]
+    config.stCrusader = [
+        'club',
+        'wooden shield',   
+    ]
+    config.stWanderer = [
+        'bow',
+        'cape',
+        'bag',
+        'kite shield',
+        'spear',
+        "leather boots",
+        'bandages'
+    ]
+    
     //Enemy
-        eneLife: 6, //8
-        // forceEnemyProfile: ['boss','bossc'],
-        // forceEnemyAction: 'wound',
-        enSpawnFrequency: 40,
-
-    //Combat UI
-        bgCounter: 3, //1 per saved combat bg for rng.
+    config.forceEnemyProfile = ['boss','boss4']
+    config.forceEnemyAction  = 'sleep'
 
     //Map
-        mapX:             3, //1
-        mapY:             6, //Vertical
-        enemyPartyCap:    3, //25% item reward per enemy
-        mandatoryTiles: [
-            // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
-            // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
-            // {tileType: 'enchanter-1', enemyUnit: false},
-            // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
-            // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-            // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
-        ],
+    config.mapX           = 3, //1
+    config.mapY           = 6, //Vertical
+    config.mandatoryTiles = [
+        // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
+        // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
+        // {tileType: 'enchanter-1', enemyUnit: false},
+        // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
+        // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
+        // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
+    ]
 
     //Items
-        chargeFloor: 0.5,     //Lowes % for item action charge
-        merchantQuant: 'all',
-}
+    config.merchantQuant = 'all'
 }

@@ -851,38 +851,38 @@ class MapObj{
             ]
         },
         stage1:{
-            boss:['bossa'],
+            boss:['boss1'],
             enemy:['minion','balanced'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage2:{
-            boss:['bossb'],
+            boss:['boss2'],
             enemy:['tank','balanced','assassin'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage3:{
-            boss:['bossc'],
+            boss:['boss3'],
             enemy:['tank','assassin','gladiator'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage4:{
-            boss:['destiny'],
+            boss:['boss4'],
             enemy:['mage','assassin'],
             mandatoryTiles:[
                 {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },stage5:{
-            boss:['valc'],
+            boss:['boss5'],
             enemy:['mage','assassin','gladiator']
         },
         stage5:{
-            boss:['meat'],
+            boss:['boss6'],
             enemy:['mage','assassin','gladiator', 'tank']
         },
         stage6:{

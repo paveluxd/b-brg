@@ -7,11 +7,12 @@
 
 - Update notes**
     - Fixed game over screen background bug.
-    - Balance changes.
     - Fixed a bug when *Leech* passive would not trigger on hit.
     - Fixed a bug when extra equipment slot passive would not work.
     - Added skill points indicator to *Tree* page.
     - Reworked compat rewards. Now player has to choose to get exp, coins, food or an item instead of getting everything at once. Also, now reward quntity scales with number of enemies defeated during the encounter.
+    - New boss illustration for stage 4.
+    - *Kite shield* added to the game.
 
 
 - To-do ideas**
@@ -24,6 +25,15 @@
     - Add trap tile that requires agility roll or minigame.
     - Fractional stat bonuses on items.
     - Add rounding to stats with fraction, and show it in UI.
+
+    *POI ideas*
+    - +5 max life
+    - +1 exp
+
+    *Item ideas*
+    - Potion that mixes stats
+    - Torch
+    - Shield that blocks equal to it's charge (10 charge).
 
 
 - Bugs

@@ -224,6 +224,15 @@ let itemsRef = [
     "itemRarity": ""
   },
   {
+    "itemName": "kite shield",
+    "actions": "side block",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "off-hand",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
     "itemName": "bomb assembly kit",
     "actions": "inferno",
     "passiveStats": "",

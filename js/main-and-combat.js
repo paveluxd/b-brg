@@ -530,7 +530,14 @@
                 gs.enObj.dmgDone -= gs.plObj.roll
 
                 //Log
-                gs.logMsg.push(`Blocked ${gs.plObj.roll} dmg.`)
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
+    
+            }else if(paKey =='a71'){// 'side block' 'kite shield'
+    
+                gs.enObj.dmgDone -= gs.sourceAction.actionCharge
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
     
             }else if(paKey =='a69'){// 'defend' 'wooden shield'
     
@@ -1217,7 +1224,7 @@
             //Update flat reward button labels
             el('exp-reward-btn').innerHTML   = `<img src='./img/ico/spell.svg'> +${gs.playerLocationTile.enemyQuant} experience`
             el('coins-reward-btn').innerHTML = `<img src='./img/ico/coin-sm.svg'> +${gs.playerLocationTile.enemyQuant * 2} coins`
-            el('food-reward-btn').innerHTML  = `<img src='./img/ico/food.svg'> +${gs.playerLocationTile.enemyQuant} food`
+            el('food-reward-btn').innerHTML  = `<img src='./img/ico/food.svg'> +${gs.playerLocationTile.enemyQuant * 2} food`
 
             // toggleModal('reward-screen')         
             screen('reward-screen')        
@@ -1225,7 +1232,7 @@
 
         function resolveFlatReward(rewardType){
             if(rewardType == 'food'){
-                gs.plObj.food  += gs.playerLocationTile.enemyQuant
+                gs.plObj.food  += gs.playerLocationTile.enemyQuant * 2
             }
             else if (rewardType == 'coins'){
                 gs.plObj.coins += gs.playerLocationTile.enemyQuant * 2

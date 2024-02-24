@@ -56,12 +56,12 @@
 <path d="M152.5 109L145 116H134L128 112M128 112L127 148M128 112L123 107V106H129H135M151 106H135M135 106V100M134 72H141.5" stroke="#BF2C37" stroke-width="2"/>
 <path opacity="0.5" d="M139 135V139L143 143V147" stroke="black" stroke-width="2"/>
 <path d="M155 100V98L156.474 92C161.857 85.887 164.502 79.052 163.843 71" stroke="black" stroke-width="2"/>
-<path d="M139.946 115.224L136.292 116.851L152.154 152.479L155.608 155.32L157.435 154.506L139.946 115.224Z" fill="#8C4A4A" stroke="black" stroke-width="2"/>
+<path d="M139.946 115.224L136.292 116.851L152.155 152.479L155.609 155.32L157.436 154.506L139.946 115.224Z" fill="#8C4A4A" stroke="black" stroke-width="2"/>
 <rect width="4" height="4" transform="matrix(-0.913545 0.406737 0.406737 0.913545 138.319 111.57)" fill="#B6821C" stroke="black" stroke-width="2"/>
 <rect opacity="0.3" width="4" height="4" transform="matrix(-0.913545 0.406737 0.406737 0.913545 144.827 126.187)" stroke="black" stroke-width="2"/>
 <rect x="129.69" y="114.317" width="14" height="2" transform="rotate(-24 129.69 114.317)" fill="black"/>
-<rect x="141.466" y="111.264" width="2" height="2" transform="rotate(-24 141.466 111.264)" fill="black"/>
-<rect x="127.657" y="109.749" width="2" height="5" transform="rotate(-24 127.657 109.749)" fill="black"/>
+<rect x="141.467" y="111.264" width="2" height="2" transform="rotate(-24 141.467 111.264)" fill="black"/>
+<rect x="127.656" y="109.749" width="2" height="5" transform="rotate(-24 127.656 109.749)" fill="black"/>
 <rect x="129.478" y="99.0869" width="2" height="14" transform="rotate(-24 129.478 99.0869)" fill="black"/>
 <rect x="144" y="105" width="2" height="2" fill="#BF871A"/>
 <rect x="146" y="105" width="2" height="2" fill="#594A2D"/>
