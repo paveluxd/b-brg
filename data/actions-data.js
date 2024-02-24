@@ -93,7 +93,7 @@ let actionsRef = [
     "desc": "deal 3 dmg. Gain 1 def if your dice roll is 4",
     "passiveStats": "",
     "actionMod": 3,
-    "actionCharge": 40,
+    "actionCharge": 60,
     "cooldown": "",
     "keyId": 1,
     "actionType": ""
@@ -137,7 +137,7 @@ let actionsRef = [
     "desc": "deal dmg equal to your dice roll value",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 40,
+    "actionCharge": 50,
     "cooldown": "",
     "keyId": 5,
     "actionType": ""
@@ -159,7 +159,7 @@ let actionsRef = [
     "desc": "deal 3 dmg. Temporary +1 dmg if dice roll is 5 or 6",
     "passiveStats": "",
     "actionMod": 3,
-    "actionCharge": 60,
+    "actionCharge": 90,
     "cooldown": "",
     "keyId": 7,
     "actionType": ""

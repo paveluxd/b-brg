@@ -1240,6 +1240,9 @@
             else if (rewardType == 'exp'){
                 resolveExpAndLvl(gs.playerLocationTile.enemyQuant)
             }
+
+            //Move inventory list back to it's page
+            el('inventory').childNodes[1].append(el('inventory-list'))
         }
 
 

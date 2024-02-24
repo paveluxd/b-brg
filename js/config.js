@@ -10,7 +10,7 @@ let config = {
         inventory: 40,
         slots:      5,
         class:      'guardian',
-        coins:      0,
+        coins:      10,
         food:       12,
 
     //Progression
@@ -38,7 +38,7 @@ let config = {
         
 
     //Enemy
-        eneLife: 6, //8
+        eneLife: 4, //8
         enSpawnFrequency: 35,
 
     //Combat UI
