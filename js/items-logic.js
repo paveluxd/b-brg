@@ -136,7 +136,7 @@ function calcCost(type, itemId){
     function resolvePostRollPassives(){
         gs.plObj.actions.forEach(action => {
             if     (action.keyId == 'a58'){ // power surge
-                if(gs.plObj.roll == 8){
+                if(gs.plObj.roll > 7){
                     gs.plObj.power += action.actionMod
                     gs.logMsg.push(`Power surge: +1 power (passive).`)
                     el('p-power').innerHTML = gs.plObj.power

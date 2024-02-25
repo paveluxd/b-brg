@@ -76,6 +76,7 @@
     
     //Pick boss or enemy profile
     function pickEnemyProfile(enemyType) {
+
         //enemy type is 'boss' or 'enemy'
 
         let profile
@@ -85,15 +86,11 @@
                 typeof stageProfileRef[`stage${gs.stage}`] == 'undefined'
             ||  typeof stageProfileRef[`stage${gs.stage}`][enemyType] == 'undefined'
         ){
-
             profile =  profileRef[enemyType][rarr(Object.keys(profileRef[enemyType]))]
-
         }
         //Pick from map ref obj
         else{
-
             profile = profileRef[enemyType][rarr(stageProfileRef[`stage${gs.stage}`][enemyType])]
-
         }
 
         return profile
@@ -136,8 +133,8 @@
             }else if(key == 'final strike'){//on death
 
                 //Enable if low life
-                if(gs.enObj.life < 5){
-                    this.rate = 1
+                if(gs.enObj.life < 6){
+                    this.rate = 2
                 }
 
                 this.actionVal = gs.enObj.flatLife
@@ -343,7 +340,6 @@
 
         //Pick action
             let actionRoll = rng(100)           //Roll for action chance.
-            // console.log(actionRoll);
 
         //Prevent action selection if enemy is charging an attack.
             if(gs.enObj.action != undefined && gs.enObj.action.key == 'charge'){
@@ -379,13 +375,15 @@
             }
 
         //FORCED ACTIONS
-            if(gs.enObj.forcedAction != ''){
+            if(
+                gs.enObj.forcedAction != "" //Check if forced action exists
+            ){
 
                 //Set action
                 gs.enObj.action = new EnemyActionObj(gs.enObj.forcedAction)
 
                 //Reset var
-                gs.enObj.forcedAction = ''
+                gs.enObj.forcedAction = ""
             }
         
         //Resolve undefined actions due to lack of rate.
@@ -617,7 +615,7 @@
               boss1:     {//stage 1 (strong unit)   
                 profileId: 'boss1',
                 lifeMod:  3,
-                powerMod: 2,
+                powerMod: 2,//required for final strike
                 defMod:   2,
                 diceMod:  2,
                 statOverrides: [
@@ -640,6 +638,7 @@
                 ]
             },boss2:     {//stage 2 (pwoer control)  
                 profileId: 'boss2',
+                lifeMod:  3,
                 statOverrides: [
                     'def-0',
                     'power-5',
@@ -670,6 +669,7 @@
                 ]
             },boss3:     {//stage 3 (def control)   
                 profileId: 'boss3',
+                lifeMod:  3,
                 powerMod: 2,
                 statOverrides: [
                     'def-10',
@@ -683,6 +683,7 @@
                 ]
             },boss4:   {//stage 4 (dice control)   
                 profileId: 'boss4',
+                lifeMod:  3,
                 powerMod: 2,
                 statOverrides: [
                     'def-5',
@@ -713,6 +714,7 @@
                 ]
             },boss5:      {//stage 5 (hp check)   
                 profileId: 'boss5',
+                lifeMod:  3,
                 statOverrides: [
                     'def-0',
                     'power-0',
@@ -728,6 +730,7 @@
                 ]
             },boss6:      {//stage 6 (dice control)   
                 profileId: 'boss6',
+                lifeMod:  3,
                 powerMod: 2,
                 statOverrides: [
                     'def-10',

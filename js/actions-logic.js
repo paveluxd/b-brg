@@ -161,7 +161,6 @@
         // console.log(action);
 
         if (action.keyId == 'a62'){//punch
-            console.log(1);
             itemString = 'punch'
         } 
         else if(itemRef == undefined){

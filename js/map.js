@@ -134,7 +134,6 @@ class MapObj{
 
             //Dungeon overrides
                 if(type == 'dungeon'){
-                    console.log(1);
                     overrides = [
                         {//Player
                             tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`,
@@ -645,6 +644,10 @@ class MapObj{
                     `  
                 }
             
+            //Add 1 exp
+                resolveExpAndLvl(1)
+                syncUi()
+            
             //Open event screen
                 screen('event-screen')
 
@@ -744,7 +747,7 @@ class MapObj{
                 el('event-desc').innerHTML =`There is nothing in here.`
                 
             }else{
-                let heal = rng(Math.round(gs.plObj.life / 1.5), gs.plObj.life/2)
+                let heal = Math.floor(gs.plObj.baseLife * 0.5)
     
                 el('event-cover').setAttribute('src',`./img/bg/camp.svg`)
                 el('event-desc').innerHTML =`You approach a camp and rest,<br> you feel better ( +${heal}<img src='./img/ico/life.svg'>)</b>.`

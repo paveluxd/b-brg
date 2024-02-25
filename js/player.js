@@ -39,6 +39,7 @@ class PlayerObj {
             this.piercing          = false
             this.swordDmgMod       = 0
             this.poisonBuff        = false
+            this.combatState       = {"dmgCap":undefined}
             
         //Inventory
             this.inventorySlots = config.inventory
