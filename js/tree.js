@@ -652,7 +652,6 @@ let prefix = 'treenode_'
                 gs.logMsg.push(`${upp(node.name)} ${node.desc}.`)
             }else if(node.id == 'T21' && gs.plObj.power == 0){//static power
 
-                console.log(1);
                 changeStat('power', 1, 'player')
                 
                 //Log

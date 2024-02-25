@@ -278,6 +278,15 @@ let itemsRef = [
     "itemRarity": "unique"
   },
   {
+    "itemName": "ring of power",
+    "actions": "power charge",
+    "passiveStats": "",
+    "itemSlot": "",
+    "itemType": "ring",
+    "desc": "",
+    "itemRarity": "unique"
+  },
+  {
     "itemName": "decacore",
     "actions": "",
     "passiveStats": "dice:10, life:-6",
@@ -298,7 +307,7 @@ let itemsRef = [
   {
     "itemName": "dodecacore",
     "actions": "",
-    "passiveStats": "dice:12, def:-4",
+    "passiveStats": "dice:12, def:-1, power:-1",
     "itemSlot": "dice",
     "itemType": "dice",
     "desc": "a deceptively small jewel possessing an insidious charm. Unstable cores tend to influence the minds of those who posses them, compelling them towards acts of greed, and recklessness",
@@ -307,7 +316,7 @@ let itemsRef = [
   {
     "itemName": "octocore",
     "actions": "",
-    "passiveStats": "dice:8, def:-2",
+    "passiveStats": "dice:8, def:-1",
     "itemSlot": "dice",
     "itemType": "dice",
     "desc": "",
@@ -352,7 +361,7 @@ let itemsRef = [
   {
     "itemName": "woolen bag",
     "actions": "",
-    "passiveStats": "slots:5, def:-2",
+    "passiveStats": "slots:5, def:-1, life:-6",
     "itemSlot": "bag",
     "itemType": "bag",
     "desc": "",
@@ -450,10 +459,10 @@ let itemsRef = [
   },
   {
     "itemName": "helmet",
-    "actions": "static",
+    "actions": "tank",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "cape",
+    "itemType": "",
     "desc": "",
     "itemRarity": ""
   },

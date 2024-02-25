@@ -333,13 +333,18 @@
                 //Log
                 gs.logMsg.push(`Lightning: dealt ${dmgVal} dmg.`)
     
-            }else if(paKey =='a12'){// shield bash
-    
-                //Dmg
-                gs.plObj.dmgDone += gs.plObj.def * gs.plObj.power
+            }else if(paKey =='a12'){// "spiked shield" bash
+                
+                //+def
+                changeStat('def', 1, 'player')
+
+                //Stun on roll 1
+                if(gs.plObj.roll == 1){
+                    gs.enObj.state = 'Skip turn'
+                }
 
                 //Log
-                gs.logMsg.push(`Shield bash: dealt ${gs.plObj.def * gs.plObj.power} dmg.`)
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
     
             }else if(paKey =='a13'){// fireball  "book of fire"
     
@@ -430,6 +435,9 @@
     
                 if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
                 gs.enObj.state = 'Skip turn'
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
                 
             }else if(paKey =='a26'){// freeze (stun spell) "book of ice"
 
@@ -494,12 +502,20 @@
                 gs.plObj.piercing = true
                 gs.sourceAction.cooldown = -1
 
-            }else if(paKey =='a38'){// static "cape"
+            }else if(paKey =='a38'){// tank "helmet"
+
+                //Set dmg cap property
+                gs.plObj.combatState.dmgCap = gs.plObj.roll
     
-                if(gs.plObj.roll < 8) return showAlert('This action requires roll greater than 8.')
-    
-                //Resolve stat change
-                changeStat('power', 2, 'player')
+                //Trigger cd
+                gs.sourceAction.cooldown = -1
+
+                //Set variable cooldown.  
+                let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
+                referenceActionObj.cooldown = rng(4,2)
+
+                //Log
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
                     
             }else if(paKey =='a39'){// adrenaline shot/ adrenaline pen
 
@@ -593,8 +609,6 @@
             
                 //Resolve stat change
                 changeStat('roll', -1, 'player')
-                
-                gs.sourceAction.cooldown = -1
      
             }else if(paKey =='a52'){// hook/swap
             
@@ -655,7 +669,7 @@
                 referenceActionObj.cooldown = rng(4,2)
 
                 //Log
-                gs.logMsg.push(`fear: enamy will block during the next turn (fear reacharge:${referenceActionObj.cooldown})`)
+                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc} (${referenceActionObj.cooldown}).`)
 
             }else if(paKey =='a68'){// "stress" "wizards hand"
 
@@ -886,6 +900,9 @@
 
                     resolveOnHitDef()
 
+                    //Check for damage cap
+                    gs.enObj.dmgDone = resolveDmgCap(gs.enObj.dmgDone)
+
                     //Resolve dmg
                     changeStat('life', -gs.enObj.dmgDone, 'player')
 
@@ -901,20 +918,28 @@
                         resolveOnHitDef()
 
                         //Set positive damage to 0
-                        if (playerDamageTaken < 0){playerDamageTaken = 0} 
+                        if (playerDamageTaken < 0){
+                            playerDamageTaken = 0
+                        } 
                         
-                        totalDmgTaken -= playerDamageTaken
+                        totalDmgTaken += playerDamageTaken
                     }
                     
                     //Required for reflect passive
                     gs.enObj.dmgDone = totalDmgTaken * -1
+
+                    //Check for damage cap
+                    totalDmgTaken = resolveDmgCap(totalDmgTaken)
                     
                     //Resolve dmg
-                    changeStat('life', totalDmgTaken, 'player')
+                    changeStat('life', -totalDmgTaken, 'player')
 
                 }else if(['final strike'].indexOf(gs.enObj.action.key) > -1 && gs.enObj.life < 0){ //final strike only works if enemy is dead.
                     
                     resolveOnHitDef()
+
+                    //Check for damage cap
+                    gs.enObj.dmgDone = resolveDmgCap(gs.enObj.dmgDone)
                     
                     //Resolve dmg
                     changeStat('life', -gs.enObj.dmgDone, 'player')
@@ -994,6 +1019,18 @@
             } 
         }
 
+        function resolveDmgCap(dmgValue){
+            let dmg = dmgValue
+
+            console.log(dmgValue);
+            
+            if(dmg > gs.plObj.combatState.dmgCap){
+                dmg = gs.plObj.combatState.dmgCap
+            }
+
+            return dmg
+        }
+
         //Stat mod
         function changeStat(stat, value, target){
             if(target == 'player'){
@@ -1034,10 +1071,10 @@
     //2.END TURN
         function combatEndCheck(){ 
             
-            gs.totalCombatTurns++ //Stats for testing.
+            gs.totalCombatTurns++          //Stats for testing.
             resolveCharge(gs.sourceAction) //Deal with action charges.
 
-            // DEFEAT (also loose if 0 actions).
+            //DEFEAT (also loose if 0 actions).
             //On death passives
             if(gs.plObj.life < 1){
                 resolveOnDeathPassives()
@@ -1051,10 +1088,6 @@
 
                 //End game screen stat counter
                 gs.enemyCounter++
-
-                //Add exerience and recalculate level
-                //Moved to reward screen
-                // resolveExpAndLvl()
 
                 //End encounter
                 if(gs.encounter == gs.playerLocationTile.enemyQuant){
@@ -1108,6 +1141,9 @@
                     initiateCombat()
                     runAnim(el('enemy-sprite'), 'enemyEntrance') 
                 }     
+
+                //Remove cooldowns from all items
+                resolveCooldowns('reset')
             }
             // NEXT TURN.
             else if (gs.sourceAction.actionType !== "extra-action" || gs.plObj.roll < 1){
@@ -1160,42 +1196,19 @@
                         gs.enObj.appliedPoisonStacks = 0
                     }
 
-                //COODLOWN: Increase turn cooldowns
-                    gs.plObj.actions.forEach(action => {
-                        if(
-                            typeof action.cooldown != 'undefined' &&                                     //if it's an item with cd
-                            action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown //if current cd value is less that ref cd value
-                        ){
-                            action.cooldown++ //increase cd value
-
-                            //a68 stress 'wizards hand'
-                            //Check cd to reset the banned action
-                            if(gs.enObj.bannedAction == undefined) return
-                            if(action.keyId != 'a68') return
-                            if(action.cooldown < findByProperty(actionsRef, 'keyId', action.keyId).cooldown) return
-                            
-                            gs.enObj.bannedAction = undefined
-                        }
-                    })
-                    //a68 stress 'wizards hand'
-                    //Check action existance to reset banned action
-                    // if(
-                    //     gs.enObj.bannedAction != undefined &&
-                    //     findByProperty(gs.plObj.actions, 'keyId', 'a68') == undefined //see if item is equipped
-                    // ){
-                    //     gs.enObj.bannedAction = undefined //if not, reset banned actions
-                    // }
-        
                 //Player turn roll.
-                    gs.plObj.roll = rng(gs.plObj.dice) + gs.plObj.rollBonus 
+                    gs.plObj.roll = rng(gs.plObj.dice) + gs.plObj.rollBonus
+
+                //COODLOWN: Increase turn cooldowns
+                    resolveCooldowns()
 
                 //PASSIVE: post roll passives.
-                resolvePostRollPassives()
+                    resolvePostRollPassives()
 
                 gs.plObj.rollBonus = 0                                    // Remove any roll bonuses.
-                genEneAction()                                             // Gen enemy action.
-                gs.enObj.state = ``                                        // Reset enemy state.
-                gs.combatTurn++                                     // Increase turn counter.
+                genEneAction()                                            // Gen enemy action.
+                gs.enObj.state = ``                                       // Reset enemy state.
+                gs.combatTurn++                                           // Increase turn counter.
             }
 
             //COMBAT LOG: Print all combat logs.
@@ -1207,6 +1220,56 @@
             indicateStatChange()
 
             syncUi()
+        }
+        function resolveCooldowns(mode){
+            if(mode == 'reset'){
+                gs.plObj.actions.forEach(action => {
+
+                    if(
+                        typeof action.cooldown != 'undefined' //if it's an item with cd
+                    ){
+                        action.cooldown = findByProperty(actionsRef, 'keyId', action.keyId).cooldown
+                    }
+                })
+            }else{
+                gs.plObj.actions.forEach(action => {
+                    let currentItemCd = findByProperty(actionsRef, 'keyId', action.keyId).cooldown
+
+                    if(
+                        typeof action.cooldown != 'undefined' &&                                     //if it's an item with cd
+                        action.cooldown < currentItemCd //if current cd value is less that ref cd value
+                    ){
+                        action.cooldown++ //increase cd value
+
+                        //a68 stress 'wizards hand'
+                        //Check cd to reset the banned action
+                        if(
+                                gs.enObj.bannedAction != undefined
+                            &&  action.keyId == 'a68'
+                            &&  action.cooldown == currentItemCd
+                        ){
+                            gs.enObj.bannedAction = undefined
+                        }
+                        
+                        //a55 fear "wizards head"
+                        //Check cd to reaply fear
+                        if(action.keyId == 'a55'){
+                            gs.enObj.forcedAction = 'block'
+                        }
+
+                        //a38 tank "helmet"
+                        if(
+                            action.keyId == 'a38'
+                            &&  action.cooldown == currentItemCd
+                        ){
+                            gs.plObj.combatState.dmgCap = undefined
+                        } else if(action.keyId == 'a38'){
+                            gs.plObj.combatState.dmgCap = gs.plObj.roll
+                            console.log('cap' + gs.plObj.roll);
+                        }
+                    }
+                })
+            }
         }
 
     //3.REWARD

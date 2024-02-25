@@ -1,6 +1,6 @@
 //Confign for posting
 let config = {
-        version:    3,
+        version:    5,
 
     //Player
         life:      40, //40
@@ -57,11 +57,12 @@ let config = {
 
 // Test config
 if(0 == 1){
+    // config.life = 110
     config.power = 0
     config.def   = 0
     config.dice  = 6
     config.slots = 9
-    config.class = 'wanderer'
+    config.class = 'guardian'
     config.coins = 90
     config.food  = 12
 
@@ -69,16 +70,22 @@ if(0 == 1){
     config.basePassieSkillPoints = 9
 
     //Game
-    config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'combat' 
+    // config.testCombat        = true //Initiates combat at the start (for testing).
+    config.showScreen        = 'inventory' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
     // config.stage             = 4
 
     //Starting items
     config.stGuardian = [
-            'club',
-            'shield',
+            'helmet',
+            'woolen bag',
+            'spiked shield',
+            'gonfalon',
+            "dodecacore",
+            "ring of power",
+            'wizards head',
+            'robe',
 
     ]
     config.stCrusader = [
@@ -89,15 +96,15 @@ if(0 == 1){
         'bow',
         'cape',
         'bag',
-        'kite shield',
-        'spear',
-        "leather boots",
-        'bandages'
+        'helmet',
+        'spiked shield',
+        'wizards head',
+        'wizards hand',
     ]
     
     //Enemy
-    config.forceEnemyProfile = ['boss','boss4']
-    config.forceEnemyAction  = 'sleep'
+    // config.forceEnemyProfile = ['boss','boss3']
+    // config.forceEnemyAction  = 'final strike'
 
     //Map
     config.mapX           = 3, //1

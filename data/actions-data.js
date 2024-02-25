@@ -211,10 +211,10 @@ let actionsRef = [
   {
     "actionName": "bash",
     "tags": "",
-    "desc": "deal dmg equal to your def × power",
-    "passiveStats": "",
+    "desc": "gain 1 def. On die roll of 1 stun the enemy",
+    "passiveStats": "def:1",
     "actionMod": "",
-    "actionCharge": 12,
+    "actionCharge": 40,
     "cooldown": "",
     "keyId": 12,
     "actionType": ""
@@ -495,15 +495,15 @@ let actionsRef = [
     "actionType": "extra-action"
   },
   {
-    "actionName": "static",
-    "tags": "buff",
-    "desc": "gain 2 power, requires dice roll greater than 8",
+    "actionName": "tank",
+    "tags": "defensive",
+    "desc": "dmg taken can't exceed your die roll while this is on cooldown (cd 2-4 turns)",
     "passiveStats": "",
-    "actionMod": 2,
+    "actionMod": "",
     "actionCharge": 12,
-    "cooldown": "",
+    "cooldown": 4,
     "keyId": 38,
-    "actionType": ""
+    "actionType": "variable cooldown"
   },
   {
     "actionName": "adrenaline shot",
@@ -632,8 +632,8 @@ let actionsRef = [
     "desc": "once per turn, reduce dice roll by 1 (instant)",
     "passiveStats": "",
     "actionMod": 1,
-    "actionCharge": 60,
-    "cooldown": 1,
+    "actionCharge": 40,
+    "cooldown": "",
     "keyId": 50,
     "actionType": "extra-action"
   },
@@ -676,7 +676,7 @@ let actionsRef = [
     "desc": "deal dmg equal to your power per every coin. Loose all coins",
     "passiveStats": "",
     "actionMod": "",
-    "actionCharge": 3,
+    "actionCharge": 30,
     "cooldown": "",
     "keyId": 54,
     "actionType": ""
@@ -684,7 +684,7 @@ let actionsRef = [
   {
     "actionName": "fear",
     "tags": "utility",
-    "desc": "force enemy to block during the next turn (cooldown 2-4 turns)",
+    "desc": "force enemy to block while this is on cooldown (cooldown 2-4 turns)",
     "passiveStats": "",
     "actionMod": "",
     "actionCharge": 12,
@@ -717,7 +717,7 @@ let actionsRef = [
   {
     "actionName": "power surge",
     "tags": "passive",
-    "desc": "gain 1 power on a die roll of 8",
+    "desc": "gain 1 power on a die roll greater than 7",
     "passiveStats": "",
     "actionMod": 1,
     "actionCharge": "",

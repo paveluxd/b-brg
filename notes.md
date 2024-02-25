@@ -6,13 +6,7 @@
 
 
 - Update notes**
-    - Fixed game over screen background bug.
-    - Fixed a bug when *Leech* passive would not trigger on hit.
-    - Fixed a bug when extra equipment slot passive would not work.
-    - Added skill points indicator to *Tree* page.
-    - Reworked compat rewards. Now player has to choose to get exp, coins, food or an item instead of getting everything at once. Also, now reward quntity scales with number of enemies defeated during the encounter.
-    - New boss illustration for stage 4.
-    - *Kite shield* added to the game.
+
 
 
 - To-do ideas**
