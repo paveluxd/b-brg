@@ -35,9 +35,9 @@
                 }
                 //Randomize AC values
                 else if (property.key == 'actionCharge') {
-
-                    this[property.key] = rng(actionData[property.key], actionData[property.key] * config.chargeFloor)
-
+                    let actionChargeValue = rng(actionData[property.key], actionData[property.key] * config.chargeFloor)
+                    if(actionChargeValue < 1){actionChargeValue = 1}
+                    this[property.key] = actionChargeValue 
                 } 
                 //if exists in ref, set it as in ref.
                 else {
