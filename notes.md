@@ -6,7 +6,7 @@
 
 
 - Update notes**
-
+    - Charge values of clubs and swords incresed to prevent weapon breaking in early game stages.
 
 
 - To-do ideas**
@@ -22,7 +22,6 @@
 
     *POI ideas*
     - +5 max life
-    - +1 exp
 
     *Item ideas*
     - Potion that mixes stats
