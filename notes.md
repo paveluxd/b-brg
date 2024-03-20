@@ -5,6 +5,8 @@
     - Alt + Cmd + ->   -> split cursor
 
 
+SAVE FILES ARE NOT WORKING BECAUSE METHODS ARE MISSING FROM ACTIONS.
+
 - Update notes**
     - Charge values of clubs and swords incresed to prevent weapon breaking in early game stages.
 

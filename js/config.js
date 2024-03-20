@@ -56,7 +56,7 @@ let config = {
 }
 
 // Test config
-if(0 == 1){
+if(2 == 1){
     // config.life = 110
     config.power = 0
     config.def   = 0
@@ -71,14 +71,14 @@ if(0 == 1){
 
     //Game
     // config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'inventory' 
+    // config.showScreen        = 'combat' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
     // config.stage             = 4
 
     //Starting items
     config.stGuardian = [
-            'helmet',
+            'sword',
             'woolen bag',
             'spiked shield',
             'gonfalon',

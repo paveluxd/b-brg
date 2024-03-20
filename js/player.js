@@ -51,9 +51,7 @@ class PlayerObj {
             this.actionSlots    = this.baseSlots
             this.actions        = [] //Actions gained from items
             this.tempActions    = [] //Temporary actions
-            
-            // this.draftActions   = [] //Draft actions gained from items
-            
+                        
         //Sub-stats
             this.coins          = config.coins
             this.food           = config.food

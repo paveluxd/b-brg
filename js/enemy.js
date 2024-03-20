@@ -23,7 +23,6 @@
                 tileIdRef.push(parseInt(val))
             })
 
-            // mod(0.5) -> Get +1 every 2 stages
             this.life        = config.eneLife + Math.round((3 * this.level) * this.profile.lifeMod )
             this.flatLife    = this.life
             this.dmgDone     = 0 // For dmg calc.
@@ -54,9 +53,9 @@
             this.appliedPoisonStacks = 0
             this.poisonStacks = 0
             this.crit         = false
-            this.state        = ''                     //Used for stun, fear etc.
-            this.forcedAction = ''              //For items that force acions
-            this.reflect      = this.profile.reflect //Reflect mod
+            this.state        = ''                   // Used for stun, fear etc.
+            this.forcedAction = ''                   // For items that force acions
+            this.reflect      = this.profile.reflect // Reflect mod
 
             this.actionRef    = []
             this.acctionMod   = ''
