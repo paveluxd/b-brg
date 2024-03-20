@@ -3,15 +3,15 @@ let config = {
         version:    5,
 
     //Player
-        life:      40, //40
+        life:      60, //40
         power:      0,
         def:        0,
         dice:       6,
         inventory: 40,
         slots:      5,
         class:      'guardian',
-        coins:      10,
-        food:       12,
+        coins:      12,
+        food:       16,
 
     //Progression
         expBase: 2,
@@ -59,7 +59,7 @@ let config = {
 if(2 == 1){
     // config.life = 110
     config.power = 0
-    config.def   = 0
+    config.def   = 99
     config.dice  = 6
     config.slots = 9
     config.class = 'guardian'
@@ -74,7 +74,7 @@ if(2 == 1){
     // config.showScreen        = 'combat' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
-    // config.stage             = 4
+    config.stage             = 2
 
     //Starting items
     config.stGuardian = [

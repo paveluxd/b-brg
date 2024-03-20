@@ -847,6 +847,12 @@ class MapObj{
     }
 
     //Stage profiles
+    let hubProfile = {
+        mandatoryTiles:[
+            {tileType: 'lake-1', tileId:`1-1`, enemyUnit: false},
+        ]
+    }
+    
     let stageProfileRef = {
         genericMap:{
             mandatoryTiles:[

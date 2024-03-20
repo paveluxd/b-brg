@@ -482,7 +482,7 @@
                 ]
             },assassin:  {
                 profileId: 'assassin',
-                lifeMod:  1,
+                lifeMod:  0.75,
                 powerMod: 2,
                 defMod:   1,
                 diceMod:  1,
@@ -493,6 +493,11 @@
     
                     'empower', 
                     'rush',
+                    'charge', 
+                    'wound',  'shatter',
+
+                    //Misc
+                        'sleep',
                 ]
             },tank:      {
                 profileId: 'tank',
