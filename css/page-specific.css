@@ -1,4 +1,4 @@
-/* Main screen */
+/* Title screen */
     .modal-container.main-screen-container{
         align-items: flex-start;
         justify-content: space-between;
@@ -11,6 +11,9 @@
         background-position: center;
         background-repeat: no-repeat;
         background-color: var(--main-screen-bg);
+    }
+    .logo{
+        width: calc(86px * 1.5);
     }
 
 /* Map */

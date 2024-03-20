@@ -117,504 +117,494 @@
             screen("combat")
     }
 
+    
+
     //1.TURN CALC (ALL ITEMS)
         function turnCalc(buttonElem){
             
-            //Set random ghost images
-            el('p-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
-            el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
-
-            //Reset combat state vars
-            gs.combatTurnState      = ''
-            gs.plObj.dmgDone        = 0
-            gs.plObj.dmgTaken       = 0
-            gs.enObj.dmgDone        = 0
-            gs.enObj.dmgTaken       = 0
-            gs.lifeRestoredByPlayer = 0
-
-            //Clear combat log.
-            gs.logMsg = [`TURN:${gs.combatTurn} ------------------------------------`]
+            setRandomGhostImages()
+            resetCombatStateVariables()
 
             //Save players previous action.
             if(gs.sourceAction !== undefined){
                 gs.previousAction = gs.sourceAction 
             }
 
-            //Find action
+            //Find used action -> trigger action effect method
             gs.sourceAction = findObj(gs.plObj.actions, 'actionId', buttonElem.getAttribute('actionId')) //Get action id from button elem
-            let actionMod = gs.sourceAction.actionMod
-            let paKey = gs.sourceAction.keyId
 
             //Find item by action
             gs.sourceItem = findItemByAction(gs.sourceAction)
 
-            // Used action log
+            //Add action to combat log
             gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
+
+            actionLogic[gs.sourceAction.keyId]()
 
             //LOGIC: player
             //Attacks
-            if      (paKey =='a1' ){// mace
+            // if      (paKey =='a1' ){// mace
 
-                gs.plObj.dmgDone += actionMod + gs.plObj.power
+            //     gs.plObj.dmgDone += actionMod + gs.plObj.power
     
-                if(gs.plObj.roll == 4){
-                    //Resolve stat change
-                    changeStat('def', 1, 'player')
-                    gs.logMsg.push('Mace: +1 def.')
-                }
+            //     if(gs.plObj.roll == 4){
+            //         //Resolve stat change
+            //         changeStat('def', 1, 'player')
+            //         gs.logMsg.push('Mace: +1 def.')
+            //     }
     
-            }else if(paKey =='a2' ){// 'armor break' 'hammer'
+            // }else if(paKey =='a2' ){// 'armor break' 'hammer'
 
-                //Get reduction value
-                let defReduction = gs.plObj.def
-                if(defReduction < 1){defReduction = 0}
+            //     //Get reduction value
+            //     let defReduction = gs.plObj.def
+            //     if(defReduction < 1){defReduction = 0}
 
-                //Resolve stat change
-                changeStat('def', -defReduction, 'enemy') 
-                changeStat('def', -1, 'player') 
+            //     //Resolve stat change
+            //     changeStat('def', -defReduction, 'enemy') 
+            //     changeStat('def', -1, 'player') 
     
-            }else if(paKey =='a3' ){// shards "book of moon" 
+            // }else if(paKey =='a3' ){// shards "book of moon" 
     
-                //Action cost
-                if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+            //     //Action cost
+            //     if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
 
-                //Resolve stat change
-                changeStat('power', -1, 'player') 
+            //     //Resolve stat change
+            //     changeStat('power', -1, 'player') 
     
-                //Calc total dmg
-                let mult = gs.plObj.actionSlots - gs.plObj.actions.length 
-                if(mult < 1){mult = 0}
+            //     //Calc total dmg
+            //     let mult = gs.plObj.actionSlots - gs.plObj.actions.length 
+            //     if(mult < 1){mult = 0}
             
-                //Damage
-                gs.plObj.dmgDone += (actionMod + gs.plObj.power) * mult
+            //     //Damage
+            //     gs.plObj.dmgDone += (actionMod + gs.plObj.power) * mult
     
-            }else if(paKey =='a4' ){// dagger pair 
+            // }else if(paKey =='a4' ){// dagger pair 
     
-                //Calc
-                gs.plObj.dmgDone += (actionMod + gs.plObj.power) * 2
+            //     //Calc
+            //     gs.plObj.dmgDone += (actionMod + gs.plObj.power) * 2
     
-            }else if(paKey =='a5' ){// bow
+            // }else if(paKey =='a5' ){// bow
     
-                //Calc
-                gs.plObj.dmgDone += gs.plObj.roll + gs.plObj.power
+            //     //Calc
+            //     gs.plObj.dmgDone += gs.plObj.roll + gs.plObj.power
     
-            }else if(paKey =='a6' ){// cut 'dagger'
+            // }else if(paKey =='a6' ){// cut 'dagger'
 
-                //Action cost check
-                if(gs.plObj.roll < 3) return showAlert('Action requires roll greater than 2.')
+            //     //Action cost check
+            //     if(gs.plObj.roll < 3) return showAlert('Action requires roll greater than 2.')
                 
-                //Resolve stat change
-                changeStat('roll', -3, 'player') 
+            //     //Resolve stat change
+            //     changeStat('roll', -3, 'player') 
 
-                //Damage
-                gs.plObj.dmgDone = gs.sourceAction.actionMod + gs.plObj.power 
+            //     //Damage
+            //     gs.plObj.dmgDone = gs.sourceAction.actionMod + gs.plObj.power 
                 
-            }else if(paKey =='a7' ){// sword attack 
+            // }else if(paKey =='a7' ){// sword attack 
     
-                gs.plObj.dmgDone += gs.sourceAction.actionMod + gs.plObj.power + gs.plObj.swordDmgMod
+            //     gs.plObj.dmgDone += gs.sourceAction.actionMod + gs.plObj.power + gs.plObj.swordDmgMod
 
-                if(gs.plObj.roll == 5 || gs.plObj.roll == 6){
-                    gs.plObj.swordDmgMod += 1
-                }
+            //     if(gs.plObj.roll == 5 || gs.plObj.roll == 6){
+            //         gs.plObj.swordDmgMod += 1
+            //     }
     
-            }else if(paKey =='a8' ){// "axe" 
+            // }else if(paKey =='a8' ){// "axe" 
     
-                //Cost
-                    //Deal with negative power
-                    let powerMod = gs.plObj.power
-                    if (powerMod < 0){powerMod = 0}
+            //     //Cost
+            //         //Deal with negative power
+            //         let powerMod = gs.plObj.power
+            //         if (powerMod < 0){powerMod = 0}
 
-                    //Pay cost
-                    changeStat('life', (actionMod + powerMod) * -1, 'player') 
+            //         //Pay cost
+            //         changeStat('life', (actionMod + powerMod) * -1, 'player') 
 
-                //Dmg calc
-                    //Deal with overcap life, sets max life to current life
-                    let maxLife = gs.plObj.life 
+            //     //Dmg calc
+            //         //Deal with overcap life, sets max life to current life
+            //         let maxLife = gs.plObj.life 
         
-                    //If max life is lower than max life pre combat, set max life to pre combat value
-                    if(gs.plObj.flatLife > gs.plObj.life){maxLife = gs.plObj.flatLife}
+            //         //If max life is lower than max life pre combat, set max life to pre combat value
+            //         if(gs.plObj.flatLife > gs.plObj.life){maxLife = gs.plObj.flatLife}
 
-                    //Dmg calc
-                    gs.plObj.dmgDone += Math.ceil((gs.plObj.flatLife - gs.plObj.life)/2)
+            //         //Dmg calc
+            //         gs.plObj.dmgDone += Math.ceil((gs.plObj.flatLife - gs.plObj.life)/2)
     
-            }else if(paKey =='a9' ){// ice lance "book of ice"
+            // }else if(paKey =='a9' ){// ice lance "book of ice"
 
-                //Action cost
-                if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+            //     //Action cost
+            //     if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
 
-                //Resolve stat change
-                changeStat('power', -1, 'player') 
+            //     //Resolve stat change
+            //     changeStat('power', -1, 'player') 
    
-                //Dmg
-                gs.plObj.dmgDone += gs.plObj.power
+            //     //Dmg
+            //     gs.plObj.dmgDone += gs.plObj.power
     
-            }else if(paKey =='a10'){// backstab "iron dagger"
+            // }else if(paKey =='a10'){// backstab "iron dagger"
     
-                //Resolve action cost
-                if(gs.plObj.roll < 5) return showAlert('Action requires roll greater than 5.')
+            //     //Resolve action cost
+            //     if(gs.plObj.roll < 5) return showAlert('Action requires roll greater than 5.')
                 
-                // else if(gs.plObj.roll < 5 && gs.plObj.actions.length === 1){
-                //     showAlert('You had no resources to perform your only action, your turn was skipped.');
-                // } 
+            //     // else if(gs.plObj.roll < 5 && gs.plObj.actions.length === 1){
+            //     //     showAlert('You had no resources to perform your only action, your turn was skipped.');
+            //     // } 
     
-                gs.plObj.roll -= 5
-                gs.plObj.dmgDone = gs.sourceAction.actionMod + gs.plObj.power
-                gs.plObj.power += 1
+            //     gs.plObj.roll -= 5
+            //     gs.plObj.dmgDone = gs.sourceAction.actionMod + gs.plObj.power
+            //     gs.plObj.power += 1
     
-            }else if(paKey =='a63'){// spear
+            // }else if(paKey =='a63'){// spear
 
-                let dmg = gs.plObj.roll + gs.plObj.power
-                if(dmg > actionMod){dmg = actionMod}
+            //     let dmg = gs.plObj.roll + gs.plObj.power
+            //     if(dmg > actionMod){dmg = actionMod}
 
-                //Calc
-                gs.plObj.dmgDone += dmg
+            //     //Calc
+            //     gs.plObj.dmgDone += dmg
     
-            }else if(paKey =='a64'){// sickle
+            // }else if(paKey =='a64'){// sickle
 
-                //Calc
-                gs.plObj.dmgDone += 2 + gs.plObj.power
+            //     //Calc
+            //     gs.plObj.dmgDone += 2 + gs.plObj.power
 
-                //Apply poison stacks
-                gs.enObj.appliedPoisonStacks += actionMod
+            //     //Apply poison stacks
+            //     gs.enObj.appliedPoisonStacks += actionMod
     
-            }else if(paKey =='a65'){// great axe
+            // }else if(paKey =='a65'){// great axe
     
-                //Calc
-                let dmg = Math.ceil(gs.enObj.life * (actionMod / 100 + 0.05 * gs.plObj.power))
-                if(dmg < 1){dmg = 1}
-                gs.plObj.dmgDone += dmg
+            //     //Calc
+            //     let dmg = Math.ceil(gs.enObj.life * (actionMod / 100 + 0.05 * gs.plObj.power))
+            //     if(dmg < 1){dmg = 1}
+            //     gs.plObj.dmgDone += dmg
     
-            }
-             else if(paKey =='a11'){// lightning "book of lightning"
+            // }
+            //  else if(paKey =='a11'){// lightning "book of lightning"
     
-                //Action cost
-                if(gs.plObj.power < 2) return showAlert('Not enough power to pay for action cost.')
+            //     //Action cost
+            //     if(gs.plObj.power < 2) return showAlert('Not enough power to pay for action cost.')
 
-                //Resolve stat change
-                changeStat('power', -2, 'player') 
+            //     //Resolve stat change
+            //     changeStat('power', -2, 'player') 
 
-                //Dmg
-                let dmgVal = rng(20) + gs.plObj.power
-                gs.plObj.dmgDone += dmgVal
+            //     //Dmg
+            //     let dmgVal = rng(20) + gs.plObj.power
+            //     gs.plObj.dmgDone += dmgVal
     
-            }else if(paKey =='a12'){// "spiked shield" bash
+            // }else if(paKey =='a12'){// "spiked shield" bash
                 
-                //+def
-                changeStat('def', 1, 'player')
+            //     //+def
+            //     changeStat('def', 1, 'player')
 
-                //Stun on roll 1
-                if(gs.plObj.roll == 1){
-                    gs.enObj.state = 'Skip turn'
-                }
+            //     //Stun on roll 1
+            //     if(gs.plObj.roll == 1){
+            //         gs.enObj.state = 'Skip turn'
+            //     }
     
-            }else if(paKey =='a13'){// fireball  "book of fire"
+            // }else if(paKey =='a13'){// fireball  "book of fire"
     
-                //Dmg
-                gs.plObj.dmgDone += actionMod + gs.plObj.power
+            //     //Dmg
+            //     gs.plObj.dmgDone += actionMod + gs.plObj.power
     
-            }else if(paKey =='a14'){// pyroblast "book of fire"
+            // }else if(paKey =='a14'){// pyroblast "book of fire"
     
-                //Action cost
-                if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+            //     //Action cost
+            //     if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
 
-                //Resolve stat change
-                changeStat('power', -1, 'player') 
+            //     //Resolve stat change
+            //     changeStat('power', -1, 'player') 
     
-                //Dmg
-                gs.plObj.dmgDone += gs.plObj.power * gs.plObj.roll
+            //     //Dmg
+            //     gs.plObj.dmgDone += gs.plObj.power * gs.plObj.roll
 
-            }else if(paKey =='a15'){// quick block "tower shield"
+            // }else if(paKey =='a15'){// quick block "tower shield"
     
-                gs.enObj.dmgDone -= actionMod - gs.plObj.dice
+            //     gs.enObj.dmgDone -= actionMod - gs.plObj.dice
     
-            }else if(paKey =='a16'){// barrier
+            // }else if(paKey =='a16'){// barrier
                 
-                gs.plObj.protection = ['Barrier']
-                gs.sourceAction.cooldown = -1
+            //     gs.plObj.protection = ['Barrier']
+            //     gs.sourceAction.cooldown = -1
     
-            }else if(paKey =='a18'){// preparation "boots" (keep 50% of roll)
+            // }else if(paKey =='a18'){// preparation "boots" (keep 50% of roll)
     
-                //Value
-                gs.plObj.rollBonus += Math.ceil(gs.plObj.roll * 0.5)
+            //     //Value
+            //     gs.plObj.rollBonus += Math.ceil(gs.plObj.roll * 0.5)
     
-            }else if(paKey =='a19'){// reroll
+            // }else if(paKey =='a19'){// reroll
     
-                //Val
-                gs.plObj.roll = rng(gs.plObj.dice)
+            //     //Val
+            //     gs.plObj.roll = rng(gs.plObj.dice)
 
-                //PASSIVE: check for on-roll passives.
-                resolvePostRollPassives()
+            //     //PASSIVE: check for on-roll passives.
+            //     resolvePostRollPassives()
     
-            }else if(paKey =="a20"){// "scroll of repetition"
+            // }else if(paKey =="a20"){// "scroll of repetition"
 
-                //Restores charge to all items
-                gs.plObj.inventory.forEach(item => {
-                    item.actions.forEach(action => {
-                        if(action.paKeyId !== 'a20'){
-                            action.actionCharge += gs.sourceAction.actionMod
-                        }
-                    })
-                })
+            //     //Restores charge to all items
+            //     gs.plObj.inventory.forEach(item => {
+            //         item.actions.forEach(action => {
+            //             if(action.paKeyId !== 'a20'){
+            //                 action.actionCharge += gs.sourceAction.actionMod
+            //             }
+            //         })
+            //     })
 
-            }else if(paKey =='a21'){// "curse of weakness"
+            // }else if(paKey =='a21'){// "curse of weakness"
     
-                //Resolve stat change
-                changeStat('power', -actionMod, 'enemy')
+            //     //Resolve stat change
+            //     changeStat('power', -actionMod, 'enemy')
     
-            } 
-             else if(paKey =='a22'){// (ene def-) wounds
+            // } 
+            //  else if(paKey =='a22'){// (ene def-) wounds
 
-                //Resolve stat change
-                changeStat('def', -actionMod, 'enemy')
+            //     //Resolve stat change
+            //     changeStat('def', -actionMod, 'enemy')
     
-            }else if(paKey =='a23'){// (ene -dice) "curse of chain"
+            // }else if(paKey =='a23'){// (ene -dice) "curse of chain"
     
-                //Resolve stat change
-                changeStat('dice', -actionMod, 'enemy')
+            //     //Resolve stat change
+            //     changeStat('dice', -actionMod, 'enemy')
     
-            }else if(paKey =='a24'){// (ene roll-) slowness "curse of slowness"
+            // }else if(paKey =='a24'){// (ene roll-) slowness "curse of slowness"
     
-                //Resolve stat change
-                changeStat('roll', -actionMod, 'enemy')
+            //     //Resolve stat change
+            //     changeStat('roll', -actionMod, 'enemy')
     
-            }else if(paKey =='a25'){// stun "chain"
+            // }else if(paKey =='a25'){// stun "chain"
     
-                if(gs.plObj.roll != 1) return showAlert('Action requires roll 1.')
+            //     if(gs.plObj.roll != 1) return showAlert('Action requires roll 1.')
 
-                gs.enObj.state = 'Skip turn'
+            //     gs.enObj.state = 'Skip turn'
      
-            }else if(paKey =='a47'){// stun: smoke bomb
+            // }else if(paKey =='a47'){// stun: smoke bomb
     
-                if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
-                gs.enObj.state = 'Skip turn'
+            //     if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
+            //     gs.enObj.state = 'Skip turn'
                 
-            }else if(paKey =='a26'){// freeze (stun spell) "book of ice"
+            // }else if(paKey =='a26'){// freeze (stun spell) "book of ice"
 
-                //Action cost
-                if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+            //     //Action cost
+            //     if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
 
-                //Resolve stat change
-                changeStat('power', -1, 'player') 
+            //     //Resolve stat change
+            //     changeStat('power', -1, 'player') 
     
-                gs.enObj.state = 'Skip turn'
+            //     gs.enObj.state = 'Skip turn'
     
-            }else if(paKey =='a31'){// RING: defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
+            // }else if(paKey =='a31'){// RING: defence charge !!! see if resolving stats at this point will cause issues. Required due to def behaviour
     
-                // gs.plObj.def -= actionMod
-                resolveCharge(gs.sourceAction)
-                resolvePlayerStats()
+            //     // gs.plObj.def -= actionMod
+            //     resolveCharge(gs.sourceAction)
+            //     resolvePlayerStats()
     
-            }else if(paKey =='a33'){// healing potion
+            // }else if(paKey =='a33'){// healing potion
                 
-                //Heal value
-                gs.lifeRestoredByPlayer += Math.round((gs.plObj.flatLife - gs.plObj.life) / 100 * actionMod) 
+            //     //Heal value
+            //     gs.lifeRestoredByPlayer += Math.round((gs.plObj.flatLife - gs.plObj.life) / 100 * actionMod) 
                  
-            }else if(paKey =='a61'){// bandages
+            // }else if(paKey =='a61'){// bandages
                 
-                //Heal value
-                gs.lifeRestoredByPlayer += actionMod
+            //     //Heal value
+            //     gs.lifeRestoredByPlayer += actionMod
                  
-            }else if(paKey =='a34'){// papaver somniferum
+            // }else if(paKey =='a34'){// papaver somniferum
 
-                //Resolve stat change
-                changeStat('def', actionMod, 'player')
-            }
-             else if(paKey =='a35'){// dodge % evasion "leather cape"
+            //     //Resolve stat change
+            //     changeStat('def', actionMod, 'player')
+            // }
+            //  else if(paKey =='a35'){// dodge % evasion "leather cape"
     
-                let dodgePercent = 35 + gs.plObj.roll * actionMod
-                let dodgeRoll = rng(100)
+            //     let dodgePercent = 35 + gs.plObj.roll * actionMod
+            //     let dodgeRoll = rng(100)
     
-                if(dodgeRoll < dodgePercent){
-                    gs.enObj.dmgDone = -99999 // add something better for dodge later
-                }
+            //     if(dodgeRoll < dodgePercent){
+            //         gs.enObj.dmgDone = -99999 // add something better for dodge later
+            //     }
     
-            }else if(paKey =='a37'){// buff next attack with piercing "leather gloves"
+            // }else if(paKey =='a37'){// buff next attack with piercing "leather gloves"
 
-                //Action cost
-                if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
+            //     //Action cost
+            //     if(gs.plObj.power < 1) return showAlert('Not enough power to pay for action cost.')
 
-                //Resolve stat change
-                changeStat('power', -1, 'player') 
+            //     //Resolve stat change
+            //     changeStat('power', -1, 'player') 
     
-                gs.plObj.piercing = true
-                gs.sourceAction.cooldown = -1
+            //     gs.plObj.piercing = true
+            //     gs.sourceAction.cooldown = -1
 
-            }else if(paKey =='a38'){// tank "helmet"
+            // }else if(paKey =='a38'){// tank "helmet"
 
-                //Set dmg cap property
-                gs.plObj.combatState.dmgCap = gs.plObj.roll
+            //     //Set dmg cap property
+            //     gs.plObj.combatState.dmgCap = gs.plObj.roll
     
-                //Trigger cd
-                gs.sourceAction.cooldown = -1
+            //     //Trigger cd
+            //     gs.sourceAction.cooldown = -1
 
-                //Set variable cooldown.  
-                let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
-                referenceActionObj.cooldown = rng(4,2)
+            //     //Set variable cooldown.  
+            //     let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
+            //     referenceActionObj.cooldown = rng(4,2)
                     
-            }else if(paKey =='a39'){// adrenaline shot/ adrenaline pen
+            // }else if(paKey =='a39'){// adrenaline shot/ adrenaline pen
 
-                //Resolve stat change
-                changeStat('roll', actionMod, 'player')
+            //     //Resolve stat change
+            //     changeStat('roll', actionMod, 'player')
     
-            }else if(paKey =='a40'){// water potion "water potion"
+            // }else if(paKey =='a40'){// water potion "water potion"
 
-                //Resolve stat change
-                changeStat('power', actionMod, 'player')
+            //     //Resolve stat change
+            //     changeStat('power', actionMod, 'player')
     
-            }else if(paKey =='a41'){// poison
+            // }else if(paKey =='a41'){// poison
                 
-                //Marker
-                gs.plObj.poisonBuff = true
+            //     //Marker
+            //     gs.plObj.poisonBuff = true
     
-            }else if(paKey =='a42'){// 'block' 'shield'
+            // }else if(paKey =='a42'){// 'block' 'shield'
     
-                gs.enObj.dmgDone -= gs.plObj.roll
+            //     gs.enObj.dmgDone -= gs.plObj.roll
     
-            }else if(paKey =='a71'){// 'side block' 'kite shield'
+            // }else if(paKey =='a71'){// 'side block' 'kite shield'
     
-                gs.enObj.dmgDone -= gs.sourceAction.actionCharge
+            //     gs.enObj.dmgDone -= gs.sourceAction.actionCharge
     
-            }else if(paKey =='a69'){// 'defend' 'wooden shield'
+            // }else if(paKey =='a69'){// 'defend' 'wooden shield'
     
-                gs.enObj.dmgDone -= actionMod
+            //     gs.enObj.dmgDone -= actionMod
     
-            }else if(paKey =='a44'){// "restoration" "sal ammoniac"
+            // }else if(paKey =='a44'){// "restoration" "sal ammoniac"
 
-                let restoredPoints = 0
+            //     let restoredPoints = 0
     
-                if(gs.plObj.def < 0){
-                    restoredPoints += gs.plObj.def
-                    gs.plObj.def = 0
-                }
-                if(gs.plObj.power < 0){
-                    restoredPoints += gs.plObj.power
-                    gs.plObj.power = 0
-                }
-                if(gs.plObj.dice < gs.plObj.flatDice){
-                    restoredPoints += gs.plObj.dice - gs.plObj.flatDice
-                    gs.plObj.dice = gs.plObj.flatDice
-                }
+            //     if(gs.plObj.def < 0){
+            //         restoredPoints += gs.plObj.def
+            //         gs.plObj.def = 0
+            //     }
+            //     if(gs.plObj.power < 0){
+            //         restoredPoints += gs.plObj.power
+            //         gs.plObj.power = 0
+            //     }
+            //     if(gs.plObj.dice < gs.plObj.flatDice){
+            //         restoredPoints += gs.plObj.dice - gs.plObj.flatDice
+            //         gs.plObj.dice = gs.plObj.flatDice
+            //     }
 
-                if(restoredPoints == undefined) return false
+            //     if(restoredPoints == undefined) return false
 
-                gs.lifeRestoredByPlayer += (-1 * restoredPoints)
+            //     gs.lifeRestoredByPlayer += (-1 * restoredPoints)
     
-            }else if(paKey =='a45'){// club attack
+            // }else if(paKey =='a45'){// club attack
     
-                gs.plObj.dmgDone += 3 + gs.plObj.power
+            //     gs.plObj.dmgDone += 3 + gs.plObj.power
     
-            }else if(paKey =='a48'){// "focus" "wooden staff"
+            // }else if(paKey =='a48'){// "focus" "wooden staff"
 
-                //Resolve stat change
-                changeStat('power', Math.floor(1 * gs.plObj.roll / 4), 'player')
+            //     //Resolve stat change
+            //     changeStat('power', Math.floor(1 * gs.plObj.roll / 4), 'player')
     
-            }
-             else if(paKey =='a49'){// zealotry
+            // }
+            //  else if(paKey =='a49'){// zealotry
     
-                //Resolve stat change
-                changeStat('power', gs.plObj.roll, 'player')
-                changeStat('def', -gs.plObj.roll, 'player')
+            //     //Resolve stat change
+            //     changeStat('power', gs.plObj.roll, 'player')
+            //     changeStat('def', -gs.plObj.roll, 'player')
     
-            }else if(paKey =='a50'){// defensive stance
+            // }else if(paKey =='a50'){// defensive stance
             
-                //Resolve stat change
-                changeStat('roll', -1, 'player')
+            //     //Resolve stat change
+            //     changeStat('roll', -1, 'player')
      
-            }else if(paKey =='a52'){// hook/swap
+            // }else if(paKey =='a52'){// hook/swap
             
-                let rollRef = gs.plObj.roll
-                gs.plObj.roll = gs.enObj.roll
-                gs.enObj.roll = rollRef
+            //     let rollRef = gs.plObj.roll
+            //     gs.plObj.roll = gs.enObj.roll
+            //     gs.enObj.roll = rollRef
     
-                //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
-                recalcEneAction()
+            //     //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
+            //     recalcEneAction()
 
-            }else if(paKey =='a70'){// pendant/charge
+            // }else if(paKey =='a70'){// pendant/charge
             
-                let powerRef = gs.plObj.power
-                gs.plObj.power = gs.enObj.power
-                gs.enObj.power = powerRef
+            //     let powerRef = gs.plObj.power
+            //     gs.plObj.power = gs.enObj.power
+            //     gs.enObj.power = powerRef
     
-                //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
-                recalcEneAction()
+            //     //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
+            //     recalcEneAction()
                 
-            }else if(paKey =='a53'){// "transmute" "alchemists paKey"
+            // }else if(paKey =='a53'){// "transmute" "alchemists paKey"
                 
-                //Condition check
-                if(gs.plObj.roll != 1 && gs.plObj.roll != 2) return showAlert('Transmute requires roll 1 or 2.')
+            //     //Condition check
+            //     if(gs.plObj.roll != 1 && gs.plObj.roll != 2) return showAlert('Transmute requires roll 1 or 2.')
     
-                //Stat mod
-                gs.plObj.coins += gs.plObj.roll
+            //     //Stat mod
+            //     gs.plObj.coins += gs.plObj.roll
     
-            }else if(paKey =='a54'){// "inferno" "bomb assembly kit"
+            // }else if(paKey =='a54'){// "inferno" "bomb assembly kit"
     
-                //Dmg
-                gs.plObj.dmgDone += gs.plObj.power * gs.plObj.coins
+            //     //Dmg
+            //     gs.plObj.dmgDone += gs.plObj.power * gs.plObj.coins
     
-                //Cost
-                gs.plObj.coins = 0
+            //     //Cost
+            //     gs.plObj.coins = 0
     
-            }else if(paKey =='a55'){// "fear" "wizards head"
+            // }else if(paKey =='a55'){// "fear" "wizards head"
 
-                //Marker
-                gs.enObj.forcedAction = 'block'
+            //     //Marker
+            //     gs.enObj.forcedAction = 'block'
 
-                //Trigger cd
-                gs.sourceAction.cooldown = -1
+            //     //Trigger cd
+            //     gs.sourceAction.cooldown = -1
                 
-                //Set variable cooldown.  
-                let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
-                referenceActionObj.cooldown = rng(4,2)
+            //     //Set variable cooldown.  
+            //     let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
+            //     referenceActionObj.cooldown = rng(4,2)
 
-            }else if(paKey =='a68'){// "stress" "wizards hand"
+            // }else if(paKey =='a68'){// "stress" "wizards hand"
 
-                //Save action to prevent
-                gs.enObj.bannedAction = gs.enObj.action.key 
+            //     //Save action to prevent
+            //     gs.enObj.bannedAction = gs.enObj.action.key 
 
-                //Trigger cd
-                gs.sourceAction.cooldown = -1
+            //     //Trigger cd
+            //     gs.sourceAction.cooldown = -1
                 
-                //Set variable cooldown.  
-                let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
-                referenceActionObj.cooldown = rng(actionMod,3)
+            //     //Set variable cooldown.  
+            //     let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
+            //     referenceActionObj.cooldown = rng(actionMod,3)
 
-            }else if(paKey =='a57'){// "heal" "book of order"
+            // }else if(paKey =='a57'){// "heal" "book of order"
 
-                //Cost
-                if(gs.plObj.power < 0) return showAlert('Not enough power to pay for action cost.')
+            //     //Cost
+            //     if(gs.plObj.power < 0) return showAlert('Not enough power to pay for action cost.')
                 
-                //Resolve stat change
-                changeStat('power', -1, 'player') 
+            //     //Resolve stat change
+            //     changeStat('power', -1, 'player') 
 
-                gs.lifeRestoredByPlayer += actionMod + gs.plObj.power + gs.plObj.def
+            //     gs.lifeRestoredByPlayer += actionMod + gs.plObj.power + gs.plObj.def
                 
-            }else if(paKey =='a60'){// heavy block "towerbuckler"
+            // }else if(paKey =='a60'){// heavy block "towerbuckler"
     
-                gs.enObj.dmgDone -= gs.plObj.def * (actionMod/100)
+            //     gs.enObj.dmgDone -= gs.plObj.def * (actionMod/100)
     
-            }else if(paKey =='a62'){// punch
+            // }else if(paKey =='a62'){// punch
 
-                //Calc
-                gs.plObj.dmgDone += actionMod + gs.plObj.power
+            //     //Calc
+            //     gs.plObj.dmgDone += actionMod + gs.plObj.power
     
-            }
-             else if(paKey =='a67'){// pull 'carabiner'
+            // }
+            //  else if(paKey =='a67'){// pull 'carabiner'
                 
-                //Set carabiner variable
-                gs.plObj.carabiner = []
+            //     //Set carabiner variable
+            //     gs.plObj.carabiner = []
 
-                //Find item by action and unequip it
-                gs.sourceItem.equipped = false
+            //     //Find item by action and unequip it
+            //     gs.sourceItem.equipped = false
 
-                //Open choose one window
-                chooseOne()
+            //     //Open choose one window
+            //     chooseOne()
                 
-                console.log(gs.sourceItem);
+            //     console.log(gs.sourceItem);
 
-                //Save carabiner item to restore eq after the fight
-                gs.plObj.carabiner.push(gs.sourceItem.itemId)
+            //     //Save carabiner item to restore eq after the fight
+            //     gs.plObj.carabiner.push(gs.sourceItem.itemId)
     
-            }
+            // }
             
 
             //PASSIVES post-action: Player passive effects.
@@ -887,8 +877,6 @@
 
         function resolveDmgCap(dmgValue){
             let dmg = dmgValue
-
-            console.log(dmgValue);
             
             if(dmg > gs.plObj.combatState.dmgCap){
                 dmg = gs.plObj.combatState.dmgCap
@@ -1174,6 +1162,24 @@
             el('inventory').childNodes[1].append(el('inventory-list'))
         }
 
+    //MISC
+        function resetCombatStateVariables (){
+            //Reset combat state vars
+            gs.combatTurnState      = ''
+            gs.plObj.dmgDone        = 0
+            gs.plObj.dmgTaken       = 0
+            gs.enObj.dmgDone        = 0
+            gs.enObj.dmgTaken       = 0
+            gs.lifeRestoredByPlayer = 0
+
+            //Clear combat log.
+            gs.logMsg = [`TURN:${gs.combatTurn} ------------------------------------`]
+        }
+        function setRandomGhostImages(){
+            el('p-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
+            el('e-ghost').setAttribute('src',`./img/character/ghost-${rng(4)}.svg`)
+        }
+
 
     
 
@@ -1183,6 +1189,7 @@
     let gs         // game state object
     let itemsRef   // atems data
     let actionsRef // actions data
+    let actionLogic = new ActionLogic
 
     async function fetchData() {
         //Gets data from JSONS
