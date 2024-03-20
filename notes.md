@@ -9,6 +9,10 @@ SAVE FILES ARE NOT WORKING BECAUSE METHODS ARE MISSING FROM ACTIONS.
 
 - Update notes**
     - Charge values of clubs and swords incresed to prevent weapon breaking in early game stages.
+    - Crusaders 'superior life' passive now gives 30 life (previously 12).
+    - Rogue enemies life is reduced by 25%.
+    - Rogue enemies now have access to charge and weaken actions to reduce their attack frequency.
+    - Increased players starting life, food and coins for all classes.
 
 
 - To-do ideas**
