@@ -1,5 +1,3 @@
-let gs //game state object
-
 //Game
     class GameState {
         constructor(){

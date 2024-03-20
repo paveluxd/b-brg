@@ -148,6 +148,9 @@
             //Find item by action
             gs.sourceItem = findItemByAction(gs.sourceAction)
 
+            // Used action log
+            gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
+
             //LOGIC: player
             //Attacks
             if      (paKey =='a1' ){// mace
@@ -160,9 +163,6 @@
                     gs.logMsg.push('Mace: +1 def.')
                 }
     
-                //Log
-                gs.logMsg.push(`Mace: deals ${actionMod + gs.plObj.power} dmg.<br>`)
-    
             }else if(paKey =='a2' ){// 'armor break' 'hammer'
 
                 //Get reduction value
@@ -172,9 +172,6 @@
                 //Resolve stat change
                 changeStat('def', -defReduction, 'enemy') 
                 changeStat('def', -1, 'player') 
-
-                //Log
-                gs.logMsg.push(`Hammer attack: reduced enemy def by ${defReduction}.`)
     
             }else if(paKey =='a3' ){// shards "book of moon" 
     
@@ -190,25 +187,16 @@
             
                 //Damage
                 gs.plObj.dmgDone += (actionMod + gs.plObj.power) * mult
-
-                //Log
-                gs.logMsg.push(`Shard: dealt ${(actionMod + gs.plObj.power) * mult} dmg.`)
     
             }else if(paKey =='a4' ){// dagger pair 
     
                 //Calc
                 gs.plObj.dmgDone += (actionMod + gs.plObj.power) * 2
-
-                //Log
-                gs.logMsg.push('Dagger pair attack.')
     
             }else if(paKey =='a5' ){// bow
     
                 //Calc
                 gs.plObj.dmgDone += gs.plObj.roll + gs.plObj.power
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
             }else if(paKey =='a6' ){// cut 'dagger'
 
@@ -220,9 +208,6 @@
 
                 //Damage
                 gs.plObj.dmgDone = gs.sourceAction.actionMod + gs.plObj.power 
-
-                //Combat log
-                gs.logMsg.push('Attacked with dagger as extra action.')
                 
             }else if(paKey =='a7' ){// sword attack 
     
@@ -231,9 +216,6 @@
                 if(gs.plObj.roll == 5 || gs.plObj.roll == 6){
                     gs.plObj.swordDmgMod += 1
                 }
-
-                //Log
-                gs.logMsg.push(`Sword: dealt ${gs.plObj.power} dmg.`)
     
             }else if(paKey =='a8' ){// "axe" 
     
@@ -254,9 +236,6 @@
 
                     //Dmg calc
                     gs.plObj.dmgDone += Math.ceil((gs.plObj.flatLife - gs.plObj.life)/2)
-
-                //Log
-                    gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.dmgDone} dmg.`)
     
             }else if(paKey =='a9' ){// ice lance "book of ice"
 
@@ -268,9 +247,6 @@
    
                 //Dmg
                 gs.plObj.dmgDone += gs.plObj.power
-
-                //Log
-                gs.logMsg.push(`Ice lance: dealt ${gs.plObj.power} dmg.`)
     
             }else if(paKey =='a10'){// backstab "iron dagger"
     
@@ -292,9 +268,6 @@
 
                 //Calc
                 gs.plObj.dmgDone += dmg
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
             }else if(paKey =='a64'){// sickle
 
@@ -303,9 +276,6 @@
 
                 //Apply poison stacks
                 gs.enObj.appliedPoisonStacks += actionMod
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${gs.plObj.roll + gs.plObj.power} dmg.`)
     
             }else if(paKey =='a65'){// great axe
     
@@ -313,9 +283,6 @@
                 let dmg = Math.ceil(gs.enObj.life * (actionMod / 100 + 0.05 * gs.plObj.power))
                 if(dmg < 1){dmg = 1}
                 gs.plObj.dmgDone += dmg
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${dmg} dmg.`)
     
             }
              else if(paKey =='a11'){// lightning "book of lightning"
@@ -329,9 +296,6 @@
                 //Dmg
                 let dmgVal = rng(20) + gs.plObj.power
                 gs.plObj.dmgDone += dmgVal
-
-                //Log
-                gs.logMsg.push(`Lightning: dealt ${dmgVal} dmg.`)
     
             }else if(paKey =='a12'){// "spiked shield" bash
                 
@@ -342,17 +306,11 @@
                 if(gs.plObj.roll == 1){
                     gs.enObj.state = 'Skip turn'
                 }
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
     
             }else if(paKey =='a13'){// fireball  "book of fire"
     
                 //Dmg
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
-
-                //Log
-                gs.logMsg.push(`Fireball: dealt ${actionMod + gs.plObj.power} dmg.`)
     
             }else if(paKey =='a14'){// pyroblast "book of fire"
     
@@ -364,9 +322,6 @@
     
                 //Dmg
                 gs.plObj.dmgDone += gs.plObj.power * gs.plObj.roll
-
-                //Log
-                gs.logMsg.push(`Pyroblast: dealt ${gs.plObj.power * gs.plObj.roll} dmg.`)
 
             }else if(paKey =='a15'){// quick block "tower shield"
     
@@ -381,9 +336,6 @@
     
                 //Value
                 gs.plObj.rollBonus += Math.ceil(gs.plObj.roll * 0.5)
-
-                //Log
-                gs.logMsg.push(`Preparation: saved ${Math.ceil(gs.plObj.roll * 0.5)} roll points.`)
     
             }else if(paKey =='a19'){// reroll
     
@@ -435,9 +387,6 @@
     
                 if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
                 gs.enObj.state = 'Skip turn'
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
                 
             }else if(paKey =='a26'){// freeze (stun spell) "book of ice"
 
@@ -458,26 +407,17 @@
             }else if(paKey =='a33'){// healing potion
                 
                 //Heal value
-                gs.lifeRestoredByPlayer += Math.round((gs.plObj.flatLife - gs.plObj.life) / 100 * actionMod)
-
-                //Log
-                gs.logMsg.push(`Heling potion: +${gs.lifeRestoredByPlayer}  life.`)  
+                gs.lifeRestoredByPlayer += Math.round((gs.plObj.flatLife - gs.plObj.life) / 100 * actionMod) 
                  
             }else if(paKey =='a61'){// bandages
                 
                 //Heal value
                 gs.lifeRestoredByPlayer += actionMod
-
-                //Log
-                gs.logMsg.push(`Bandages: +${actionMod}  life.`)  
                  
             }else if(paKey =='a34'){// papaver somniferum
 
                 //Resolve stat change
                 changeStat('def', actionMod, 'player')
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}<br>`)
             }
              else if(paKey =='a35'){// dodge % evasion "leather cape"
     
@@ -487,9 +427,6 @@
                 if(dodgeRoll < dodgePercent){
                     gs.enObj.dmgDone = -99999 // add something better for dodge later
                 }
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: Dodge chance:${dodgePercent} / Dodge roll: ${dodgeRoll}.<br>`)
     
             }else if(paKey =='a37'){// buff next attack with piercing "leather gloves"
 
@@ -513,54 +450,33 @@
                 //Set variable cooldown.  
                 let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
                 referenceActionObj.cooldown = rng(4,2)
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
                     
             }else if(paKey =='a39'){// adrenaline shot/ adrenaline pen
 
                 //Resolve stat change
                 changeStat('roll', actionMod, 'player')
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
     
             }else if(paKey =='a40'){// water potion "water potion"
 
                 //Resolve stat change
                 changeStat('power', actionMod, 'player')
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.<br>`)
     
             }else if(paKey =='a41'){// poison
                 
                 //Marker
                 gs.plObj.poisonBuff = true
-
-                //Log
-                gs.logMsg.push('Applied poison to weapons.<br>')
     
             }else if(paKey =='a42'){// 'block' 'shield'
     
                 gs.enObj.dmgDone -= gs.plObj.roll
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
     
             }else if(paKey =='a71'){// 'side block' 'kite shield'
     
                 gs.enObj.dmgDone -= gs.sourceAction.actionCharge
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
     
             }else if(paKey =='a69'){// 'defend' 'wooden shield'
     
                 gs.enObj.dmgDone -= actionMod
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
     
             }else if(paKey =='a44'){// "restoration" "sal ammoniac"
 
@@ -582,16 +498,10 @@
                 if(restoredPoints == undefined) return false
 
                 gs.lifeRestoredByPlayer += (-1 * restoredPoints)
-
-                //Log
-                gs.logMsg.push(`restoration: restored ${-1 * restoredPoints} life`)
     
             }else if(paKey =='a45'){// club attack
     
                 gs.plObj.dmgDone += 3 + gs.plObj.power
-
-                //Log
-                gs.logMsg.push(`Club: dealt ${gs.plObj.power} dmg.`)
     
             }else if(paKey =='a48'){// "focus" "wooden staff"
 
@@ -616,9 +526,6 @@
                 gs.plObj.roll = gs.enObj.roll
                 gs.enObj.roll = rollRef
     
-                //Log
-                gs.logMsg.push(`rolls swapped (Result: P${gs.plObj.roll}/E${gs.enObj.roll})`)
-    
                 //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
                 recalcEneAction()
 
@@ -627,9 +534,6 @@
                 let powerRef = gs.plObj.power
                 gs.plObj.power = gs.enObj.power
                 gs.enObj.power = powerRef
-    
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}`)
     
                 //RECALC ENEMY INTENDED ACTION: if player mods roll or power as extra action.
                 recalcEneAction()
@@ -641,17 +545,11 @@
     
                 //Stat mod
                 gs.plObj.coins += gs.plObj.roll
-                
-                //Log
-                gs.logMsg.push(`transmute: added ${gs.plObj.roll} coins`)
     
             }else if(paKey =='a54'){// "inferno" "bomb assembly kit"
     
                 //Dmg
                 gs.plObj.dmgDone += gs.plObj.power * gs.plObj.coins
-    
-                //Log
-                gs.logMsg.push(`inferno: dealt ${gs.plObj.coins} dmg, and consued ${gs.plObj.coins} coins`)
     
                 //Cost
                 gs.plObj.coins = 0
@@ -668,9 +566,6 @@
                 let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
                 referenceActionObj.cooldown = rng(4,2)
 
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc} (${referenceActionObj.cooldown}).`)
-
             }else if(paKey =='a68'){// "stress" "wizards hand"
 
                 //Save action to prevent
@@ -683,9 +578,6 @@
                 let referenceActionObj = findByProperty(actionsRef, 'keyId', gs.sourceAction.keyId) //Find action reference
                 referenceActionObj.cooldown = rng(actionMod,3)
 
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc} (${referenceActionObj.cooldown}).`)
-
             }else if(paKey =='a57'){// "heal" "book of order"
 
                 //Cost
@@ -696,23 +588,14 @@
 
                 gs.lifeRestoredByPlayer += actionMod + gs.plObj.power + gs.plObj.def
                 
-                //Log
-                gs.logMsg.push(`heal: +${gs.lifeRestoredByPlayer} life, -1 power.`)
-                
             }else if(paKey =='a60'){// heavy block "towerbuckler"
     
-                gs.enObj.dmgDone -= gs.plObj.def * (actionMod/100) 
-
-                //Log
-                gs.logMsg.push(`Hevy block: blocked ${gs.plObj.def * (actionMod/100)} dmg.`)
+                gs.enObj.dmgDone -= gs.plObj.def * (actionMod/100)
     
             }else if(paKey =='a62'){// punch
 
                 //Calc
                 gs.plObj.dmgDone += actionMod + gs.plObj.power
-    
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: deals ${actionMod + gs.plObj.power} dmg.`)
     
             }
              else if(paKey =='a67'){// pull 'carabiner'
@@ -730,9 +613,6 @@
 
                 //Save carabiner item to restore eq after the fight
                 gs.plObj.carabiner.push(gs.sourceItem.itemId)
-
-                //Log
-                gs.logMsg.push(`${gs.sourceAction.actionName}: ${gs.sourceAction.desc}.`)
     
             }
             
@@ -745,9 +625,6 @@
                         gs.combatTurnState = 'extra-action'
                         action.cooldown = 0
 
-                        //Log
-                        ombatState.logMsg.push(`Combo extra action (passive).`)
-
                     }
                 }else if(action.keyId == 'a36'){ // critical hit "woolen gloves"
                     if(gs.plObj.roll > 8 && action.cooldown > 0){
@@ -755,31 +632,20 @@
                         gs.plObj.dmgDone = gs.plObj.dmgDone * (action.actionMod/100)
                         action.cooldown = 0
 
-                        //Log
-                        ombatState.logMsg.push(`Critical hit (passive).`)
-
                     }
                 }else if(action.keyId == 'a51'){ // overload 'exoskeleton'
                     if(gs.plObj.roll > gs.plObj.dice){
 
                         gs.plObj.dmgDone = gs.plObj.dmgDone * (action.actionMod / 100 + 1)
 
-                        //Log
-                        gs.logMsg.push(`Overload activated (passive).`)
-
                     }
                 }else if(action.keyId == 'a56'){ // sigil of light
 
                     if(gs.plObj.life + gs.lifeRestoredByPlayer <= gs.plObj.flatLife) return
 
-
-
                     //Mod max life
                     gs.plObj.flatLife += action.actionMod
                     gs.plObj.flatLifeMod += action.actionMod
-
-                    // Log
-                    gs.logMsg.push(`Faith: +${action.actionMod} max life (passive).`)  
                 }
             })
             
@@ -1311,37 +1177,46 @@
 
     
 
-//GAME START
-    //Clear LS if config
-    if(config.clearLs == true){
-        localStorage.clear();
-        console.log('Local storage cleared.');
+
+
+//Load data
+    let gs         // game state object
+    let itemsRef   // atems data
+    let actionsRef // actions data
+
+    async function fetchData() {
+        //Gets data from JSONS
+        let itemResponse    = await fetch('./data/items.json');
+        let actionsResponse = await fetch('./data/actions.json');
+
+        //Assing item objects etc.
+        itemsRef   = await itemResponse.json();
+        actionsRef = await actionsResponse.json();
+
+        //Convert 'passiveStat' actions property to objects.
+        convertStringsToArr(itemsRef)
+        convertStringsToArr(actionsRef) 
+
+        //Convert action id to strings
+        actionsRef.forEach(action => {
+            action.keyId = `a${action.keyId}`
+        })
+
+        //GAME STARTS AFTER DATA IS LOADED
+            //Clear LS if config
+            if(config.clearLs == true){
+                localStorage.clear();
+                console.log('Local storage cleared.');
+            }
+
+            //Checks if LS save exists
+            loadGame()
+
+            if(config.showScreen != undefined){ 
+                initGame() 
+            }
     }
 
-    //Checks if LS save exists
-    loadGame()
-
-    if(config.showScreen != undefined){ 
-        initGame() 
-    }
-
-    //Preloads images
-    let imgUrls = [
-        //map
-
-        //bg
-        './img/bg/combat-1.svg',
-        './img/bg/combat-2.svg',
-        './img/bg/combat-3.svg',
-        './img/bg/dungeon-1.svg',
-        './img/bg/end.svg',
-        './img/bg/lake.svg',
-        './img/bg/chest.svg',
-        './img/bg/victory.svg',
-
-        //units
-
-    ]
-    imgUrls.forEach(url => {
-        new Image().src = url;
-    })
+    // Starts the game
+    // Call the async function to fetch JSON data
+    fetchData(); 
