@@ -65,11 +65,6 @@
         }
     }
 
-//Convert action id to strings
-    actionsRef.forEach(action => {
-        action.keyId = `a${action.keyId}`
-    })
-
 //Converts passiveStat to objects
     function convertStringsToArr(arr){
         arr.forEach(item => {
@@ -97,9 +92,6 @@
             }
         })
     }
-//Convert passiveStat, actions property to objects.
-    convertStringsToArr(itemsRef)
-    convertStringsToArr(actionsRef) 
 
 
 //ACTIONS UI
