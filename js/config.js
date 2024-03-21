@@ -11,7 +11,7 @@ let config = {
         slots:      5,
         class:      'guardian',
         coins:      12,
-        food:       16,
+        food:       30,
 
     //Progression
         expBase: 2,
@@ -70,8 +70,8 @@ if(2 == 1){
     config.basePassieSkillPoints = 9
 
     //Game
-    // config.testCombat        = true //Initiates combat at the start (for testing).
-    // config.showScreen        = 'combat' 
+    config.testCombat        = true //Initiates combat at the start (for testing).
+    config.showScreen        = 'combat' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
     config.stage             = 2
@@ -84,8 +84,8 @@ if(2 == 1){
             'gonfalon',
             "dodecacore",
             "ring of power",
-            'wizards head',
-            'robe',
+            'poison potion',
+            'smoke bomb',
 
     ]
     config.stCrusader = [

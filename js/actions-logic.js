@@ -267,7 +267,7 @@
                 gs.enObj.state = 'Skip turn'
             }a47(){// stun: smoke bomb
     
-                if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
+                // if(['attack', 'combo', 'final strike', 'charged strike'].indexOf(gs.enObj.action.paKey) > -1) showAlert(`Smoke bomb failed vs attack.`)
                 gs.enObj.state = 'Skip turn'
             }a26(){// freeze (stun spell) "book of ice"
 
