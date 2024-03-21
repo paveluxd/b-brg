@@ -346,10 +346,10 @@
       "desc": "reduce targets dice roll by 4 (instant)",
       "passiveStats": "",
       "actionMod": 4,
-      "actionCharge": 6,
+      "actionCharge": 12,
       "cooldown": "",
       "keyId": 24,
-      "actionType": ""
+      "actionType": "extra-action"
     },
     {
       "actionName": "stun",
@@ -464,9 +464,9 @@
     {
       "actionName": "dodge",
       "tags": "buff, defensive",
-      "desc": "gain 35% chance to dodge next attack (+5% per dice roll point)",
+      "desc": "gain 35% chance to dodge next attack (+10% per dice roll point)",
       "passiveStats": "",
-      "actionMod": 5,
+      "actionMod": 10,
       "actionCharge": 30,
       "cooldown": "",
       "keyId": 35,
@@ -530,13 +530,13 @@
     {
       "actionName": "weapon poison",
       "tags": "enchantment",
-      "desc": "next time you deal dmg, all hits during that turn will poison",
+      "desc": "next time you attack, all hits during that turn will poison (instant)",
       "passiveStats": "",
       "actionMod": "",
-      "actionCharge": 12,
+      "actionCharge": 24,
       "cooldown": "",
       "keyId": 41,
-      "actionType": ""
+      "actionType": "extra-action"
     },
     {
       "actionName": "block",
@@ -596,11 +596,11 @@
     {
       "actionName": "smoke bomb",
       "tags": "croud control",
-      "desc": "stun target. Ineffective against attacks",
+      "desc": "stuns the enemy",
       "passiveStats": "",
       "actionMod": "",
-      "actionCharge": 6,
-      "cooldown": 2,
+      "actionCharge": 12,
+      "cooldown": "",
       "keyId": 47,
       "actionType": ""
     },
