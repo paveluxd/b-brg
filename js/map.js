@@ -321,19 +321,6 @@ class MapObj{
                 tile.playerUnit = true
             }
         })
-
-        //Resolve cost per movement
-            if(gs.plObj.food > 0){
-                gs.plObj.food--
-            }else if(gs.plObj.power > 0){
-                gs.plObj.power--
-            }else if(gs.plObj.life > 1){
-                gs.plObj.life--
-            }else{
-                clearSavedGame()
-                openStateScreen('starved')
-            }
-
         
         //Readjust the viewport
             //Get current tile X
@@ -522,20 +509,21 @@ class MapObj{
         
         let eventType = gs.playerLocationTile.tileType
 
-        if      (eventType.startsWith('lake')){
-            if(gs.playerLocationTile.visited != true){
-                let numberOfFish = rng(12,4)
-                gs.plObj.food += numberOfFish
-                el('event-cover').setAttribute('src','./img/bg/lake.svg')
-                el('event-desc').innerHTML =`You found ${numberOfFish} <img src="./img/ico/food.svg">`
+        // if      (eventType.startsWith('lake')){
+        //     if(gs.playerLocationTile.visited != true){
+        //         let numberOfFish = rng(12,4)
+        //         gs.plObj.food += numberOfFish
+        //         el('event-cover').setAttribute('src','./img/bg/lake.svg')
+        //         el('event-desc').innerHTML =`You found ${numberOfFish} <img src="./img/ico/food.svg">`
 
-                syncUi()
-            }else{
-                el('event-cover').setAttribute('src','./img/bg/lake.svg')
-                el('event-desc').innerHTML =`You spent few hours trying to catch more fish, but it seems that there is no more left.`
-            }
-            screen('event-screen')
-        }else if(eventType.startsWith('chest')){
+        //         syncUi()
+        //     }else{
+        //         el('event-cover').setAttribute('src','./img/bg/lake.svg')
+        //         el('event-desc').innerHTML =`You spent few hours trying to catch more fish, but it seems that there is no more left.`
+        //     }
+        //     screen('event-screen')
+        // }
+        if(eventType.startsWith('chest')){
             if(gs.playerLocationTile.visited != true){
                 let val = rng(parseInt(gs.playerLocationTile.tileId[0]) + parseInt(gs.playerLocationTile.tileId[2]) + 12, 6)
                 gs.plObj.coins += val
@@ -659,11 +647,11 @@ class MapObj{
 
             let roll = rng(5)
 
-            if(gs.playerLocationTile.visited == true || roll == 5){
+            if(gs.playerLocationTile.visited == true || roll > 3){
                 el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`There is nothing in here.`
             }
-            else if(roll == 4){
+            else if(roll == 3){
                 let item = new ItemObj()
                 el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty. You look around and find <b>${item.itemName}</b>.`
@@ -671,8 +659,8 @@ class MapObj{
                 //Add item to the inventory.
                 gs.plObj.inventory.push(item)
             }
-            else if(roll == 3){
-                let heal = rng(Math.round(gs.plObj.life/3))
+            else if(roll == 2){
+                let heal = rng(Math.round(gs.plObj.baseLifelife/3))
                 el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty and find a <b>medical kit (+${heal}<img src='./img/ico/life.svg'>)</b>.`
                 
@@ -688,6 +676,9 @@ class MapObj{
                 if(gs.plObj.life < 1){
                     el('event-screen').setAttribute('onclick','openStateScreen("game-end")')
                 }
+
+                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
+                el('event-desc').innerHTML =`There is nothing in here.`
             }
 
             screen('event-screen')
@@ -852,7 +843,7 @@ class MapObj{
             {tileType: 'lake-1', tileId:`1-1`, enemyUnit: false},
         ]
     }
-    
+
     let stageProfileRef = {
         genericMap:{
             mandatoryTiles:[

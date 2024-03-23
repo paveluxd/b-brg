@@ -34,11 +34,10 @@
 
     /* TYPOGRAPHY */
     --heading-yellow: #F6C57B;
-    --body-text:      rgba(255,255,255,.90);
+    --body-text:      rgba(255, 255, 255, 0.8);
 
     /* SCREEN */
-    --screen-bg:        #373a3d;
-    --main-screen-bg:   #1d1d1d;
+    --screen-bg:        #181818;
 
     /* TREE */
     --tree-rows:      9;
@@ -46,7 +45,7 @@
     --tree-cell:      64px;
 
     /* BUTTON */
-    --btn-size:       64px;
+    --btn-size:       52px;
     --btn-bg:         #2F3138;
     --btn-bg-hover:   #23242b;
     --btn-border:     #949494;
