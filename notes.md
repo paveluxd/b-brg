@@ -19,6 +19,7 @@ Ring charges don't work.
     - Food system was removed from the game.
     - Gold and exp exp rewards are combined into a single reward option.
     - Various UI updates.
+    - Player character sprites are no longer random to make it easier to identify your character and class.
 
 - To-do ideas**
     - Passive: +1 exp when you use a scroll.
