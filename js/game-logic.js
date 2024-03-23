@@ -1139,22 +1139,16 @@
             el('inventory-slide').append(el('inventory-list'))   
             
             //Update flat reward button labels
-            el('exp-reward-btn').innerHTML   = `<img src='./img/ico/spell.svg'> +${gs.playerLocationTile.enemyQuant} experience`
-            el('coins-reward-btn').innerHTML = `<img src='./img/ico/coin-sm.svg'> +${gs.playerLocationTile.enemyQuant * 2} coins`
-            el('food-reward-btn').innerHTML  = `<img src='./img/ico/food.svg'> +${gs.playerLocationTile.enemyQuant * 2} food`
+            el('exp-reward-btn').innerHTML = `<img src='./img/ico/tab-reward.svg'> ${gs.playerLocationTile.enemyQuant} experience, and ${2* gs.playerLocationTile.enemyQuant} coins`
 
             // toggleModal('reward-screen')         
             screen('reward-screen')        
         }
 
         function resolveFlatReward(rewardType){
-            if(rewardType == 'food'){
-                gs.plObj.food  += gs.playerLocationTile.enemyQuant * 2
-            }
-            else if (rewardType == 'coins'){
+            
+            if (rewardType == 'exp'){
                 gs.plObj.coins += gs.playerLocationTile.enemyQuant * 2
-            }
-            else if (rewardType == 'exp'){
                 resolveExpAndLvl(gs.playerLocationTile.enemyQuant)
             }
 

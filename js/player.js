@@ -54,7 +54,7 @@ class PlayerObj {
                         
         //Sub-stats
             this.coins          = config.coins
-            this.food           = config.food
+
         //Progression
             this.exp            = 0
             this.lvl            = 1
@@ -314,78 +314,22 @@ function resolveExpAndLvl(expAmounth){
     function syncCharPage(){
         
         //Add text
-        el('stat-block').innerHTML =`
-            <section>
-                <div class='stat'>
-                    <img src="./img/ico/life.svg">
-                    <p>Life: ${gs.plObj.life} / ${gs.plObj.flatLife}</p>
-                </div>
+        //Update each value
+        el('.life').innerHTML           = gs.plObj.life
+        el('.flatLife').innerHTML       = gs.plObj.flatLife
+        el('.flatDice').innerHTML       = gs.plObj.flatDice
+        el('.power').innerHTML          = gs.plObj.power
+        el('.def').innerHTML            = gs.plObj.def
 
-                <div class='stat'>
-                    <img src="./img/ico/dice.svg">
-                    <p>Dice: d${gs.plObj.flatDice}</p>
-                </div>
+        el('.equipmentSlots').innerHTML = `${calcEquippedItems()}/${gs.plObj.equipmentSlots}` //eq slots
+        el('.coins').innerHTML          = gs.plObj.coins
+        el('.inventory').innerHTML      = `${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`//inventory
+        el('.level').innerHTML          = gs.plObj.lvl
+        el('.exp').innerHTML            = `${gs.plObj.exp}/${gs.plObj.lvlUpExp}`//exp
 
-                <div class='stat'>
-                    <img src="./img/ico/power.svg">
-                    <p>Power: ${gs.plObj.power}</p>
-                </div>
+        el('.stage').innerHTML          = gs.stage
+        el('.playerClass').innerHTML    = upp(gs.plObj.class)
 
-                <div class='stat'>
-                    <img src="./img/ico/def.svg">
-                    <p>Def: ${gs.plObj.def}</p>
-                </div>
-            </section>
-
-            <section>
-                <div class='stat'>
-                    <img src="./img/ico/food.svg">
-                    <p>Food: ${gs.plObj.food}</p>
-                </div>
-                
-                <div class='stat'>
-                    <img src="./img/ico/slots.svg">
-                    <p>Equipment: ${calcEquippedItems()}/${gs.plObj.equipmentSlots}</p>
-                </div>
-                
-                <div class='stat'>
-                    <img src="./img/ico/coin-sm.svg">
-                    <p>Coins: ${gs.plObj.coins}</p>
-                </div>     
-                
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Inventory: ${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}</p>
-                </div>    
-            </section>
-                
-            <section>
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Level: ${gs.plObj.lvl}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Exp: ${gs.plObj.exp}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Skill points:  ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>Next lvl exp:  ${gs.plObj.lvlUpExp}</p>
-                </div>
-
-                <div class='stat'>
-                    <img src="./img/ico/placeholder.svg">
-                    <p>World stage:  ${gs.stage}</p>
-                </div>
-            </section>
-        `
 
         //Add action cards
         el('action-list').innerHTML = ``
@@ -399,6 +343,13 @@ function resolveExpAndLvl(expAmounth){
             }         
         })
 
+
+        //Hide passives label if no passives
+        if(el('passive-list').childNodes.length < 1){
+            el('passives-label').classList.add('hide')
+        }else{
+            el('passives-label').classList.remove('hide')
+        }
     }
 
     function playerClassSelection(){
@@ -407,9 +358,9 @@ function resolveExpAndLvl(expAmounth){
             <div class="char-selection modal-container">
 
                 <div id='char-text-container'>
-                    <h2 id="char-heading">
+                    <h1 id="char-heading">
                         Choose a class
-                    </h2>
+                    </h1>
                     <p  id="char-description" class="body-14">
                         Tap the character below
                     </p>
@@ -417,15 +368,36 @@ function resolveExpAndLvl(expAmounth){
                 
                 <div id='characters'>
                     <button id='guardian-button' onclick="showCharDetails('guardian')">
-                        <img src="./img/bg/char-guardian.svg">
+                        <div class="generic-sprite">
+                            <img src="./img/character/guardian-back.svg">
+                            <img src="./img/character/guardian-back-arm.svg">
+                            <img src="./img/character/guardian-legs.svg">
+                            <img src="./img/character/guardian-torso.svg">
+                            <img src="./img/character/guardian-front-arm.svg">
+                            <img src="./img/character/guardian-head.svg">
+                        </div>
                     </button>
                     
                     <button id='crusader-button' onclick="showCharDetails('crusader')">
-                        <img src="./img/bg/char-crusader.svg">
+                    <div class="generic-sprite">
+                        <img src="./img/character/crusader-back.svg">
+                        <img src="./img/character/crusader-back-arm.svg">
+                        <img src="./img/character/crusader-legs.svg">
+                        <img src="./img/character/crusader-torso.svg">
+                        <img src="./img/character/crusader-front-arm.svg">
+                        <img src="./img/character/crusader-head.svg">
+                    </div>
                     </button>
                     
                     <button id='wanderer-button' onclick="showCharDetails('wanderer')">
-                        <img src="./img/bg/char-wanderer.svg">
+                    <div class="generic-sprite flip">
+                        <img src="./img/character/wanderer-back.svg">
+                        <img src="./img/character/wanderer-back-arm.svg">
+                        <img src="./img/character/wanderer-legs.svg">
+                        <img src="./img/character/wanderer-torso.svg">
+                        <img src="./img/character/wanderer-front-arm.svg">
+                        <img src="./img/character/wanderer-head.svg">
+                    </div>
                     </button>
                 </div>
                 

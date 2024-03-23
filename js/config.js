@@ -56,25 +56,24 @@ let config = {
 }
 
 // Test config
-if(2 == 1){
+if(1 == 2){
     // config.life = 110
-    config.power = 0
+    config.power = 99
     config.def   = 99
     config.dice  = 6
     config.slots = 9
     config.class = 'guardian'
     config.coins = 90
-    config.food  = 12
 
     //Progression
     config.basePassieSkillPoints = 9
 
     //Game
-    config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'combat' 
+    // config.testCombat        = true //Initiates combat at the start (for testing).
+    config.showScreen        = 'character' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
-    config.stage             = 2
+    config.stage             = 1
 
     //Starting items
     config.stGuardian = [
@@ -85,7 +84,8 @@ if(2 == 1){
             "dodecacore",
             "ring of power",
             'poison potion',
-            'smoke bomb',
+            'pauldron',
+            'kite shield'
 
     ]
     config.stCrusader = [

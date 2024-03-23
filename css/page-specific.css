@@ -10,7 +10,7 @@
         background-image: url(/img/bg/key.svg);
         background-position: center;
         background-repeat: no-repeat;
-        background-color: var(--main-screen-bg);
+        background-color: var(--screen-bg);
     }
     .logo{
         width: calc(86px * 1.5);
@@ -207,39 +207,32 @@
     }
     #character-content .stat-block{
         display: flex;
-        flex-direction: column;
-        gap: 2px;
-
+        border: 2px solid black;
     }
     #character-content .stat-block section{
-        background-color: var(--b20);
-
         padding: 8px 8px 0px 8px;
-
-        display: flex;
+        width: 50%;
+        display: column;
         flex-wrap: wrap;
 
     }
     #character-content .stat-block section div{
-        width: 50%;
         margin-bottom: 8px;
     }
     #character-content #action-list, #character-content #passive-list{
         display: flex;
-        flex-direction: column;
-        /* flex-wrap: wrap; */
+        flex-wrap: wrap;
         width: 100%;
         gap: 2px;
         
     }
     #character-content #action-list button, #character-content #passive-list button {
-        width: 100%;
-        max-width: 100%;
+        width: calc(50% - 1px);
         height: 72px;
 
         pointer-events: none;
 
-        background-color: var(--b20);
+        background-color: var(--btn-bg);
 
         display: flex;
         justify-content: flex-start;
@@ -272,6 +265,20 @@
     #character-content .social-container .discord{
         background-color: #3366FF;
         color: white;
+    }
+    .torch{
+        background-image: url(/img/ui/torch-glow.svg);
+        background-size: cover;
+        height: 200px;
+        width: 200px;
+
+        position: absolute;
+        top: -6px;
+        right: 64px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
 /* Combat */
@@ -421,7 +428,7 @@
         /*Offset for bottom shadow*/
         margin-top: 16px;
     }
-    #player-sprite, #enemy-sprite {
+    #enemy-sprite, .player-sprite, .generic-sprite {
         z-index: 3;
         position: relative;
         display: flex;
@@ -432,14 +439,15 @@
         justify-content: center;
 
     }
-    #player-sprite img, #enemy-sprite img {
+    #enemy-sprite img, .player-sprite img, .generic-sprite img {
         position: absolute;
     }
     #enemy-sprite{
         z-index: 2; 
     }
-    #player-sprite img:nth-child(2),#player-sprite img:nth-child(3),#player-sprite img:nth-child(6),
-    #enemy-sprite img:nth-child(2),#enemy-sprite img:nth-child(5){
+    .generic-sprite img:nth-child(1), .generic-sprite img:nth-child(2), .generic-sprite img:nth-child(5),
+    .player-sprite  img:nth-child(1), .player-sprite  img:nth-child(2), .player-sprite  img:nth-child(5),
+    #enemy-sprite   img:nth-child(2), #enemy-sprite   img:nth-child(5){
         animation: player-char-idle 0.8s steps(2) infinite alternate;
     } @keyframes player-char-idle {
         0% {
@@ -449,6 +457,11 @@
         100%{
             transform: translateY(4px);
         }
+    }
+    .character-page-sprite{
+        width: 128px;
+        height: 144px;
+        margin-top: 26px;
     }
     
 /*Entrance anim*/
@@ -717,7 +730,7 @@
         width: calc(50% - 2px);
         height: 160px;
 
-        background-color: var(--b20);
+        background-color: var(--btn-bg);
     }
     .item-list .item-card img{
         height: 52px;
@@ -1001,7 +1014,7 @@
     
     #characters button{
         width: 108px;
-        height: auto;
+        height: 144px;
         border: none;
         background-color: var(--w0);
         box-shadow: none;

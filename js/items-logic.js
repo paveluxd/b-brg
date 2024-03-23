@@ -742,7 +742,7 @@ function calcCost(type, itemId){
 
             <div class="modal-container ">
                 <img class="item-img" src="./img/items/${itemObj.itemName}.svg">
-                <h2>${upp(itemObj.itemName)}</h2>
+                <h1>${upp(itemObj.itemName)}</h1>
                 ${descriptionSet}
                 Item type: ${upp(itemObj.itemSlot)}
 

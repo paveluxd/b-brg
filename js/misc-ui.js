@@ -139,7 +139,7 @@
             }
 
         //Modify map stat indicator
-            ['food', 'power','life','coins'].forEach(stat => {
+            ['life','coins'].forEach(stat => {
                 el(`pl-${stat}`).innerHTML = gs.plObj[stat]
             })
 
@@ -154,7 +154,7 @@
         //Modify skill tree tab extension
             el('tree-tab-extension').innerHTML = `
                 <span>
-                    Skill points:  ${gs.plObj.treePoints}/${gs.plObj.treePoints + gs.plObj.treeNodes.length}
+                    Available skill points:  ${gs.plObj.treePoints}
                 </span>
             `
             
@@ -277,16 +277,20 @@
     //Sprite builder
     function spriteBuilder(target){
         if(target == 'player'){
-            el('player-sprite').innerHTML = `
-                <img src="./img/character/shade.svg">
-                <img src="./img/character/${rng(3,1)}-back.svg">
-                <img src="./img/character/${rng(3,1)}-back-arm.svg">
-                <img src="./img/character/${rng(4,1)}-legs.svg">
-                <img src="./img/character/${rng(4,1)}-torso.svg">
-                <img src="./img/character/${rng(3,1)}-front-arm.svg">
-                <img src="./img/character/${rng(5,1)}-head.svg">
-                <img id='p-ghost' src="">
-            `
+
+            let playerSprites = document.querySelectorAll('.player-sprite')
+
+            playerSprites.forEach(spriteContainer => {
+                spriteContainer.innerHTML = `
+                    <img src="./img/character/${gs.plObj.class}-back.svg">
+                    <img src="./img/character/${gs.plObj.class}-back-arm.svg">
+                    <img src="./img/character/${gs.plObj.class}-legs.svg">
+                    <img src="./img/character/${gs.plObj.class}-torso.svg">
+                    <img src="./img/character/${gs.plObj.class}-front-arm.svg">
+                    <img src="./img/character/${gs.plObj.class}-head.svg">
+                    <img id='p-ghost' src="">
+                `
+            })
         }
         else if(target == 'enemy'){
 
@@ -295,7 +299,6 @@
             // if(gs.playerLocationTile.boss){
 
                 el('enemy-sprite').innerHTML = `
-                    <img src="./img/character/shade.svg">
                     <img src="./img/enemy/boss/${gs.enObj.profile.profileId}.svg">
                     <img id='e-ghost' src="">
                 ` 
@@ -363,44 +366,24 @@
 //MISC
     //Game state screen
     function openStateScreen(type){
-        //Starvation
-        if(type == 'starved'){
-            el('state-screen').innerHTML = `
-                <div class="modal-container"> 
+        
+        el('state-screen').innerHTML = `
+            <div class="modal-container"> 
 
-                    <img id="end-img" src="./img/bg/starvation.svg" alt="" class="illustration">
-                    
-                    <ul>
-                        <li>Reached stage ${gs.stage}.</li>
-                        <li>Survived ${gs.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gs.enemyCounter}/${gs.totalEnemies} enemies.</li>
-                    </ul>
+                <img id="end-img" src="./img/bg/end.svg" alt="" class="illustration">
 
-                    <p class="body-14 italic b50">Tap to restart</p>
-                </div>`
-            
-            el('state-screen').setAttribute('onclick', "location.reload()")
-            el('state-screen').classList.remove('background-key')
-        }
-        //Combat death
-        else if(type == 'game-end'){
-            el('state-screen').innerHTML = `
-                <div class="modal-container"> 
+                <ul>
+                    <li>Reached stage ${gs.stage}.</li>
+                    <li>Survived for ${gs.turnCounter} turn(s).</li> 
+                    <li>Defeated ${gs.enemyCounter} enemies.</li>
+                </ul>
 
-                    <img id="end-img" src="./img/bg/end.svg" alt="" class="illustration">
-
-                    <ul>
-                        <li>Reached stage ${gs.stage}.</li>
-                        <li>Survived for ${gs.turnCounter} turn(s).</li> 
-                        <li>Defeated ${gs.enemyCounter} enemies.</li>
-                    </ul>
-
-                    <p class="body-14 italic b50">Tap to restart</p>
-                </div>`
-            
-            el('state-screen').setAttribute('onclick', "location.reload()")
-            el('state-screen').classList.remove('background-key')
-        }  
+                <p class="body-14 italic b50">Tap to restart</p>
+            </div>`
+        
+        el('state-screen').setAttribute('onclick', "location.reload()")
+        el('state-screen').classList.remove('background-key')
+         
 
         screen('state-screen')    
     }

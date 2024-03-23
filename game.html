@@ -74,9 +74,7 @@
     
             <div class="btn-container">
                 <button class="btn-ico-txt btn-frame" style="width: 176px;" onclick="playerClassSelection()"> <img src="./img/ico/leave.svg">Play</button>
-                <a href="https://discord.gg/AT8KdVbcVT" target="_blank" style="text-decoration: none;">
-                    <button class="btn-ico-txt btn-frame" style="width: 176px;" ><img src="./img/ico/discord.svg">Discord</button>
-                </a>
+                <button class="btn-ico-txt btn-frame" onclick=" window.open(`https://discord.gg/AT8KdVbcVT`, `_blank`)"><img src="./img/ico/discord.svg">Discord</button>
             </div>
 
         </div>
@@ -86,7 +84,7 @@
     <div id="map" class="hide"> 
 
         <!-- Tab section -->
-        <div id="map-tabs" class="tab-container external-tabs btn-frame" onclick="screen('character')">
+        <div id="map-tabs" class="tab-container external-tabs btn-frame">
             <!-- Exp bar -->
             <div class="lvl-indicator mono-m">1</div>
             <div class="exp-bar">
@@ -108,16 +106,16 @@
             <div id="stat-indicator">
                 
                 <!-- Food -->
-                <div>
+                <!-- <div>
                     <img src='./img/ico/food.svg'>
                     <p id='pl-food' class="mono-m"></p>
-                </div>
+                </div> -->
 
                 <!-- Power -->
-                <div>
+                <!-- <div>
                     <img src='./img/ico/power.svg'>
                     <p id='pl-power' class="mono-m"></p>
-                </div>
+                </div> -->
         
                 <!-- Life -->
                 <div>
@@ -134,9 +132,14 @@
                 
             </div>
 
-            <button id="map-character-btn" class="tab">
+            <button id="map-character-btn" class="tab" onclick="screen('character')">
                 <img src="./img/ico/Character.svg">
                 Character
+            </button>
+
+            <button id="map-character-btn" class="tab" onclick="screen('menu-screen')">
+                <img src="./img/ico/menu.svg">
+                Menu
             </button>
         </div>
 
@@ -150,8 +153,8 @@
         <div id="character-tabs" class="tab-container external-tabs row hide btn-frame">
             
             <button id="map-btn" class="tab" onclick="screen('map')">
-                <img src="./img/ico/map.svg">
-                Map
+                <img src="./img/ico/tab-hide.svg">
+                Hide
             </button>
 
             <button id="character-btn" class="tab" onclick="screen('character')">
@@ -172,28 +175,97 @@
 
         <!-- 1. Character -->
             <div id="character" class="screen hide">
-                <!-- Page contetn -->
                 <div class="modal-container">
                     <div id='character-content' class="column">
-                        
-                        <h2>Character</h2>
-                    
+
+                        <div class="row" style="justify-content: space-between; height: 80px;">
+
+                            <div>
+                                <h1>Character</h1>
+
+                                <p class="body-14" style="margin-top: 4px;">
+                                    Level <span class="level"></span> <span class="playerClass"></span>
+                                    <br>
+                                    Exp: <span class="exp"></span>
+                                </p>
+                            </div>
+
+                            <div class="torch">
+                                <img src="./img/ui/torch.svg" alt="">
+                            </div>
+
+                            <div class="player-sprite character-page-sprite flip"></div>
+
+                        </div>
+
                         <!-- Character stats -->
-                        <div id="stat-block" class = "body-14 stat-block"></div>
+                        <div id="stat-block" class = "body-14 stat-block">
+                            <section>
+                                <div class='stat'>
+                                    <img src="./img/ico/dice.svg">
+                                    <p>Dice</p>
+                                    <span class="flatDice"></span>
+                                </div>
+
+                                <div class='stat'>
+                                    <img src="./img/ico/life.svg">
+                                    <p>Life</p>
+                                    <span class="life"></span> / <span class="flatLife"></span>
+                                </div>
+
+                                <div class='stat'>
+                                    <img src="./img/ico/power.svg">
+                                    <p>Power</p>
+                                    <span class="power"></span>
+                                </div>
+
+                                <div class='stat'>
+                                    <img src="./img/ico/def.svg">
+                                    <p>Def</p>
+                                    <span class="def"></span>
+                                </div>
+                            </section>
+
+                            <section>
+                                <div class='stat'>
+                                    <img src="./img/ico/coin-sm.svg">
+                                    <p>Coins</p>
+                                    <span class="coins"></span>
+                                </div> 
+
+                                <div class='stat'>
+                                    <img src="./img/ico/slots.svg">
+                                    <p>Equipment</p>
+                                    <span class="equipmentSlots"></span>
+                                </div>
+                                
+                                <div class='stat'>
+                                    <img src="./img/ico/placeholder.svg">
+                                    <p>Inventory</p>
+                                    <span class="inventory"></span>
+                                </div> 
+                
+                                <div class='stat'>
+                                    <img src="./img/ico/placeholder.svg">
+                                    <p>World stage</p>
+                                    <span class="stage"></span>
+                                </div>
+                            </section>
+                        </div>
 
                         <!-- Actions -->
+                        <p class="body-14 align-center w50">Combat actions from equipment</p>
+
                         <div class ="column" style="gap:8px; align-items:flex-start;">
-                            <p class="body-14 italic">Combat actions from equipment</p>
                             <div id="action-list"></div>
                         </div>
 
                         <!-- Passives -->
+                        <p id="passives-label" class="body-14 align-center w50">Passives from equipment</p>
+
                         <div class ="column" style="gap:8px; align-items:flex-start;">
-                            <p class="body-14 italic">Passives from equipment</p>
                             <div id="passive-list"></div>
                         </div>
-                        
-                        <button class="btn-frame" onclick="localStorage.clear(), location.reload();">Start new run</button>
                     </div>
                 </div>
             </div>
@@ -203,7 +275,7 @@
                     <div id="inventory-tab-extension" class=" tab-extension body-14"></div>
 
 
-                    <h2>Inventory</h2>
+                    <h1>Inventory</h1>
                     <div id="inventory-list" class="item-list"></div>
                 </div>
             </div>
@@ -243,7 +315,7 @@
         <div id="combat-guide-page" class="modal body-14" style="background-color: var(--b80);">
             <div class="modal-container">
 
-                <h2>Combat guide</h2>
+                <h1>Combat guide</h1>
                 <br>
 
                 <div>
@@ -293,7 +365,7 @@
                 <!-- Player -->
                 <div class="column">
                     <div class="imgcont">
-                        <div id="player-sprite"></div>
+                        <div class="player-sprite"></div>
 
                         <!-- Player stat section --> 
                         <div class="stat-group">
@@ -376,13 +448,6 @@
     </div>
 
 <!-- Reward screen -->
-    <div id="reward-type-screen" class="screen hide">
-        <h2  id="combatEndIndicator">Choose a reward type</h2>
-        <button>Experience</button>
-        <button>Gold</button>
-        <button>Food</button>
-        <button onclick="">Item</button>
-    </div>
     
     <!-- Item reward -->
     <!-- Tabs -->
@@ -401,22 +466,24 @@
 
     <div id="reward-screen" class="screen hide" >
         <div  id="reward-slide" class="modal-container">
-            <h2  id="combatEndIndicator">Victory</h2>
-            <p   id="reward-desc" class="body-14"> Pick on of these rewards:</p>
+            <h1  id="combatEndIndicator">Victory</h1>
+            <p   id="reward-desc" class="body-14"> Pick a reward.<br> You can get experience and coins or one item.</p>
+
+            <hr>
 
             <!-- Other reward types -->
             <div class="btn-container">
                 <button id="exp-reward-btn" class="btn-ico-txt btn-frame" onclick="resolveFlatReward('exp'), syncUi(), screen('map')">Gain 1 experience</button>
-                <button id="coins-reward-btn" class="btn-ico-txt btn-frame" onclick="resolveFlatReward('coins'), syncUi(), screen('map')">Coins</button>
-                <button id="food-reward-btn" class="btn-ico-txt btn-frame" onclick="resolveFlatReward('food'), syncUi(), screen('map')">Food</button>
             </div>
+
+            <hr>
 
             <div id="reward-container" class="item-list"></div>
         </div>
     </div>
     <div id="reward-screen-inventory" class="screen hide" >
         <div  id="inventory-slide" class="modal-container">
-            <h2>Inventory</h2>
+            <h1>Inventory</h1>
             <p   id="inventorySlideDesc" class="body-14"></p>
             <div id="inventory-ref-container" class=" column"></div>
         </div>
@@ -445,14 +512,14 @@
 
     <div id="merchant" class="screen hide">
         <div id="buy-slide" class="modal-container">
-            <h2>Merchant</h2>     
+            <h1>Merchant</h1>     
             <p id="merchant-coins-indicator"></p>       
             <div id='merchant-container' class="item-list"></div>
         </div>
     </div>
     <div id="merchant-sell" class="screen hide">
         <div id="sell-slide" class="modal-container">
-            <h2>Sell</h2>
+            <h1>Sell</h1>
             <div id='items-to-sell' class="item-list"></div>
         </div>
     </div>
@@ -468,7 +535,7 @@
         </div>
 
         <div id="repair-slide" class="modal-container">
-            <h2>Repair items</h2>
+            <h1>Repair items</h1>
             <div id='items-to-repair' class="item-list"></div>
         </div>
 
@@ -485,7 +552,7 @@
     </div>
 
     <div id="enhance-slide" class="modal-container">
-        <h2>Enhance items</h2>           
+        <h1>Enhance items</h1>           
         <div id='items-to-enhance' class="item-list"></div>
     </div>
 
@@ -538,9 +605,43 @@
 <!-- CHOOSE ONE -->
     <div id="choose-one" class="screen hide" >
         <div  id="choose-one-container" class="modal-container">
-            <h2  id="choose-one-heading">Choose one</h2>
+            <h1  id="choose-one-heading">Choose one</h1>
             <p   id="choose-one-desc" class="body-14"></p>
             <div id="choose-one-body" class="item-list"></div>
+        </div>
+    </div>
+
+<!-- MENU -->
+    <div id="menu-screen" class="screen hide">
+        <!-- Tabs -->
+        <div class="tab-container btn-frame ">
+            <button class="tab" onclick="screen('map')">
+                <img src="./img/ico/tab-hide.svg">
+                Hide
+            </button>
+        </div>
+        <div class="modal-container">
+            <h1>Menu</h1>
+    
+            <div class="btn-container">
+                <button class="btn-ico-txt btn-frame" onclick="localStorage.clear(), location.reload();">
+                    <img src="./img/ico/leave.svg">
+                    Start new run
+                </button>
+                <!-- <hr> -->
+                <!-- <button class="btn-ico-txt btn-frame" onclick="">
+                    <img src="./img/ico/tree.svg">
+                    About the game
+                </button> -->
+                <button class="btn-ico-txt btn-frame" onclick=" window.open(`https://discord.gg/AT8KdVbcVT`, `_blank`)">
+                    <img src="./img/ico/discord.svg">
+                    Join game Discord
+                </button>
+                <!-- <button class="btn-ico-txt btn-frame" onclick="">
+                    <img src="./img/ico/info.svg">
+                    How to play
+                </button> -->
+            </div>
         </div>
     </div>
 </body>

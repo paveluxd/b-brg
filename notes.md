@@ -13,6 +13,12 @@ Ring charges don't work.
     - Starting food increased from 12 to 30.
     - Smoke bomb now can stun attacking enemies. Action charge incresed from 6 to 12.
     - Poison potion now is instant. Action charges increased from 12 to 24.
+    - Fixed a bug when spike trap in house would roll with the higher percentage than other options.
+    - Fixed a bug when house medical kit would heal for percentage of curent life instead of max life.
+    - Updated the house sprite artwork.
+    - Food system was removed from the game.
+    - Gold and exp exp rewards are combined into a single reward option.
+    - Various UI updates.
 
 - To-do ideas**
     - Passive: +1 exp when you use a scroll.
