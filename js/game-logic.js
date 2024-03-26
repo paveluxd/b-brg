@@ -908,7 +908,7 @@
 
         function restoreLife(val){
 
-            let lifeChange = val
+            let lifeChange = parseInt(val)
             gs.plObj.life += lifeChange
             
             //Prevent overhealing

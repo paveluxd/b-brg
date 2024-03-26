@@ -1010,6 +1010,7 @@ let prefix = 'treenode_'
 
         {  id:'T09', name:'undying',
             desc:'once per encounter, when you reach 0 life, survive with 1 life',
+            val: 1,
 
         },{id:'T21', name:'static power',
             desc:'if your power is 0 at the start of the fight, gain 1 power',
