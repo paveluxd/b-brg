@@ -70,7 +70,7 @@ if(1 == 2){
 
     //Game
     // config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'character' 
+    config.showScreen        = 'map' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
     config.stage             = 1
@@ -115,7 +115,7 @@ if(1 == 2){
         // {tileType: 'enchanter-1', enemyUnit: false},
         // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
         // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-        // {tileType:'camp-1', tileId:`1-12`,enemyUnit: false},
+        {tileType:'house-1', tileId:`1-12`,enemyUnit: false},
     ]
 
     //Items

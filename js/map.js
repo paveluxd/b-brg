@@ -647,11 +647,11 @@ class MapObj{
 
             let roll = rng(5)
 
-            if(gs.playerLocationTile.visited == true || roll > 3){
+            if(gs.playerLocationTile.visited == true || roll > 3){ //nothing
                 el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`There is nothing in here.`
             }
-            else if(roll == 3){
+            else if(roll == 3){ //get item
                 let item = new ItemObj()
                 el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty. You look around and find <b>${item.itemName}</b>.`
@@ -659,15 +659,19 @@ class MapObj{
                 //Add item to the inventory.
                 gs.plObj.inventory.push(item)
             }
-            else if(roll == 2){
-                let heal = rng(Math.round(gs.plObj.baseLifelife/3))
+            else if(roll == 2){ //heal
+
+                let heal = rng(Math.round(gs.plObj.baseLife/3))
+                restoreLife(heal)
+
                 el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You approach a house, it is empty and find a <b>medical kit (+${heal}<img src='./img/ico/life.svg'>)</b>.`
                 
-                restoreLife(heal)
             }
-            else {
+            else { //trap
+                // console.log(trap);
                 let dmg = rng(Math.round(gs.plObj.life/2))
+
                 el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
                 el('event-desc').innerHTML =`You enter an empty house, and step into a <b>spike trap hole (-${dmg} <img src='./img/ico/life.svg'>)</b>.`
 
@@ -676,9 +680,6 @@ class MapObj{
                 if(gs.plObj.life < 1){
                     el('event-screen').setAttribute('onclick','openStateScreen("game-end")')
                 }
-
-                el('event-cover').setAttribute('src',`./img/bg/house-placeholder.svg`)
-                el('event-desc').innerHTML =`There is nothing in here.`
             }
 
             screen('event-screen')
