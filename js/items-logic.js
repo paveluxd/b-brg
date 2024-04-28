@@ -7,8 +7,7 @@ class ItemObj {
 
         //If no itemName -> get random
         if(itemName == undefined){
-            let refNo = rng(itemsRef.length - 1, 0)
-            itemName = itemsRef[refNo].itemName
+            itemName = rarr(genItemPool()).itemName
         }
 
         //Finds item data in csv itensRef
@@ -24,13 +23,14 @@ class ItemObj {
         //Gen variable properties
         let props = [
             {key:'itemName'    ,val: upp(itemName)},
-            {key:'itemSlot'    ,val: 'generic'},
+            {key:'itemSlot'    ,val: 'any'},
+            {key:'tags'        ,val: ''},
+            {key:'itemRarity'  ,val: 'common'},
             {key:'itemId'      ,val: "it" + Math.random().toString(8).slice(2)},//gens unique id
             {key:'equipped'    ,val: false},
             {key:'passiveStats',val: []},
             {key:'cost'        ,val: rng(12, 6)},
-            {key:'desc'        ,val: undefined},
-            {key:'itemType'    ,val: ''},
+            {key:'desc'        ,val: undefined}
         ]
         //Resolve props via default value above, or value from itemsRef object
         props.forEach(property => {
@@ -88,6 +88,25 @@ function calcCost(type, itemId){
     }
 
     return cost
+}
+//Pick item rarity
+function genItemPool(){
+    let itemPool = []
+
+    let roll = rng(100) + gs.stage * 5
+    // console.log(roll);
+
+    if       (roll < 70){ //70%
+        itemPool = itemsRef.filter(item => item.itemRarity == '') //normal
+    }else if (roll < 90){ //20%
+        itemPool = itemsRef.filter(item => item.itemRarity == 'magic')
+    }else if (roll < 97){ //7%
+        itemPool = itemsRef.filter(item => item.itemRarity == 'rare')
+    }else{                //3%
+        itemPool = itemsRef.filter(item => item.itemRarity == 'epic')
+    }
+
+    return itemPool
 }
 
 
@@ -169,7 +188,8 @@ function calcCost(type, itemId){
         gs.plObj.offeredItemsArr = []
         let generatedReward
 
-        if(quant == undefined){quant = gs.playerLocationTile.enemyQuant}//Resolve undefined quant
+        //Resolve undefined quant
+        if(quant == undefined){quant = gs.playerLocationTile.enemyQuant}
 
         if(quant == "all"){//all items for testing
             itemsRef.forEach(item => {
@@ -308,16 +328,16 @@ function calcCost(type, itemId){
         //Get item types to prevent staking
         let itemSlots = []
         gs.plObj.inventory.forEach(invItem => {
-            if(!invItem.equipped || invItem.itemSlot == 'generic') return false
+            if(!invItem.equipped || invItem.itemSlot == 'any') return false
             itemSlots.push(invItem.itemSlot)
         })
 
 
         //Equip
         if(
-            !item.equipped &&                         //check if equipped
-            gs.plObj.equipmentSlots > calcEquippedItems() &&  //check if there are slots
-            !itemSlots.includes(item.itemSlot)        //check if unique type
+            !item.equipped                                   //check if equipped
+            && gs.plObj.equipmentSlots > calcEquippedItems() //check if there are slots
+            && !itemSlots.includes(item.itemSlot)            //check if unique type
         )
         {
             item.equipped = true
@@ -543,7 +563,7 @@ function calcCost(type, itemId){
 
             //Item type
             let itemSlot = ``
-            if(item.itemSlot !== 'generic'){itemSlot = ` (${item.itemSlot})`}
+            if(item.itemSlot !== 'any'){itemSlot = ` (${item.itemSlot})`}
 
             //Added actions
             let actionSet = ``
@@ -632,6 +652,20 @@ function calcCost(type, itemId){
                 }
             }
 
+            //Set rarity glow
+            let itemRarityGlow = `<div class='item-glow'>`
+
+            if(      item.itemRarity == 'magic'){
+                itemRarityGlow = `<div class='item-glow magic'>`
+
+            }else if(item.itemRarity == 'rare'){
+                itemRarityGlow = `<div class='item-glow rare'>`
+
+            }else if(item.itemRarity == 'epic'){
+                itemRarityGlow = `<div class='item-glow epic'>`
+
+            }
+
             card.id = cardId //has to be here, if declared aboce, it will bind html elemnts with the same id (inventory and market)
             card.innerHTML =`
                             <div class="item-top-container" ${clickAttr}>
@@ -643,6 +677,7 @@ function calcCost(type, itemId){
                             <div class="item-bottom-container">
                                 <img src="./img/items/${imgKey}.svg">
                                 ${btn2}
+                                ${itemRarityGlow}
                             </div>
                         `
 
@@ -746,7 +781,9 @@ function calcCost(type, itemId){
                 <img class="item-img" src="./img/items/${itemObj.itemName}.svg">
                 <h1>${upp(itemObj.itemName)}</h1>
                 ${descriptionSet}
-                Item type: ${upp(itemObj.itemSlot)}
+                Item type: ${upp(itemObj.tags)}<br>
+                Equipment slot: ${upp(itemObj.itemSlot)}<br>
+                Rarity: ${upp(itemObj.itemRarity)}
 
                 ${actionSet}
                 ${passiveSet}

@@ -3,7 +3,7 @@
 
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "",
+      "tags": "",
       "desc": "A set of small steel trinkets on a thin rope.",
       "itemRarity": "",
 
@@ -33,7 +33,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "",
+      "tags": "",
       "desc": "",
       "itemRarity": ""
     },
@@ -51,7 +51,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "",
+      "tags": "",
       "desc": "",
       "itemRarity": ""
     },
@@ -69,7 +69,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "",
+      "tags": "",
       "desc": "bag filled with drugs and first aid items. On the inside you can see a distorted print 'Volunteer for victory 1 5 ed Cro'",
       "itemRarity": ""
     },
@@ -87,7 +87,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -105,7 +105,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -123,7 +123,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -141,7 +141,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "modeled after ancient hunting tools, this spear boasts a straight hardwood shaft topped with a tempered iron head. Practical and utilitarian",
       "itemRarity": ""
     },
@@ -159,7 +159,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -177,7 +177,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -216,7 +216,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -234,7 +234,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -252,7 +252,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "",
       "itemRarity": ""
     },
@@ -270,7 +270,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "a weapon shaped by the forgotten age. Wield it as a silent hymn to the lost glories of previous owners, its edge is a faithful companion in a world longing for heroes",
       "itemRarity": ""
     },
@@ -288,7 +288,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "weapon",
+      "tags": "weapon",
       "desc": "this longbow embodies the craftsmanship of a bygone era. Hemp strings ensure a powerful draw, while simplicity in design reflects the practicality valued in these turbulent times",
       "itemRarity": ""
     },
@@ -306,7 +306,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "equipment",
+      "tags": "equipment",
       "desc": "",
       "itemRarity": ""
     },
@@ -324,7 +324,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "",
       "itemRarity": ""
     },
@@ -342,7 +342,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "",
       "itemRarity": ""
     },
@@ -360,7 +360,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "",
       "itemRarity": ""
     },
@@ -378,7 +378,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "",
       "itemRarity": ""
     },
@@ -396,7 +396,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "",
       "itemRarity": ""
     },
@@ -414,7 +414,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "common in the early Middle Ages, round shields featured resilient wood. Enhanced with metal, the shield's design, allows to deflect incoming blows",
       "itemRarity": ""
     },
@@ -432,7 +432,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "",
       "itemRarity": ""
     },
@@ -450,7 +450,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "off-hand",
+      "tags": "off-hand",
       "desc": "",
       "itemRarity": ""
     },
@@ -468,7 +468,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "scroll",
+      "tags": "scroll",
       "desc": "",
       "itemRarity": ""
     },
@@ -486,7 +486,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "scroll",
+      "tags": "scroll",
       "desc": "",
       "itemRarity": ""
     },
@@ -504,7 +504,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "helmet",
+      "tags": "helmet",
       "desc": "",
       "itemRarity": "unique"
     },
@@ -522,7 +522,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "ring",
+      "tags": "ring",
       "desc": "",
       "itemRarity": ""
     },
@@ -551,7 +551,7 @@
       }],
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "ring",
+      "tags": "ring",
       "desc": "",
       "itemRarity": "unique"
     },
@@ -569,7 +569,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "ring",
+      "tags": "ring",
       "desc": "",
       "itemRarity": "unique"
     },
@@ -577,7 +577,7 @@
       "actions": "",
       "passiveStats": "dice:10, life:-6",
       "itemSlot": "dice",
-      "itemType": "dice",
+      "tags": "dice",
       "desc": "",
       "itemRarity": "rare"
     },
@@ -585,7 +585,7 @@
       "actions": "",
       "passiveStats": "dice:4, def:2",
       "itemSlot": "dice",
-      "itemType": "dice",
+      "tags": "dice",
       "desc": "",
       "itemRarity": "unique"
     },
@@ -593,7 +593,7 @@
       "actions": "",
       "passiveStats": "dice:12, def:-1, power:-1",
       "itemSlot": "dice",
-      "itemType": "dice",
+      "tags": "dice",
       "desc": "a deceptively small jewel possessing an insidious charm. Unstable cores tend to influence the minds of those who posses them, compelling them towards acts of greed, and recklessness",
       "itemRarity": "unique"
     },
@@ -601,7 +601,7 @@
       "actions": "",
       "passiveStats": "dice:8, def:-1",
       "itemSlot": "dice",
-      "itemType": "dice",
+      "tags": "dice",
       "desc": "",
       "itemRarity": "rare"
     },
@@ -609,7 +609,7 @@
       "actions": "",
       "passiveStats": "def:2",
       "itemSlot": "body",
-      "itemType": "body armor",
+      "tags": "body armor",
       "desc": "",
       "itemRarity": ""
     },
@@ -627,7 +627,7 @@
       },
       "passiveStats": "",
       "itemSlot": "body",
-      "itemType": "body armor",
+      "tags": "body armor",
       "desc": "full body garment with long sleeves. The sleeves have few belts that can be tied to the back of the jacket to restrict motion",
       "itemRarity": ""
     },
@@ -635,7 +635,7 @@
       "actions": "",
       "passiveStats": "life:12",
       "itemSlot": "body",
-      "itemType": "body armor",
+      "tags": "body armor",
       "desc": "",
       "itemRarity": ""
     },
@@ -643,7 +643,7 @@
       "actions": "",
       "passiveStats": "life:6, def:1",
       "itemSlot": "body",
-      "itemType": "body armor",
+      "tags": "body armor",
       "desc": "",
       "itemRarity": ""
     },
@@ -651,7 +651,7 @@
       "actions": "",
       "passiveStats": "slots:5, def:-1, life:-6",
       "itemSlot": "bag",
-      "itemType": "bag",
+      "tags": "bag",
       "desc": "",
       "itemRarity": "unique"
     },
@@ -659,7 +659,7 @@
       "actions": "",
       "passiveStats": "slots:4, def:-1",
       "itemSlot": "bag",
-      "itemType": "bag",
+      "tags": "bag",
       "desc": "",
       "itemRarity": "rare"
     },
@@ -667,7 +667,7 @@
       "actions": "",
       "passiveStats": "slots:3",
       "itemSlot": "bag",
-      "itemType": "bag",
+      "tags": "bag",
       "desc": "",
       "itemRarity": ""
     },
@@ -685,7 +685,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "",
+      "tags": "",
       "desc": "",
       "itemRarity": ""
     },
@@ -703,7 +703,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "boots",
+      "tags": "boots",
       "desc": "",
       "itemRarity": ""
     },
@@ -721,7 +721,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "boots",
+      "tags": "boots",
       "desc": "",
       "itemRarity": ""
     },
@@ -739,7 +739,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "cape",
+      "tags": "cape",
       "desc": "a piece of tent fabric in the shape of a raincoat. This makes the owner a difficult target from a distance. You can see a small label that says 'Berghaus'.",
       "itemRarity": ""
     },
@@ -757,7 +757,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "",
+      "tags": "",
       "desc": "",
       "itemRarity": ""
     },
@@ -775,7 +775,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable",
+      "tags": "consumable",
       "desc": "",
       "itemRarity": ""
     },
@@ -793,7 +793,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable",
+      "tags": "consumable",
       "desc": "",
       "itemRarity": ""
     },
@@ -811,7 +811,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable",
+      "tags": "consumable",
       "desc": "smelling salts have been used on people feeling faint, or who have fainted. They are usually administered by others but may be self-administered",
       "itemRarity": ""
     },
@@ -829,7 +829,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable, potion",
+      "tags": "consumable, potion",
       "desc": "",
       "itemRarity": ""
     },
@@ -847,7 +847,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable, potion",
+      "tags": "consumable, potion",
       "desc": "",
       "itemRarity": ""
     },
@@ -865,7 +865,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable",
+      "tags": "consumable",
       "desc": "",
       "itemRarity": ""
     },
@@ -883,7 +883,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable, scroll",
+      "tags": "consumable, scroll",
       "desc": "",
       "itemRarity": ""
     },
@@ -901,7 +901,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable, potion",
+      "tags": "consumable, potion",
       "desc": "",
       "itemRarity": ""
     },
@@ -919,7 +919,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "consumable",
+      "tags": "consumable",
       "desc": "",
       "itemRarity": ""
     },
@@ -937,7 +937,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "jewelry",
+      "tags": "jewelry",
       "desc": "",
       "itemRarity": ""
     },
@@ -955,7 +955,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "jewelry",
+      "tags": "jewelry",
       "desc": "",
       "itemRarity": ""
     },
@@ -973,7 +973,7 @@
       },
       "passiveStats": "",
       "itemSlot": "",
-      "itemType": "shoulder",
+      "tags": "shoulder",
       "desc": "",
       "itemRarity": ""
     }

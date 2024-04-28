@@ -608,7 +608,7 @@ let prefix = 'treenode_'
                     //Check item type (due to itemless actions)
                     let item = findItemByAction(gs.sourceAction)
                     if(item == undefined) return
-                    if(item.itemType.includes('scroll') == false) return
+                    if(item.tags.includes('scroll') == false) return
 
                     gs.sourceAction.actionCharge += 2
                 }

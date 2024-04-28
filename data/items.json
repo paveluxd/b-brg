@@ -4,7 +4,7 @@
     "actions": "transfer",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "",
+    "tags": "",
     "desc": "A set of small steel trinkets on a thin rope.",
     "itemRarity": ""
   },
@@ -13,16 +13,16 @@
     "actions": "stress",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "",
+    "tags": "",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "magic"
   },
   {
     "itemName": "carabiner",
     "actions": "pull",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "",
+    "tags": "",
     "desc": "",
     "itemRarity": ""
   },
@@ -31,25 +31,25 @@
     "actions": "first aid",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "",
+    "tags": "",
     "desc": "bag filled with drugs and first aid items. On the inside you can see a distorted print 'Volunteer for victory 1 5 ed Cro'",
-    "itemRarity": ""
+    "itemRarity": "magic"
   },
   {
     "itemName": "axe",
     "actions": "axe attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "great axe",
     "actions": "great axe attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -58,7 +58,7 @@
     "actions": "sickle attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -67,7 +67,7 @@
     "actions": "spear attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "modeled after ancient hunting tools, this spear boasts a straight hardwood shaft topped with a tempered iron head. Practical and utilitarian",
     "itemRarity": ""
   },
@@ -76,7 +76,7 @@
     "actions": "focus",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -85,7 +85,7 @@
     "actions": "club attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -94,7 +94,7 @@
     "actions": "armor break",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -103,7 +103,7 @@
     "actions": "mace attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -112,7 +112,7 @@
     "actions": "cut",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -121,7 +121,7 @@
     "actions": "dagger attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "",
     "itemRarity": ""
   },
@@ -130,7 +130,7 @@
     "actions": "sword attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "a weapon shaped by the forgotten age. Wield it as a silent hymn to the lost glories of previous owners, its edge is a faithful companion in a world longing for heroes",
     "itemRarity": ""
   },
@@ -139,7 +139,7 @@
     "actions": "bow attack",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "weapon",
+    "tags": "weapon",
     "desc": "this longbow embodies the craftsmanship of a bygone era. Hemp strings ensure a powerful draw, while simplicity in design reflects the practicality valued in these turbulent times",
     "itemRarity": ""
   },
@@ -148,7 +148,7 @@
     "actions": "swap",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "equipment",
+    "tags": "equipment",
     "desc": "",
     "itemRarity": ""
   },
@@ -157,16 +157,16 @@
     "actions": "fear",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "gonfalon",
     "actions": "defensive stance",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "",
     "itemRarity": ""
   },
@@ -175,16 +175,16 @@
     "actions": "zealotry",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "magic"
   },
   {
     "itemName": "spiked shield",
     "actions": "bash",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "",
     "itemRarity": ""
   },{
@@ -192,7 +192,7 @@
     "actions": "defend",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "",
     "itemRarity": ""
   },
@@ -201,7 +201,7 @@
     "actions": "block",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "common in the early Middle Ages, round shields featured resilient wood. Enhanced with metal, the shield's design, allows to deflect incoming blows",
     "itemRarity": ""
   },
@@ -210,7 +210,7 @@
     "actions": "heavy block",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "",
     "itemRarity": ""
   },
@@ -219,7 +219,7 @@
     "actions": "side block",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "off-hand",
+    "tags": "off-hand",
     "desc": "",
     "itemRarity": ""
   },
@@ -228,16 +228,16 @@
     "actions": "inferno",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "scroll",
+    "tags": "scroll",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "acid vial",
     "actions": "wound",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "scroll",
+    "tags": "scroll",
     "desc": "",
     "itemRarity": ""
   },
@@ -246,43 +246,43 @@
     "actions": "rage",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "helmet",
+    "tags": "helmet",
     "desc": "",
-    "itemRarity": "unique"
+    "itemRarity": "rare"
   },
   {
     "itemName": "ring of endurance",
     "actions": "endurance charge",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "ring",
+    "tags": "ring",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "magic"
   },
   {
     "itemName": "ring of twilight",
     "actions": "order charge, chaos charge",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "ring",
+    "tags": "ring",
     "desc": "",
-    "itemRarity": "unique"
+    "itemRarity": "magic"
   },
   {
     "itemName": "ring of power",
     "actions": "power charge",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "ring",
+    "tags": "ring",
     "desc": "",
-    "itemRarity": "unique"
+    "itemRarity": "magic"
   },
   {
     "itemName": "decacore",
     "actions": "",
     "passiveStats": "dice:10, life:-6",
     "itemSlot": "dice",
-    "itemType": "dice",
+    "tags": "dice",
     "desc": "",
     "itemRarity": "rare"
   },
@@ -291,25 +291,25 @@
     "actions": "",
     "passiveStats": "dice:4, def:2",
     "itemSlot": "dice",
-    "itemType": "dice",
+    "tags": "dice",
     "desc": "",
-    "itemRarity": "unique"
+    "itemRarity": "rare"
   },
   {
     "itemName": "dodecacore",
     "actions": "",
     "passiveStats": "dice:12, def:-1, power:-1",
     "itemSlot": "dice",
-    "itemType": "dice",
+    "tags": "dice",
     "desc": "a deceptively small jewel possessing an insidious charm. Unstable cores tend to influence the minds of those who posses them, compelling them towards acts of greed, and recklessness",
-    "itemRarity": "unique"
+    "itemRarity": "rare"
   },
   {
     "itemName": "octocore",
     "actions": "",
     "passiveStats": "dice:8, def:-1",
     "itemSlot": "dice",
-    "itemType": "dice",
+    "tags": "dice",
     "desc": "",
     "itemRarity": "rare"
   },
@@ -318,7 +318,7 @@
     "actions": "",
     "passiveStats": "def:2",
     "itemSlot": "body",
-    "itemType": "body armor",
+    "tags": "body armor",
     "desc": "",
     "itemRarity": ""
   },
@@ -327,7 +327,7 @@
     "actions": "power surge",
     "passiveStats": "",
     "itemSlot": "body",
-    "itemType": "body armor",
+    "tags": "body armor",
     "desc": "full body garment with long sleeves. The sleeves have few belts that can be tied to the back of the jacket to restrict motion",
     "itemRarity": ""
   },
@@ -336,7 +336,7 @@
     "actions": "",
     "passiveStats": "life:12",
     "itemSlot": "body",
-    "itemType": "body armor",
+    "tags": "body armor",
     "desc": "",
     "itemRarity": ""
   },
@@ -345,7 +345,7 @@
     "actions": "",
     "passiveStats": "life:6, def:1",
     "itemSlot": "body",
-    "itemType": "body armor",
+    "tags": "body armor",
     "desc": "",
     "itemRarity": ""
   },
@@ -354,43 +354,43 @@
     "actions": "",
     "passiveStats": "slots:5, def:-1, life:-6",
     "itemSlot": "bag",
-    "itemType": "bag",
+    "tags": "bag",
     "desc": "",
-    "itemRarity": "unique"
+    "itemRarity": "magic"
   },
   {
     "itemName": "leather bag",
     "actions": "",
     "passiveStats": "slots:4, def:-1",
     "itemSlot": "bag",
-    "itemType": "bag",
+    "tags": "bag",
     "desc": "",
-    "itemRarity": "rare"
+    "itemRarity": "magic"
   },
   {
     "itemName": "bag",
     "actions": "",
     "passiveStats": "slots:3",
     "itemSlot": "bag",
-    "itemType": "bag",
+    "tags": "bag",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "magic"
   },
   {
     "itemName": "adrenaline pen",
     "actions": "adrenaline shot",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "",
+    "tags": "",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "leather boots",
     "actions": "roll",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "boots",
+    "tags": "boots",
     "desc": "",
     "itemRarity": ""
   },
@@ -399,7 +399,7 @@
     "actions": "preparation",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "boots",
+    "tags": "boots",
     "desc": "",
     "itemRarity": ""
   },
@@ -408,25 +408,25 @@
     "actions": "dodge",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "cape",
+    "tags": "cape",
     "desc": "a piece of tent fabric in the shape of a raincoat. This makes the owner a difficult target from a distance. You can see a small label that says 'Berghaus'.",
     "itemRarity": ""
   },
   {
     "itemName": "helmet",
-    "actions": "tank",
+    "actions": "visor",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "",
+    "tags": "",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "magic"
   },
   {
     "itemName": "bandages",
     "actions": "bandage wounds",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
+    "tags": "consumable",
     "desc": "",
     "itemRarity": ""
   },
@@ -435,7 +435,7 @@
     "actions": "smoke bomb",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
+    "tags": "consumable",
     "desc": "",
     "itemRarity": ""
   },
@@ -444,7 +444,7 @@
     "actions": "restoration",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
+    "tags": "consumable",
     "desc": "smelling salts have been used on people feeling faint, or who have fainted. They are usually administered by others but may be self-administered",
     "itemRarity": ""
   },
@@ -453,7 +453,7 @@
     "actions": "water potion",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable, potion",
+    "tags": "consumable, potion",
     "desc": "",
     "itemRarity": ""
   },
@@ -462,25 +462,25 @@
     "actions": "weapon poison",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable, potion",
+    "tags": "consumable, potion",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "caltrops",
     "actions": "slow",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
+    "tags": "consumable",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "beladonna darts",
     "actions": "weaken",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable, scroll",
+    "tags": "consumable, scroll",
     "desc": "",
     "itemRarity": ""
   },
@@ -489,7 +489,7 @@
     "actions": "healing potion",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable, potion",
+    "tags": "consumable, potion",
     "desc": "",
     "itemRarity": ""
   },
@@ -498,7 +498,7 @@
     "actions": "fortify",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "consumable",
+    "tags": "consumable",
     "desc": "",
     "itemRarity": ""
   },
@@ -507,26 +507,26 @@
     "actions": "faith",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "jewelry",
+    "tags": "jewelry",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "epic"
   },
   {
     "itemName": "alchemists key",
     "actions": "transmute",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "jewelry",
+    "tags": "jewelry",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "pauldron",
     "actions": "armor up",
     "passiveStats": "",
     "itemSlot": "",
-    "itemType": "shoulder",
+    "tags": "shoulder",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   }
 ]
