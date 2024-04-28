@@ -69,8 +69,8 @@ if(1 == 1){
     config.basePassieSkillPoints = 9
 
     //Game
-    config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'combat' 
+    // config.testCombat        = true //Initiates combat at the start (for testing).
+    config.showScreen        = 'map' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
     // config.stage             = 1

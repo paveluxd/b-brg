@@ -71,17 +71,6 @@
         bottom: 4px;
         right: 4px;
     }
-    .unit-quant{
-        position: absolute;
-        bottom: 22px;
-        right: 9px;
-        z-index: 2;
-
-        text-align: center;
-        font-family: 'jetbrains mono', sans-serif;
-        font-size: 10px;
-        color: black;
-    }
     #map-desc{
         position: absolute;
         top:12px;
@@ -189,7 +178,6 @@
     }
     #casino-screen .modal-container #casino-coins, #casino-screen .modal-container #casino-outcome{
         color: rgb(135, 116, 59);
-        font-family: 'Grenze', sans-serif;
         font-weight: 400;
         font-size: 28px;
     }
@@ -308,7 +296,6 @@
         font-size: 13px;
         line-height: 16px;
         color: var(--white);
-        font-family: 'JetBrains mono', sans-serif;
         position: fixed;
 
         top: 4px;
@@ -615,9 +602,8 @@
 
 /* Combat: stats ui */
     .stat-group{
-        font-family: 'JetBrains mono', sans-serif;
         color: var(--white);
-        font-size: 12px;
+        font-size: 13px;
 
         display: flex;
         flex-wrap: wrap;
@@ -636,7 +622,7 @@
         background-color: var(--b80);
 
         backdrop-filter: blur(2px);
-        -webkit-backdrop-filter: blur(2px);
+        /* -webkit-backdrop-filter: blur(2px); */
 
         border-radius: 0px;
         border-left: 1px solid var(--black);

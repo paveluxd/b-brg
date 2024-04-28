@@ -385,10 +385,6 @@ class MapObj{
                     //Remove unit image
                     el(tile.tileId).childNodes[3].remove() 
 
-                    //Remove unit quantity
-                    if(el(tile.tileId).querySelector('.unit-quant') != undefined){
-                        el(tile.tileId).querySelector('.unit-quant').remove() 
-                    }
                 tile.enemyUnit = false
                 gs.playerLocationTile = tile
             }
