@@ -48,6 +48,8 @@
                 if(actionData.actionType === 'passive' && property.key === 'actionCharge'){
                     this.actionCharge = 1 
                 } 
+
+                
             })
 
             // this.actionCharge = 100 //for testing
@@ -127,8 +129,9 @@
         }
         a7(){ // sword attack 
 
-            gs.plObj.dmgDone += gs.sourceAction.actionMod + gs.plObj.power + gs.plObj.swordDmgMod
+            gs.plObj.dmgDone += parseInt(gs.sourceAction.actionMod) + gs.plObj.power + gs.plObj.swordDmgMod
 
+            console.log(gs.sourceAction.actionMod, gs.plObj.power, gs.plObj.swordDmgMod);
             if(gs.plObj.roll == 5 || gs.plObj.roll == 6){
                 gs.plObj.swordDmgMod += 1
             }

@@ -58,22 +58,22 @@ let config = {
 // Test config
 if(1 == 2){
     // config.life = 110
-    config.power = 2
-    config.def   = 99
+    config.power = 0
+    config.def   = 0
     config.dice  = 6
     config.slots = 9
-    config.class = 'guardian'
+    config.class = 'crusader'
     config.coins = 90
 
     //Progression
     config.basePassieSkillPoints = 9
 
     //Game
-    // config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'inventory' 
+    config.testCombat        = true //Initiates combat at the start (for testing).
+    config.showScreen        = 'combat' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
-    config.stage             = 10
+    config.stage             = 1
 
     //Starting items
     config.stGuardian = [
@@ -82,7 +82,6 @@ if(1 == 2){
             'woolen bag',
             'spiked shield',
             'gonfalon',
-            "dodecacore",
             "ring of power",
             'poison potion',
             'helmet',
@@ -91,7 +90,7 @@ if(1 == 2){
 
     ]
     config.stCrusader = [
-        'club',
+        'sword',
         'wooden shield',   
     ]
     config.stWanderer = [
