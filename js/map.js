@@ -71,7 +71,7 @@ class MapObj{
                 tile.tileType = tileSetBase[rng((tileSetBase.length - 1), 0)]
             }
 
-            //Prevent repears of unique tiles
+            //Prevent reapears of unique tiles
                 let tileTypePrefix = tile.tileType.split('-')[0];
                 if(uniqueTiles.includes(tileTypePrefix)){
                     if(placedUniqueTiles.includes(tileTypePrefix)){
@@ -236,7 +236,7 @@ class MapObj{
 
                 //Add unit images
                     let unit = ``
-                    if      (tile.playerUnit){ //Player unit image
+                    if      (tile.playerUnit){ // Player unit image
                         unit = `
                             <div id="player-unit" class="map-unit">
                                 <img src="./img/map/player-unit-flag.svg" id="player-unit-flag">
@@ -245,19 +245,13 @@ class MapObj{
                             </div>
                         `
                         gs.playerLocationTile = tile
-                    }else if(tile.boss){ //Boss unit
+                    }else if(tile.boss){       // Boss unit
                         unit = `
                             <img src="./img/map/boss-unit-1.svg" class="map-unit">
                         `
-                    }else if(tile.enemyUnit && tile.enemyQuant == 1){ //Ene unit image
+                    }else if(tile.enemyUnit){  // Ene unit image
                         unit = `
-                            <img src="./img/map/enemy-unit-${rng(3)}.svg" class="map-unit"> 
-                            <p class="unit-quant">${tile.enemyQuant}</p>
-                        `
-                    }else if(tile.enemyUnit){
-                        unit = `
-                            <img src="./img/map/enemy-unit-${4}.svg" class="map-unit"> 
-                            <p class="unit-quant">${tile.enemyQuant}</p>
+                            <img src="./img/map/enemy-unit-${tile.enemyQuant}.svg" class="map-unit"> 
                         `
                     }
 
@@ -391,10 +385,6 @@ class MapObj{
                     //Remove unit image
                     el(tile.tileId).childNodes[3].remove() 
 
-                    //Remove unit quantity
-                    if(el(tile.tileId).querySelector('.unit-quant') != undefined){
-                        el(tile.tileId).querySelector('.unit-quant').remove() 
-                    }
                 tile.enemyUnit = false
                 gs.playerLocationTile = tile
             }

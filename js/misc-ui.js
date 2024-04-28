@@ -84,10 +84,18 @@
                     // }
 
                 //Enemy stats
-                    el('life').innerHTML    =`${gs.enObj.life}`
-                    el('def').innerHTML     =`${gs.enObj.def}`
-                    el('dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
-                    el('power').innerHTML   =`${gs.enObj.power}`        
+                    // console.log(gs.enObj.action);
+                    el('e-life').innerHTML    =`${gs.enObj.life}`
+                    
+                    //Block indicator
+                    if(gs.enObj.action.key != 'block'){
+                        el('e-def').innerHTML     =`${gs.enObj.def}`
+                    } else {
+                        el('e-def').innerHTML    =`${gs.enObj.def}<span>(${gs.enObj.action.actionVal})</span>`
+                    }
+
+                    el('e-dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
+                    el('e-power').innerHTML   =`${gs.enObj.power}`
 
                 //Enemy intent indicator
                     // console.log(gs.enObj.action);

@@ -30,20 +30,21 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/page-specific.css">
 
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet"> -->
 
     <!-- Grenze -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Grenze:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <!-- "UnifrakturMaguntia" 'UnifrakturCook' -->
-    <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&display=swap" rel="stylesheet"> -->
 
+    <!-- Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon"      sizes="180x180"    href="./favicon/apple-touch-icon.png">
@@ -86,7 +87,7 @@
         <!-- Tab section -->
         <div id="map-tabs" class="tab-container external-tabs btn-frame">
             <!-- Exp bar -->
-            <div class="lvl-indicator mono-m">1</div>
+            <div class="lvl-indicator">1</div>
             <div class="exp-bar">
                 <div class="exp-progress" style="width: 0%;"></div>
                 <div class="spacer-bar">
@@ -108,25 +109,19 @@
                 <!-- Food -->
                 <!-- <div>
                     <img src='./img/ico/food.svg'>
-                    <p id='pl-food' class="mono-m"></p>
-                </div> -->
-
-                <!-- Power -->
-                <!-- <div>
-                    <img src='./img/ico/power.svg'>
-                    <p id='pl-power' class="mono-m"></p>
+                    <p id='pl-food'></p>
                 </div> -->
         
                 <!-- Life -->
                 <div>
                     <img src='./img/ico/life.svg'>
-                    <p id='pl-life' class="mono-m"></p>
+                    <p id='pl-life' class=""></p>
                 </div>
 
                 <!-- Coins -->
                 <div>
                     <img src='./img/ico/coin-sm.svg'>
-                    <p id='pl-coins' class="mono-m"></p>
+                    <p id='pl-coins' class=""></p>
                 </div>
 
                 
@@ -206,17 +201,16 @@
                                     <p>Dice</p>
                                     <span class="flatDice"></span>
                                 </div>
+                                <div class='stat'>
+                                    <img src="./img/ico/power.svg">
+                                    <p>Power</p>
+                                    <span class="power"></span>
+                                </div>
 
                                 <div class='stat'>
                                     <img src="./img/ico/life.svg">
                                     <p>Life</p>
                                     <span class="life"></span> / <span class="flatLife"></span>
-                                </div>
-
-                                <div class='stat'>
-                                    <img src="./img/ico/power.svg">
-                                    <p>Power</p>
-                                    <span class="power"></span>
                                 </div>
 
                                 <div class='stat'>
@@ -376,14 +370,14 @@
                                 <div id="p-rollChange" class="floater"></div>
                             </div>
                             <div class="stat">
-                                <img id="p-life-icon" src="./img/ico/life.svg">
-                                <div id="p-life"></div>
-                                <div id="p-lifeChange" class="floater"></div>
-                            </div>
-                            <div class="stat">
                                 <img src="./img/ico/power.svg">
                                 <div id="p-power"></div>
                                 <div id="p-powerChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
+                                <img id="p-life-icon" src="./img/ico/life.svg">
+                                <div id="p-life"></div>
+                                <div id="p-lifeChange" class="floater"></div>
                             </div>
                             <div class="stat">
                                 <img src="./img/ico/def.svg">
@@ -410,23 +404,23 @@
                         <div class="stat-group">
                             <div class="stat">
                                 <img id="e-dice-icon" src="./img/ico/dice.svg" alt="">
-                                <div id="dice"></div>
+                                <div id="e-dice"></div>
                                 <div id="e-diceChange" class="floater"></div>
                                 <div id="e-rollChange" class="floater"></div>
                             </div>
                             <div class="stat">
-                                <img id="e-life-icon" src="./img/ico/life.svg" alt="">
-                                <div id="life"></div>
-                                <div id="e-lifeChange" class="floater"></div>
-                            </div>
-                            <div class="stat">
                                 <img src="./img/ico/power.svg" alt="">
-                                <div id="power"></div>
+                                <div id="e-power"></div>
                                 <div id="e-powerChange" class="floater"></div>
                             </div>
                             <div class="stat">
+                                <img id="e-life-icon" src="./img/ico/life.svg" alt="">
+                                <div id="e-life"></div>
+                                <div id="e-lifeChange" class="floater"></div>
+                            </div>
+                            <div class="stat">
                                 <img src="./img/ico/def.svg" alt="">
-                                <div id="def"></div>
+                                <div id="e-def"></div>
                                 <div id="e-defChange" class="floater"></div>
                             </div>
                             <!-- <div id="poison-stat" class="stat hide">
@@ -563,7 +557,7 @@
         <div class="modal-container">
             <img id="event-cover" src="" class="illustration">
             <p id="event-desc" class="body-14"></p>
-            <p class="body-14 italic b50">Tap to continue</p>
+            <p class="body-14 italic">Tap to continue</p>
         </div>
     </div>
 

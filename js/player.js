@@ -139,7 +139,7 @@ function resetFlatStats(){
     resolvePlayerStats()
 }
 
-//Exp and lvl
+//Experience and level
 function resolveExpAndLvl(expAmounth){
     //Add 1 exp for winning
     gs.plObj.exp += expAmounth  
@@ -149,9 +149,7 @@ function resolveExpAndLvl(expAmounth){
     
     //Lvl up
     if(gs.plObj.exp >= gs.plObj.lvlUpExp){
-        gs.plObj.lvl++
-        gs.plObj.lvlUpExp =  Math.ceil(config.expBase * (gs.plObj.lvl * config.expMult) ** config.expExpo)
-        gs.plObj.exp = 0
+        levelUp()
     }
     
     //-1 for initial lvl 1
@@ -159,6 +157,20 @@ function resolveExpAndLvl(expAmounth){
 
     //Changes button color when you have skill points
     lvlupUiIndication()
+}
+
+function levelUp(){
+
+    gs.plObj.lvl++
+
+    //Reduce exp by elp required to lvl up
+    gs.plObj.exp = gs.plObj.exp - gs.plObj.lvlUpExp
+
+    //Calculate exp required for the next level
+    gs.plObj.lvlUpExp = Math.ceil(config.expBase * (gs.plObj.lvl * config.expMult) ** config.expExpo)
+
+    //Check exp to see if more than 1 level was gained
+    resolveExpAndLvl(0)
 }
 
 

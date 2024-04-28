@@ -58,7 +58,7 @@ let config = {
 // Test config
 if(1 == 2){
     // config.life = 110
-    config.power = 99
+    config.power = 2
     config.def   = 99
     config.dice  = 6
     config.slots = 9
@@ -70,22 +70,24 @@ if(1 == 2){
 
     //Game
     // config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'map' 
+    config.showScreen        = 'inventory' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
-    config.stage             = 1
+    config.stage             = 10
 
     //Starting items
     config.stGuardian = [
             'sword',
+            'sigil of light',
             'woolen bag',
             'spiked shield',
             'gonfalon',
             "dodecacore",
             "ring of power",
             'poison potion',
-            'pauldron',
+            'helmet',
             'kite shield'
+
 
     ]
     config.stCrusader = [
@@ -103,8 +105,9 @@ if(1 == 2){
     ]
     
     //Enemy
+    // config.forceEnemyProfile = ['enemy','gladiator']
     // config.forceEnemyProfile = ['boss','boss3']
-    // config.forceEnemyAction  = 'final strike'
+    // config.forceEnemyAction  = 'block'
 
     //Map
     config.mapX           = 3, //1
@@ -119,5 +122,5 @@ if(1 == 2){
     ]
 
     //Items
-    config.merchantQuant = 'all'
+    // config.merchantQuant = 'all'
 }
