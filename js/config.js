@@ -58,7 +58,7 @@ let config = {
 // Test config
 if(1 == 1){
     // config.life = 110
-    config.power = 99
+    config.power = 2
     config.def   = 99
     config.dice  = 6
     config.slots = 9
@@ -105,7 +105,7 @@ if(1 == 1){
     //Enemy
     config.forceEnemyProfile = ['enemy','gladiator']
     // config.forceEnemyProfile = ['boss','boss3']
-    // config.forceEnemyAction  = 'final strike'
+    // config.forceEnemyAction  = 'block'
 
     //Map
     config.mapX           = 3, //1

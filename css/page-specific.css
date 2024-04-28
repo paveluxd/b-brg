@@ -654,11 +654,11 @@
         border: none;
     }
 
-    .stat-group #dice span, .stat-group #p-dice span{
+    .stat-group span, .stat-group span{
         color: var(--w50);
     }
 
-    .stat-group #life, .stat-group #p-life{
+    .stat-group #e-life, .stat-group #p-life{
         color: #FF3371;
     }
 /*Dice anim*/
