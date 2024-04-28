@@ -69,8 +69,8 @@ if(1 == 1){
     config.basePassieSkillPoints = 9
 
     //Game
-    // config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'map' 
+    config.testCombat        = true //Initiates combat at the start (for testing).
+    config.showScreen        = 'combat' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
     // config.stage             = 1
@@ -103,6 +103,7 @@ if(1 == 1){
     ]
     
     //Enemy
+    config.forceEnemyProfile = ['enemy','gladiator']
     // config.forceEnemyProfile = ['boss','boss3']
     // config.forceEnemyAction  = 'final strike'
 
