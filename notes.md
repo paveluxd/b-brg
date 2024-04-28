@@ -7,12 +7,7 @@
 
 
 **Update notes**
-- Fixed a bug when *Undying* passive would bug the live value on death.
-- Fixed a bug when healing gained via *House* map event would result in bugged live value.
-- Removed quantity labels from map units, now the unit sprite indicates the number of enemies.
-- Resolved an issue when excess experience would be lost on gaining a level.
-- Added enemy extra block indicator to the def value.
-- Implementad item drops based on rarity.
+-
 
 - Actions merge
     - Merge jsons
