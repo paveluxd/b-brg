@@ -481,6 +481,8 @@ function calcCost(type, itemId){
         return targetItem
     }
 
+
+    
 //INVENTORY
     //Move item card generation to a separate function
     function syncItemCards(){

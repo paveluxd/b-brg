@@ -56,7 +56,7 @@ let config = {
 }
 
 // Test config
-if(1 == 2){
+if(1 == 1){
     // config.life = 110
     config.power = 99
     config.def   = 99
@@ -73,7 +73,7 @@ if(1 == 2){
     config.showScreen        = 'map' 
     config.clearLs           = true
     // config.showCombatInfoLog = true
-    config.stage             = 1
+    // config.stage             = 1
 
     //Starting items
     config.stGuardian = [
