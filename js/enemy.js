@@ -50,8 +50,12 @@
             this.rollChangeMarker = false
 
             //Misc
+            //Dots - move to array
             this.appliedPoisonStacks = 0
-            this.poisonStacks = 0
+            this.poisonStacks        = 0
+            this.appliedBurnStacks   = 0
+            this.burnStacks          = 0
+
             this.crit         = false
             this.state        = ''                   // Used for stun, fear etc.
             this.forcedAction = ''                   // For items that force acions
@@ -82,14 +86,14 @@
 
         //If undefined pick from all profiles
         if(
-                typeof stageProfileRef[`stage${gs.stage}`] == 'undefined'
-            ||  typeof stageProfileRef[`stage${gs.stage}`][enemyType] == 'undefined'
+                typeof mapProfileRef[`stage${gs.stage}`] == 'undefined'
+            ||  typeof mapProfileRef[`stage${gs.stage}`][enemyType] == 'undefined'
         ){
             profile =  profileRef[enemyType][rarr(Object.keys(profileRef[enemyType]))]
         }
         //Pick from map ref obj
         else{
-            profile = profileRef[enemyType][rarr(stageProfileRef[`stage${gs.stage}`][enemyType])]
+            profile = profileRef[enemyType][rarr(mapProfileRef[`stage${gs.stage}`][enemyType])]
         }
 
         return profile

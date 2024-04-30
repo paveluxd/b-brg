@@ -1,7 +1,7 @@
 //Game
     class GameState {
         constructor(){
-            this.stage = 1
+            this.stage = 0
             this.version = config.version
             
             //Encounter
@@ -26,8 +26,6 @@
                 this.merchantQuant = config.merchantQuant
 
                 //Enemies
-                this.enemySpawnFrequency = config.enSpawnFrequency //30%
-                this.dungeonEnemySpawnFrequency = 70
                 this.enemyPartyCap = 2       
         }
     }

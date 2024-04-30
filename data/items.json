@@ -168,7 +168,7 @@
     "itemSlot": "",
     "tags": "off-hand",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "rare"
   },
   {
     "itemName": "iron cross",
@@ -266,7 +266,7 @@
     "itemSlot": "",
     "tags": "ring",
     "desc": "",
-    "itemRarity": "magic"
+    "itemRarity": "epic"
   },
   {
     "itemName": "ring of power",
@@ -419,7 +419,7 @@
     "itemSlot": "",
     "tags": "",
     "desc": "",
-    "itemRarity": "magic"
+    "itemRarity": "epic"
   },
   {
     "itemName": "bandages",
@@ -455,7 +455,7 @@
     "itemSlot": "",
     "tags": "consumable, potion",
     "desc": "",
-    "itemRarity": ""
+    "itemRarity": "magic"
   },
   {
     "itemName": "poison potion",
@@ -464,7 +464,7 @@
     "itemSlot": "",
     "tags": "consumable, potion",
     "desc": "",
-    "itemRarity": "rare"
+    "itemRarity": ""
   },
   {
     "itemName": "caltrops",
@@ -518,7 +518,7 @@
     "itemSlot": "",
     "tags": "jewelry",
     "desc": "",
-    "itemRarity": "rare"
+    "itemRarity": "epic"
   },
   {
     "itemName": "pauldron",
@@ -526,6 +526,24 @@
     "passiveStats": "",
     "itemSlot": "",
     "tags": "shoulder",
+    "desc": "",
+    "itemRarity": "rare"
+  },
+  {
+    "itemName": "torch",
+    "actions": "burn",
+    "passiveStats": "",
+    "itemSlot": "",
+    "tags": "off-hand, burning",
+    "desc": "",
+    "itemRarity": ""
+  },
+  {
+    "itemName": "oil jar",
+    "actions": "oil",
+    "passiveStats": "",
+    "itemSlot": "",
+    "tags": "utility, dot",
     "desc": "",
     "itemRarity": "rare"
   }

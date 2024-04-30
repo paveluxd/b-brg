@@ -434,7 +434,7 @@
     }
     .generic-sprite img:nth-child(1), .generic-sprite img:nth-child(2), .generic-sprite img:nth-child(5),
     .player-sprite  img:nth-child(1), .player-sprite  img:nth-child(2), .player-sprite  img:nth-child(5),
-    #enemy-sprite   img:nth-child(2), #enemy-sprite   img:nth-child(5){
+    #enemy-sprite   img:nth-child(1), #enemy-sprite   img:nth-child(4){
         animation: player-char-idle 0.8s steps(2) infinite alternate;
     } @keyframes player-char-idle {
         0% {

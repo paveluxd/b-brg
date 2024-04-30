@@ -1,7 +1,18 @@
 
+//Map object contains info about the map that is used to generate html map element
 class MapObj{
     constructor(type){
-        //MAP
+        
+        this.mapId = "map" + Math.random().toString(8).slice(2) //Generates unique map id
+        this.tiles = [] //Ref array for all tile objects
+        let placedUniqueTiles = ''
+
+        //Pick map profile
+        let mapProfile = mapProfileRef[`stage${gs.stage}`]
+        if(type == 'village'){
+            mapProfile = mapProfileRef[`village`]
+        }
+
         //Background image ids
         let tileSetUnique = 'monument-1, monument-2, grave'.split(', ') //castle
         let tileSetRare   = 'chest-1, chest-2, house-1, house-2'.split(', ') //mine
@@ -9,18 +20,23 @@ class MapObj{
         let tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
         let forests       = 'forest-1, forest-2, forest-3, empty-4, empty-5, empty-6, empty-7, road-1'.split(', ')
         
-        let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, camp, monument, lake, house, dungeon'
+        //Tiles that can't repeat on the same stage
+        let uniqueTiles   = 'merchant, blacksmith, enchanter, casino, camp, monument, house, dungeon'
         
-        //Set map dimensions
-        this.xAxis = config.mapX //+ gs.stage
-        this.yAxis = config.mapY //+ gs.stage
 
-        //Generates unique map id
-        this.mapId = "map" + Math.random().toString(8).slice(2)
+        //Set map dimensions
+        if(mapProfile.size == undefined){
+            mapProfile.size = mapProfileRef.referenceMap.size
+        }
+
+        this.xAxis = mapProfile.size[0] //+ gs.stage
+        this.yAxis = mapProfile.size[1] //+ gs.stage
+        
+
 
         //Dungeon setup
         if(type == 'dungeon'){
-            this.xAxis = rng(1 + gs.stage, 2)
+            this.xAxis = 3
             this.yAxis = rng(3 + gs.stage, 3)
 
             //Generates unique map id
@@ -32,18 +48,25 @@ class MapObj{
             tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
             forests       = ''.split(', ')
         }
+        else if (type == 'village'){
+            //Set map dimensions
+            this.xAxis = mapProfile.size[0] //+ gs.stage
+            this.yAxis = mapProfile.size[1] //+ gs.stage
 
-        //Cap map width at 3
-        if(this.xAxis > 3){this.xAxis = 3}
+            //Generates unique map id
+            this.mapId = "village" + Math.random().toString(8).slice(2)
 
-        //Ref array for all tile objects
-        this.tiles = []
+            //Tiles override
+            tileSetUnique = ''.split(', ') //castle
+            tileSetRare   = ''.split(', ') //mine
+            tileSetCommon = ''.split(', ') //dungeon, 
+            tileSetBase   = 'empty-1, empty-2, empty-3'.split(', ')
+            forests       = ''.split(', ')
+        }
 
         //Vars for tile ID generation
         let yAxis = 0 
         let xAxis = 1 //Offset because i know js yes
-
-        let placedUniqueTiles = ''
 
         //Generates tiles
         for(let i = 0; i < this.yAxis * this.xAxis; i++){
@@ -84,11 +107,13 @@ class MapObj{
             //Add player & enemies
                 //Add enemy units 30%
                 let rollForEne = rng(100)
-                let rollTarget = gs.enemySpawnFrequency //move to config?
+                let rollTarget
 
-                //Dungeon spawn frequency
-                if(type == 'dungeon'){
-                    rollTarget = gs.dungeonEnemySpawnFrequency
+                //Takes the spawn frequency from profile
+                if(mapProfile.enemySpawnFrequency !== undefined){
+                    rollTarget = mapProfile.enemySpawnFrequency
+                }else{
+                    rollTarget = mapProfileRef.referenceMap.enemySpawnFrequency
                 }
 
                 //If roll passes the treshold enemy spawn value -> add enemy to tile
@@ -115,14 +140,14 @@ class MapObj{
         //MANDATORY TILES
             //Map position is set in last main-and-combat.js
                 let overrides = [
-                    {//Player
+                    {//Player starting tile
                         tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
                         tileType: `entrance-1`, 
                         playerUnit: true, 
                         enemyUnit: false, 
                         flip: false
                     }, 
-                    {//Exit
+                    {//Exit tile
                         tileId:`${Math.round(this.xAxis/2)}-1`, 
                         tileType: 'exit-1', 
                         enemyUnit: true, 
@@ -135,19 +160,60 @@ class MapObj{
             //Dungeon overrides
                 if(type == 'dungeon'){
                     overrides = [
-                        {//Player
+                        {//Player (adds dungeon exit)
                             tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`,
                             tileType: `dungeon-exit`, 
                             playerUnit: true, 
                             enemyUnit: false, 
                         }, 
-                        {//Exit (boss tile)
+                        {//Exit (boss tile) (adds a boss)
                             tileId:`${Math.round(this.xAxis/2)}-1`, 
                             enemyUnit: true, 
                             enemyQuant: 1,
                             boss: true,
                         },
                     ]
+                }
+            //Village overrides
+                else if(type == 'village'){
+                    overrides = [
+                        {//Player starting tile
+                            tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
+                            tileType: `entrance-1`, 
+                            playerUnit: true, 
+                            enemyUnit: false, 
+                            flip: false
+                        }, 
+                        {//Exit tile
+                            tileId:`${Math.round(this.xAxis/2)}-1`, 
+                            tileType: 'exit-1', 
+                            enemyUnit: false, 
+                            enemyQuant: 0,
+                            flip: false,
+                            boss: false,
+                        },
+                    ]
+
+                    //Add 1 enemy unit for the 1st stage
+                    if(gs.stage == 0){
+                        overrides = [
+                            {//Player starting tile
+                                tileId:`${Math.round(this.xAxis/2)}-${this.yAxis}`, 
+                                tileType: `entrance-1`, 
+                                playerUnit: true, 
+                                enemyUnit: false, 
+                                flip: false
+                            }, 
+                            {//Exit tile
+                                tileId:`${Math.round(this.xAxis/2)}-1`, 
+                                tileType: 'exit-1', 
+                                enemyUnit: true, 
+                                enemyQuant: 1,
+                                flip: false,
+                                boss: false,
+                            },
+                        ] 
+                    }
                 }
 
             //Adds mandatory tiles from config
@@ -160,15 +226,15 @@ class MapObj{
                 //Resolve undefined arr
                 let mandatoryTilesRefArr
                 if(
-                    typeof stageProfileRef[`stage${gs.stage}`] == 'undefined' ||
-                    typeof stageProfileRef[`stage${gs.stage}`].mandatoryTiles == 'undefined'
+                    typeof mapProfile == 'undefined' ||
+                    typeof mapProfile.mandatoryTiles == 'undefined'
                 ){
-                    mandatoryTilesRefArr = stageProfileRef.genericMap.mandatoryTiles
+                    mandatoryTilesRefArr = mapProfileRef.referenceMap.mandatoryTiles
                 }else{
-                    mandatoryTilesRefArr = stageProfileRef[`stage${gs.stage}`].mandatoryTiles
+                    mandatoryTilesRefArr = mapProfile.mandatoryTiles
                 }
 
-                // console.log(mandatoryTilesRefArr, stageProfileRef.genericMap.mandatoryTiles);
+                // console.log(mandatoryTilesRefArr, mapProfileRef.referenceMap.mandatoryTiles);
                 mandatoryTilesRefArr.forEach(tile => {
                     if(type == 'dungeon') return //why dungeon was excluded?
                     overrides.push(tile) //add mandatory tile to required tiles arr
@@ -213,7 +279,8 @@ class MapObj{
 }
 
 //MAP UI
-    //Adds images and builds the map elem
+
+    //Adds images and builds the map elem based on map object
     function genMap(){
         //Sets map size & description (+1 due to border)
             el('map-container').setAttribute('style',`
@@ -226,6 +293,8 @@ class MapObj{
 
         //Gen tiles
             let tiles = ``
+
+            //Generate tile elements
             mapRef.forEach(tile => {
                 //Tile bg image
                     let img = `<img src="./img/map/${tile.tileType}.svg">`
@@ -264,7 +333,7 @@ class MapObj{
                 `
             })
 
-        //Map containers
+        //Map containers (top and bottom images)
             //Set stage decoration elems
             //Repeat stage decorations after the 2nd one
                 if (gs.stage > 2){
@@ -293,13 +362,23 @@ class MapObj{
                         <div              style="height:320px; width: 360px;"></div>
                     `
                 }
+            //Village
+                else if(gs.mapObj.mapId.includes('village')){
+                    el('map').setAttribute('style', `background-color:var(--stage-bg-1);`)
+
+                    el('map-container').innerHTML = `
+                        <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-village.svg"></img>
+                        ${tiles}
+                        <img              style="height:320px; width: 360px;" src="./img/map/bot-village.svg"></img>
+                    ` 
+                }
 
         resolveMove()
 
-        //Scroll map to the bottom to unit
+        //Scroll map to the bottom on page load
         setTimeout(function(){
             el('player-unit').scrollIntoView({block:'end'})
-        }, 1000);
+        }, 1);
     }
     
     //Moves unit
@@ -417,10 +496,15 @@ class MapObj{
                 if(tile.enemyUnit && tile.tileId != gs.playerLocationTile.tileId){
                     el(tile.tileId).setAttribute("onmousedown", 'initiateCombat()')
                 }
-                //Portal event
+                //Exit event
                 else if(tile.tileType.startsWith('exit')){
-                    el(tile.tileId).setAttribute('onmousedown', 'nextStage()')
-                    el('top-ext').setAttribute('onmousedown', 'nextStage()')
+                    el(tile.tileId).setAttribute('onmousedown', 'enterVillage()')
+                    el('top-ext').setAttribute('onmousedown', 'enterVillage()')
+
+                    if(gs.mapObj.mapId.startsWith('village')){
+                        el(tile.tileId).setAttribute('onmousedown', 'nextStage()')
+                        el('top-ext').setAttribute('onmousedown', 'nextStage()')
+                    }
                 }
                 //POI event
                 else if(!tile.tileType.startsWith('empty') || !tile.tileType.startsWith('forest')){
@@ -513,7 +597,7 @@ class MapObj{
         //     }
         //     screen('event-screen')
         // }
-        if(eventType.startsWith('chest')){
+        if      (eventType.startsWith('chest')){
             if(gs.playerLocationTile.visited != true){
                 let val = rng(parseInt(gs.playerLocationTile.tileId[0]) + parseInt(gs.playerLocationTile.tileId[2]) + 12, 6)
                 gs.plObj.coins += val
@@ -570,7 +654,7 @@ class MapObj{
             screen('enchanter')
         }
 
-        else if (eventType.startsWith('monument')){
+         else if(eventType.startsWith('monument')){
             
             //Get event id from tile
                 let event = eventRef[gs.playerLocationTile.loreEvent]
@@ -675,6 +759,8 @@ class MapObj{
             screen('event-screen')
             syncUi()
         }else if(eventType.startsWith('dungeon')){
+
+            //Creates empty map array?
             if(gs.maps == undefined){
                 gs.maps = []
             }
@@ -722,6 +808,7 @@ class MapObj{
 
             //Load map
             initGame()
+
         }else if(eventType.startsWith('camp')){
 
             if(gs.playerLocationTile.visited == true){
@@ -743,7 +830,7 @@ class MapObj{
             showAlert(`You look around.<br>There is nothing to see here.`)
         }
 
-        //Check if visited.
+        //Mark as visited.
         gs.playerLocationTile.visited = true
     }
 
@@ -822,61 +909,81 @@ class MapObj{
         //Generate a mapObj for this stage
         gs.mapObj = new MapObj 
 
-        //Clear maps array to generate new dungeon
+        //Clear maps array to generate new stage
         gs.maps = [] 
 
         initGame()         
     }
 
-    //Stage profiles
-    let hubProfile = {
-        mandatoryTiles:[
-            {tileType: 'lake-1', tileId:`1-1`, enemyUnit: false},
-        ]
+    function enterVillage(){
+        //Generate a villsge mapObj
+        gs.mapObj = new MapObj('village')
+
+        //Clear maps array to generate new stage
+        gs.maps = [] 
+
+        initGame()
     }
 
-    let stageProfileRef = {
-        genericMap:{
+    //Stage profiles
+    let mapProfileRef = {
+        dungeon: {
+            enemySpawnFrequency: 70, //0%-100%
+        },
+        village: {
+            size:[3,3],
+            enemySpawnFrequency: 0,
             mandatoryTiles:[
-                {tileType: 'camp-1', tileId:`1-12`,enemyUnit: false},
+                {tileType: 'library', tileId:`2-2`},
+                {tileType: 'merchant-1', tileId:`1-1`},
+            ]
+        },
+        referenceMap:{
+            size: [3,9],
+            enemySpawnFrequency: 35, //0%-100%
+            mandatoryTiles:[
+                // {tileType: 'camp-1', tileId:`1-12`,enemyUnit: false},
             ]
         },
         stage1:{
+            size:[3, 6],
+            enemySpawnFrequency: 35, //0%-100%
             boss:['boss1'],
             enemy:['minion','balanced'],
             mandatoryTiles:[
-                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+                // {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage2:{
             boss:['boss2'],
             enemy:['tank','balanced','assassin'],
             mandatoryTiles:[
-                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+                // {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage3:{
             boss:['boss3'],
             enemy:['tank','assassin','gladiator'],
             mandatoryTiles:[
-                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+                // {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
         },
         stage4:{
             boss:['boss4'],
             enemy:['mage','assassin'],
             mandatoryTiles:[
-                {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
+                // {tileType: 'merchant-1', tileId:`1-${config.mapY}`, enemyUnit: false},
             ]
-        },stage5:{
+        },
+        stage5:{
             boss:['boss5'],
             enemy:['mage','assassin','gladiator']
         },
-        stage5:{
+        stage6:{
             boss:['boss6'],
             enemy:['mage','assassin','gladiator', 'tank']
         },
-        stage6:{
+        stage7:{
             enemy:['mage','assassin','gladiator', 'tank']
         },
     }

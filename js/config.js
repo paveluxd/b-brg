@@ -39,7 +39,6 @@ let config = {
 
     //Enemy
         eneLife: 4, //8
-        enSpawnFrequency: 35,
 
     //Combat UI
         bgCounter: 3, //1 per saved combat bg for rng.
@@ -56,38 +55,35 @@ let config = {
 }
 
 // Test config
-if(1 == 2){
+if(1 == 1){
     // config.life = 110
     config.power = 0
-    config.def   = 0
+    config.def   = 20
     config.dice  = 6
     config.slots = 9
-    config.class = 'crusader'
+    config.class = 'guardian'
     config.coins = 90
 
     //Progression
     config.basePassieSkillPoints = 9
 
     //Game
-    config.testCombat        = true //Initiates combat at the start (for testing).
-    config.showScreen        = 'combat' 
+    // config.showScreen        = 'map' 
+    if(config.showScreen    == 'combat'){config.testCombat = true} //Initiates combat at the start (for testing).
     config.clearLs           = true
     // config.showCombatInfoLog = true
-    config.stage             = 1
+    // config.stage             = 5
 
     //Starting items
     config.stGuardian = [
-            'sword',
-            'sigil of light',
-            'woolen bag',
+            'torch',
+            'sickle',
+            'oil jar',
             'spiked shield',
             'gonfalon',
-            "ring of power",
             'poison potion',
             'helmet',
             'kite shield'
-
-
     ]
     config.stCrusader = [
         'sword',
@@ -117,9 +113,9 @@ if(1 == 2){
         // {tileType: 'enchanter-1', enemyUnit: false},
         // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
         // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
-        {tileType:'house-1', tileId:`1-12`,enemyUnit: false},
+        // {tileType:'house-1', tileId:`1-12`,enemyUnit: false},
     ]
 
     //Items
-    // config.merchantQuant = 'all'
+    config.merchantQuant = 'all'
 }
