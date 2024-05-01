@@ -380,7 +380,7 @@
         border-radius: 0 4px 0 0;
         z-index: 5;
     }
-    .action .charge-indicator{
+    .action .charge-indicator, span.slot-indicator{
         color: var(--white);
         background-color: black;
 
@@ -434,7 +434,7 @@
     }
     .generic-sprite img:nth-child(1), .generic-sprite img:nth-child(2), .generic-sprite img:nth-child(5),
     .player-sprite  img:nth-child(1), .player-sprite  img:nth-child(2), .player-sprite  img:nth-child(5),
-    #enemy-sprite   img:nth-child(2), #enemy-sprite   img:nth-child(5){
+    #enemy-sprite   img:nth-child(1):not(.boss-sprite), #enemy-sprite   img:nth-child(4){
         animation: player-char-idle 0.8s steps(2) infinite alternate;
     } @keyframes player-char-idle {
         0% {
@@ -783,7 +783,6 @@
 
     .item-list .item-card .item-top-container{
         flex-direction: column;
-        padding: 8px;
         height: 100%;   
 
     }
@@ -818,7 +817,7 @@
     }
     .item-list .item-card .item-top-container, .item-bottom-container span {
         color: white;
-        padding: 2px 6px;
+        padding: 6px 6px 2px 6px;
         border-radius: 0 0 0 4px;
         right: 0;
         top: 0;

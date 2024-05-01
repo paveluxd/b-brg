@@ -68,10 +68,10 @@
   {
     "actionName": "sickle attack",
     "tags": "attack, poison",
-    "desc": "deal 2 dmg. Poisons on hit",
+    "desc": "deal 1 dmg. Poisons on hit",
     "passiveStats": "",
     "actionMod": 1,
-    "actionCharge": 60,
+    "actionCharge": 40,
     "cooldown": "",
     "keyId": 64,
     "actionType": ""
@@ -211,8 +211,8 @@
   {
     "actionName": "bash",
     "tags": "",
-    "desc": "gain 1 def. On die roll of 1 stun the enemy",
-    "passiveStats": "def:1",
+    "desc": "use to gain 1 def. On die roll of 1 stun the enemy",
+    "passiveStats": "",
     "actionMod": "",
     "actionCharge": 40,
     "cooldown": "",
@@ -789,6 +789,28 @@
     "actionCharge": 0,
     "cooldown": "",
     "keyId": 0,
+    "actionType": ""
+  },
+  {
+    "actionName": "burn",
+    "tags": "attack",
+    "desc": "apply 3 burn stacks on target",
+    "passiveStats": "",
+    "actionMod": 3,
+    "actionCharge": 30,
+    "cooldown": "",
+    "keyId": 72,
+    "actionType": ""
+  },
+  {
+    "actionName": "oil",
+    "tags": "utility",
+    "desc": "reduce enemy dice by 1. Double poison and burn stacks on enemy",
+    "passiveStats": "",
+    "actionMod": 1,
+    "actionCharge": 10,
+    "cooldown": "",
+    "keyId": 73,
     "actionType": ""
   }
 ]

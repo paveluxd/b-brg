@@ -49,7 +49,7 @@
                     this.actionCharge = 1 
                 } 
 
-                
+
             })
 
             // this.actionCharge = 100 //for testing
@@ -129,7 +129,7 @@
         }
         a7(){ // sword attack 
 
-            gs.plObj.dmgDone += parseInt(gs.sourceAction.actionMod) + gs.plObj.power + gs.plObj.swordDmgMod
+            gs.plObj.dmgDone += gs.sourceAction.actionMod + gs.plObj.power + gs.plObj.swordDmgMod
 
             console.log(gs.sourceAction.actionMod, gs.plObj.power, gs.plObj.swordDmgMod);
             if(gs.plObj.roll == 5 || gs.plObj.roll == 6){
@@ -191,7 +191,7 @@
         a64(){// sickle
 
             //Calc
-            gs.plObj.dmgDone += 2 + gs.plObj.power
+            gs.plObj.dmgDone += 1 + gs.plObj.power
 
             //Apply poison stacks
             gs.enObj.appliedPoisonStacks += gs.sourceAction.actionMod
@@ -211,6 +211,13 @@
 
             //Cost
             gs.plObj.coins = 0
+        }
+        a72(){// "burn" torch
+
+            //Apply burning stacks
+            if(gs.enObj.appliedBurnStacks < gs.sourceAction.actionMod){
+                gs.enObj.appliedBurnStacks = gs.sourceAction.actionMod
+            }
         }
 
         //Spells (rework)
@@ -520,6 +527,18 @@
             //Save carabiner item to restore eq after the fight
             gs.plObj.carabiner.push(gs.sourceItem.itemId)
 
+        }
+        a73(){// 'oil' 'oil jar'
+
+            //Resolve stat change
+            changeStat('dice', -gs.sourceAction.actionMod, 'enemy')
+
+            if(gs.enObj.burnStacks > 0){
+                gs.enObj.burnStacks = gs.enObj.burnStacks * 2
+            }     
+            if(gs.enObj.poisonStacks > 0){
+                gs.enObj.poisonStacks= gs.enObj.poisonStacks * 2
+            }   
         } 
     }
 

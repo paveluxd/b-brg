@@ -50,8 +50,12 @@
             this.rollChangeMarker = false
 
             //Misc
+            //Dots - move to array
             this.appliedPoisonStacks = 0
-            this.poisonStacks = 0
+            this.poisonStacks        = 0
+            this.appliedBurnStacks   = 0
+            this.burnStacks          = 0
+
             this.crit         = false
             this.state        = ''                   // Used for stun, fear etc.
             this.forcedAction = ''                   // For items that force acions
@@ -82,14 +86,14 @@
 
         //If undefined pick from all profiles
         if(
-                typeof stageProfileRef[`stage${gs.stage}`] == 'undefined'
-            ||  typeof stageProfileRef[`stage${gs.stage}`][enemyType] == 'undefined'
+                typeof gs.mapProfile == 'undefined'
+            ||  typeof gs.mapProfile[enemyType] == 'undefined'
         ){
             profile =  profileRef[enemyType][rarr(Object.keys(profileRef[enemyType]))]
         }
         //Pick from map ref obj
         else{
-            profile = profileRef[enemyType][rarr(stageProfileRef[`stage${gs.stage}`][enemyType])]
+            profile = profileRef[enemyType][rarr(gs.mapProfile[enemyType])]
         }
 
         return profile
@@ -616,7 +620,31 @@
             
         },
         boss: {
-              boss1:     {//stage 1 (strong unit)   
+              boss0:     {//stage 0 (strong unit)   
+                profileId: 'boss0',
+                lifeMod:  3,
+                powerMod: 2,//required for final strike
+                defMod:   2,
+                diceMod:  2,
+                statOverrides: [
+                    'def-0',
+                    'power-0',
+                    'life-12',
+                    'dice-4'
+                ],
+                actionPool: [
+                    //Attack
+                        'attack',
+                        'final strike', 
+                        'combo', 
+                        'charge', 
+                    //Def
+                        'block', 
+
+                    //Misc
+                        'sleep',
+                ]
+            },boss1:     {//stage 1 (strong unit)   
                 profileId: 'boss1',
                 lifeMod:  3,
                 powerMod: 2,//required for final strike
@@ -685,7 +713,7 @@
                         'attack',
                         'block',
                 ]
-            },boss4:   {//stage 4 (dice control)   
+            },boss4:     {//stage 4 (dice control)   
                 profileId: 'boss4',
                 lifeMod:  3,
                 powerMod: 2,
@@ -716,7 +744,7 @@
                     //Misc
                         'sleep',
                 ]
-            },boss5:      {//stage 5 (hp check)   
+            },boss5:     {//stage 5 (hp check)   
                 profileId: 'boss5',
                 lifeMod:  3,
                 statOverrides: [
@@ -732,7 +760,7 @@
                         'charge', 
                         'block',
                 ]
-            },boss6:      {//stage 6 (dice control)   
+            },boss6:     {//stage 6 (dice control)   
                 profileId: 'boss6',
                 lifeMod:  3,
                 powerMod: 2,

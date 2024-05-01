@@ -111,11 +111,16 @@
                     <img src='./img/ico/food.svg'>
                     <p id='pl-food'></p>
                 </div> -->
-        
+                <!-- Life -->
+                <div>
+                    <img src='./img/ico/map-sm.svg'>
+                    <p class="stage"></p>
+                </div>
+
                 <!-- Life -->
                 <div>
                     <img src='./img/ico/life.svg'>
-                    <p id='pl-life' class=""></p>
+                    <p id="pl-life"></p>
                 </div>
 
                 <!-- Coins -->
@@ -173,6 +178,7 @@
                 <div class="modal-container">
                     <div id='character-content' class="column">
 
+                        <!-- Top area with image -->
                         <div class="row" style="justify-content: space-between; height: 80px;">
 
                             <div>
@@ -216,7 +222,7 @@
                                 <div class='stat'>
                                     <img src="./img/ico/def.svg">
                                     <p>Def</p>
-                                    <span class="def"></span>
+                                    <span class="def"></span><span class="def-fraction"></span>
                                 </div>
                             </section>
 
@@ -240,8 +246,8 @@
                                 </div> 
                 
                                 <div class='stat'>
-                                    <img src="./img/ico/placeholder.svg">
-                                    <p>World stage</p>
+                                    <img src="./img/ico/map-sm.svg">
+                                    <p>Map level</p>
                                     <span class="stage"></span>
                                 </div>
                             </section>
@@ -305,50 +311,6 @@
             <img src="./img/ico/info.svg" alt="">
 
         </button>
-
-        <div id="combat-guide-page" class="modal body-14" style="background-color: var(--b80);">
-            <div class="modal-container">
-
-                <h1>Combat guide</h1>
-                <br>
-
-                <div>
-                    <div class="stat">
-                        <img src="./img/ico/dice.svg" alt="">
-                        <p>4/6</p>
-                    </div>
-                    <h3>Dice roll (4) / Dice size (d6)</h3>
-                    <p>At the start of each turn you and enemy roll dice that affects your actions.</p>
-                </div>
-                <br>
-
-                <div>
-                    <img src="./img/ico/power.svg" alt="">
-                    <h3>Power</h3>
-                    <p>Modifies certain actions. For example power may increases attack damage or block value.</p>
-                </div>
-                <br>
-
-                <div>
-                    <img src="./img/ico/def.svg" alt="">
-                    <h3>Defence</h3>
-                    <p>Reduces incoming damage. On hit target looses 1 point of defence.</p>
-                </div>
-
-                <button 
-                    class="btn-ico-txt btn-frame" 
-                    onclick="el('combat-guide-page').classList.toggle('hide')"
-                    style="
-                        position: fixed;
-                        bottom: 24px;
-                        width: 120px;
-                    "
-                >
-                    <img src="./img/ico/tab-hide.svg" alt="">
-                    Hide
-                </button>
-            </div>
-        </div>
 
         <!-- Units images -->
         <div class="column grow units-container">
@@ -441,6 +403,59 @@
   
     </div>
 
+<!-- INFO: Combat guide page -->
+    <div id="combat-guide-page" class="modal body-14 hide" style="background-color: var(--screen-bg); z-index: 3;">
+        <div class="modal-container">
+
+            <h1>Combat guide</h1>
+            <br>
+
+            <div>
+                <div class="stat">
+                    <img src="./img/ico/dice.svg" alt="">
+                    <p>4/6</p>
+                </div>
+                <h3>Dice roll (4) / Dice size (d6)</h3>
+                <p>At the start of each turn you and enemy roll dice that affects your actions.</p>
+            </div>
+            <br>
+
+            <div>
+                <img src="./img/ico/power.svg" alt="">
+                <h3>Power</h3>
+                <p>Modifies certain actions. For example power may increases attack damage or block value.</p>
+            </div>
+            <br>
+
+            <div>
+                <img src="./img/ico/def.svg" alt="">
+                <h3>Defence</h3>
+                <p>Reduces incoming damage. On hit target looses 1 point of defence.</p>
+            </div>
+
+            <br>
+
+            <div>
+                <img src="./img/ico/discord.svg" alt="">
+                <h3>Get more info</h3>
+                <p>If you need more help visit <a href="https://discord.gg/AT8KdVbcVT" target="_blank">Game Discord</a> and post your question in the chat.</p>
+            </div>
+
+            <button 
+                class="btn-ico-txt btn-frame" 
+                onclick="el('combat-guide-page').classList.toggle('hide')"
+                style="
+                    position: fixed;
+                    bottom: 24px;
+                    width: 120px;
+                "
+            >
+                <img src="./img/ico/tab-hide.svg" alt="">
+                Hide
+            </button>
+        </div>
+    </div>
+
 <!-- Reward screen -->
     
     <!-- Item reward -->
@@ -530,6 +545,7 @@
 
         <div id="repair-slide" class="modal-container">
             <h1>Repair items</h1>
+            <p>Repair your item to increas the number of action charges.</p>
             <div id='items-to-repair' class="item-list"></div>
         </div>
 
@@ -606,7 +622,7 @@
     </div>
 
 <!-- MENU -->
-    <div id="menu-screen" class="screen hide">
+    <div id="menu-screen" class="screen hide" style="z-index: 2;">
         <!-- Tabs -->
         <div class="tab-container btn-frame ">
             <button class="tab" onclick="screen('map')">
@@ -631,10 +647,10 @@
                     <img src="./img/ico/discord.svg">
                     Join game Discord
                 </button>
-                <!-- <button class="btn-ico-txt btn-frame" onclick="">
+                <button class="btn-ico-txt btn-frame" onclick="el('combat-guide-page').classList.toggle('hide')">
                     <img src="./img/ico/info.svg">
-                    How to play
-                </button> -->
+                    Mini game guide
+                </button>
             </div>
         </div>
     </div>

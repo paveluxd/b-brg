@@ -1,56 +1,29 @@
 //UI
     function syncUi(){
-        // console.log(`UI was synced.`);
+        console.log(`UI sync`)
 
         syncActionTiles()
         syncCharPage()
         syncItemCards()
-        // generateSkillTree()
 
         //Combat screen: Log stats at the top
             if(gs.inCombat){
+
                 //Top left log
                 el('log').innerHTML = `
                     Enc: ${gs.encounter}/${gs.playerLocationTile.enemyQuant}<br>
                     Ene: lvl ${gs.enObj.level} ${gs.enObj.profile.profileId}<br>
                     ` 
-                    // Loc: ${gs.playerLocationTile.tileId}
-                    // Tur: ${gs.combatTurn}<br>
-                    // Lvl: ${gs.plObj.lvl} / Exp:${gs.plObj.exp}
-
-                //Enemy floating number
-                //gs.enemyAction -> Previous action
-
-                // if(gs.enObj.dmgTaken > 0){//Attack
-                //     floatText('en',`-${gs.enObj.dmgTaken} life`)
-                // }else if(gs.enObj.action.key === 'fortify'){
-                //     floatText('en',`+${gs.enObj.action.stat} def`)
-                // }else if(gs.enObj.action.key === 'empower'){
-                //     floatText('en',`+${gs.enObj.action.stat} power`)
-                // }else if(gs.enObj.action.key === 'rush'){
-                //     floatText('en',`+${gs.enObj.action.stat} dice`)
-                // }else if(gs.enObj.action.key === 'sleep'){
-                //     floatText('en',`Zzzzz`)
-                // }else if(gs.enObj.action.key === 'block'){
-                //     floatText('en',`Blocked ${gs.enObj.action.stat}`)
-                // }else if(gs.enObj.action.key === 'recover'){
-                //     floatText('en',`Recovered ${gs.enObj.action.stat} ${gs.enObj.action.actionVal}`)
-                // }
 
                 gs.enemyAction = []
                 
-                //Player floating number
-                if(gs.plObj.dmgTaken > 0){
-                    floatText('pl',`-${gs.plObj.dmgTaken} life`)
-                }
-
                 //Player stats
-                el('p-life').innerHTML  =`${gs.plObj.life}`
-                el('p-def').innerHTML   =`${gs.plObj.def}`
-                el('p-dice').innerHTML  =`${gs.plObj.roll}<span>/${gs.plObj.dice}</span>`
+                el('p-life' ).innerHTML =`${gs.plObj.life}`
+                el('p-def'  ).innerHTML =`${gs.plObj.def}`
+                el('p-dice' ).innerHTML =`${gs.plObj.roll}<span>/${gs.plObj.dice}</span>`
                 el('p-power').innerHTML =`${gs.plObj.power}`  
 
-                //Life 5 ico indication
+                //Life progress bar indication
                     //Pl   
                     if      (gs.plObj.life / gs.plObj.flatLife < 0.2){
                         el('p-life-icon').setAttribute('src', './img/ico/life-20.svg')
@@ -76,32 +49,23 @@
                         el('e-life-icon').setAttribute('src', './img/ico/life.svg')
                     }
 
-                //Control stat vis
-                    // if(gs.enObj.poisonStacks > 0){
-                    //     el('poison-stat').classList.remove('hide')
-                    // }else{
-                    //     el('poison-stat').classList.add('hide')
-                    // }
-
                 //Enemy stats
                     // console.log(gs.enObj.action);
                     el('e-life').innerHTML    =`${gs.enObj.life}`
                     
                     //Block indicator
                     if(gs.enObj.action.key != 'block'){
-                        el('e-def').innerHTML     =`${gs.enObj.def}`
+                        el('e-def').innerHTML =`${gs.enObj.def}`
                     } else {
-                        el('e-def').innerHTML    =`${gs.enObj.def}<span>(${gs.enObj.action.actionVal})</span>`
+                        el('e-def').innerHTML =`${gs.enObj.def}<span>(${gs.enObj.action.actionVal})</span>`
                     }
 
                     el('e-dice').innerHTML    =`${gs.enObj.roll}<span>/${gs.enObj.dice}</span>`
                     el('e-power').innerHTML   =`${gs.enObj.power}`
 
                 //Enemy intent indicator
-                    // console.log(gs.enObj.action);
                     el('intent').innerHTML = `${gs.enObj.action.desc} <p id="status-fx"></p>`
 
-                //Add reflect indicator
                     if(gs.enObj.action.key == 'sleep'){ //Sleep
                         el('status-fx').innerHTML += `
                             <span id='action-tag'>
@@ -114,14 +78,14 @@
                                 Multistrike x3
                             </span>
                         `
-                    }
-                    else if(gs.enObj.action.key == 'charge'){ //Combo
+                    }else if(gs.enObj.action.key == 'charge'){ //Charge
                         el('status-fx').innerHTML += `
                             <span id='action-tag'>
                                 ${gs.enObj.action.actionVal} turns
                             </span>
                         `
                     }
+
                     if(gs.enObj.reflect){ //Reflect
                         el('status-fx').innerHTML += `
                             <span id='reflect-tag'>
@@ -144,12 +108,25 @@
                             </span>
                         `
                     }
+                    if(gs.enObj.burnStacks > 0){ //Burn
+                        el('status-fx').innerHTML += `
+                            <span id='burn-tag'>
+                                <img src='./img/ico/burn.svg'>
+                                ${gs.enObj.burnStacks} 
+                            </span>
+                        `
+                    }
             }
 
         //Modify map stat indicator
             ['life','coins'].forEach(stat => {
-                el(`pl-${stat}`).innerHTML = gs.plObj[stat]
-            })
+                el(`pl-${stat}`).innerHTML = gs.plObj[stat]}
+            );
+            ['stage'].forEach(property => {
+                el(`.${property}`, 'all').forEach(element =>{
+                    element.innerHTML = gs[property]
+                })
+            });
 
         //Modify inventroy indicator.
             el('inventory-tab-extension').innerHTML = `
@@ -296,9 +273,11 @@
                     <img src="./img/character/${gs.plObj.class}-torso.svg">
                     <img src="./img/character/${gs.plObj.class}-front-arm.svg">
                     <img src="./img/character/${gs.plObj.class}-head.svg">
-                    <img id='p-ghost' src="">
                 `
             })
+
+            //Ghost has to be added separately to avoid multiple ids.
+            playerSprites[1].innerHTML +=`<img id='p-ghost' src="">`
         }
         else if(target == 'enemy'){
 
@@ -307,7 +286,7 @@
             // if(gs.playerLocationTile.boss){
 
                 el('enemy-sprite').innerHTML = `
-                    <img src="./img/enemy/boss/${gs.enObj.profile.profileId}.svg">
+                    <img class="boss-sprite" src="./img/enemy/boss/${gs.enObj.profile.profileId}.svg">
                     <img id='e-ghost' src="">
                 ` 
 
@@ -360,8 +339,7 @@
                 }
 
                 el('enemy-sprite').innerHTML = ` 
-                    <img src="./img/character/shade.svg">
-                        ${enemySpriteParts}
+                    ${enemySpriteParts}
                     <img id='e-ghost' src="">
                 ` 
                 el('e-img-column').classList.remove('boss')
