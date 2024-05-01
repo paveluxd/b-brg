@@ -55,7 +55,7 @@ let config = {
 }
 
 // Test config
-if(1 == 2){
+if(1 == 1){
     // config.life = 110
     config.power = 0
     config.def   = 0
@@ -65,7 +65,7 @@ if(1 == 2){
     config.coins = 90
 
     //Progression
-    config.basePassieSkillPoints = 9
+    config.basePassieSkillPoints = 99
 
     //Game
     config.showScreen        = 'map' 
@@ -78,8 +78,7 @@ if(1 == 2){
     //Starting items
     config.stGuardian = [
             'club',
-            'pendant',
-            'bag',
+            'dagger',
             'spiked shield',
             'gonfalon',
             'poison potion',

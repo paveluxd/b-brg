@@ -315,6 +315,7 @@ function levelUp(){
         gs.plObj.dice           = gs.plObj.flatDice + diceDeviation
 
         //Slots 
+        gs.plObj.slotsUnrounded = flatSlots
         gs.plObj.equipmentSlots = Math.floor(flatSlots)
         gs.plObj.actionSlots    = Math.floor(flatSlots)
 
@@ -350,7 +351,7 @@ function levelUp(){
         el('.def').innerHTML            = `${sFrac(gs.plObj.defUnrounded)[0]}<span class="w50">${sFrac(gs.plObj.defUnrounded)[1]}</span>`
 
         
-        el('.equipmentSlots').innerHTML = `${calcEquippedItems()}/${gs.plObj.equipmentSlots}` //eq slots
+        el('.equipmentSlots').innerHTML = `${calcEquippedItems()}/${sFrac(gs.plObj.slotsUnrounded)[0]}<span class="w50">${sFrac(gs.plObj.slotsUnrounded)[1]}</span>` //eq slots
         el('.coins').innerHTML          = gs.plObj.coins
         el('.inventory').innerHTML      = `${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`//inventory
         el('.level').innerHTML          = gs.plObj.lvl

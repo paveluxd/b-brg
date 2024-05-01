@@ -76,7 +76,7 @@
         //1.Reset variables for new encounter.
             gs.inCombat = true
             gs.combatTurn = 1
-
+            
             if(typeof gs.encounter !== 'number'){
                 gs.encounter = 1
             }  
@@ -125,7 +125,6 @@
 
     //0.START OF THE TURN
     function startNextTurn(){
-        console.log('Next turn');
 
          //POISON: resolve poison stacks
             resolvePoison()
@@ -506,6 +505,7 @@
 
     //2.END TURN
         function combatEndCheck(mode){ 
+            console.log('end check');
             //DEFEAT
                 //On death passives
                 if(gs.plObj.life < 1){
@@ -582,7 +582,8 @@
                 }
             //NEXT TURN
                 else if (
-                    mode != 'preventNextTurn' 
+                    mode !== 'preventNextTurn' 
+                 && gs.plObj.roll < 1 // for items that spend dice roll
                  && gs.sourceAction.actionType !== "extra-action"
                 ){
                     startNextTurn() 

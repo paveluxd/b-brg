@@ -13,7 +13,8 @@
                 el('log').innerHTML = `
                     Enc: ${gs.encounter}/${gs.playerLocationTile.enemyQuant}<br>
                     Ene: lvl ${gs.enObj.level} ${gs.enObj.profile.profileId}<br>
-                    ` 
+                    Turn: ${gs.combatTurn}<br>
+                ` 
 
                 gs.enemyAction = []
                 

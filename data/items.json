@@ -33,7 +33,7 @@
     "itemSlot": "",
     "tags": "",
     "desc": "bag filled with drugs and first aid items. On the inside you can see a distorted print 'Volunteer for victory 1 5 ed Cro'",
-    "itemRarity": "magic"
+    "itemRarity": "epic"
   },
   {
     "itemName": "axe",
@@ -356,7 +356,7 @@
     "itemSlot": "bag",
     "tags": "bag",
     "desc": "",
-    "itemRarity": "magic"
+    "itemRarity": "rare"
   },
   {
     "itemName": "leather bag",
@@ -365,7 +365,7 @@
     "itemSlot": "bag",
     "tags": "bag",
     "desc": "",
-    "itemRarity": "magic"
+    "itemRarity": "rare"
   },
   {
     "itemName": "bag",
@@ -374,7 +374,7 @@
     "itemSlot": "bag",
     "tags": "bag",
     "desc": "",
-    "itemRarity": "magic"
+    "itemRarity": "epic"
   },
   {
     "itemName": "adrenaline pen",
