@@ -208,9 +208,9 @@ class MapObj{
                                 tileId:`${Math.round(this.xAxis/2)}-1`, 
                                 tileType: 'exit-1', 
                                 enemyUnit: true, 
-                                enemyQuant: 1,
+                                enemyQuant: 2,
                                 flip: false,
-                                boss: true,
+                                boss: false,
                             },
                         ] 
                     }
@@ -936,7 +936,7 @@ class MapObj{
             size:[3,3],
             enemySpawnFrequency: 0,
             boss:['boss0'],
-            // enemy:['tank'],
+            enemy:['tank'],
             mandatoryTiles:[
                 {tileType: 'library', tileId:`2-2`},
                 {tileType: 'merchant-1', tileId:`1-1`},

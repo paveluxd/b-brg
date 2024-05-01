@@ -55,7 +55,7 @@ let config = {
 }
 
 // Test config
-if(1 == 1){
+if(1 == 2){
     // config.life = 110
     config.power = 0
     config.def   = 0
