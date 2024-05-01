@@ -1,14 +1,12 @@
 //UI
     function syncUi(){
-        console.log(`UI was synced.`)
+        console.log(`UI sync`)
 
         syncActionTiles()
         syncCharPage()
         syncItemCards()
-        // generateSkillTree()
 
         //Combat screen: Log stats at the top
-
             if(gs.inCombat){
 
                 //Top left log
@@ -17,19 +15,8 @@
                     Ene: lvl ${gs.enObj.level} ${gs.enObj.profile.profileId}<br>
                     ` 
 
-                //Enemy floating number
-                //gs.enemyAction -> Previous action
-                // if(gs.enObj.dmgTaken > 0){//Attack
-                //     floatText('en',`-${gs.enObj.dmgTaken} life`)
-                // }
-
                 gs.enemyAction = []
                 
-                //Player floating number
-                // if(gs.plObj.dmgTaken > 0){
-                //     floatText('pl',`-${gs.plObj.dmgTaken} life`)
-                // }
-
                 //Player stats
                 el('p-life' ).innerHTML =`${gs.plObj.life}`
                 el('p-def'  ).innerHTML =`${gs.plObj.def}`
@@ -62,13 +49,6 @@
                         el('e-life-icon').setAttribute('src', './img/ico/life.svg')
                     }
 
-                //Control stat vis
-                    // if(gs.enObj.poisonStacks > 0){
-                    //     el('poison-stat').classList.remove('hide')
-                    // }else{
-                    //     el('poison-stat').classList.add('hide')
-                    // }
-
                 //Enemy stats
                     // console.log(gs.enObj.action);
                     el('e-life').innerHTML    =`${gs.enObj.life}`
@@ -84,7 +64,6 @@
                     el('e-power').innerHTML   =`${gs.enObj.power}`
 
                 //Enemy intent indicator
-                    // console.log(gs.enObj.action);
                     el('intent').innerHTML = `${gs.enObj.action.desc} <p id="status-fx"></p>`
 
                     if(gs.enObj.action.key == 'sleep'){ //Sleep
@@ -141,8 +120,13 @@
 
         //Modify map stat indicator
             ['life','coins'].forEach(stat => {
-                el(`pl-${stat}`).innerHTML = gs.plObj[stat]
-            })
+                el(`pl-${stat}`).innerHTML = gs.plObj[stat]}
+            );
+            ['stage'].forEach(property => {
+                el(`.${property}`, 'all').forEach(element =>{
+                    element.innerHTML = gs[property]
+                })
+            });
 
         //Modify inventroy indicator.
             el('inventory-tab-extension').innerHTML = `
@@ -302,7 +286,7 @@
             // if(gs.playerLocationTile.boss){
 
                 el('enemy-sprite').innerHTML = `
-                    <img src="./img/enemy/boss/${gs.enObj.profile.profileId}.svg">
+                    <img class="boss-sprite" src="./img/enemy/boss/${gs.enObj.profile.profileId}.svg">
                     <img id='e-ghost' src="">
                 ` 
 

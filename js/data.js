@@ -23,10 +23,7 @@
             
             //Map
                 //Merchant config.
-                this.merchantQuant = config.merchantQuant
-
-                //Enemies
-                this.enemyPartyCap = 2       
+                this.merchantQuant = config.merchantQuant     
         }
     }
 

@@ -108,6 +108,9 @@ body{
         margin-bottom: 2px;
         padding-left: 0px;
     }
+    a{
+        color: var(--heading-yellow);
+    }
     
 
     /* Button */

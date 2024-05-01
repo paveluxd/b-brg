@@ -8,9 +8,9 @@ class MapObj{
         let placedUniqueTiles = ''
 
         //Pick map profile
-        let mapProfile = mapProfileRef[`stage${gs.stage}`]
+        gs.mapProfile = mapProfileRef[`stage${gs.stage}`]
         if(type == 'village'){
-            mapProfile = mapProfileRef[`village`]
+            gs.mapProfile = mapProfileRef[`village`]
         }
 
         //Background image ids
@@ -25,12 +25,12 @@ class MapObj{
         
 
         //Set map dimensions
-        if(mapProfile.size == undefined){
-            mapProfile.size = mapProfileRef.referenceMap.size
+        if(gs.mapProfile.size == undefined){
+            gs.mapProfile.size = mapProfileRef.referenceMap.size
         }
 
-        this.xAxis = mapProfile.size[0] //+ gs.stage
-        this.yAxis = mapProfile.size[1] //+ gs.stage
+        this.xAxis = gs.mapProfile.size[0] //+ gs.stage
+        this.yAxis = gs.mapProfile.size[1] //+ gs.stage
         
 
 
@@ -50,8 +50,8 @@ class MapObj{
         }
         else if (type == 'village'){
             //Set map dimensions
-            this.xAxis = mapProfile.size[0] //+ gs.stage
-            this.yAxis = mapProfile.size[1] //+ gs.stage
+            this.xAxis = gs.mapProfile.size[0] //+ gs.stage
+            this.yAxis = gs.mapProfile.size[1] //+ gs.stage
 
             //Generates unique map id
             this.mapId = "village" + Math.random().toString(8).slice(2)
@@ -110,8 +110,8 @@ class MapObj{
                 let rollTarget
 
                 //Takes the spawn frequency from profile
-                if(mapProfile.enemySpawnFrequency !== undefined){
-                    rollTarget = mapProfile.enemySpawnFrequency
+                if(gs.mapProfile.enemySpawnFrequency !== undefined){
+                    rollTarget = gs.mapProfile.enemySpawnFrequency
                 }else{
                     rollTarget = mapProfileRef.referenceMap.enemySpawnFrequency
                 }
@@ -210,7 +210,7 @@ class MapObj{
                                 enemyUnit: true, 
                                 enemyQuant: 1,
                                 flip: false,
-                                boss: false,
+                                boss: true,
                             },
                         ] 
                     }
@@ -226,12 +226,12 @@ class MapObj{
                 //Resolve undefined arr
                 let mandatoryTilesRefArr
                 if(
-                    typeof mapProfile == 'undefined' ||
-                    typeof mapProfile.mandatoryTiles == 'undefined'
+                    typeof gs.mapProfile == 'undefined' ||
+                    typeof gs.mapProfile.mandatoryTiles == 'undefined'
                 ){
                     mandatoryTilesRefArr = mapProfileRef.referenceMap.mandatoryTiles
                 }else{
-                    mandatoryTilesRefArr = mapProfile.mandatoryTiles
+                    mandatoryTilesRefArr = gs.mapProfile.mandatoryTiles
                 }
 
                 // console.log(mandatoryTilesRefArr, mapProfileRef.referenceMap.mandatoryTiles);
@@ -336,42 +336,44 @@ class MapObj{
         //Map containers (top and bottom images)
             //Set stage decoration elems
             //Repeat stage decorations after the 2nd one
-                if (gs.stage > 2){
-                    //Set map bg color
-                    el('map').setAttribute('style', `background-color:var(--stage-bg-3);`)
-
-                    el('map-container').innerHTML = `
-                        <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext-2.svg"></img>
-                        ${tiles}
-                        <img              style="height:320px; width: 360px;" src="./img/map/bot-ext-2.svg"></img>
-                    `
-                }else{
-                    el('map').setAttribute('style', `background-color:var(--stage-bg-${gs.stage});`)
-
-                    el('map-container').innerHTML = `
-                        <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext-${gs.stage}.svg"></img>
-                        ${tiles}
-                        <img              style="height:320px; width: 360px;" src="./img/map/bot-ext-${gs.stage}.svg"></img>
-                    `
-                }
-            //Dungeon
-                if(gs.mapObj.mapId.includes('dungeon')){
-                    el('map-container').innerHTML = `
-                        <div id="top-ext" style="height:320px; width: 360px;"></div>
-                        ${tiles}
-                        <div              style="height:320px; width: 360px;"></div>
-                    `
-                }
             //Village
-                else if(gs.mapObj.mapId.includes('village')){
-                    el('map').setAttribute('style', `background-color:var(--stage-bg-1);`)
+            if(gs.mapObj.mapId.includes('village')){
+                el('map').setAttribute('style', `background-color:var(--stage-bg-1);`)
 
-                    el('map-container').innerHTML = `
-                        <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-village.svg"></img>
-                        ${tiles}
-                        <img              style="height:320px; width: 360px;" src="./img/map/bot-village.svg"></img>
-                    ` 
-                }
+                el('map-container').innerHTML = `
+                    <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-village.svg"></img>
+                    ${tiles}
+                    <img              style="height:320px; width: 360px;" src="./img/map/bot-village.svg"></img>
+                ` 
+            }
+            //Dungeon
+            else if(gs.mapObj.mapId.includes('dungeon')){
+                el('map-container').innerHTML = `
+                    <div id="top-ext" style="height:320px; width: 360px;"></div>
+                    ${tiles}
+                    <div              style="height:320px; width: 360px;"></div>
+                `
+            }
+            else if (gs.stage > 2){
+                //Set map bg color
+                el('map').setAttribute('style', `background-color:var(--stage-bg-3);`)
+
+                el('map-container').innerHTML = `
+                    <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext-2.svg"></img>
+                    ${tiles}
+                    <img              style="height:320px; width: 360px;" src="./img/map/bot-ext-2.svg"></img>
+                `
+            }else{
+                el('map').setAttribute('style', `background-color:var(--stage-bg-${gs.stage});`)
+
+                el('map-container').innerHTML = `
+                    <img id="top-ext" style="height:320px; width: 360px;" src="./img/map/top-ext-${gs.stage}.svg"></img>
+                    ${tiles}
+                    <img              style="height:320px; width: 360px;" src="./img/map/bot-ext-${gs.stage}.svg"></img>
+                `
+            }
+            
+            
 
         resolveMove()
 
@@ -933,6 +935,8 @@ class MapObj{
         village: {
             size:[3,3],
             enemySpawnFrequency: 0,
+            boss:['boss0'],
+            // enemy:['tank'],
             mandatoryTiles:[
                 {tileType: 'library', tileId:`2-2`},
                 {tileType: 'merchant-1', tileId:`1-1`},

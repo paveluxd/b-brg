@@ -211,8 +211,8 @@
   {
     "actionName": "bash",
     "tags": "",
-    "desc": "gain 1 def. On die roll of 1 stun the enemy",
-    "passiveStats": "def:1",
+    "desc": "use to gain 1 def. On die roll of 1 stun the enemy",
+    "passiveStats": "",
     "actionMod": "",
     "actionCharge": 40,
     "cooldown": "",

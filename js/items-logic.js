@@ -89,11 +89,11 @@ function calcCost(type, itemId){
 
     return cost
 }
-//Pick item rarity
+//Pick item rarity, drops
 function genItemPool(){
     let itemPool = []
 
-    let roll = rng(100) + gs.stage * 5
+    let roll = rng(85) + gs.stage * 5
     // console.log(roll);
 
     if       (roll < 70){ //70%
@@ -563,7 +563,7 @@ function genItemPool(){
 
             //Item type
             let itemSlot = ``
-            if(item.itemSlot !== 'any'){itemSlot = ` (${item.itemSlot})`}
+            if(item.itemSlot !== 'any'){itemSlot = `<span class="slot-indicator">${upp(item.itemSlot)} item slot</span>`}
 
             //Added actions
             let actionSet = ``
@@ -669,7 +669,8 @@ function genItemPool(){
             card.id = cardId //has to be here, if declared aboce, it will bind html elemnts with the same id (inventory and market)
             card.innerHTML =`
                             <div class="item-top-container" ${clickAttr}>
-                                <h3>${upp(item.itemName)}${itemSlot}</h3>
+                                <h3>${upp(item.itemName)}</h3>
+                                ${itemSlot}
                                 <p>${actionSet}</p>
                                 <div class="passive-container">${passiveSet}</div>
                             </div>

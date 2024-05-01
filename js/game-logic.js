@@ -10,7 +10,12 @@
             gs.plObj.startingItems.forEach(key => {addItem(key)})
 
             //Generate a mapObj for this stage
-            gs.mapObj = new MapObj('village')
+            if(config.skipTutorial){
+                gs.stage++
+                gs.mapObj = new MapObj()
+            } else{
+                gs.mapObj = new MapObj('village')
+            }
 
             //Save game once map was generated to prevent map regen
             saveGame()
@@ -71,6 +76,7 @@
         //1.Reset variables for new encounter.
             gs.inCombat = true
             gs.combatTurn = 1
+
             if(typeof gs.encounter !== 'number'){
                 gs.encounter = 1
             }  
@@ -512,8 +518,6 @@
             //VICTORY
                 else if (gs.enObj.life < 1){
 
-                    console.log('Victory');
-
                     //End game screen stat counter
                     gs.enemyCounter++
 
@@ -564,7 +568,10 @@
                     }
                     //Next fight
                     else{
-                        gs.encounter++ 
+
+                        if(typeof gs.encounter == 'number'){
+                            gs.encounter++ 
+                        }
 
                         initiateCombat()
                         runAnim(el('enemy-sprite'), 'enemyEntrance')

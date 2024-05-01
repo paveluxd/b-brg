@@ -302,14 +302,17 @@ function levelUp(){
         //Power final calculation
         //(base + flat) + deviation + temporary
         //flatPower is modified by extractPassiveStats, and can get fractions from tree, Math.floor() deals with fractions.
+        gs.plObj.powerUnrounded = basePower + flatPower
         gs.plObj.flatPower      = basePower + Math.floor(flatPower)
         gs.plObj.power          = gs.plObj.flatPower + powerDeviation
 
         //Def final calc
+        gs.plObj.defUnrounded   = baseDef + flatDef
         gs.plObj.flatDef        = baseDef + Math.floor(flatDef)
         gs.plObj.def            = gs.plObj.flatDef + defDeviation
 
         //Dice
+        gs.plObj.diceUnrounded  = flatDice
         gs.plObj.flatDice       = Math.floor(flatDice)
         gs.plObj.dice           = gs.plObj.flatDice + diceDeviation
 
@@ -323,16 +326,32 @@ function levelUp(){
 
 
 //CHARACTER
+    //Splits fractions into two strings for UI styling purposes
+    function sFrac(fraction){
+        let arr = fraction.toString().split(".")
+        if (arr[1] == undefined){
+            arr[1] = ""
+        } else {
+            arr[1] = `.${arr[1]}`
+        }
+
+        return arr
+    }
     function syncCharPage(){
         
         //Add text
         //Update each value
+
+        //sFrac() and unrounded values are used to display digits after the decimal point in a different style.
+        // el('.flatDice').innerHTML       = gs.plObj.flatDice
+
         el('.life').innerHTML           = gs.plObj.life
         el('.flatLife').innerHTML       = gs.plObj.flatLife
-        el('.flatDice').innerHTML       = gs.plObj.flatDice
-        el('.power').innerHTML          = gs.plObj.power
-        el('.def').innerHTML            = gs.plObj.def
+        el('.flatDice').innerHTML       = `${sFrac(gs.plObj.diceUnrounded)[0]}<span class="w50">${sFrac(gs.plObj.diceUnrounded)[1]}</span>`
+        el('.power').innerHTML          = `${sFrac(gs.plObj.powerUnrounded)[0]}<span class="w50">${sFrac(gs.plObj.powerUnrounded)[1]}</span>`
+        el('.def').innerHTML            = `${sFrac(gs.plObj.defUnrounded)[0]}<span class="w50">${sFrac(gs.plObj.defUnrounded)[1]}</span>`
 
+        
         el('.equipmentSlots').innerHTML = `${calcEquippedItems()}/${gs.plObj.equipmentSlots}` //eq slots
         el('.coins').innerHTML          = gs.plObj.coins
         el('.inventory').innerHTML      = `${gs.plObj.inventory.length}/${gs.plObj.inventorySlots}`//inventory

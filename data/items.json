@@ -182,7 +182,7 @@
   {
     "itemName": "spiked shield",
     "actions": "bash",
-    "passiveStats": "",
+    "passiveStats": "def:1",
     "itemSlot": "",
     "tags": "off-hand",
     "desc": "",

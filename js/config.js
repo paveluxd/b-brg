@@ -58,7 +58,7 @@ let config = {
 if(1 == 1){
     // config.life = 110
     config.power = 0
-    config.def   = 20
+    config.def   = 0
     config.dice  = 6
     config.slots = 9
     config.class = 'guardian'
@@ -68,17 +68,18 @@ if(1 == 1){
     config.basePassieSkillPoints = 9
 
     //Game
-    // config.showScreen        = 'map' 
+    config.showScreen        = 'map' 
     if(config.showScreen    == 'combat'){config.testCombat = true} //Initiates combat at the start (for testing).
     config.clearLs           = true
-    // config.showCombatInfoLog = true
-    // config.stage             = 5
+    config.showCombatInfoLog = true
+    // config.stage             = 1
+    config.skipTutorial      = true
 
     //Starting items
     config.stGuardian = [
-            'torch',
-            'sickle',
-            'oil jar',
+            'club',
+            'bag',
+            'gambison',
             'spiked shield',
             'gonfalon',
             'poison potion',
@@ -105,13 +106,11 @@ if(1 == 1){
     // config.forceEnemyAction  = 'block'
 
     //Map
-    config.mapX           = 3, //1
-    config.mapY           = 6, //Vertical
     config.mandatoryTiles = [
         // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
         // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
         // {tileType: 'enchanter-1', enemyUnit: false},
-        // {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
+        {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
         // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
         // {tileType:'house-1', tileId:`1-12`,enemyUnit: false},
     ]
