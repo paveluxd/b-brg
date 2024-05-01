@@ -35,11 +35,17 @@ class ItemObj {
         //Resolve props via default value above, or value from itemsRef object
         props.forEach(property => {
 
+            //if no prop, set it to extra props value
             if(itemData[property.key] === undefined || itemData[property.key] === ''){
-                this[property.key] = property.val //if no prop, set it to extra props value
+                this[property.key] = property.val 
             }
+            //if exists in ref, set it as ref.
             else {
-                this[property.key] = itemData[property.key] //if exists in ref, set it as ref.
+                // this[property.key] = itemData[property.key] 
+                
+                //Json parse thing is required because passive stat propery gets linked on item and in itemsRef object.
+                //And by changing the item, the ref object gets changed as well.
+                this[property.key] = JSON.parse(JSON.stringify(itemData[property.key]))
             }
         })
 
@@ -386,6 +392,7 @@ function genItemPool(){
     function modifyItem(itemId, type){
         //Find item
         let targetItem = findItemById(itemId)
+        console.log(targetItem);
 
         if(type == 'enhance'){
             if(resolvePayment(calcCost('enhance', itemId)) == false) return
@@ -402,7 +409,11 @@ function genItemPool(){
                 else{
                     let matchingStat
 
+                    console.log(targetItem);
+                    
                     targetItem.passiveStats.forEach(statObj =>{
+                        console.log(statObj);
+
                         if(addedStat.stat != statObj.stat) return false
                 
                         matchingStat = true
@@ -419,7 +430,6 @@ function genItemPool(){
                 targetItem.enhancementQuantity++
 
             resolvePlayerStats()//Recalculates passive stats
-            showAlert('Item enhancement.')
         }
         else if(type == 'repair'){
             //Find 1st action

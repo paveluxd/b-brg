@@ -295,13 +295,11 @@ function levelUp(){
 
         //Life final calculation
         //(base + flat) + deviation + temporary
-        //Temporayr not yet implemented
         gs.plObj.flatLife= Math.round((baseLife + flatLife) * lifeMultiplier)
         gs.plObj.life = gs.plObj.flatLife+ lifeDeviation  
 
         //Power final calculation
         //(base + flat) + deviation + temporary
-        //flatPower is modified by extractPassiveStats, and can get fractions from tree, Math.floor() deals with fractions.
         gs.plObj.powerUnrounded = basePower + flatPower
         gs.plObj.flatPower      = basePower + Math.floor(flatPower)
         gs.plObj.power          = gs.plObj.flatPower + powerDeviation

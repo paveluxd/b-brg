@@ -60,7 +60,7 @@ if(1 == 1){
     config.power = 0
     config.def   = 0
     config.dice  = 6
-    config.slots = 9
+    config.slots = 20
     config.class = 'guardian'
     config.coins = 90
 
@@ -78,13 +78,13 @@ if(1 == 1){
     //Starting items
     config.stGuardian = [
             'club',
+            'pendant',
             'bag',
-            'gambison',
             'spiked shield',
             'gonfalon',
             'poison potion',
-            'helmet',
-            'kite shield'
+            'gambison',
+            'robe'
     ]
     config.stCrusader = [
         'sword',
@@ -109,8 +109,8 @@ if(1 == 1){
     config.mandatoryTiles = [
         // {tileId:`2-${this.yAxis}`, tileType: 'casino', enemyUnit: true, boss: true, enemyQuant: 1},
         // {tileId:`1-12`, tileType: 'dungeon-1', enemyUnit: false},
-        // {tileType: 'enchanter-1', enemyUnit: false},
-        {tileType: 'merchant-1', tileId:`1-12`,enemyUnit: false},
+        {tileType: 'enchanter-1',tileId:`3-9`, enemyUnit: false},
+        {tileType: 'merchant-1', tileId:`1-9`,enemyUnit: false},
         // {tileType:'monument-1', tileId:`1-2`, loreEvent: 9},
         // {tileType:'house-1', tileId:`1-12`,enemyUnit: false},
     ]

@@ -950,7 +950,7 @@ class MapObj{
             ]
         },
         stage1:{
-            size:[3, 6],
+            size:[3, 9],
             enemySpawnFrequency: 35, //0%-100%
             boss:['boss1'],
             enemy:['minion','balanced'],
